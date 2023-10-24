@@ -4,7 +4,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.3"
 }
 
-group = "com.ssafy.addShot"
+group = "com.addShot"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -31,6 +31,19 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	//testImplementation("org.springframework.security:spring-security-test")
+
+	// Querydsl
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jakarta")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+
+	// p6spy - SQL Check
+	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0")
+
+	//Swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
 }
 
 tasks.withType<Test> {
