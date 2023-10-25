@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -48,6 +49,15 @@ public class UserPlogInfo {
     @Embedded
     private Time time;
 
-
-
+    @Builder
+    public UserPlogInfo(User user, Integer plogCount, SumPlogging sumPloggingData, Mission mission,
+        Integer score, Integer seed, Time time) {
+        this.user = user;
+        this.plogCount = plogCount;
+        this.sumPloggingData = sumPloggingData;
+        this.mission = mission;
+        this.score = score;
+        this.seed = seed;
+        this.time = time;
+    }
 }
