@@ -1,13 +1,16 @@
 package com.addShot.zoosum.entity;
 
+import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
 import com.addShot.zoosum.entity.embedded.Mission;
 import com.addShot.zoosum.entity.embedded.SumPlogging;
 import com.addShot.zoosum.entity.embedded.Time;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
@@ -22,7 +25,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPlogInfo {
 
-    @Id @OneToOne // USER와 함께 조회할 일이 있으면, fetch = FetchType.LAZY 추가
+    @Id
+    @Column(name = "user_id")
+    private String userId;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -60,6 +68,15 @@ public class UserPlogInfo {
         this.score = score;
         this.seed = seed;
         this.time = time;
+    }
+
+    public RankingResponseDto toResponse(){
+        return RankingResponseDto.builder()
+            .userId(this.user.getUserId())
+            .nickname(this.user.getNickname())
+            .region(String.valueOf(this.user.getRegion()))
+            .score(this.score)
+            .build();
     }
 
     @Override

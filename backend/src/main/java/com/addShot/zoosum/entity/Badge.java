@@ -38,4 +38,6 @@ public class Badge {
         this.badgeName = badgeName;
         this.fileUrl = fileUrl;
     }
+
+
 }

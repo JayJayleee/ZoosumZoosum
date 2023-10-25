@@ -15,6 +15,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -57,5 +58,24 @@ public class ActivityHistory {
         this.activityCategory = activityCategory;
         this.fileUrl = fileUrl;
         this.time = time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ActivityHistory that = (ActivityHistory) o;
+        return Objects.equals(activityId, that.activityId) && Objects.equals(user,
+            that.user) && activityCategory == that.activityCategory && Objects.equals(fileUrl,
+            that.fileUrl) && Objects.equals(time, that.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(activityId, user, activityCategory, fileUrl, time);
     }
 }

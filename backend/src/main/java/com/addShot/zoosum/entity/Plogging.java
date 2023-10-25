@@ -5,6 +5,7 @@ import com.addShot.zoosum.entity.enums.ActivityCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -35,5 +36,28 @@ public class Plogging extends ActivityHistory {
         this.ploggingLength = ploggingLength;
         this.ploggingTime = ploggingTime;
         this.ploggingTrash = ploggingTrash;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Plogging plogging = (Plogging) o;
+        return Objects.equals(ploggingLength, plogging.ploggingLength)
+            && Objects.equals(ploggingTime, plogging.ploggingTime)
+            && Objects.equals(ploggingTrash, plogging.ploggingTrash);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), ploggingLength, ploggingTime, ploggingTrash);
     }
 }

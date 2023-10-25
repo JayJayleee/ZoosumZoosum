@@ -5,6 +5,7 @@ import com.addShot.zoosum.entity.enums.ActivityCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -40,5 +41,27 @@ public class Tree extends ActivityHistory {
         this.userName = userName;
         this.userPhone = userPhone;
         this.userEmail = userEmail;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Tree tree = (Tree) o;
+        return Objects.equals(treeName, tree.treeName) && Objects.equals(userName,
+            tree.userName) && Objects.equals(userPhone, tree.userPhone)
+            && Objects.equals(userEmail, tree.userEmail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), treeName, userName, userPhone, userEmail);
     }
 }

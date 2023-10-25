@@ -4,12 +4,15 @@ import com.addShot.zoosum.entity.embedded.CheckYN;
 import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.enums.Region;
 import com.addShot.zoosum.entity.enums.Social;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -44,6 +47,10 @@ public class User {
 
     @Embedded
     private Time time;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY
+        , optional = false)
+    private UserPlogInfo userPlogInfo;
 
     @Builder
     public User(String userId, String email, Region region, String nickname, Social socialType,
