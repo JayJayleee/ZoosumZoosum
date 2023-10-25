@@ -1,4 +1,4 @@
-package com.addShot.zoosum.entity;
+package com.addShot.zoosum.entity.enums;
 
 public enum Region {
     SEOUL("서울"), DAEJEON("대전"), SEJONG("세종"), GWANGJU("광주"), INCHEON("인천"), DAEGU("대구")

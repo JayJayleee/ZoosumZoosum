@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 public class Mission {
 
     // 거리 미션 현황
-    @Column(name = "mission_length", nullable = false, columnDefinition = "int 0")
+    @Column(name = "mission_length", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer missionLength;
 
     // 시간 미션 현황
-    @Column(name = "mission_time", nullable = false, columnDefinition = "int 0")
+    @Column(name = "mission_time", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer missionTime;
 
     // 쓰레기 미션 현황
-    @Column(name = "mission_trash", nullable = false, columnDefinition = "int 0")
+    @Column(name = "mission_trash", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer missionTrash;
 
     public Mission(Integer missionLength, Integer missionTime, Integer missionTrash) {
