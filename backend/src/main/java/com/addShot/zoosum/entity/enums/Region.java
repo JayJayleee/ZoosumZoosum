@@ -1,4 +1,9 @@
-package com.addShot.zoosum.entity;
+package com.addShot.zoosum.entity.enums;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Region {
     SEOUL("서울"), DAEJEON("대전"), SEJONG("세종"), GWANGJU("광주"), INCHEON("인천"), DAEGU("대구")
@@ -14,4 +19,5 @@ public enum Region {
     public String getRegion() {
         return region;
     }
+
 }

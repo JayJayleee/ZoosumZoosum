@@ -13,18 +13,15 @@ import org.hibernate.annotations.ColumnDefault;
 public class CheckYN {
 
     // 카메라 동의 여부
-    @Column(name = "camera_yn", length = 1, nullable = false)
-    @ColumnDefault("'N'")
+    @Column(name = "camera_yn", length = 1, nullable = false, columnDefinition = "CHAR(1) DEFAULT 'N'")
     private String cameraYn;
 
     // GPS 동의 여부
-    @Column(name = "gps_yn", length = 1, nullable = false)
-    @ColumnDefault("'N'")
+    @Column(name = "gps_yn", length = 1, nullable = false, columnDefinition = "CHAR(1) DEFAULT 'N'")
     private String gpsYn;
 
     // 튜토리얼 진행 여부
-    @Column(name = "tutorial_yn", length = 1, nullable = false)
-    @ColumnDefault("'N'")
+    @Column(name = "tutorial_yn", length = 1, nullable = false, columnDefinition = "CHAR(1) DEFAULT 'N'")
     private String tutorialYn;
 
     public CheckYN(String cameraYn, String gpsYn, String tutorialYn) {
