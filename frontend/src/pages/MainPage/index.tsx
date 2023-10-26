@@ -8,7 +8,12 @@ export default function MainPage({navigation}: MainScreenProps) {
       <Text>일단은 메인입니당</Text>
       <Button
         title="Go to Plogging"
-        onPress={() => navigation.navigate('Plogging')}
+        onPress={() =>
+          navigation.navigate({
+            name: 'Plogging',
+            params: {shouldOpenModal: false},
+          })
+        }
       />
     </View>
   );

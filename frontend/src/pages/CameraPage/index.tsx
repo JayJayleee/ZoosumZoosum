@@ -8,14 +8,14 @@ import {
   Image,
 } from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {CameracreenProps} from '../../types/path';
+import {CamerascreenProps} from '../../types/path';
 import {AppState, AppStateStatus} from 'react-native';
 import styles from './style';
 interface Photo {
   path: string;
 }
 
-export default function CameraPage({navigation}: CameracreenProps) {
+export default function CameraPage({navigation, route}: CamerascreenProps) {
   const camera = useRef<Camera | null>(null);
   const devices = useCameraDevices();
   // device.back으로 작성이 안됨... 확인해보기
@@ -28,6 +28,7 @@ export default function CameraPage({navigation}: CameracreenProps) {
   );
 
   // 만약 설정 중 사용자가 앱을 껐거나, 백그라운드로 넘어갔을 때
+  // 이 부분 설정 더 알아보기
   const [appState, setAppState] = useState<
     'active' | 'background' | 'inactive' | 'unknown' | 'extension'
   >(AppState.currentState);
@@ -91,7 +92,7 @@ export default function CameraPage({navigation}: CameracreenProps) {
             await Camera.requestCameraPermission();
           // 허용 상태에 따라 카메라를 키거나, 혹은 바로 설정 페이지로 이어짐
           // 다시 허용 요청만 무한대로 켜질 수 없으니 설정 페이지로 이은 것.
-          // TODO: 알림으로 권한 허용 요청할 것
+          // TODO: 안드로이드 자체 알림으로 권한 허용 필요하다는 알림
           if (notDetermindCameraPermission === 'granted') {
             setShowCamera(false);
             setShowCamera(true);
@@ -104,7 +105,11 @@ export default function CameraPage({navigation}: CameracreenProps) {
     checkPermission();
   }, []);
 
-  // 사진찍는 함수. 이후 페이지 플로깅으로 돌아간 뒤 -> 모달 뜨도록 수정할 것.
+  // 아예 permission이 생기지 않은 경우를 상정. 최초 denied
+  if (!device || cameraPermission === false) {
+    Linking.openSettings();
+  }
+
   const capturePhoto = async () => {
     if (camera.current) {
       const photoOptions = {
@@ -113,14 +118,10 @@ export default function CameraPage({navigation}: CameracreenProps) {
       const photo: Photo = await camera.current.takePhoto(photoOptions);
       setImageSource(photo.path);
       setShowCamera(false);
-      console.log(photo.path);
+      navigation.navigate('Plogging', {shouldOpenModal: true});
+      // console.log(photo.path);
     }
   };
-
-  // 아예 permission이 생기지 않은 경우를 상정. 최초 denied
-  if (!device || cameraPermission === false) {
-    Linking.openSettings();
-  }
 
   return (
     <View style={styles.container}>
@@ -139,6 +140,7 @@ export default function CameraPage({navigation}: CameracreenProps) {
           </View>
         </>
       ) : (
+        // 사진 찍히는지 확인을 위해 넣어둔 코드. 추후 로딩 스피너 혹은 삭제 할 것
         <>
           {imageSource !== '' ? (
             <Image
