@@ -1,7 +1,7 @@
 package com.addShot.zoosum.entity;
 
 import com.addShot.zoosum.entity.embedded.Time;
-import com.addShot.zoosum.entity.enums.ActivityCategory;
+import com.addShot.zoosum.entity.enums.ActivityType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -29,10 +29,10 @@ public class Plogging extends ActivityHistory {
     @Column(name = "plogging_trash", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer ploggingTrash;
 
-    public Plogging(Long activityId, User user, ActivityCategory activityCategory, String fileUrl,
+    public Plogging(Long activityId, User user, ActivityType activityType, String fileUrl,
         Time time, Integer ploggingLength, Integer ploggingTime,
         Integer ploggingTrash) {
-        super(activityId, user, activityCategory, fileUrl, time);
+        super(activityId, user, activityType, fileUrl, time);
         this.ploggingLength = ploggingLength;
         this.ploggingTime = ploggingTime;
         this.ploggingTrash = ploggingTrash;

@@ -1,4 +1,4 @@
-package com.addShot.zoosum.domain.ranking;
+package com.addShot.zoosum.domain.ranking.controller;
 
 import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
 import com.addShot.zoosum.domain.ranking.service.RankingService;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "[RANKING] API", description = "사용자들의 점수와 닉네임을 기준으로 순위를 정렬해서 보여줍니다.")
+@Tag(name = "[RANKING]", description = "사용자들의 점수와 닉네임을 기준으로 순위를 정렬해서 보여줍니다.")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("ranking")
+@RequestMapping("/ranking")
 public class RankingController {
 
     private final RankingService rankingService;

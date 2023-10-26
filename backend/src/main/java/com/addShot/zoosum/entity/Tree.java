@@ -1,7 +1,7 @@
 package com.addShot.zoosum.entity;
 
 import com.addShot.zoosum.entity.embedded.Time;
-import com.addShot.zoosum.entity.enums.ActivityCategory;
+import com.addShot.zoosum.entity.enums.ActivityType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -33,10 +33,10 @@ public class Tree extends ActivityHistory {
     @Column(name = "user_email", length = 100, nullable = false)
     private String userEmail;
 
-    public Tree(Long activityId, User user, ActivityCategory activityCategory, String fileUrl,
+    public Tree(Long activityId, User user, ActivityType activityType, String fileUrl,
         Time time, String treeName, String userName,
         String userPhone, String userEmail) {
-        super(activityId, user, activityCategory, fileUrl, time);
+        super(activityId, user, activityType, fileUrl, time);
         this.treeName = treeName;
         this.userName = userName;
         this.userPhone = userPhone;

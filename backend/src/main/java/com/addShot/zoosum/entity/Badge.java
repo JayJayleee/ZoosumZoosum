@@ -19,25 +19,30 @@ public class Badge {
     @Column(name = "badge_id", length = 30, nullable = false)
     private String badgeId;
 
-    // 뱃지 획득 조건
-    @Column(name = "badge_condition", nullable = false, columnDefinition = "INT DEFAULT 0")
-    private Integer badgeCondition;
-
     // 뱃지명
     @Column(name = "badge_name", length = 30, nullable = false)
     private String badgeName;
+
+    // 뱃지 획득 조건
+    @Column(name = "badge_condition", length = 100, nullable = false)
+    private String badgeCondition;
+
+    // 뱃지 획득 조건 값
+    @Column(name = "badge_value", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private Integer badgeValue;
+
 
     // 파일경로
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
     @Builder
-    public Badge(String badgeId, Integer badgeCondition, String badgeName, String fileUrl) {
+    public Badge(String badgeId, String badgeName, String badgeCondition, Integer badgeValue,
+        String fileUrl) {
         this.badgeId = badgeId;
-        this.badgeCondition = badgeCondition;
         this.badgeName = badgeName;
+        this.badgeCondition = badgeCondition;
+        this.badgeValue = badgeValue;
         this.fileUrl = fileUrl;
     }
-
-
 }
