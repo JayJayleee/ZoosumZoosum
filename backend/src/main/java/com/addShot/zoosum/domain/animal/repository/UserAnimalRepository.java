@@ -9,11 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserAnimalRepository extends JpaRepository<UserAnimal, UserAnimalId> {
-	
-	@Query("select ua from UserAnimal ua where ua.id =:userId")
-	Optional<List<UserAnimal>> selectByUserId(@Param("userId") String userid);
-	//유저 id로 유저 동물 전체 리스트 조회
 
+	//유저 id로 유저 동물 전체 리스트 조회
+	@Query("select ua from UserAnimal ua where ua.id =:userId")
+	Optional<List<UserAnimal>> findAllByUserId(@Param("userId") String userId);
 
 	//유저 id와 동물 id로 동물 상세 조회
 

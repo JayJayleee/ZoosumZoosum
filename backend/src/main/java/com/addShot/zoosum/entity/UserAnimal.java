@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -17,7 +18,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-@Table(name = "animal")
+@Table(name = "user_animal")
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAnimal {
@@ -26,14 +27,14 @@ public class UserAnimal {
 	private UserAnimalId id;
 
 	@ManyToOne
-	@MapsId("animalId")
-	@JoinColumn(name = "animal_id")
-	private Animal animal;
-
-	@ManyToOne
 	@MapsId("userId")
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	@ManyToOne
+	@MapsId("animalId")
+	@JoinColumn(name = "animal_id")
+	private Animal animal;
 
 	@Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
 	private boolean selected;

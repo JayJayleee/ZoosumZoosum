@@ -23,7 +23,9 @@ public class AnimalServiceImpl implements AnimalService {
 
 	@Override
 	public List<UserAnimalListResponse> getUserAnimalList(String userId) {
-		List<UserAnimal> userAnimals = userAnimalRepository.selectByUserId(userId).get();
+		log.info("AnimalService userId : {}", userId);
+
+		List<UserAnimal> userAnimals = userAnimalRepository.findAllByUserId(userId).get();
 		List<UserAnimalListResponse> responseList = new ArrayList<>();
 
 		for(UserAnimal ua: userAnimals) {
@@ -36,7 +38,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 		return responseList;
 	}
-	//animal 1번 - 내 동물 리스트 조회 (도감용)
+
 
 	@Override
 	public UserAnimalDetailResponse getUserAnimalDetail(String userId, String animalId) {
