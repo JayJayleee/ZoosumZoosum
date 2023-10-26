@@ -10,7 +10,9 @@ spring:
     url: jdbc:mariadb://asrai-app-database.cwk2ukisdzzj.ap-northeast-2.rds.amazonaws.com:13386/zoosum?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
     username: adminasrai
     password: joinit!!asrai
-#    url: jdbc:mariadb://127.0.0.1:3306/zoosum?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    hikari:
+      maximum-pool-size: 3
+  #    url: jdbc:mariadb://127.0.0.1:3306/zoosum?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
 #    username: root
 #    password: root
 
@@ -21,7 +23,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect:
       #        default_batch_fetch_size: 1000
       open-in-view: true
 
@@ -33,13 +34,3 @@ server:
 logging:
   level:
     com.com.vegetable: debug
-
-springdoc:
-  packages-to-scan: com.colabear754.springdoc_example.controllers
-  default-consumes-media-type: application/json;charset=UTF-8
-  default-produces-media-type: application/json;charset=UTF-8
-  swagger-ui:
-    path: /
-    disable-swagger-default-url: true
-    display-request-duration: true
-    operations-sorter: alpha
