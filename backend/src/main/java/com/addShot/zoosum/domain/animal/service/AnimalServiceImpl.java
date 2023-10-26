@@ -1,5 +1,6 @@
 package com.addShot.zoosum.domain.animal.service;
 
+import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
@@ -8,6 +9,7 @@ import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.UserAnimal;
+import com.addShot.zoosum.util.RandomUtil;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class AnimalServiceImpl implements AnimalService {
 		for(UserAnimal ua: userAnimals) {
 			UserAnimalListResponse response = UserAnimalListResponse.builder()
 				.animalName(ua.getUserAnimalName())
+				.fileUrl(animalMotionRepository.findMotion(ua.getAnimal().getAnimalId()).get().getFileUrl())
 				.selected(ua.isSelected())
 				.build();
 			responseList.add(response);
@@ -48,7 +51,7 @@ public class AnimalServiceImpl implements AnimalService {
 		Animal animal = animalRepository.findById(animalId).get();
 		UserAnimal userAnimal = userAnimalRepository.findByUserIdAndAnimalId(userId, animalId)
 			.get();
-		AnimalMotion animalMotion = animalMotionRepository.findByAnimalId(animalId).get();
+		AnimalMotion animalMotion = animalMotionRepository.findMotion(animalId).get();
 
 		UserAnimalDetailResponse response = UserAnimalDetailResponse.builder()
 			.userAnimalName(userAnimal.getUserAnimalName())
@@ -58,6 +61,21 @@ public class AnimalServiceImpl implements AnimalService {
 			.lengthTogether(userAnimal.getLengthTogether())
 			.fileUrl(animalMotion.getFileUrl())
 			.description(animal.getDescription())
+			.build();
+
+		return response;
+	}
+
+	@Override
+	public AnimalDrawResponse getAnimalDraw() {
+		List<Animal> animalList = animalRepository.findAll();
+		Animal animal = RandomUtil.getRandomElement(animalList);
+		Long animalId = animal.getAnimalId();
+
+		AnimalDrawResponse response = AnimalDrawResponse.builder()
+			.animalId(animalId)
+			.animalName(animal.getAnimalName())
+			.fileUrl(animalMotionRepository.findMotion(animalId).get().getFileUrl())
 			.build();
 
 		return response;

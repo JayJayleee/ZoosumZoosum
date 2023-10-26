@@ -1,5 +1,6 @@
 package com.addShot.zoosum.domain.animal.controller;
 
+import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.service.AnimalService;
@@ -57,6 +58,17 @@ public class AnimalController {
 		}
 	}
 
+	//animal 3번 - 동물 뽑기
+	@GetMapping("/draw")
+	public ResponseEntity<?> findAnimalDraw() {
+		try {
+			AnimalDrawResponse response = animalService.getAnimalDraw();
+			return ResponseEntity.ok(response);
+		}
+		catch(Exception e) {
+			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+		}
+	}
 
 
 }
