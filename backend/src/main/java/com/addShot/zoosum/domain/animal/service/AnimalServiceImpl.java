@@ -3,7 +3,10 @@ package com.addShot.zoosum.domain.animal.service;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
+import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
+import com.addShot.zoosum.entity.Animal;
+import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.UserAnimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 	private final UserAnimalRepository userAnimalRepository;
 	private final AnimalMotionRepository animalMotionRepository;
+	private final AnimalRepository animalRepository;
 
 	@Override
 	public List<UserAnimalListResponse> getUserAnimalList(String userId) {
@@ -35,16 +39,28 @@ public class AnimalServiceImpl implements AnimalService {
 				.build();
 			responseList.add(response);
 		}
-
 		return responseList;
 	}
 
-
 	@Override
-	public UserAnimalDetailResponse getUserAnimalDetail(String userId, String animalId) {
+	public UserAnimalDetailResponse getUserAnimalDetail(String userId, Long animalId) {
 
+		Animal animal = animalRepository.findById(animalId).get();
+		UserAnimal userAnimal = userAnimalRepository.findByUserIdAndAnimalId(userId, animalId)
+			.get();
+		AnimalMotion animalMotion = animalMotionRepository.findByAnimalId(animalId).get();
 
-		return null;
+		UserAnimalDetailResponse response = UserAnimalDetailResponse.builder()
+			.userAnimalName(userAnimal.getUserAnimalName())
+			.createTime(userAnimal.getTime().getCreateTime())
+			.timeTogether(userAnimal.getTimeTogether())
+			.trashTogether(userAnimal.getTrashTogether())
+			.lengthTogether(userAnimal.getLengthTogether())
+			.fileUrl(animalMotion.getFileUrl())
+			.description(animal.getDescription())
+			.build();
+
+		return response;
 	}
 
 

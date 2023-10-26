@@ -20,6 +20,6 @@ public interface AnimalService {
 	 * @param animalId
 	 * @return UserAnimalDetailResponse
 	 */
-	UserAnimalDetailResponse getUserAnimalDetail(String userId, String animalId);
+	UserAnimalDetailResponse getUserAnimalDetail(String userId, Long animalId);
 
 }

@@ -1,5 +1,6 @@
 package com.addShot.zoosum.domain.animal.controller;
 
+import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.service.AnimalService;
 import com.addShot.zoosum.entity.UserAnimal;
@@ -34,6 +35,22 @@ public class AnimalController {
 			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
 			List<UserAnimalListResponse> userAnimalList = animalService.getUserAnimalList(userId);
 			return ResponseEntity.ok(userAnimalList);
+		}
+		catch(Exception e) {
+			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+		}
+	}
+
+	//animal 2번 - 내 동물 상세 조회
+	//	@GetMapping("/{animalId}")
+	@GetMapping("{userId}/{animalId}")
+	public ResponseEntity<?> findUserAnimalDetail(@PathVariable String userId, @PathVariable Long animalId) {
+		log.info("AnimalController animalId : {}", animalId);
+		try {
+			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
+			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			UserAnimalDetailResponse response = animalService.getUserAnimalDetail(userId, animalId);
+			return ResponseEntity.ok(response);
 		}
 		catch(Exception e) {
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");

@@ -1,5 +1,6 @@
 package com.addShot.zoosum.entity;
 
+import com.addShot.zoosum.entity.enums.MotionCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
