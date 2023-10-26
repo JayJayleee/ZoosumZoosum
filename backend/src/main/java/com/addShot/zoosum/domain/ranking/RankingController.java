@@ -17,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "[RANKING] API", description = "사용자들의 점수와 닉네임을 기준으로 순위를 정렬해서 보여줍니다.")
-@ApiResponse(responseCode = "200", description = "OK")
-@ApiResponse(responseCode = "400", description = "Bad Request, 클라이언트의 요청을 확인해주세요.")
-@ApiResponse(responseCode = "404", description = "Not Found, 요청한 데이터가 존재하지 않습니다.")
-@ApiResponse(responseCode = "500", description = "Internal Server Error, 서버 개발자에게 문의해주세요.")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
