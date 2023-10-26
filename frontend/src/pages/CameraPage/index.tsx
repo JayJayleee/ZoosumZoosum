@@ -27,6 +27,7 @@ export default function CameraPage({navigation}: CameracreenProps) {
     null,
   );
 
+  // 만약 설정 중 사용자가 앱을 껐거나, 백그라운드로 넘어갔을 때
   const [appState, setAppState] = useState<
     'active' | 'background' | 'inactive' | 'unknown' | 'extension'
   >(AppState.currentState);
@@ -61,31 +62,64 @@ export default function CameraPage({navigation}: CameracreenProps) {
   };
 
   useEffect(() => {
-    async function getPermission() {
-      const permission = await Camera.requestCameraPermission();
-      console.log(`Camera permission status: ${permission}`);
-      if (permission === 'denied') {
-        await Linking.openSettings();
-      } else if (permission === 'granted') {
-        // 권한이 승인되었을 때, 카메라를 새로고침
-        setShowCamera(false); // 카메라를 숨김
-        setShowCamera(true); // 카메라를 다시 표시
+    async function checkPermission() {
+      const permission = await Camera.getCameraPermissionStatus();
+      // 일단 카메라 화면으로 들어오면, 권한 허용 여부를 확인함.
+
+      switch (permission) {
+        // 기본 상태는 denied, 이때 허용 요청을 한다.
+        case 'denied':
+          await Camera.requestCameraPermission();
+          // 허용 요청 후, 다시 권한 확인. 만약 허용 상태하면 카메라가 켜지게 만든다.
+          // 현재까지는 바로 켜지지 않아서 허용후 최초 1회는 한 번 껐다가 켜짐
+          const newPermission = await Camera.getCameraPermissionStatus();
+          if (newPermission === 'granted') {
+            setShowCamera(false);
+            setShowCamera(true);
+          } else if (newPermission === 'denied') {
+            console.log('최초 허용 요청 - 거부됨:', {newPermission});
+            await Linking.openSettings();
+          }
+          break;
+        // 허용 후의 상태. 바로 카메라가 켜짐
+        case 'granted':
+          setShowCamera(true);
+          break;
+        // 최초 요청 시 허용을 누르지 않았거나 뒤로가기 했을때의 상태.
+        case 'not-determined':
+          const notDetermindCameraPermission =
+            await Camera.requestCameraPermission();
+          // 허용 상태에 따라 카메라를 키거나, 혹은 바로 설정 페이지로 이어짐
+          // 다시 허용 요청만 무한대로 켜질 수 없으니 설정 페이지로 이은 것.
+          // TODO: 알림으로 권한 허용 요청할 것
+          if (notDetermindCameraPermission === 'granted') {
+            setShowCamera(false);
+            setShowCamera(true);
+          } else if (notDetermindCameraPermission === 'denied') {
+            await Linking.openSettings();
+          }
+          break;
       }
     }
-    getPermission();
+    checkPermission();
   }, []);
 
+  // 사진찍는 함수. 이후 페이지 플로깅으로 돌아간 뒤 -> 모달 뜨도록 수정할 것.
   const capturePhoto = async () => {
     if (camera.current) {
-      const photo: Photo = await camera.current.takePhoto({});
+      const photoOptions = {
+        enableShutterSound: false, // 셔터 소리 끄기
+      };
+      const photo: Photo = await camera.current.takePhoto(photoOptions);
       setImageSource(photo.path);
       setShowCamera(false);
       console.log(photo.path);
     }
   };
 
+  // 아예 permission이 생기지 않은 경우를 상정. 최초 denied
   if (!device || cameraPermission === false) {
-    return <Text>카메라 사용 허용 필요</Text>;
+    Linking.openSettings();
   }
 
   return (

@@ -3,8 +3,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   backButton: {
     backgroundColor: 'rgba(0,0,0,0.0)',
@@ -26,11 +25,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     backgroundColor: 'rgba(0,0,0,0.2)',
-    position: 'absolute',
+    zIndex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+
     width: '100%',
-    bottom: 0,
     padding: 20,
   },
   buttons: {
