@@ -1,4 +1,4 @@
-package com.addShot.zoosum.entity;
+package com.addShot.zoosum.entity.enums;
 
 public enum MotionCategory {
 
