@@ -1,6 +1,7 @@
 package com.addShot.zoosum.domain.animal.service;
 
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
+import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
@@ -79,6 +80,26 @@ public class AnimalServiceImpl implements AnimalService {
 			.build();
 
 		return response;
+	}
+
+	@Override
+	public List<FlogAnimalResponse> getFlogAnimalList(String userId) {
+		List<UserAnimal> userAnimals = userAnimalRepository.findAllSelectedByUserId(userId).get();
+		List<FlogAnimalResponse> responseList = new ArrayList<>();
+
+		for(UserAnimal ua: userAnimals) {
+			FlogAnimalResponse response = FlogAnimalResponse.builder()
+				.userAnimalName(ua.getUserAnimalName())
+				.description(animalRepository.findById(ua.getAnimal().getAnimalId()).get().getDescription())
+				.createTime(ua.getTime().getCreateTime())
+				.trashTogether(ua.getTrashTogether())
+				.lengthTogether(ua.getLengthTogether())
+				.timeTogether(ua.getTimeTogether())
+				.fileUrl(animalMotionRepository.findMotion(ua.getAnimal().getAnimalId()).get().getFileUrl())
+				.build();
+			responseList.add(response);
+		}
+		return responseList;
 	}
 
 

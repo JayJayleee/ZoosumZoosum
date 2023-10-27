@@ -19,7 +19,7 @@ public interface UserAnimalRepository extends JpaRepository<UserAnimal, UserAnim
 	Optional<UserAnimal> findByUserIdAndAnimalId(@Param("userId") String userId, @Param("animalId") Long animalId);
 
 	//유저 id로 선택 동물 리스트 조회
-//	@Query("select ua from UserAnimal ua where ua.id =:userId and ua.selected = true")
-//	Optional<List<UserAnimal>> findAllSelectedByUserId(@Param("userId") String userId);
+	@Query("select ua from UserAnimal ua where ua.id =:userId and ua.selected = true")
+	Optional<List<UserAnimal>> findAllSelectedByUserId(@Param("userId") String userId);
 
 }
