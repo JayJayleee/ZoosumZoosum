@@ -1,5 +1,7 @@
 package com.addShot.zoosum.domain.animal.controller;
 
+import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
+import com.addShot.zoosum.domain.animal.dto.request.MyIslandAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
@@ -15,6 +17,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,6 +87,34 @@ public class AnimalController {
 			return ResponseEntity.ok(flogAnimalList);
 		}
 		catch(Exception e) {
+			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+		}
+	}
+
+	//animal 5번 - 내 동물로 등록
+	@PostMapping
+	public ResponseEntity<?> registUserAnimal(@RequestBody MyAnimalRequest myAnimalRequest, @PathVariable String userId) {
+		try {
+			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
+			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			animalService.registUserAnimal(myAnimalRequest, userId);
+			return ResponseEntity.ok("완료되었습니다.");
+		}
+		catch (Exception e) {
+			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+		}
+	}
+
+	//animal 6번 - 섬에 내보낼 동물 선택
+	@PutMapping("/island")
+	public ResponseEntity<?> updateUserAnimal(@RequestBody MyIslandAnimalRequest request, @PathVariable String userId) {
+		try {
+			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
+			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			animalService.updateUserAnimal(request, userId);
+			return ResponseEntity.ok("완료되었습니다.");
+		}
+		catch (Exception e) {
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
