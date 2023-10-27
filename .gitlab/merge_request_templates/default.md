@@ -17,6 +17,6 @@
 
 5. 느낀점
 
-## [Jenkins에서 Build가 잘 돌아가는지 확인해주세요](http://www.zoosum.co.kr:9090/job/B102-BE-MERGE-OPEN/)
+## [Jenkins에서 Build가 잘 돌아가는지 확인해주세요](http://www.zoosum.co.kr:9090)
 - ID: zoosum
 - PW: adminzoosum!!
