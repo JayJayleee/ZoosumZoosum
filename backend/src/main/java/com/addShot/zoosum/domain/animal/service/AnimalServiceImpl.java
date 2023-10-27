@@ -16,6 +16,7 @@ import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.util.RandomUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -92,15 +93,21 @@ public class AnimalServiceImpl implements AnimalService {
 		List<FlogAnimalResponse> responseList = new ArrayList<>();
 
 		for(UserAnimal ua: userAnimals) {
+			Long animalId = ua.getAnimal().getAnimalId();
+
+			Optional<Animal> optionalAnimal = animalRepository.findById(animalId);
+			Optional<AnimalMotion> optionMotion = animalMotionRepository.findMotion(animalId);
+
 			FlogAnimalResponse response = FlogAnimalResponse.builder()
 				.userAnimalName(ua.getUserAnimalName())
-				.description(animalRepository.findById(ua.getAnimal().getAnimalId()).get().getDescription())
+				.description(optionalAnimal.get().getDescription())
 				.createTime(ua.getTime().getCreateTime())
 				.trashTogether(ua.getTrashTogether())
 				.lengthTogether(ua.getLengthTogether())
 				.timeTogether(ua.getTimeTogether())
-				.fileUrl(animalMotionRepository.findMotion(ua.getAnimal().getAnimalId()).get().getFileUrl())
+				.fileUrl(optionMotion.get().getFileUrl())
 				.build();
+
 			responseList.add(response);
 		}
 		return responseList;
@@ -110,17 +117,18 @@ public class AnimalServiceImpl implements AnimalService {
 	@Transactional
 	public void registUserAnimal(MyAnimalRequest request, String userId) {
 		//사용자에게 해당 동물이 있는지 판단
+		Long animalId = request.getAnimalId();
+
 		userAnimalRepository.findByUserIdAndAnimalId(userId, request.getAnimalId())
 			.ifPresentOrElse(userAnimal -> { //이미 존재하는 경우
-					UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId,
-						request.getAnimalId()).get(); //기존꺼 꺼내와서
+					UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId, animalId).get(); //기존꺼 꺼내와서
 					ua.setUserAnimalName(request.getUserAnimalName());
 					userAnimalRepository.save(ua);
 				},
 				() -> { //존재하지 않는 경우
 					UserAnimal ua = UserAnimal.builder()
 						.user(userRepository.findById(userId).get())
-						.animal(animalRepository.findById(request.getAnimalId()).get())
+						.animal(animalRepository.findById(animalId).get())
 						.userAnimalName(request.getUserAnimalName())
 						.build();
 					userAnimalRepository.save(ua);
