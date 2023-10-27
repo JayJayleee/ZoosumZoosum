@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+    nginx:
+        image: nginx:1.15-alpine
+        # ---
+        container_name: nginx-container
+        networks:
+            - zoosumnetwork
+        environment:
+            - TZ=Asia/Seoul
+        depends_on:
+            - spring
+            - react
+        # ---
+        restart: unless-stopped
+        volumes:
+            - ~/data/nginx:/etc/nginx/conf.d
+            - ~/data/certbot/conf:/etc/letsencrypt
+            - ~/data/certbot/www:/var/www/certbot
+        ports:
+            - "80:80"
+            - "443:443"
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    certbot:
+        image: certbot/certbot
+        container_name: cerbot-container
+        networks:
+            - zoosumnetwork
+        restart: unless-stopped
+        volumes:
+            - ~/data/certbot/conf:/etc/letsencrypt
+            - ~/data/certbot/www:/var/www/certbot
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+    spring:
+        image: zoosum-spring:latest
+        container_name: spring-container
+        networks:
+            - zoosumnetwork
+        restart: always
+        expose: # 컨테이너 내부에서 도커 네트워크에게 열어주는 포트
+            - "5000"
+        volumes:
+            - ~/config/spring:/backend/src/main/resources:ro
+networks:
+    zoosumnetwork:
+
+
+
