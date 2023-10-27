@@ -1,7 +1,7 @@
 package com.addShot.zoosum.entity;
 
 import com.addShot.zoosum.entity.embedded.Time;
-import com.addShot.zoosum.entity.enums.ActivityCategory;
+import com.addShot.zoosum.entity.enums.ActivityType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -40,8 +40,8 @@ public class ActivityHistory {
 
     // 활동내역 종류
     @Enumerated(EnumType.STRING)
-    @Column(name = "activity_category", length = 10, nullable = false, columnDefinition = "VARCHAR(10)")
-    private ActivityCategory activityCategory;
+    @Column(name = "activity_type", length = 10, nullable = false, columnDefinition = "VARCHAR(10)")
+    private ActivityType activityType;
 
     // 파일경로
     @Column(name = "file_url", nullable = false)
@@ -51,11 +51,11 @@ public class ActivityHistory {
     @Embedded
     private Time time;
 
-    public ActivityHistory(Long activityId, User user, ActivityCategory activityCategory,
+    public ActivityHistory(Long activityId, User user, ActivityType activityType,
         String fileUrl, Time time) {
         this.activityId = activityId;
         this.user = user;
-        this.activityCategory = activityCategory;
+        this.activityType = activityType;
         this.fileUrl = fileUrl;
         this.time = time;
     }
@@ -70,12 +70,12 @@ public class ActivityHistory {
         }
         ActivityHistory that = (ActivityHistory) o;
         return Objects.equals(activityId, that.activityId) && Objects.equals(user,
-            that.user) && activityCategory == that.activityCategory && Objects.equals(fileUrl,
+            that.user) && activityType == that.activityType && Objects.equals(fileUrl,
             that.fileUrl) && Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(activityId, user, activityCategory, fileUrl, time);
+        return Objects.hash(activityId, user, activityType, fileUrl, time);
     }
 }

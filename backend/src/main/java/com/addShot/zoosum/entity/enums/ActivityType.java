@@ -1,5 +1,5 @@
 package com.addShot.zoosum.entity.enums;
 
-public enum ActivityCategory {
+public enum ActivityType {
     TREE, PLOG;
 }

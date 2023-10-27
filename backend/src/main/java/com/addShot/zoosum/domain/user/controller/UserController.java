@@ -1,4 +1,4 @@
-package com.addShot.zoosum.domain.user;
+package com.addShot.zoosum.domain.user.controller;
 
 import com.addShot.zoosum.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "[USER] 관련 API", description = "[USER] 관련 API 설명")
+@Tag(name = "[USER]", description = "USER 관련 API")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
