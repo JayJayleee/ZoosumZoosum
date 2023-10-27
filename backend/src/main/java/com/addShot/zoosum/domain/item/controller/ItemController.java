@@ -34,6 +34,7 @@ public class ItemController {
         }
 
         // userId와 JWT의 userId가 일치하는지 인가 여부 확인해야 한다. 403 반환
+        // 1. Header 사용하는 방법, 2. JWT payload와 userId를 비교하는 방법
 
         // 목록 반환
         List<ItemResponseDto> itemList = itemService.itemList(userId, itemType);
