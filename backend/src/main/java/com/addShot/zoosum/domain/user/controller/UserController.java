@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "[USER]", description = "USER 관련 API")
@@ -46,6 +47,12 @@ public class UserController {
     @GetMapping("/logout")
     public ResponseEntity<?> logoutUser(HttpServletRequest request) throws IOException {
         return userService.logoutUser(request);
+    }
+
+    @GetMapping("/kakao")
+    public void temp(@RequestParam String code){
+        System.out.println(code);
+
     }
 
 
