@@ -22,4 +22,5 @@ public interface UserAnimalRepository extends JpaRepository<UserAnimal, UserAnim
 	@Query("select ua from UserAnimal ua where ua.id =:userId and ua.selected = true")
 	Optional<List<UserAnimal>> findAllSelectedByUserId(@Param("userId") String userId);
 
+
 }

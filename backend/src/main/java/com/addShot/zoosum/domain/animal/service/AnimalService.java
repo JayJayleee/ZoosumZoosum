@@ -1,5 +1,7 @@
 package com.addShot.zoosum.domain.animal.service;
 
+import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
+import com.addShot.zoosum.domain.animal.dto.request.MyIslandAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
@@ -36,5 +38,18 @@ public interface AnimalService {
 	 * @return List<FlogAnimalResponse>
 	 */
 	List<FlogAnimalResponse> getFlogAnimalList(String userId);
+
+	/**
+	 * animal 5 - 내 동물로 등록
+	 * @param request
+	 */
+	void registUserAnimal(MyAnimalRequest request, String userId);
+
+	/**
+	 * animal 6 - 섬에 내보낼 동물 선택
+	 * @param List<Long> 동물 번호 리스트
+	 * @param userId
+	 */
+	void updateUserAnimal(MyIslandAnimalRequest request, String userId);
 
 }

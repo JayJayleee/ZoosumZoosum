@@ -1,5 +1,7 @@
 package com.addShot.zoosum.domain.animal.service;
 
+import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
+import com.addShot.zoosum.domain.animal.dto.request.MyIslandAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
@@ -7,6 +9,7 @@ import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
 import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
+import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.UserAnimal;
@@ -27,6 +30,7 @@ public class AnimalServiceImpl implements AnimalService {
 	private final UserAnimalRepository userAnimalRepository;
 	private final AnimalMotionRepository animalMotionRepository;
 	private final AnimalRepository animalRepository;
+	private final UserRepository userRepository;
 
 	@Override
 	public List<UserAnimalListResponse> getUserAnimalList(String userId) {
@@ -100,6 +104,42 @@ public class AnimalServiceImpl implements AnimalService {
 			responseList.add(response);
 		}
 		return responseList;
+	}
+
+	@Override
+	@Transactional
+	public void registUserAnimal(MyAnimalRequest request, String userId) {
+		//사용자에게 해당 동물이 있는지 판단
+		userAnimalRepository.findByUserIdAndAnimalId(userId, request.getAnimalId())
+			.ifPresentOrElse(userAnimal -> { //이미 존재하는 경우
+					UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId,
+						request.getAnimalId()).get(); //기존꺼 꺼내와서
+					ua.setUserAnimalName(request.getUserAnimalName());
+					userAnimalRepository.save(ua);
+				},
+				() -> { //존재하지 않는 경우
+					UserAnimal ua = UserAnimal.builder()
+						.user(userRepository.findById(userId).get())
+						.animal(animalRepository.findById(request.getAnimalId()).get())
+						.userAnimalName(request.getUserAnimalName())
+						.build();
+					userAnimalRepository.save(ua);
+				}
+			);
+	}
+
+	@Override
+	public void updateUserAnimal(MyIslandAnimalRequest request, String userId) {
+
+		List<Long> animalIdList = request.getAnimalIdList();
+
+		for(Long id: animalIdList) {
+			UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId, id).get();
+			ua.setSelected(true);
+
+			userAnimalRepository.save(ua);
+		}
+
 	}
 
 
