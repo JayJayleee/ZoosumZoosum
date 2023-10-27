@@ -46,6 +46,4 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(itemList);
     }
 
-    // webhook test 30
-
 }
