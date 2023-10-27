@@ -10,5 +10,5 @@ public interface ItemService {
      * @param userId
      * @return
      */
-    List<ItemResponseDto> itemList(String userId);
+    List<ItemResponseDto> itemList(String userId, String itemType);
 }
