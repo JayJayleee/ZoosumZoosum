@@ -1,19 +1,23 @@
 import React from 'react';
-import {View} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import {View, StyleSheet} from 'react-native';
 import {PloggingResultscreenProps} from '../../types/path';
-
-interface result {
-  item: any;
-  index: number;
-}
+import CarouselCards from '../../components/ui/Carousel/CarouselCards';
 
 export default function PloggingResultPage(
   navigation: PloggingResultscreenProps,
 ) {
-  return <View>index</View>;
+  return (
+    <View style={styles.container}>
+      <CarouselCards />
+    </View>
+  );
 }
 
-export function CarouselCardItem({item, index}: result) {
-  return <View></View>;
-}
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#3C7574',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 50,
+  },
+});
