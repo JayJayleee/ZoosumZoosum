@@ -1,10 +1,18 @@
 package com.addShot.zoosum.domain.userinfo.service;
 
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
+import com.addShot.zoosum.domain.userinfo.dto.response.MainResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import java.util.List;
 
 public interface UserInfoService {
+
+	/**
+	 * userinfo 1번 - 메인페이지 (동물, 섬, 나무)
+	 * @param userId
+	 * @return MainResponse
+	 */
+	MainResponse getUserMain(String userId);
 
 	/**
 	 * userinfo 3번 - 나의 산책 기록 조회
