@@ -134,7 +134,19 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
             isActive={showCamera}
             photo={true}
           />
+          <View style={styles.overlayContainer}>
+            {/* 왼쪽 이미지 */}
+            <Image
+              source={{uri: 'https://i.imgur.com/Rr9HDQw.png'}}
+              style={styles.overlayImage}
+            />
 
+            <Image
+              source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
+              style={styles.overlayRightImage}
+            />
+            <Text style={styles.overlayText}> 인생 씁다...씁...후...</Text>
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />
           </View>

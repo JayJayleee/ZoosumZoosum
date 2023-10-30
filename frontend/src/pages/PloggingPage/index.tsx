@@ -32,7 +32,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
         <Button
           title="플로깅 완료하기"
-          onPress={() => navigation.navigate('Camera')}
+          onPress={() => navigation.navigate('PloggingResult')}
         />
       </View>
     </View>

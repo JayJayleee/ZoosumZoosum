@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-
     width: '100%',
     padding: 20,
   },
@@ -68,6 +67,35 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     aspectRatio: 9 / 16,
+  },
+  overlayContainer: {
+    marginBottom: 10,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  overlayText: {
+    position: 'absolute',
+    zIndex: 2,
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'center',
+    width: '100%',
+    top: 50,
+    left: 10,
+  },
+  overlayImage: {
+    width: '30%',
+    height: undefined,
+    aspectRatio: 1,
+    zIndex: 1,
+    // backgroundColor: 'black',
+    transform: ' scaleX(-1)',
+  },
+  overlayRightImage: {
+    width: '70%',
+    zIndex: 1,
   },
 });
 
