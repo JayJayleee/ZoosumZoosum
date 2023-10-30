@@ -10,12 +10,13 @@ export type RootStackParamList = {
     shouldOpenModal?: boolean;
   };
   Camera: undefined;
+  PloggingResult: undefined;
 };
 
 export type LoginScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'Login'
->
+>;
 
 export type MainScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -30,4 +31,9 @@ export type PloggingScreenProps = NativeStackScreenProps<
 export type CamerascreenProps = NativeStackScreenProps<
   RootStackParamList,
   'Camera'
+>;
+
+export type PloggingResultscreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'PloggingResult'
 >;

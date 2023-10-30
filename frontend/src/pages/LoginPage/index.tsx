@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
-import {View, Image, ImageBackground, TouchableOpacity, StyleSheet} from 'react-native';
-import { LoginScreenProps } from 'typePath';
+import {
+  View,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {LoginScreenProps} from 'typePath';
 import styles from './style';
 
 import KakaoLoginButton from '@/components/Auth/KakaoLoginButton';
