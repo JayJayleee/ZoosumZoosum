@@ -21,6 +21,7 @@ import LoginPage from '@/pages/LoginPage';
 // import CameraPage from './src/pages/CameraPage';
 // import LoginPage from './src/pages/LoginPage';
 import PloggingResultPage from './src/pages/PloggingResultPage';
+import UserInfoPage from '@/pages/UserInfoPage';
 
 import FriendListPage from '@/pages/FriendListPage';
 
@@ -42,6 +43,7 @@ function App() {
         <Stack.Screen name="PloggingResult" component={PloggingResultPage} />
         <Stack.Screen name="Camera" component={CameraPage} />
         <Stack.Screen name="FriendList" component={FriendListPage} />
+        <Stack.Screen name="UserInfo" component={UserInfoPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

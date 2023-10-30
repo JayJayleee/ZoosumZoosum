@@ -10,6 +10,7 @@ interface ModalComponentProps
   isVisible: boolean;
   onClose: () => void;
   children: ReactNode;
+  buttonInnerText: String;
 }
 
 //  isVisible={isModalVisible(해당 페이지에서 모달 보여줄 지 결정할 요소)},onClose={() => setModalVisible(false)}, onRequestClose={() => setModalVisible(false)}
@@ -23,6 +24,7 @@ export default function ModalComponent({
   animationType = 'slide', // 기본값을 'slide'로 설정
   transparent = true, // 기본값을 true로 설정
   onRequestClose,
+  buttonInnerText,
 }: ModalComponentProps) {
   return (
     <Modal
@@ -35,7 +37,7 @@ export default function ModalComponent({
           {children}
 
           <TouchableOpacity style={styles.button} onPress={onClose}>
-            <Text style={styles.textStyle}>닫기</Text>
+            <Text style={styles.textStyle}>{buttonInnerText}</Text>
           </TouchableOpacity>
         </View>
       </View>

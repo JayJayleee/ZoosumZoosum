@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 0,
+    top: 30,
     left: 0,
     right: 0,
     height: '100%',
@@ -16,7 +16,12 @@ const styles = StyleSheet.create({
   logoImage: {
     marginBottom: 10
   },
-  loginButton: {
+  hiddeneLoginButton: {
+    opacity: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  showLoginButton: {
     justifyContent: 'center',
     alignItems: 'center',
   }
