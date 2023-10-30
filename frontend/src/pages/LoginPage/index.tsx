@@ -3,19 +3,19 @@ import {View, Image, ImageBackground, TouchableOpacity, StyleSheet} from 'react-
 import { LoginScreenProps } from 'typePath';
 import styles from './style';
 
+import KakaoLoginButton from '@/components/Auth/KakaoLoginButton';
+// import NaverLoginButton from '@/components/Auth/NaverLoginButton';
+
 export default function LoginPage({navigation}: LoginScreenProps) {
   const [isClicked, setIsClicked] = useState(false);
 
-  const kakaoLogin = <TouchableOpacity style={styles.logoImage} onPress={() => console.log("카카오 로그인 페이지로")}>
-    <Image source={require("@/assets/kakao_login_button.png")}/>
-  </TouchableOpacity>
+  const MovePage = () => {
+    navigation.navigate('Main');
+  }
 
-  // const naverLogin = <TouchableOpacity onPress={() => console.log("네이버 로그인 페이지로")}>
-  //   <Image source={require("@/assets/naver_login_button.png")}/>
-  // </TouchableOpacity>
-
-  const LoginButton = <View style={styles.loginButton}>
-    {kakaoLogin}
+  const LoginButton = <View style={isClicked? styles.showLoginButton: styles.hiddeneLoginButton}>
+    <KakaoLoginButton movePage={MovePage}/>
+    {/* <NaverLoginButton /> */}
   </View>
 
   return (
@@ -33,7 +33,7 @@ export default function LoginPage({navigation}: LoginScreenProps) {
           style={styles.logo} 
           source={require('@/assets/zooisland_logo.png')}
         />
-        {isClicked? LoginButton : null}
+        {LoginButton}
       </View>
     </TouchableOpacity>
   </ImageBackground>

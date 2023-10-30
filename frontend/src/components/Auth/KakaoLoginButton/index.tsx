@@ -1,7 +1,11 @@
 import { Image, TouchableOpacity } from "react-native"
 import * as KakaoLogin from '@react-native-seoul/kakao-login'
 
-export default function KakaoLoginButton() {
+interface PropsType {
+  movePage: () => void;
+}
+
+export default function KakaoLoginButton({movePage}: PropsType) {
 
   const getProfile = () => {
     KakaoLogin.getProfile().then((profile) => {
@@ -26,8 +30,12 @@ export default function KakaoLoginButton() {
     })
   }
 
+  const test = () => {
+    movePage();
+  }
+
   return (
-  <TouchableOpacity onPress={() => KakaoLoginHandler()}>
+  <TouchableOpacity onPress={() => test()}>
     <Image source={require("@/assets/kakao_login_button.png")}/>
   </TouchableOpacity>
   )
