@@ -86,7 +86,7 @@ public class UserItemCustomRepositoryImpl implements UserItemCustomRepository {
     }
 
     @Override
-    public ItemResponseDto findSelectedItem(String userId, ItemType itemType) {
+    public UserItem findSelectedItem(String userId, ItemType itemType) {
         UserItem result = queryFactory.selectFrom(userItem)
             .join(userItem.item, item).fetchJoin()
             .where(userItem.user.userId.eq(userId)
@@ -95,6 +95,6 @@ public class UserItemCustomRepositoryImpl implements UserItemCustomRepository {
             .orderBy(userItem.time.createTime.asc())
             .fetchOne();
 
-        return result.toResponse(result);
+        return result;
     }
 }
