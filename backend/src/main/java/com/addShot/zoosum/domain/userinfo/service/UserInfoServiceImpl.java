@@ -1,14 +1,22 @@
 package com.addShot.zoosum.domain.userinfo.service;
 
+import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
+import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.common.repository.BadgeRepository;
 import com.addShot.zoosum.domain.common.repository.UserBadgeRepository;
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
+import com.addShot.zoosum.domain.userinfo.dto.response.MainResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
+import com.addShot.zoosum.domain.userinfo.dto.response.SelectedAnimalResponse;
 import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
+import com.addShot.zoosum.entity.Animal;
+import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Badge;
+import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.entity.UserBadge;
 import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
+import com.addShot.zoosum.util.RandomUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +34,39 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private final UserPlogInfoRepository userPlogInfoRepository;
 	private final BadgeRepository badgeRepository;
 	private final UserBadgeRepository userBadgeRepository;
+	private final UserAnimalRepository userAnimalRepository;
+	private final AnimalMotionRepository animalMotionRepository;
+
+	@Override
+	public MainResponse getUserMain(String userId) {
+		List<UserAnimal> userAnimals = userAnimalRepository.findAllSelectedByUserId(userId).get();
+
+		List<SelectedAnimalResponse> animalResponses = new ArrayList<>();
+		for (UserAnimal ua : userAnimals) {
+			Long animalId = ua.getAnimal().getAnimalId();
+			List<AnimalMotion> animalMotions = animalMotionRepository.findByAnimalId(animalId).get();
+			AnimalMotion randomMotion = RandomUtil.getRandomElement(animalMotions);
+
+			SelectedAnimalResponse response = SelectedAnimalResponse.builder()
+				.animalId(animalId)
+				.animalName(ua.getUserAnimalName())
+				.fileUrl(randomMotion.getFileUrl())
+				.build();
+			animalResponses.add(response);
+		}
+		//섬에 나와있는 동물 리스트 조회
+
+
+		//섬 테마 조회
+
+		//나무 조회
+
+		MainResponse response = MainResponse.builder()
+			.animalList(animalResponses)
+			.build();
+
+		return null;
+	}
 
 	@Override
 	public PlogRecordResponse getPlogRecord(String userId) {
