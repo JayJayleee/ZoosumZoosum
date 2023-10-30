@@ -12,7 +12,9 @@ export type RootStackParamList = {
   };
   Camera: undefined;
   PloggingResult: undefined;
-};
+  FriendList : undefined;
+
+}
 
 export type LoginScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -37,4 +39,9 @@ export type CamerascreenProps = NativeStackScreenProps<
 export type PloggingResultscreenProps = NativeStackScreenProps<
   RootStackParamList,
   'PloggingResult'
+>;
+
+export type FriendListscreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'FriendList'
 >;
