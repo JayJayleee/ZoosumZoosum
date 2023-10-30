@@ -23,22 +23,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserItem {
 
+    // 복합키 정의 ID
     @EmbeddedId
     private UserItemId id;
 
+    // 사용자 ID 참조키 + 기본키
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
+    // 아이템 ID 참조키 + 기본키
     @MapsId("itemId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false)
     private Item item;
-
+    
+    // 선택 여부
     @Column(name = "selected", columnDefinition = "TINYINT DEFAULT 0")
     private Boolean selected;
 
+    // 생성시간, 수정시간, 삭제시간
     @Embedded
     private Time time;
 
@@ -51,6 +56,7 @@ public class UserItem {
         this.time = time;
     }
 
+    // UserItem -> ItemResponseDto
     public ItemResponseDto toResponse(UserItem userItem) {
         return ItemResponseDto.builder()
             .itemId(userItem.item.getItmeId())
