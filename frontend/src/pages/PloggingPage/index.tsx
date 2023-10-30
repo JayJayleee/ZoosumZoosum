@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Button, View, Text} from 'react-native';
-import {PloggingScreenProps} from '../../types/path';
-import ModalComponent from '../../components/ui/Modal';
+import {PloggingScreenProps} from 'typePath';
+import ModalComponent from '@/components/ui/Modal';
 
 export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -17,7 +17,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       <ModalComponent
         isVisible={isModalVisible}
         onClose={() => setModalVisible(false)}
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+        buttonInnerText={"닫기"}>
         <View>
           <Text>여기는 모달</Text>
         </View>

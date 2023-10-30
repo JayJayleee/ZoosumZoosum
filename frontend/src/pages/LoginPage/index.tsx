@@ -16,7 +16,7 @@ export default function LoginPage({navigation}: LoginScreenProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   const MovePage = () => {
-    navigation.navigate('Main');
+    navigation.navigate('UserInfo');
   }
 
   const LoginButton = <View style={isClicked? styles.showLoginButton: styles.hiddeneLoginButton}>
@@ -27,7 +27,7 @@ export default function LoginPage({navigation}: LoginScreenProps) {
   return (
   <ImageBackground
     style={StyleSheet.absoluteFill}
-    source={require('@/assets/login_background.png')}
+    source={require('@/assets/loginpage_image/login_background.png')}
     resizeMode='cover'>
     <TouchableOpacity 
       style={styles.container} 
@@ -37,7 +37,7 @@ export default function LoginPage({navigation}: LoginScreenProps) {
       <View>
         <Image
           style={styles.logo} 
-          source={require('@/assets/zooisland_logo.png')}
+          source={require('@/assets/loginpage_image/zooisland_logo.png')}
         />
         {LoginButton}
       </View>
