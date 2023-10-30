@@ -1,5 +1,6 @@
 package com.addShot.zoosum.domain.item.controller;
 
+import com.addShot.zoosum.domain.item.dto.request.ItemRequestDto;
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.domain.item.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,14 +54,14 @@ public class ItemController {
 
     @Operation(summary = "사용자 아이템 변경",
         description = "사용자가 현재 획득한 아이템 중, 섬이나 나무를 선택하여 변경합니다.")
-    @PutMapping("/{userId}/{itemType}") // 위와 같은 형식을 사용하되, itemId는 Body에 넣는다.
+    @PutMapping("/{userId}") // 위와 같은 형식을 사용하되, itemId는 Body에 넣는다.
     public ResponseEntity<?> userItemUpdate(@PathVariable(name = "userId") String userId,
         @RequestParam(name = "itemType") String itemType,
-        @RequestBody Long itemId) {
+        @RequestBody ItemRequestDto item) {
         String message = "";
 
-        log.info("ItemController userId, itemType, itemId : {}, {}, {}", userId, itemType, itemId);
-        if (userId == null || itemType == null || itemId == null) {
+        log.info("ItemController userId, itemType, itemId : {}, {}, {}", userId, itemType, item.getItemId());
+        if (userId == null || itemType == null || item == null || item.getItemId() == null) {
             message = "잘못된 요청입니다.";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
         }
@@ -69,8 +70,8 @@ public class ItemController {
         // 1. Header 사용하는 방법, 2. JWT payload와 userId를 비교하는 방법
 
         // 아이템 선택 반영
-        Long result = itemService.itemUpdate(userId, itemType, itemId);
-        if (result == null || result == 0) { // 데이터 수정이 안 되었을 때
+        Long result = itemService.itemUpdate(userId, itemType, item.getItemId());
+        if (result == null || result == 0L) { // 데이터 수정이 안 되었을 때
             message = "서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다.";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
         }

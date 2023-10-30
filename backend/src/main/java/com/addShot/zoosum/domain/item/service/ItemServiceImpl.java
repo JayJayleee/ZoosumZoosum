@@ -1,9 +1,12 @@
 package com.addShot.zoosum.domain.item.service;
 
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
+import com.addShot.zoosum.domain.item.repository.ItemRepository;
 import com.addShot.zoosum.domain.item.repository.UserItemRepository;
+import com.addShot.zoosum.domain.user.repository.UserRepository;
+import com.addShot.zoosum.entity.Item;
+import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserItem;
-import com.addShot.zoosum.entity.embedded.UserItemId;
 import com.addShot.zoosum.entity.enums.ItemType;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemServiceImpl implements ItemService{
 
     private final UserItemRepository userItemRepository;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     public List<ItemResponseDto> itemList(String userId, String itemType) {
@@ -33,7 +38,11 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
+    @Transactional
     public Long itemUpdate(String userId, String itemType, Long itemId) {
-        return userItemRepository.updateSelected(userId, ItemType.valueOf(itemType), itemId);
+        User user = userRepository.findById(userId).orElseThrow();
+        Item item = itemRepository.findById(itemId).orElseThrow();
+
+        return userItemRepository.updateSelected(user, ItemType.valueOf(itemType), item);
     }
 }
