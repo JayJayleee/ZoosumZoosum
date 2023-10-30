@@ -39,5 +39,5 @@ public interface UserItemCustomRepository {
      * @param itemType 아이템 유형 
      * @return 위 인자에 해당하는 Item 하나 반환
      */
-    ItemResponseDto findSelectedItem(String userId, ItemType itemType);
+    UserItem findSelectedItem(String userId, ItemType itemType);
 }
