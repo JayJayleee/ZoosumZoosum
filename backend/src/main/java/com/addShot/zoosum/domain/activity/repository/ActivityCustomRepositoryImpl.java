@@ -23,7 +23,7 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     public Page<ActivityHistory> findAllByUserId(String userId, Pageable pageable) {
         QueryResults<ActivityHistory> result = queryFactory.selectFrom(activityHistory)
             .where(activityHistory.user.userId.eq(userId))
-            .orderBy(activityHistory.time.createTime.desc())
+            .orderBy(activityHistory.activityId.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetchResults();

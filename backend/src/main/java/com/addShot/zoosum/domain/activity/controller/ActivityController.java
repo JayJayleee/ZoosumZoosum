@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,9 @@ public class ActivityController {
         String message = "";
 
         log.info("ActivityController userId : {}", userId);
+        // PageNumber: PageSize를 기준으로 잘랐을 때 몇 번째 페이지인지
+        // PageSize: 페이지를 나누는 기준이 되는 수
+        // Offset: 어디서 시작할 것인지. 시작지점
         log.info("ActivityController PageNumber : {}, PageSize : {}, Offset : {}",
             pageable.getPageNumber(), pageable.getPageSize(), pageable.getOffset());
 
@@ -43,16 +47,11 @@ public class ActivityController {
         // 다른 사람의 활동 기록도 볼 수 있으므로, 추가적인 인가처리를 하지 않는다.
         
         // 목록 조회
-        List<ActivityResponseDto> list = activityServicel.activityList(userId, pageable);
+        Page<ActivityResponseDto> list = activityServicel.activityList(userId, pageable);
         if (list == null) {
             message = "서버에서 에러가 발생했습니다. 서버 개발자에게 문의 바랍니다.";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
         }
-
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
-
-
-
-
 }

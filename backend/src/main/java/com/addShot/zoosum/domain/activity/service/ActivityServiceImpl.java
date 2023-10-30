@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class ActivityServiceImpl implements ActivityService {
     private final ActivityRepository activityRepository;
 
     @Override
-    public List<ActivityResponseDto> activityList(String userId, Pageable pageable) {
+    public Page<ActivityResponseDto> activityList(String userId, Pageable pageable) {
 
         Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserId(userId, pageable);
         List<ActivityHistory> getList = activityHistoryList.getContent();
@@ -39,6 +40,6 @@ public class ActivityServiceImpl implements ActivityService {
         }
         log.info("resultList : {}", resultList);
 
-        return resultList;
+        return new PageImpl<>(resultList, activityHistoryList.getPageable(), activityHistoryList.getTotalElements());
     }
 }

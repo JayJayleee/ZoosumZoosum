@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.activity.service;
 
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ActivityService {
@@ -13,5 +14,5 @@ public interface ActivityService {
      * @param pageable 페이징 정보, 몇번째 페이지인지, 얼만큼 조회할 것인지
      * @return List<ActivityResponseDto>
      */
-    List<ActivityResponseDto> activityList(String userId, Pageable pageable);
+    Page<ActivityResponseDto> activityList(String userId, Pageable pageable);
 }
