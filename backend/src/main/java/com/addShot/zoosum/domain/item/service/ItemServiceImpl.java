@@ -3,6 +3,7 @@ package com.addShot.zoosum.domain.item.service;
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.domain.item.repository.UserItemRepository;
 import com.addShot.zoosum.entity.UserItem;
+import com.addShot.zoosum.entity.embedded.UserItemId;
 import com.addShot.zoosum.entity.enums.ItemType;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,5 +30,10 @@ public class ItemServiceImpl implements ItemService{
         }
 
         return responseDtoList;
+    }
+
+    @Override
+    public Long itemUpdate(String userId, String itemType, Long itemId) {
+        return userItemRepository.updateSelected(userId, ItemType.valueOf(itemType), itemId);
     }
 }

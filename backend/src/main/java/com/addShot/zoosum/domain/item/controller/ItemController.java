@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,13 +26,17 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @Operation(summary = "사용자 보유 아이템 목록", description = "사용자가 현재 획득한 아이템들의 목록을 반환합니다.")
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> userItemList(@PathVariable(name = "userId") String userId, @RequestParam(name = "itemType") String itemType) {
+    @Operation(summary = "사용자 보유 아이템 목록",
+        description = "사용자가 현재 획득한 아이템들의 목록을 반환합니다.")
+    @GetMapping("/{userId}") // GET은 HTTP Body가 없기 때문에, URI에 파라미터를 넣는다.
+    public ResponseEntity<?> userItemList(@PathVariable(name = "userId") String userId,
+        @RequestParam(name = "itemType") String itemType) {
+        String message = "";
+
         log.info("ItemController userId, itemType : {}, {}", userId, itemType);
         if (userId == null || itemType == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("잘못된 요청입니다.");
+            message = "잘못된 요청입니다.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
         }
 
         // userId와 JWT의 userId가 일치하는지 인가 여부 확인해야 한다. 403 반환
@@ -39,11 +45,37 @@ public class ItemController {
         // 목록 반환
         List<ItemResponseDto> itemList = itemService.itemList(userId, itemType);
         if (itemList == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다."); 
+            message = "서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
         }
-
         return ResponseEntity.status(HttpStatus.OK).body(itemList);
     }
 
+    @Operation(summary = "사용자 아이템 변경",
+        description = "사용자가 현재 획득한 아이템 중, 섬이나 나무를 선택하여 변경합니다.")
+    @PutMapping("/{userId}/{itemType}") // 위와 같은 형식을 사용하되, itemId는 Body에 넣는다.
+    public ResponseEntity<?> userItemUpdate(@PathVariable(name = "userId") String userId,
+        @RequestParam(name = "itemType") String itemType,
+        @RequestBody Long itemId) {
+        String message = "";
+
+        log.info("ItemController userId, itemType, itemId : {}, {}, {}", userId, itemType, itemId);
+        if (userId == null || itemType == null || itemId == null) {
+            message = "잘못된 요청입니다.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+        }
+
+        // userId와 JWT의 userId가 일치하는지 인가 여부 확인해야 한다. 403 반환
+        // 1. Header 사용하는 방법, 2. JWT payload와 userId를 비교하는 방법
+
+        // 아이템 선택 반영
+        Long result = itemService.itemUpdate(userId, itemType, itemId);
+        if (result == null || result == 0) { // 데이터 수정이 안 되었을 때
+            message = "서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+        }
+
+        message = "설정 완료되었습니다."; // 데이터 수정이 잘 되었을 때
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 }

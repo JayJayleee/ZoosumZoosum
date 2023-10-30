@@ -20,17 +20,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Item {
 
+    // 아이템 ID
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id", nullable = false)
     private Long itmeId;
 
+    // 아이템 유형
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type", nullable = false, columnDefinition = "VARCHAR(20)")
     private ItemType itemType;
 
+    // 아이템 명
     @Column(name = "item_name", nullable = false)
     private String itemName;
 
+    // 아이템 URL
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
