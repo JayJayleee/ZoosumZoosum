@@ -137,6 +137,7 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	@Override
+	@Transactional
 	public void updateUserAnimal(MyIslandAnimalRequest request, String userId) {
 
 		List<Long> animalIdList = request.getAnimalIdList();
