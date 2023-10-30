@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "[ACTIVITY]", description = "플로깅, 나무심기 관련 API")
@@ -53,5 +54,27 @@ public class ActivityController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
         }
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @Operation(summary = "나무 인증서 상세 조회", description = "사용자가 활동한 인증서의 상세 내용을 조회")
+    @GetMapping("/detail/{activityId}")
+    public ResponseEntity<?> certificateDetail(@PathVariable(name = "activityId") Long activityId) {
+        String message = "";
+
+        log.info("ActivityController activityId : {}", activityId);
+        if (activityId == null) {
+            message = "잘못된 요청입니다.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+        }
+
+        // 마찬가지로, 다른 사람의 활동 기록을 볼 수 있기에, 추가적인 인가처리를 하지 않는다.
+
+        // 상세 조회
+        ActivityResponseDto certificateDetail = activityServicel.certificateDetail(activityId);
+        if (certificateDetail == null) {
+            message = "나무심기만 상세보기가 가능합니다.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(certificateDetail);
     }
 }

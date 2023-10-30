@@ -6,6 +6,7 @@ import com.addShot.zoosum.entity.ActivityHistory;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,5 +42,18 @@ public class ActivityServiceImpl implements ActivityService {
         log.info("resultList : {}", resultList);
 
         return new PageImpl<>(resultList, activityHistoryList.getPageable(), activityHistoryList.getTotalElements());
+    }
+
+    @Override
+    public ActivityResponseDto certificateDetail(Long activityId) {
+        Optional<ActivityHistory> activityHistory = activityRepository.findByActivityId(activityId);
+        ActivityResponseDto dto = null;
+        if (activityHistory.isPresent()) {
+            ActivityHistory ah = activityHistory.get();
+            if (ah.getActivityType().equals(ActivityType.TREE)) {
+                dto = ah.toTreeResponse(ah);
+            }
+        }
+        return dto;
     }
 }

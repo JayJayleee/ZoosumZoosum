@@ -15,4 +15,11 @@ public interface ActivityService {
      * @return List<ActivityResponseDto>
      */
     Page<ActivityResponseDto> activityList(String userId, Pageable pageable);
+
+    /**
+     * 인증서 상세 조회
+     * @param activityId 활동 ID
+     * @return ActivityResponseDto
+     */
+    ActivityResponseDto certificateDetail(Long activityId);
 }
