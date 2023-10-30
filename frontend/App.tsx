@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+// import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 // react-native-screens에 에러가 나서 아래 구문을 추가해줌
 import {enableScreens} from 'react-native-screens';
@@ -15,6 +15,12 @@ import MainPage from '@/pages/MainPage';
 import PloggingPage from '@/pages/PloggingPage';
 import CameraPage from '@/pages/CameraPage';
 import LoginPage from '@/pages/LoginPage';
+
+// import MainPage from './src/pages/MainPage';
+// import PloggingPage from './src/pages/PloggingPage';
+// import CameraPage from './src/pages/CameraPage';
+// import LoginPage from './src/pages/LoginPage';
+import PloggingResultPage from './src/pages/PloggingResultPage';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +37,7 @@ function App() {
         <Stack.Screen name="Login" component={LoginPage} />
         <Stack.Screen name="Main" component={MainPage} />
         <Stack.Screen name="Plogging" component={PloggingPage} />
+        <Stack.Screen name="PloggingResult" component={PloggingResultPage} />
         <Stack.Screen name="Camera" component={CameraPage} />
       </Stack.Navigator>
     </NavigationContainer>
