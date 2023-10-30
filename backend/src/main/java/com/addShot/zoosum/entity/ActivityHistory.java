@@ -1,30 +1,31 @@
 package com.addShot.zoosum.entity;
 
+import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
+import com.addShot.zoosum.entity.embedded.Plogging;
 import com.addShot.zoosum.entity.embedded.Time;
+import com.addShot.zoosum.entity.embedded.Tree;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Table(name = "ACTIVITY_HISTORY")
-@SuperBuilder
-@Inheritance(strategy = InheritanceType.JOINED)
+@Builder
 @NoArgsConstructor
 public class ActivityHistory {
 
@@ -34,7 +35,7 @@ public class ActivityHistory {
     private Long activityId;
 
     // 사용자 ID 참조키
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -47,17 +48,49 @@ public class ActivityHistory {
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
+    // 플로깅
+    @Embedded
+    private Plogging plogging;
+
+    // 나무
+    @Embedded
+    private Tree tree;
+
     // 시간
     @Embedded
     private Time time;
 
-    public ActivityHistory(Long activityId, User user, ActivityType activityType,
-        String fileUrl, Time time) {
+    public ActivityHistory(Long activityId, User user, ActivityType activityType, String fileUrl,
+        Plogging plogging, Tree tree, Time time) {
         this.activityId = activityId;
         this.user = user;
         this.activityType = activityType;
         this.fileUrl = fileUrl;
+        this.plogging = plogging;
+        this.tree = tree;
         this.time = time;
+    }
+
+    public ActivityResponseDto toPloggingResponse(ActivityHistory ah) {
+        return ActivityResponseDto.builder()
+            .activityId(ah.activityId)
+            .userId(ah.user.getUserId())
+            .activityType(ah.activityType.toString())
+            .fileUrl(ah.fileUrl)
+            .plogging(ah.plogging)
+            .time(ah.time)
+            .build();
+    }
+
+    public ActivityResponseDto toTreeResponse(ActivityHistory ah) {
+        return ActivityResponseDto.builder()
+            .activityId(ah.activityId)
+            .userId(ah.user.getUserId())
+            .activityType(ah.activityType.toString())
+            .fileUrl(ah.fileUrl)
+            .tree(ah.tree)
+            .time(ah.time)
+            .build();
     }
 
     @Override
