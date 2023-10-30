@@ -4,6 +4,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
 import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
 import {AnimalCarouselCardItem} from '../Carousel/AnimalCarouselCardItem';
+import {ProgressCarouselCardItem} from './ProgressCarouselCardItem';
 import data from '../../../pages/PloggingResultPage/data';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
 
@@ -13,11 +14,43 @@ export default function CarouselCards() {
   >(null);
 
   const [index, setIndex] = React.useState(0);
+  const missionData = [
+    {
+      missonTrashLimit: data.resposeRewardDto.missonTrashLimit,
+      missonLengthLimit: data.resposeRewardDto.missonLengthLimit,
+      missonTimeLimit: data.resposeRewardDto.missonTimeLimit,
+      missonTrash: data.resposeRewardDto.missonTrash,
+      missonLength: data.resposeRewardDto.missonLength,
+      missonTime: data.resposeRewardDto.missonTime,
+    },
+  ];
+
+  const seed_TotalData = [
+    {
+      totalRewardCount: data.resposeRewardDto.totalRewardCount,
+      badgeRewardCount: data.resposeRewardDto.badgeRewardCount,
+      itemRewardCount: data.resposeRewardDto.itemRewardCount,
+      animalRewardCount: data.resposeRewardDto.animalRewardCount,
+      seedCount: data.resposeRewardDto.seedCount,
+    },
+  ];
 
   const combinedData = [
-    ...data.resposeRewardDto.badgeRewardList,
-    ...data.resposeRewardDto.itemRewardList,
-    ...data.resposeRewardDto.animalRewardList,
+    ...(data.resposeRewardDto.seedCount ? seed_TotalData : []),
+    ...(data.resposeRewardDto.missonTrashLimit ||
+    data.resposeRewardDto.missonLengthLimit ||
+    data.resposeRewardDto.missonTimeLimit
+      ? missionData
+      : []),
+    ...(data.resposeRewardDto.badgeRewardList.length > 0
+      ? data.resposeRewardDto.badgeRewardList
+      : []),
+    ...(data.resposeRewardDto.itemRewardList.length > 0
+      ? data.resposeRewardDto.itemRewardList
+      : []),
+    ...(data.resposeRewardDto.animalRewardList.length > 0
+      ? data.resposeRewardDto.animalRewardList
+      : []),
   ];
   interface CarouselProps {
     item: any;
@@ -26,6 +59,11 @@ export default function CarouselCards() {
   }
 
   const renderItem = ({item, index: itemIndex}: CarouselProps) => {
+    // if (item.seedCount)
+    //   return <BadgeCarouselCardItem item={item} index={itemIndex} />;
+    if (item.missonTrashLimit) {
+      return <ProgressCarouselCardItem item={item} index={itemIndex} />;
+    }
     if (item.badgeId)
       return <BadgeCarouselCardItem item={item} index={itemIndex} />;
     if (item.itemId)
