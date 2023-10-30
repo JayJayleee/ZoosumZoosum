@@ -11,6 +11,7 @@ export type RootStackParamList = {
   };
   Camera: undefined;
   PloggingResult: undefined;
+  UserInfo: undefined;
 };
 
 export type LoginScreenProps = NativeStackScreenProps<
@@ -37,3 +38,8 @@ export type PloggingResultscreenProps = NativeStackScreenProps<
   RootStackParamList,
   'PloggingResult'
 >;
+
+export type UserInforscreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'UserInfo'
+>
