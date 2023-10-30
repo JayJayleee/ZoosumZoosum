@@ -11,7 +11,7 @@ export type RootStackParamList = {
   };
   Camera: undefined;
   PloggingResult: undefined;
-  FriendList : undefined;
+  FriendList: undefined;
   UserInfo: undefined;
 };
 
@@ -40,14 +40,11 @@ export type PloggingResultscreenProps = NativeStackScreenProps<
   'PloggingResult'
 >;
 
-<<<<<<< frontend/src/types/path.ts
 export type FriendListscreenProps = NativeStackScreenProps<
   RootStackParamList,
   'FriendList'
 >;
-=======
 export type UserInforscreenProps = NativeStackScreenProps<
   RootStackParamList,
   'UserInfo'
->
->>>>>>> frontend/src/types/path.ts
+>;
