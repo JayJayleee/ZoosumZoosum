@@ -77,7 +77,7 @@ public class AnimalController {
 	}
 
 	//animal 4번 - 산책 나갈 동물 리스트
-	@GetMapping("/flog")
+	@GetMapping("/flog/{userId}")
 	public ResponseEntity<?> findFlogAnimalList(@PathVariable("userId") String userId) {
 
 		try {
@@ -92,7 +92,7 @@ public class AnimalController {
 	}
 
 	//animal 5번 - 내 동물로 등록
-	@PostMapping
+	@PostMapping("/{userId}")
 	public ResponseEntity<?> registUserAnimal(@RequestBody MyAnimalRequest myAnimalRequest, @PathVariable String userId) {
 		try {
 			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
@@ -106,7 +106,7 @@ public class AnimalController {
 	}
 
 	//animal 6번 - 섬에 내보낼 동물 선택
-	@PutMapping("/island")
+	@PutMapping("/island/{userId}")
 	public ResponseEntity<?> updateUserAnimal(@RequestBody MyIslandAnimalRequest request, @PathVariable String userId) {
 		try {
 			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader

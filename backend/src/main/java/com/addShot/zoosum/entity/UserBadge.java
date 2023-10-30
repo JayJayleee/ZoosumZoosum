@@ -1,10 +1,13 @@
 package com.addShot.zoosum.entity;
 
+import com.addShot.zoosum.entity.embedded.UserBadgeId;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,22 +21,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserBadge {
 
-    @Id @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    @EmbeddedId
+    private UserBadgeId id;
 
-    @Id @ManyToOne
-    @JoinColumn(name = "badge_id", nullable = false)
-    private Badge badgeId;
+    @ManyToOne
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @MapsId("badgeId")
+	@JoinColumn(name = "badge_id")
+	private Badge badge;
 
     @Column(name = "create_time", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
     private LocalDateTime createTime;
 
     @Builder
-    public UserBadge(User userId, Badge badgeId, LocalDateTime createTime) {
-        this.userId = userId;
-        this.badgeId = badgeId;
-        this.createTime = createTime;
+    public UserBadge(UserBadgeId id, User user, Badge badge, LocalDateTime createTime) {
+        this.id = id;
+		this.user = user;
+		this.badge = badge;
+		this.createTime = createTime;
     }
 
     @Override
@@ -45,12 +54,13 @@ public class UserBadge {
             return false;
         }
         UserBadge userBadge = (UserBadge) o;
-        return Objects.equals(userId, userBadge.userId) && Objects.equals(badgeId,
-            userBadge.badgeId) && Objects.equals(createTime, userBadge.createTime);
+        return Objects.equals(id, userBadge.id) && Objects.equals(user,
+            userBadge.user) && Objects.equals(badge, userBadge.badge)
+            && Objects.equals(createTime, userBadge.createTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, badgeId, createTime);
+        return Objects.hash(id, user, badge, createTime);
     }
 }
