@@ -4,18 +4,23 @@ import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.common.repository.BadgeRepository;
 import com.addShot.zoosum.domain.common.repository.UserBadgeRepository;
+import com.addShot.zoosum.domain.item.repository.ItemRepository;
+import com.addShot.zoosum.domain.item.repository.UserItemRepository;
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.MainResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.SelectedAnimalResponse;
+import com.addShot.zoosum.domain.userinfo.dto.response.SelectedItemResponse;
 import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Badge;
 import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.entity.UserBadge;
+import com.addShot.zoosum.entity.UserItem;
 import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
+import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.RandomUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +41,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private final UserBadgeRepository userBadgeRepository;
 	private final UserAnimalRepository userAnimalRepository;
 	private final AnimalMotionRepository animalMotionRepository;
+	private final UserItemRepository userItemRepository;
 
 	@Override
 	public MainResponse getUserMain(String userId) {
@@ -56,16 +62,31 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		//섬에 나와있는 동물 리스트 조회
 
-
+		UserItem islandItem = userItemRepository.findSelectedItem(userId, ItemType.ISLAND);
 		//섬 테마 조회
 
+		SelectedItemResponse island = SelectedItemResponse.builder()
+			.itemId(islandItem.getItem().getItmeId())
+			.itemName(islandItem.getItem().getItemName())
+			.itemFileUrl(islandItem.getItem().getFileUrl())
+			.build();
+
+		UserItem treeItem = userItemRepository.findSelectedItem(userId, ItemType.TREE);
 		//나무 조회
+
+		SelectedItemResponse tree = SelectedItemResponse.builder()
+			.itemId(treeItem.getItem().getItmeId())
+			.itemName(treeItem.getItem().getItemName())
+			.itemFileUrl(treeItem.getItem().getFileUrl())
+			.build();
 
 		MainResponse response = MainResponse.builder()
 			.animalList(animalResponses)
+			.island(island)
+			.tree(tree)
 			.build();
 
-		return null;
+		return response;
 	}
 
 	@Override
