@@ -52,4 +52,14 @@ public class Item {
             .fileUrl(item.getFileUrl())
             .build();
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+            "itmeId=" + itmeId +
+            ", itemType=" + itemType +
+            ", itemName='" + itemName + '\'' +
+            ", fileUrl='" + fileUrl + '\'' +
+            '}';
+    }
 }

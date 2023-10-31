@@ -5,7 +5,6 @@ import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
 import com.addShot.zoosum.domain.activity.repository.ActivityRepository;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
-import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
 import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.common.dto.response.UserBadgeResponseDto;
@@ -27,6 +26,9 @@ import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.Mission;
 import com.addShot.zoosum.entity.embedded.SumPlogging;
 import com.addShot.zoosum.entity.embedded.Time;
+import com.addShot.zoosum.entity.embedded.UserAnimalId;
+import com.addShot.zoosum.entity.embedded.UserItemId;
+import com.addShot.zoosum.entity.embedded.UserPlogInfoId;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import com.addShot.zoosum.entity.enums.BadgeType;
 import com.addShot.zoosum.entity.enums.ItemType;
@@ -35,6 +37,7 @@ import com.addShot.zoosum.util.activity.MissionReward;
 import com.addShot.zoosum.util.activity.Score;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +66,6 @@ public class ActivityServiceImpl implements ActivityService {
     private final RankingRepository rankingRepository;
     private final UserBadgeRepository userBadgeRepository;
     private final UserRepository userRepository;
-    private final AnimalMotionRepository animalMotionRepository;
 
     @Override
     public Page<ActivityResponseDto> activityList(String userId, Pageable pageable) {
@@ -107,19 +109,24 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional
     public ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg,
         ActivityRequestDto activityRequestDto) {
+        // User Entity 구하기
+        log.info("User Entity 구하기");
+        User user = userRepository.findUser(userId);
+
         // 플로깅 데이터 저장
         log.info("플로깅 데이터 저장");
-        Long id = insertActivity(userId, activityImg, activityRequestDto);
+        Long id = insertActivity(user, activityImg, activityRequestDto);
         log.info("writeActivityAndReward insert : {}", id);
+
+        Map<String, Object> resultMap = new HashMap<>();
 
         // 누적/미션/점수 데이터 수정, 리워드 지급
         log.info("누적/미션/점수 데이터 수정, 리워드 지급");
-        Map<String, Object> resultMap = new HashMap<>();
-        updateUserPlogInfo(userId, activityRequestDto, resultMap);
+        updateUserPlogInfo(user, activityRequestDto, resultMap);
 
         // 뱃지 업데이트
         log.info("뱃지 업데이트");
-        updateBadge(userId, resultMap);
+        updateBadge(user, resultMap);
 
         log.info("writeActivityAndReward result : {}", resultMap);
 
@@ -170,31 +177,34 @@ public class ActivityServiceImpl implements ActivityService {
 
     /**
      * ACTIVITY_HISTORY 에 플로깅 데이터를 저장
-     * @param userId 사용자 ID
+     * @param user 사용자 Entity
      * @param activityImg 활동 이미지
      * @param activityRequestDto 활동 데이터
      * @return 새롭게 생긴 활동 ID
      */
     @Transactional
-    public Long insertActivity(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto) {
+    public Long insertActivity(User user, MultipartFile activityImg, ActivityRequestDto activityRequestDto) {
+        log.info("activityImg : {}", activityImg);
         // S3에 이미지를 저장하고, 이미지 URL 을 반환
         String fileUrl = "";
 
         // 플로깅 데이터 저장
-        ActivityHistory activityHistoryEntity = ActivityRequestDto.toEntity(userId, fileUrl, activityRequestDto);
+        ActivityHistory activityHistoryEntity = ActivityRequestDto
+            .toEntity(user.getUserId(), fileUrl, activityRequestDto);
         return activityRepository.save(activityHistoryEntity).getActivityId();
     }
 
     /**
      * USER_PLOG_INFO 에 플로깅 데이터를 누적 및 수정, 그리고 리워드 반환
-     * @param userId 사용자 ID
+     * @param user 사용자 Entity
      * @param activityRequestDto 활동 데이터
      * @return Map<String, Object> 리워드 관련 데이터
      */
     @Transactional
-    public void updateUserPlogInfo(String userId, ActivityRequestDto activityRequestDto, Map<String, Object> resultMap) {
+    public void updateUserPlogInfo(User user, ActivityRequestDto activityRequestDto, Map<String, Object> resultMap) {
         log.info("updateUserPlogInfo 사용자 엔티티 찾기");
-        Optional<UserPlogInfo> optionalUserPlogInfo = userPlogInfoRepository.findById(userId);
+        Optional<UserPlogInfo> optionalUserPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(
+            user.getUserId()));
         if (optionalUserPlogInfo.isEmpty()) return; // ++ userId에 해당하는 데이터를 찾지 못하면 예외를 발생시키는 코드를 작성하자.
         UserPlogInfo originUserPlogInfo = optionalUserPlogInfo.get();
 
@@ -216,15 +226,15 @@ public class ActivityServiceImpl implements ActivityService {
         // 미션 데이터 갱신
         Mission originMission = originUserPlogInfo.getMission();
         Integer missionLength = originMission.getMissionLength() + requestLength;
-        Integer missionTime = originMission.getMissionLength() + requestTime;
-        Integer missionTrash = originMission.getMissionLength() + requestTrash;
+        Integer missionTime = originMission.getMissionTime() + requestTime;
+        Integer missionTrash = originMission.getMissionTrash() + requestTrash;
         Mission mission = updateMission(missionLength, missionTime, missionTrash);
 
         // 리워드 계산
         int mTrashQ = missionTrash / ActivityLimit.TRASH;   // 쓰레기 수 몫
 
         resultMap.put("mission", mission);
-        resultMap.put("missionReward", missionReward(userId, missionLength, missionTime, missionTrash));
+        resultMap.put("missionReward", missionReward(user, missionLength, missionTime, missionTrash));
         resultMap.put("addSeed", mTrashQ);
 
         // 추가 점수 계산
@@ -234,13 +244,14 @@ public class ActivityServiceImpl implements ActivityService {
         // 플로깅 누적, 미션, 점수, 씨앗, 수정일 UPDATE
         log.info("updateUserPlogInfo 플로깅 누적, 미션, 점수, 씨앗, 수정일 UPDATE");
         UserPlogInfo newUserPlogInfo = UserPlogInfo.builder()
-            .user(new User(userId))
+            .id(new UserPlogInfoId(user.getUserId()))
+            .user(user)
             .plogCount(originUserPlogInfo.getPlogCount() + 1)
             .sumPloggingData(sumPlog)
             .mission(mission)
             .score(originUserPlogInfo.getScore() + score)
             .seed(originUserPlogInfo.getSeed() + mTrashQ)
-            .time(new Time(LocalDateTime.now()))
+            .time(new Time(originUserPlogInfo.getTime().getCreateTime(), LocalDateTime.now()))
             .build();
         UserPlogInfo save = userPlogInfoRepository.save(newUserPlogInfo);
         log.info("updateUserPlogInfo save : {}", save);
@@ -269,7 +280,7 @@ public class ActivityServiceImpl implements ActivityService {
      */
     public Integer addScore(ActivityRequestDto activityRequestDto) {
         log.info("추가 점수 계산");
-        return Score.BASE + activityRequestDto.getLength() * Score.LENGTH
+        return Score.BASE + Math.round(activityRequestDto.getLength() / Score.LENGTH_DIVIDE)
             + Math.round(activityRequestDto.getTime() / Score.TIME_DIVIDE)
             + activityRequestDto.getTrash() * Score.TRASH;
     }
@@ -283,7 +294,7 @@ public class ActivityServiceImpl implements ActivityService {
      * @return
      */
     @Transactional
-    public MissionReward missionReward(String userId, Integer missionLength, Integer missionTime, Integer missionTrash) {
+    public MissionReward missionReward(User user, Integer missionLength, Integer missionTime, Integer missionTrash) {
         log.info("미션 리워드 지급");
         MissionReward missionReward = new MissionReward();
 
@@ -294,19 +305,22 @@ public class ActivityServiceImpl implements ActivityService {
         log.info("섬 리워드 지급");
         while (mLenQ-- > 0) { // 섬 리워드
             Item item = itemRepository.findRandomItem(ItemType.ISLAND);
-            saveUserItem(userId, item);
+            log.info("item ; {}", item);
+            saveUserItem(user, item);
             missionReward.getIslandList().add(item);
         }
         log.info("나무 리워드 지급");
         while (mTimeQ-- > 0) { // 나무 리워드
             Item item = itemRepository.findRandomItem(ItemType.TREE);
-            saveUserItem(userId, item);
+            log.info("item ; {}", item);
+            saveUserItem(user, item);
             missionReward.getTreeList().add(item);
         }
         log.info("동물 리워드 지급");
         while (mTrashQ-- > 0) { // 동물 리워드
             Animal animal = animalRepository.findRandomAnimal();
-            saveUserAnimal(userId, animal);
+            log.info("animal ; {}", animal);
+            saveUserAnimal(user, animal);
             missionReward.getAnimalList().add(animal);
         }
         log.info("missionReward : {}", missionReward);
@@ -315,14 +329,16 @@ public class ActivityServiceImpl implements ActivityService {
 
     /**
      * USER_ITEM 테이블에 리워드 저장
-     * @param userId 사용자 ID
+     * @param user 사용자 Entity
      * @param item 아이템 Entity
      */
     @Transactional
-    private void saveUserItem(String userId, Item item) {
+    private void saveUserItem(User user, Item item) {
+        log.info("USER_ITEM 테이블에 리워드 저장");
         UserItem userItem = UserItem.builder()
-            .user(User.builder().userId(userId).build())
-            .item(Item.builder().itmeId(item.getItmeId()).build())
+            .id(new UserItemId(user.getUserId(), item.getItmeId()))
+            .user(user)
+            .item(item)
             .selected(false)
             .time(new Time(LocalDateTime.now(), LocalDateTime.now()))
             .build();
@@ -332,14 +348,16 @@ public class ActivityServiceImpl implements ActivityService {
 
     /**
      * USER_ANIMAL 테이블에 리워드 저장
-     * @param userId 사용자 ID
+     * @param user 사용자 Entity
      * @param animal 동물 Entity
      */
     @Transactional
-    private void saveUserAnimal(String userId, Animal animal) {
+    private void saveUserAnimal(User user, Animal animal) {
+        log.info("USER_ANIMAL 테이블에 리워드 저장");
         UserAnimal userAnimal = UserAnimal.builder()
-            .user(User.builder().userId(userId).build())
-            .animal(Animal.builder().animalId(animal.getAnimalId()).build())
+            .id(new UserAnimalId(user.getUserId(), animal.getAnimalId()))
+            .user(user)
+            .animal(animal)
             .selected(false)
             .userAnimalName(animal.getAnimalName())
             .time(new Time(LocalDateTime.now(), LocalDateTime.now()))
@@ -358,22 +376,21 @@ public class ActivityServiceImpl implements ActivityService {
      *  - (LGTH) 플로깅거리 10, 20, 30km
      *  - (TIME) 플로깅시간 100, 200, 300분
      *  - (TRSH) 주운쓰레기 100, 200, 300개
-     * @param userId 사용자 ID
+     * @param user 사용자 Entity
      * @param resultMap 결과 데이터 map
      */
     @Transactional
-    private void updateBadge(String userId, Map<String, Object> resultMap) {
-        // User Entity 확보
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) return;
-        User user = optionalUser.get();
-        log.info("User Entity 확보 : {}", user);
+    private void updateBadge(User user, Map<String, Object> resultMap) {
+        // User Entity
+        log.info("User Entity: {}", user);
 
         // UserPlogInfo 확보
+        log.info("UserPlogInfo 확보");
         UserPlogInfo userInfo = (UserPlogInfo) resultMap.get("userPlogInfo");
         log.info("UserPlogInfo 확보 : {}", userInfo);
 
         // 내가 갖고 있지 않은 뱃지 목록
+        log.info("내가 갖고 있지 않은 뱃지 목록");
         List<UserBadge> dontHaveBadgeList = userBadgeRepository.findDontHaveBadge(user);
         log.info("내가 갖고 있지 않은 뱃지 목록 : {}", dontHaveBadgeList);
 
@@ -381,23 +398,41 @@ public class ActivityServiceImpl implements ActivityService {
         List<UserBadge> newBadgeList = new ArrayList<>();
 
         // 1. 동물 획득 수
+        log.info("1. 동물 획득 수");
         int myAnimalCount = 0;
-        Optional<List<UserAnimal>> myAnimalList = userAnimalRepository.findAllByUserId(userId);
+        Optional<List<UserAnimal>> myAnimalList = userAnimalRepository.findAllByUserId(
+            user.getUserId());
         if (myAnimalList.isPresent()) {
             myAnimalCount = myAnimalList.get().size();
         }
+        log.info("1. 동물 획득 수 : {}", myAnimalCount);
+
         // 2. 섬 획득 수
-        int myIslandCount = userItemRepository.findAllByUserId(userId, ItemType.ISLAND).size();
+        log.info("2. 섬 획득 수");
+        int myIslandCount = userItemRepository.findAllByUserId(user.getUserId(), ItemType.ISLAND).size();
+        log.info("2. 섬 획득 수 : {}", myIslandCount);
+
         // 3. 지역 랭킹
+        log.info("3. 지역 랭킹");
         int myLocalRank = rankingRepository.findMyLocalRank(user);
+        log.info("3. 지역 랭킹 : {}", myLocalRank);
+
         // 4. 전체 랭킹
+        log.info("4. 전체 랭킹");
         int myAllRank = rankingRepository.findMyAllRank(user);
+        log.info("4. 전체 랭킹 : {}", myAllRank);
+
         // 5. 플로깅 참여횟수
+        log.info("5. 플로깅 참여횟수");
         int plogCount = userInfo.getPlogCount();
+        log.info("5. 플로깅 참여횟수 : {}", plogCount);
+
         // 6, 7, 8. 플로깅 거리, 플로깅 시간, 주운 쓰레기 수
-        int sumLength = userInfo.getSumPloggingData().getSumLength();
-        int sumTime = userInfo.getSumPloggingData().getSumTime();
+        log.info("6, 7, 8. 플로깅 거리, 플로깅 시간, 주운 쓰레기 수");
+        int sumLength = userInfo.getSumPloggingData().getSumLength() / ActivityLimit.LENGTH_DIVIDE;
+        int sumTime = userInfo.getSumPloggingData().getSumTime() / ActivityLimit.TIME_DIVIDE;
         int sumTrash = userInfo.getSumPloggingData().getSumTrash();
+        log.info("{}, {}, {}", sumLength, sumTime, sumTrash);
 
 
         // 내가 갖지 않은 뱃지를 순회하며, 내가 가질 자격이 있는 뱃지는 badgeGet을 1로 바꾸고, resultMap에 저장한다.
@@ -415,11 +450,11 @@ public class ActivityServiceImpl implements ActivityService {
                         getBadge(newBadgeList, badge);
                         break;
                     case LCRN:
-                        if (myLocalRank < badge.getBadge().getBadgeValue()) break;
+                        if (myLocalRank != badge.getBadge().getBadgeValue()) break;
                         getBadge(newBadgeList, badge);
                         break;
                     case TPRN:
-                        if (myAllRank < badge.getBadge().getBadgeValue()) break;
+                        if (myAllRank != badge.getBadge().getBadgeValue()) break;
                         getBadge(newBadgeList, badge);
                         break;
                     case PTCT:

@@ -1,8 +1,11 @@
 package com.addShot.zoosum.entity;
 
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
+import com.addShot.zoosum.entity.enums.MotionCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,6 +37,10 @@ public class Animal {
 	@Column(name = "file_url", nullable = false)
 	private String defaultFileUrl;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "motion_category", length = 10, nullable = false, columnDefinition = "VARCHAR(10)")
+	private MotionCategory motionCategory;
+
 	public AnimalDrawResponse toResponseDto(Animal animal) {
 		return AnimalDrawResponse.builder()
 			.animalId(animal.getAnimalId())
@@ -43,4 +50,14 @@ public class Animal {
 			.build();
 	}
 
+	@Override
+	public String toString() {
+		return "Animal{" +
+			"animalId=" + animalId +
+			", animalName='" + animalName + '\'' +
+			", description='" + description + '\'' +
+			", defaultFileUrl='" + defaultFileUrl + '\'' +
+			", motionCategory=" + motionCategory +
+			'}';
+	}
 }

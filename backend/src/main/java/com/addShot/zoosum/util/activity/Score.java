@@ -3,14 +3,14 @@ package com.addShot.zoosum.util.activity;
 public class Score {
 
     /**
-     * 기본 점수: 플로깅 1회 = 100점
+     * 기본 점수: 플로깅 1회 = 10점
      */
-    public static final int BASE = 100;
+    public static final int BASE = 10;
 
     /**
-     * 거리 점수: 1m = 1점
+     * 거리 점수: 100m = 1점
      */
-    public static final int LENGTH = 1;
+    public static final float LENGTH_DIVIDE = 100.0f;;
 
     /**
      * 시간 점수: 1분 = 1점

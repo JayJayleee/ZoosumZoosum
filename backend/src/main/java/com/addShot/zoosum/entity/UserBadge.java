@@ -25,7 +25,7 @@ public class UserBadge {
     @EmbeddedId
     private UserBadgeId id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
@@ -69,6 +69,17 @@ public class UserBadge {
     @Override
     public int hashCode() {
         return Objects.hash(id, user, badge, badgeGet, createTime);
+    }
+
+    @Override
+    public String toString() {
+        return "UserBadge{" +
+            "id=" + id +
+            ", user=" + user.getUserId() +
+            ", badge=" + badge.getBadgeId() +
+            ", badgeGet=" + badgeGet +
+            ", createTime=" + createTime +
+            '}';
     }
 
     public void setBadgeGet(boolean b) {

@@ -32,7 +32,6 @@ public class Badge {
     @Column(name = "badge_value", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer badgeValue;
 
-
     // 파일경로
     @Column(name = "file_url", nullable = false)
     private String fileUrl;

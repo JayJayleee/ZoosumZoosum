@@ -20,8 +20,8 @@ public class UserBadgeCustomRepositoryImpl implements UserBadgeCustomRepository 
     @Override
     public List<UserBadge> findDontHaveBadge(User user) {
         return queryFactory
-            .select(userBadge)
-            .from(userBadge.badge, badge).fetchJoin()
+            .selectFrom(userBadge)
+            .join(userBadge.badge, badge).fetchJoin()
             .where(userBadge.user.eq(user)
                 .and(userBadge.badgeGet.eq(false)))
             .fetch();

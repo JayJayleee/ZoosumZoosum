@@ -28,6 +28,7 @@ import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.Mission;
 import com.addShot.zoosum.entity.embedded.Tree;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
+import com.addShot.zoosum.entity.embedded.UserPlogInfoId;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.RandomUtil;
@@ -102,7 +103,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public MainInfoResponse getUserInfoMain(String userId) {
-		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(userId).get();
+		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
 		List<ActivityHistory> all = activityRepository.findAll();
 		List<ActivityHistory> userActivities = activityRepository.findByUserIdAndActivityType(
 			userId, ActivityType.TREE.toString());
@@ -122,7 +123,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public PlogRecordResponse getPlogRecord(String userId) {
-		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(userId).get();
+		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
 
 		PlogRecordResponse response = PlogRecordResponse.builder()
 			.plogCount(userPlogInfo.getPlogCount())
@@ -170,7 +171,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 		//씨앗 갯수 차감
 		User user = userRepository.findById(userId).get();
-		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(user.getUserId()).get();
+		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(user.getUserId())).get();
 		userPlogInfo.setSeed(userPlogInfo.getSeed()-100);
 		userPlogInfoRepository.save(userPlogInfo);
 
