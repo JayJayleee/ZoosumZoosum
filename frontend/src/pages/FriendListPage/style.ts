@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     height : '20%',
     width : '100%',
     alignItems : 'center',
-    marginBottom : 30,
+    marginBottom : 10,
   },
   body2 : {
     height : '50%',
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom : 30,
   },
   select_cardlist : {
-    width : '95%',
+    width : '100%',
     height : '80%',
     marginTop : 10,
     backgroundColor : '#646567',
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
   button : {
     width : 200,
     height : 50,
-    flex : 1,
     justifyContent : 'center',
     alignItems : 'center',
     backgroundColor : '#34D399',
@@ -59,10 +58,20 @@ const styles = StyleSheet.create({
     position : 'absolute',
     top : '85%',
   },
+  button_select : {
+    width : 150,
+    height : 40,
+    backgroundColor : '#F1B0B0',
+    borderRadius : 10,
+    padding : 10,
+    marginBottom :10,
+    justifyContent : 'center',
+    alignItems : 'center'
+  },
   button_text : {
     color : 'white',
-    fontSize : 18,
-    fontWeight : "600"
+    fontSize : 15,
+    fontWeight : "600",
   },
   cardlist : {
   }
