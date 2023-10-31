@@ -41,9 +41,12 @@ public class AnimalServiceImpl implements AnimalService {
 		List<UserAnimalListResponse> responseList = new ArrayList<>();
 
 		for(UserAnimal ua: userAnimals) {
+			Long animalId = ua.getAnimal().getAnimalId();
+
 			UserAnimalListResponse response = UserAnimalListResponse.builder()
+				.animalId(animalId)
 				.animalName(ua.getUserAnimalName())
-				.fileUrl(animalMotionRepository.findMotion(ua.getAnimal().getAnimalId()).get().getFileUrl())
+				.fileUrl(animalMotionRepository.findMotion(animalId).get().getFileUrl())
 				.selected(ua.isSelected())
 				.build();
 			responseList.add(response);
@@ -60,6 +63,7 @@ public class AnimalServiceImpl implements AnimalService {
 		AnimalMotion animalMotion = animalMotionRepository.findMotion(animalId).get();
 
 		UserAnimalDetailResponse response = UserAnimalDetailResponse.builder()
+			.animalId(animalId)
 			.userAnimalName(userAnimal.getUserAnimalName())
 			.createTime(userAnimal.getTime().getCreateTime())
 			.timeTogether(userAnimal.getTimeTogether())
@@ -99,6 +103,7 @@ public class AnimalServiceImpl implements AnimalService {
 			Optional<AnimalMotion> optionMotion = animalMotionRepository.findMotion(animalId);
 
 			FlogAnimalResponse response = FlogAnimalResponse.builder()
+				.animalId(animalId)
 				.userAnimalName(ua.getUserAnimalName())
 				.description(optionalAnimal.get().getDescription())
 				.createTime(ua.getTime().getCreateTime())
@@ -137,6 +142,7 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	@Override
+	@Transactional
 	public void updateUserAnimal(MyIslandAnimalRequest request, String userId) {
 
 		List<Long> animalIdList = request.getAnimalIdList();

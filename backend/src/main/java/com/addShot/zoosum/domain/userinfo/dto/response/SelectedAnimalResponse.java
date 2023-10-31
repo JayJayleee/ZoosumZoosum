@@ -1,4 +1,4 @@
-package com.addShot.zoosum.domain.animal.dto.response;
+package com.addShot.zoosum.domain.userinfo.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAnimalListResponse {
+public class SelectedAnimalResponse {
 
 	private Long animalId;
 	private String animalName;
 	private String fileUrl;
-	private boolean selected;
 
 }

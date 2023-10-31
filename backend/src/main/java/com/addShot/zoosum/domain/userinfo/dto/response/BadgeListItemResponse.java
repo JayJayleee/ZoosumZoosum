@@ -1,4 +1,4 @@
-package com.addShot.zoosum.domain.animal.dto.response;
+package com.addShot.zoosum.domain.userinfo.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAnimalListResponse {
+public class BadgeListItemResponse {
 
-	private Long animalId;
-	private String animalName;
+	private String badgeId;
+	private String userId;
+	private String badgeName;
 	private String fileUrl;
-	private boolean selected;
+	private boolean isHave;
 
 }
