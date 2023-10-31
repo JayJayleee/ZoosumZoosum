@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserAnimalListResponse {
 
+	private Long animalId;
 	private String animalName;
 	private String fileUrl;
 	private boolean selected;
