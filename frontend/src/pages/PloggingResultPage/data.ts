@@ -1,7 +1,7 @@
 const data = {
   resposeRewardDto: {
     // 미션 전체 값에 해당하는 항목(임시로 지음)
-    missonTrashLimit: 0,
+    missonTrashLimit: 1,
     missonLengthLimit: 0,
     missonTimeLimit: 0,
     // 미션에 해당하는 각 항목

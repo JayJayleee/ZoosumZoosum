@@ -12,7 +12,7 @@ export type RootStackParamList = {
   };
   Camera: undefined;
   PloggingResult: undefined;
-  FriendList : undefined;
+  FriendList: undefined;
   UserInfo: undefined;
   PickFriend : undefined;
 };

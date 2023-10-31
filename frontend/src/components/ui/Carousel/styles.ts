@@ -25,6 +25,14 @@ const styles = StyleSheet.create({
     width: ITEM_WIDTH,
     height: 300,
   },
+  progressHeader: {
+    color: 'white',
+    fontSize: 28,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    paddingTop: 20,
+    paddingBottom: 30,
+  },
   header: {
     color: 'white',
     fontSize: 28,
@@ -44,6 +52,17 @@ const styles = StyleSheet.create({
     width: ITEM_WIDTH / 3,
     backgroundColor: 'white',
     textAlign: 'center',
+  },
+  progressContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 15,
+  },
+  doubleprogressContainer: {
+    display: 'flex',
+    flexDirection: 'row',
   },
 });
 

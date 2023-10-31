@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-
+// 주석
 const styles = StyleSheet.create({
   container: {
     flex: 1,

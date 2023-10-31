@@ -3,6 +3,7 @@ import { View, ImageBackground, Image, TextInput, StyleSheet, Text, Touchable, T
 import { SingleSelect } from '@/components/ui/SelectList';
 import ModalComponent from '@/components/ui/Modal';
 import { UserInforscreenProps } from '@/types/path';
+import { setStorage } from '@/apis/index';
 
 export default function UserInfoPage({navigation}: UserInforscreenProps) {
 
@@ -23,13 +24,12 @@ export default function UserInfoPage({navigation}: UserInforscreenProps) {
    "경기도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "강원도", "제주도"]
 
   // 닉네임 창에서 버튼 클릭 시 발생할 이벤트
-  const NicknameButton = () => {
+  const NicknameButton = async () => {
     if(userNickname !== "") {
       setModalVisible(false);
       setNickDuplicated(true);
       if (nickDuplicated === true) {
-        console.log("선택한 지역 : ", userRegion);
-        console.log("선택한 닉네임 : ", userNickname);
+        await setStorage("Accesstoken", "loginSuccess");
         navigation.navigate('Main');
       } else {
         setModalVisible(true);
