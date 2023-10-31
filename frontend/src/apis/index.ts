@@ -1,12 +1,12 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // storage에 저장된 token 가져오기(get)
 export const getStorage = async (key: string) => {
-  return await AsyncStorage.getItem(key)
-}
+  return await AsyncStorage.getItem(key);
+};
 
 // storage에 받은 token 저장하기(set)
-export const setStorage = async (key: string ,token: string) => {
+export const setStorage = async (key: string, token: string) => {
   return await AsyncStorage.setItem(key, token);
 };
 
@@ -24,17 +24,17 @@ export const clearStorage = async () => {
 export const containStorage = async (key: string) => {
   await AsyncStorage.getAllKeys().then(keys => {
     return keys.includes(key);
-  })
-}
+  });
+};
 
 // api header
 export const Header = () => ({
   headers: {
-    Authorization: `Bearer ${getStorage("Accesstoken")}`,
+    Authorization: `Bearer ${getStorage('Accesstoken')}`,
   },
 });
 
 // api
 // export const api = {
-  
+
 // }
