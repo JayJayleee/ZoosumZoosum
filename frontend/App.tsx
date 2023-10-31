@@ -24,6 +24,7 @@ import PloggingResultPage from './src/pages/PloggingResultPage';
 import UserInfoPage from '@/pages/UserInfoPage';
 
 import FriendListPage from '@/pages/FriendListPage';
+import PickFriendPage from '@/pages/PickFriendPage';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -44,6 +45,7 @@ function App() {
         <Stack.Screen name="Camera" component={CameraPage} />
         <Stack.Screen name="FriendList" component={FriendListPage} />
         <Stack.Screen name="UserInfo" component={UserInfoPage} />
+        <Stack.Screen name="PickFriend" component={PickFriendPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
