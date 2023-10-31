@@ -74,8 +74,10 @@ const styles = StyleSheet.create({
     fontSize : 15,
     fontWeight : "600",
   },
-  cardlist : {
-  }
+  hiddenCard: {
+    width: 115,
+    height: 130,
+  },
 });
 
 export default styles;
