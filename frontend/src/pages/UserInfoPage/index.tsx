@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { View, ImageBackground, Image, TextInput, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native';
 import { SingleSelect } from '@/components/ui/SelectList';
 import ModalComponent from '@/components/ui/Modal';
-import { UserInforscreenProps } from '@/types/path';
+import { UserInfoscreenProps } from '@/types/path';
 import { setStorage } from '@/apis/index';
 
-export default function UserInfoPage({navigation}: UserInforscreenProps) {
+export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
   // 에러 메세지를 표시한 모달창 on/off 상태 표시 변수 생성
   const [isModalVisible, setModalVisible] = useState(false);

@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   title_head : {
     color : 'white',
     fontSize : 35,
+    fontFamily : 'NPSfont_extrabold'
   },
   title_body : {
     color : 'white',
@@ -73,8 +74,10 @@ const styles = StyleSheet.create({
     fontSize : 15,
     fontWeight : "600",
   },
-  cardlist : {
-  }
+  hiddenCard: {
+    width: 115,
+    height: 130,
+  },
 });
 
 export default styles;

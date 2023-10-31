@@ -22,7 +22,6 @@ export default function SelectAnimalCardlist() {
   return (
     <View>
       <FlatList
-        style={styles.cardlist}
         horizontal={false} // 수직으로 정렬
         numColumns={5} // 한 줄에 표시할 카드 수 설정
         data={data}

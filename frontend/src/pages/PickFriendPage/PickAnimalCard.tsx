@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-
+import AppText from '@/components/ui/Text';
 interface PcikAnimalCardProps {
   id : string,
   title : string,
@@ -12,10 +12,8 @@ export default function PickAnimalCard({title, imgurl}: PcikAnimalCardProps) {
     <View style={styles.card}>
       <TouchableOpacity style={styles.card}>
         <Image style={styles.image} source={{uri : imgurl }} />
-        <Text style={styles.title}>{title}</Text>
+        <AppText style={styles.title}>{title}</AppText>
       </TouchableOpacity>
-      
-
     </View>
   );
 };
