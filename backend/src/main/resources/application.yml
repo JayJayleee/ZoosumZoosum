@@ -12,8 +12,8 @@ spring:
     password: joinit!!asrai
     hikari:
       maximum-pool-size: 3
-  #    url: jdbc:mariadb://127.0.0.1:3306/zoosum?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
-#    username: root
+#      url: jdbc:mariadb://asrai-app-database.cwk2ukisdzzj.ap-northeast-2.rds.amazonaws.com:13386/zoosum?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+#    username: adminasrai
 #    password: root
 
   jpa:
@@ -25,6 +25,17 @@ spring:
         format_sql: true
       #        default_batch_fetch_size: 1000
       open-in-view: true
+  jwt:
+    prefix: 'Bearer'
+    secret: E2940461030D23AD0D5B2B073EC996C2FF6DF9CE4F8598A12B936FE2B8237507
+    token:
+      access-expiration-time: 10800000
+      refresh-expiration-time: 604800000
+  data:
+    redis:
+      host: localhost
+      port: 6379
+#      password: temp
 
 server:
   port: 5000

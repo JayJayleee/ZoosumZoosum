@@ -18,11 +18,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
 @Table(name = "USER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
 public class User {
 
     @Id @Column(name = "user_id", nullable = false, updatable = false)
@@ -32,10 +35,11 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "region", length = 10, nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(name = "region", length = 10, columnDefinition = "VARCHAR(10)")
+
     private Region region;
 
-    @Column(name = "nickname", length = 30, nullable = false)
+    @Column(name = "nickname", length = 30)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
@@ -52,6 +56,15 @@ public class User {
         , optional = false)
     private UserPlogInfo userPlogInfo;
 
+    public void setNickname(String nickname){
+        this.nickname = nickname;
+
+    }
+
+    public void setRegion(Region region){
+        this.region = region;
+
+    }
     @Builder
     public User(String userId, String email, Region region, String nickname, Social socialType,
         CheckYN checkYN, Time time) {
@@ -62,5 +75,6 @@ public class User {
         this.socialType = socialType;
         this.checkYN = checkYN;
         this.time = time;
+
     }
 }
