@@ -11,7 +11,9 @@ export default function AnimalCard({title, imgurl}: AnimalCardProps) {
   return (
     <View style={styles.card}>
       <TouchableOpacity style={styles.card}>
-        <Image style={styles.image} source={{uri : imgurl }} />
+        <View style={styles.circle}>
+          <Image style={styles.image} source={{uri : imgurl }} />
+        </View>
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
       
@@ -38,5 +40,14 @@ const styles = StyleSheet.create({
   image: {
     height : 100,
     width : 100,
+  },
+  circle: {
+    width : 90,
+    height : 90,
+    flex :1,
+    justifyContent : 'center',
+    alignItems : 'center',
+    backgroundColor : '#FFD7D7',
+    borderRadius : 100,
   }
 });

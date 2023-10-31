@@ -36,6 +36,9 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
             <SelectAnimalCardlist />
           </View>
         </View>
+        <TouchableOpacity activeOpacity={0.8} style={styles.button_select}>
+            <Text style={styles.button_text}>동물 선택하기</Text>
+        </TouchableOpacity>
         <View style={styles.body2}>
           <View style={styles.having_cardlist}>
             <AnimalCardlist />
