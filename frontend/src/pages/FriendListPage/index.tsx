@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AppText from '@/components/ui/Text';
+import AppButton from '@/components/ui/Button';
 
 import {FriendListscreenProps} from 'typePath';
 import styles from './style';
@@ -37,17 +38,19 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
             <SelectAnimalCardlist />
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.8} style={styles.button_select}>
-            <AppText style={styles.button_text}>동물 선택하기</AppText>
-        </TouchableOpacity>
+        <AppButton
+        children='동물 선택하기'
+        variant='pickfriend'
+        onPress={() => navigation.navigate('PickFriend')}/>
         <View style={styles.body2}>
           <View style={styles.having_cardlist}>
             <AnimalCardlist />
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-            <AppText style={styles.button_text}>섬으로 돌아가기</AppText>
-        </TouchableOpacity>
+        <AppButton
+        variant='gotoisland'
+        children='섬으로 돌아가기'
+        onPress={() => navigation.navigate('Main')}/>
         
       </View>  
     </ImageBackground>
