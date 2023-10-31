@@ -18,9 +18,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Getter
+@Getter @Setter
 @Table(name = "USER_PLOG_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPlogInfo {
