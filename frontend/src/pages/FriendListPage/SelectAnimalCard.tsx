@@ -11,8 +11,8 @@ export default function SelectAnimalCard({title, imgurl}: SelectAnimalCardProps)
   return (
     <View style={styles.card}>
       <TouchableOpacity style={styles.card2} >
+      <Text style={styles.title}>{title}</Text>
         <Image style={styles.image} source={{uri : imgurl }} />
-        <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     flex : 1,
     justifyContent : 'center',
     alignItems : 'center',
-    width : 70,
+    width : 120,
     height : 120,
-    margin : 5,
+    margin : 3,
   },
   card2 : {
     flex : 1,
@@ -35,11 +35,12 @@ const styles = StyleSheet.create({
     alignItems : 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   image: {
-    height : 65,
-    width : 50,
-  }
+    height : 95,
+    width : 95,
+  },
+
 });
