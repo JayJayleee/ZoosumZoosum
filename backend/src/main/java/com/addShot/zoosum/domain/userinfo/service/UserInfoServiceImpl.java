@@ -7,6 +7,7 @@ import com.addShot.zoosum.domain.common.repository.UserBadgeRepository;
 import com.addShot.zoosum.domain.item.repository.ItemRepository;
 import com.addShot.zoosum.domain.item.repository.UserItemRepository;
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
+import com.addShot.zoosum.domain.userinfo.dto.response.MainInfoResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.MainResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.SelectedAnimalResponse;
@@ -19,6 +20,7 @@ import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.entity.UserBadge;
 import com.addShot.zoosum.entity.UserItem;
 import com.addShot.zoosum.entity.UserPlogInfo;
+import com.addShot.zoosum.entity.embedded.Mission;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
 import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.RandomUtil;
@@ -84,6 +86,21 @@ public class UserInfoServiceImpl implements UserInfoService {
 			.animalList(animalResponses)
 			.island(island)
 			.tree(tree)
+			.build();
+
+		return response;
+	}
+
+	@Override
+	public MainInfoResponse getUserInfoMain(String userId) {
+		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(userId).get();
+
+		Mission mission = userPlogInfo.getMission();
+		MainInfoResponse response = MainInfoResponse.builder()
+			.missionLength(mission.getMissionLength())
+			.missionTime(mission.getMissionTime())
+			.missionTrash(mission.getMissionTrash())
+			.seed(userPlogInfo.getSeed())
 			.build();
 
 		return response;
