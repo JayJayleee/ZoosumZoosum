@@ -5,8 +5,17 @@ import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
 import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
 import {AnimalCarouselCardItem} from '../Carousel/AnimalCarouselCardItem';
 import {ProgressCarouselCardItem} from './ProgressCarouselCardItem';
+import {SeedCarouselCardItem} from './SeedCarouselCardItem';
 import data from '../../../pages/PloggingResultPage/data';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
+import AppButton from '../Button';
+import styles from './styles';
+
+interface CarouselProps {
+  item: any;
+  index: any;
+  activeIndex?: any;
+}
 
 export default function CarouselCards() {
   const isCarousel = React.useRef<
@@ -14,6 +23,8 @@ export default function CarouselCards() {
   >(null);
 
   const [index, setIndex] = React.useState(0);
+  // 사용중인 라이브러리에서는 데이터를 무조건 리스트 형태로 받은 뒤 넣어야 페이지로 인식함
+  // 미션에 대한 단일 데이터 합친 리스트
   const missionData = [
     {
       missonTrashLimit: data.resposeRewardDto.missonTrashLimit,
@@ -25,6 +36,7 @@ export default function CarouselCards() {
     },
   ];
 
+  // 씨앗과 및 그 외 데이터 모아둔 리스트
   const seed_TotalData = [
     {
       totalRewardCount: data.resposeRewardDto.totalRewardCount,
@@ -35,13 +47,15 @@ export default function CarouselCards() {
     },
   ];
 
+  // 데이터 합친 리스트, 값이 없으면 빈 값을 반환하여 리스트로 들어오지 않음.
+  // 여기서 데이터 순서 바꾸면, 리스트 순서도 바뀐다.
   const combinedData = [
-    ...(data.resposeRewardDto.seedCount ? seed_TotalData : []),
     ...(data.resposeRewardDto.missonTrashLimit ||
     data.resposeRewardDto.missonLengthLimit ||
     data.resposeRewardDto.missonTimeLimit
       ? missionData
       : []),
+    ...(data.resposeRewardDto.seedCount ? seed_TotalData : []),
     ...(data.resposeRewardDto.badgeRewardList.length > 0
       ? data.resposeRewardDto.badgeRewardList
       : []),
@@ -52,18 +66,13 @@ export default function CarouselCards() {
       ? data.resposeRewardDto.animalRewardList
       : []),
   ];
-  interface CarouselProps {
-    item: any;
-    index: any;
-    activeIndex?: any;
-  }
 
   const renderItem = ({item, index: itemIndex}: CarouselProps) => {
-    // if (item.seedCount)
-    //   return <BadgeCarouselCardItem item={item} index={itemIndex} />;
     if (item.missonTrashLimit) {
       return <ProgressCarouselCardItem item={item} index={itemIndex} />;
     }
+    if (item.seedCount)
+      return <SeedCarouselCardItem item={item} index={itemIndex} />;
     if (item.badgeId)
       return <BadgeCarouselCardItem item={item} index={itemIndex} />;
     if (item.itemId)
@@ -85,7 +94,7 @@ export default function CarouselCards() {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Carousel
         vertical={false}
         layout={'default'}
@@ -98,6 +107,7 @@ export default function CarouselCards() {
         onSnapToItem={index => setIndex(index)}
         // useScrollView={true}
         inactiveSlideShift={0}
+        inactiveSlideOpacity={0}
       />
 
       {isCarousel.current && (
@@ -119,13 +129,14 @@ export default function CarouselCards() {
       )}
       {index === combinedData.length - 1 ? (
         // 마지막 페이지인 경우
-        <Button title="끝!" onPress={() => console.log('끝!')}></Button>
+        <AppButton children="끝!" onPress={() => console.log('끝!')} />
       ) : (
         // 마지막 페이지가 아닌 경우
         // TODO: 버튼 만들어놓기....
-        <Button
-          title="다음으로"
-          onPress={() => isCarousel.current?.snapToNext()}></Button>
+        <AppButton
+          children="다음으로"
+          onPress={() => isCarousel.current?.snapToNext()}
+        />
       )}
     </View>
   );

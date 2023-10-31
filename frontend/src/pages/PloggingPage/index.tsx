@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Button,
   View,
@@ -16,12 +16,51 @@ import AppButton from '@/components/ui/Button';
 
 export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [timer, setTimer] = useState<number>(0);
 
+  //컴포넌트의 전체 라이프 사이클에 영향없는 시간 값 만들기
+  let intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 모달 여는 부분. params로 함수 받아와서 그 값에 따라 모달 연다.
   useEffect(() => {
     if (route.params?.shouldOpenModal === true) {
       setModalVisible(true);
     }
   }, [route.params]);
+
+  // 타이머
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer(prevTimer => prevTimer + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  // 시간 포맷 맞추기 위한 상수. 추후 옮길 것
+  const formatTime = (time: number) => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+      2,
+      '0',
+    )}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  //플로깅 완료 버튼을 위한 로직
+  const stopAndResetTimer = () => {
+    console.log('총 플로깅 시간', formatTime(timer));
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+    }
+    setTimer(0);
+
+    navigation.navigate('PloggingResult');
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -37,10 +76,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <AppButton
-            children="플로깅 완료하기"
-            onPress={() => navigation.navigate('PloggingResult')}
-          />
+          <AppButton children="플로깅 완료하기" onPress={stopAndResetTimer} />
         </View>
         <ImageBackground
           style={styles.bottomContainer}
@@ -48,7 +84,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           resizeMode="contain">
           <View style={styles.textContainer}>
             <AppText style={styles.text}>3 km</AppText>
-            <AppText style={styles.text}>00:00:00</AppText>
+            <AppText style={styles.text}>{formatTime(timer)}</AppText>
             <AppText style={styles.text}>10개</AppText>
           </View>
 
