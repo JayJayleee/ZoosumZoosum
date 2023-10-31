@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     zIndex: 1,
     // backgroundColor: 'black',
-    transform: ' scaleX(-1)',
+    transform: [{scaleX: -1}],
   },
   overlayRightImage: {
     width: '70%',
