@@ -52,6 +52,10 @@ public class User {
         , optional = false)
     private UserPlogInfo userPlogInfo;
 
+    public User (String userId) {
+        this.userId = userId;
+    }
+
     @Builder
     public User(String userId, String email, Region region, String nickname, Social socialType,
         CheckYN checkYN, Time time) {

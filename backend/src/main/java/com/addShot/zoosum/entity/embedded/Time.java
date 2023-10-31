@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Time {
 
     // data 생성일
-    @Column(name = "create_time", nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
+    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
     private LocalDateTime createTime;
 
     // data 수정일

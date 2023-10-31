@@ -1,5 +1,6 @@
 package com.addShot.zoosum.entity;
 
+import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.entity.enums.ItemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,16 +10,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Objects;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "ITEM")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
 public class Item {
 
     // 아이템 ID
@@ -39,30 +44,12 @@ public class Item {
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
-    @Builder
-    public Item(Long itmeId, ItemType itemType, String itemName, String fileUrl) {
-        this.itmeId = itmeId;
-        this.itemType = itemType;
-        this.itemName = itemName;
-        this.fileUrl = fileUrl;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Item item = (Item) o;
-        return Objects.equals(itmeId, item.itmeId) && itemType == item.itemType
-            && Objects.equals(itemName, item.itemName) && Objects.equals(fileUrl,
-            item.fileUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(itmeId, itemType, itemName, fileUrl);
+    public ItemResponseDto toResponseDto(Item item) {
+        return ItemResponseDto.builder()
+            .itemId(item.getItmeId())
+            .itemName(item.getItemName())
+            .itemType(item.getItemType().toString())
+            .fileUrl(item.getFileUrl())
+            .build();
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,5 +45,25 @@ public class Badge {
         this.badgeCondition = badgeCondition;
         this.badgeValue = badgeValue;
         this.fileUrl = fileUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Badge badge = (Badge) o;
+        return Objects.equals(badgeId, badge.badgeId) && Objects.equals(badgeName,
+            badge.badgeName) && Objects.equals(badgeCondition, badge.badgeCondition)
+            && Objects.equals(badgeValue, badge.badgeValue) && Objects.equals(
+            fileUrl, badge.fileUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(badgeId, badgeName, badgeCondition, badgeValue, fileUrl);
     }
 }
