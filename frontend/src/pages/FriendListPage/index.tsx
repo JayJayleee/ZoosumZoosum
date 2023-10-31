@@ -3,14 +3,15 @@ import {
   View,
   ImageBackground,
   StyleSheet,
-  Text,
   TouchableOpacity,
 } from 'react-native';
+import AppText from '@/components/ui/Text';
 
 import {FriendListscreenProps} from 'typePath';
 import styles from './style';
 import AnimalCardlist from './AnimalCardlist';
 import SelectAnimalCardlist from './SelectAnimalCardlist';
+
 
 export default function FriendListPage({navigation}: FriendListscreenProps) {
   return (
@@ -24,20 +25,20 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
       ></View>
       <View style={styles.container}>
         <View style={styles.head}>
-          <Text style={styles.title_head}>
+          <AppText style={styles.title_head}>
             나와 함께한 친구들
-          </Text>
+          </AppText>
         </View>
         <View style={styles.body1}>
-          <Text style={styles.title_body}>
+          <AppText style={styles.title_body}>
             섬에 나와있는 동물들
-          </Text>
+          </AppText>
           <View style={styles.select_cardlist}>
             <SelectAnimalCardlist />
           </View>
         </View>
         <TouchableOpacity activeOpacity={0.8} style={styles.button_select}>
-            <Text style={styles.button_text}>동물 선택하기</Text>
+            <AppText style={styles.button_text}>동물 선택하기</AppText>
         </TouchableOpacity>
         <View style={styles.body2}>
           <View style={styles.having_cardlist}>
@@ -45,7 +46,7 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
           </View>
         </View>
         <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-            <Text style={styles.button_text}>섬으로 돌아가기</Text>
+            <AppText style={styles.button_text}>섬으로 돌아가기</AppText>
         </TouchableOpacity>
         
       </View>  

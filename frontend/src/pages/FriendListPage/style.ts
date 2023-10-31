@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   title_head : {
     color : 'white',
     fontSize : 35,
+    fontFamily : 'NPSfont_extrabold'
   },
   title_body : {
     color : 'white',
