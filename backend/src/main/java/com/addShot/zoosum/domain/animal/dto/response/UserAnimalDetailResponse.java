@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserAnimalDetailResponse {
 
+	private Long animalId;
 	private String userAnimalName;
 	private String description;
 	private LocalDateTime createTime;

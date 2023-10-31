@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FlogAnimalResponse {
 
+	private Long animalId;
 	private String userAnimalName;
 	private String description;
 	private LocalDateTime createTime;
