@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TextInput, Button} from 'react-native';
-
+import {View, Image, TextInput} from 'react-native';
+import AppText from '../Text';
+import AppButton from '../Button';
 import styles from './styles';
 interface AnimalCarouselCardItemProps {
   item: {
@@ -20,8 +21,10 @@ export function AnimalCarouselCardItem({
   index,
   activeIndex,
 }: AnimalCarouselCardItemProps) {
-  const [headerText, setHeaderText] = useState('상자에 뭐가 들어있을까요?');
-  const [imageSrc, setImageSrc] = useState('https://i.imgur.com/VH8N3fp.png');
+  const [headerText, setHeaderText] = useState('어떤 정령이 들어있을까요?');
+  const [imageSrc, setImageSrc] = useState<any>(
+    require('@/assets/animation/eggshake.gif'),
+  );
   const [showInput, setShowInput] = useState(false);
   const [animalName, setAnimalName] = useState(''); // 동물 이름을 저장하는 상태
 
@@ -36,7 +39,7 @@ export function AnimalCarouselCardItem({
       console.log(activeIndex, '액티브함');
       const timer = setTimeout(() => {
         setHeaderText(`${item.animalName}가 태어났어요!`);
-        setImageSrc(item.fileUrl);
+        setImageSrc({uri: item.fileUrl});
         setShowInput(true); // setTimeout 후에 input과 버튼을 보이게 함
       }, 3000);
 
@@ -45,14 +48,14 @@ export function AnimalCarouselCardItem({
       };
     } else {
       setHeaderText('어떤 정령이 들어있을까요?');
-      setImageSrc('https://i.imgur.com/VH8N3fp.png');
+      setImageSrc(require('@/assets/animation/eggshake.gif'));
       setShowInput(false); // 이 부분은 다른 카드를 보게 되면 input과 버튼을 숨김
     }
   }, [activeIndex]);
   return (
     <View style={styles.container} key={index}>
-      <Text style={styles.header}>{headerText}</Text>
-      <Image source={{uri: imageSrc}} style={styles.image} />
+      <AppText style={styles.header}>{headerText}</AppText>
+      <Image source={imageSrc} style={styles.image} />
       {showInput && (
         <View style={{marginTop: 20}}>
           <TextInput
@@ -61,7 +64,7 @@ export function AnimalCarouselCardItem({
             onChangeText={setAnimalName}
             placeholder={item.animalName}
           />
-          <Button title="이름 저장" onPress={handleSaveName} />
+          <AppButton children="이름 저장" onPress={handleSaveName} />
         </View>
       )}
     </View>

@@ -17,10 +17,6 @@ import PloggingPage from '@/pages/PloggingPage';
 import CameraPage from '@/pages/CameraPage';
 import LoginPage from '@/pages/LoginPage';
 
-// import MainPage from './src/pages/MainPage';
-// import PloggingPage from './src/pages/PloggingPage';
-// import CameraPage from './src/pages/CameraPage';
-// import LoginPage from './src/pages/LoginPage';
 import PloggingResultPage from './src/pages/PloggingResultPage';
 import UserInfoPage from '@/pages/UserInfoPage';
 
@@ -48,7 +44,10 @@ function App() {
         <Stack.Screen name="FriendList" component={FriendListPage} />
         <Stack.Screen name="UserInfo" component={UserInfoPage} />
         <Stack.Screen name="PickFriend" component={PickFriendPage} />
-        <Stack.Screen name="PickPloggingFriend" component={PickPloggingFriendPage} />
+        <Stack.Screen
+          name="PickPloggingFriend"
+          component={PickPloggingFriendPage}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

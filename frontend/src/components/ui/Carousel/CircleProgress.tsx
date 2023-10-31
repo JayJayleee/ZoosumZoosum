@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Animated} from 'react-native';
 import {Circle} from 'react-native-progress';
-
+import AppText from '../Text';
 type AnimatedProgressCircleProps = {
   progress: number;
   duration?: number;
@@ -33,16 +33,16 @@ function AnimatedProgressCircle({
   return (
     <View style={{alignItems: 'center', justifyContent: 'center'}}>
       <Circle
-        size={160}
+        size={140}
         progress={displayedProgress}
-        thickness={10}
+        thickness={15}
         color="#ACFA58"
         unfilledColor="#f2f2f2"
-        // showsText={true} // 텍스트를 표시하지 않습니다.
       />
-      <Text style={{position: 'absolute', color: 'white', fontSize: 30}}>{`${(
+      <AppText
+        style={{position: 'absolute', color: 'white', fontSize: 30}}>{`${(
         displayedProgress * 100
-      ).toFixed(0)}%`}</Text>
+      ).toFixed(0)}%`}</AppText>
     </View>
   );
 }
