@@ -33,6 +33,8 @@ export const containStorage = async (key: string) => {
 export const Header = () => ({
   headers: {
     Authorization: `Bearer ${getStorage('Accesstoken')}`,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
   },
 });
 
