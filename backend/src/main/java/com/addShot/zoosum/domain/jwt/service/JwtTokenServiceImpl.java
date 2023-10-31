@@ -27,6 +27,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         return jwtToken.getUserId();
     }
 
+    @Transactional
     public void deleteJwtToken(String accessToken) {
         JwtToken jwtToken = findJwtToken(accessToken);
         jwtTokenRepository.delete(jwtToken);
@@ -39,11 +40,13 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         return jwtToken.get();
     }
 
+    @Transactional
     public void saveJwtToken(JwtToken jwtToken){
         jwtTokenRepository.save(jwtToken);
 
     }
 
+    @Transactional
     public void saveJwtToken(String accessToken, String userId) {
         JwtToken jwtToken = JwtToken.builder()
             .grantType(AUTHENTICATION_PREFIX)
