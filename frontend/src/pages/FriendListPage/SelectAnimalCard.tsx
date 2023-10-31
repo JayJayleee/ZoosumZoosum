@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import AppText from '@/components/ui/Text';
+
 
 interface SelectAnimalCardProps {
   id : string,
@@ -11,7 +13,7 @@ export default function SelectAnimalCard({title, imgurl}: SelectAnimalCardProps)
   return (
     <View style={styles.card}>
       <TouchableOpacity style={styles.card2} >
-      <Text style={styles.title}>{title}</Text>
+      <AppText style={styles.title}>{title}</AppText>
         <Image style={styles.image} source={{uri : imgurl }} />
       </TouchableOpacity>
     </View>
