@@ -1,11 +1,14 @@
 package com.addShot.zoosum.domain.userinfo.service;
 
+import com.addShot.zoosum.domain.activity.repository.ActivityRepository;
 import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.common.repository.BadgeRepository;
 import com.addShot.zoosum.domain.common.repository.UserBadgeRepository;
 import com.addShot.zoosum.domain.item.repository.ItemRepository;
 import com.addShot.zoosum.domain.item.repository.UserItemRepository;
+import com.addShot.zoosum.domain.user.repository.UserRepository;
+import com.addShot.zoosum.domain.userinfo.dto.request.TreeCampaignRequest;
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.MainInfoResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.MainResponse;
@@ -13,15 +16,19 @@ import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.SelectedAnimalResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.SelectedItemResponse;
 import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
+import com.addShot.zoosum.entity.ActivityHistory;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Badge;
+import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.entity.UserBadge;
 import com.addShot.zoosum.entity.UserItem;
 import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.Mission;
+import com.addShot.zoosum.entity.embedded.Tree;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
+import com.addShot.zoosum.entity.enums.ActivityType;
 import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.RandomUtil;
 import java.util.ArrayList;
@@ -44,6 +51,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private final UserAnimalRepository userAnimalRepository;
 	private final AnimalMotionRepository animalMotionRepository;
 	private final UserItemRepository userItemRepository;
+	private final ActivityRepository activityRepository;
+	private final UserRepository userRepository;
 
 	@Override
 	public MainResponse getUserMain(String userId) {
@@ -94,6 +103,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public MainInfoResponse getUserInfoMain(String userId) {
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(userId).get();
+		List<ActivityHistory> all = activityRepository.findAll();
+		List<ActivityHistory> userActivities = activityRepository.findByUserIdAndActivityType(
+			userId, ActivityType.TREE.toString());
 
 		Mission mission = userPlogInfo.getMission();
 		MainInfoResponse response = MainInfoResponse.builder()
@@ -101,6 +113,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			.missionTime(mission.getMissionTime())
 			.missionTrash(mission.getMissionTrash())
 			.seed(userPlogInfo.getSeed())
+			.treeAllCount(all.size())
+			.treeCount(userActivities.size())
 			.build();
 
 		return response;
@@ -145,4 +159,32 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		return response;
 	}
+
+	@Transactional
+	@Override
+	public void insertTreeCampaignData(TreeCampaignRequest request, String userId) {
+		String treeName = request.getTreeName();
+		String userName = request.getUserName();
+		String userPhone = request.getUserPhone();
+		String userEmail = request.getUserEmail();
+
+		//씨앗 갯수 차감
+		User user = userRepository.findById(userId).get();
+		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(user.getUserId()).get();
+		userPlogInfo.setSeed(userPlogInfo.getSeed()-100);
+		userPlogInfoRepository.save(userPlogInfo);
+
+		//나무 등록
+		Tree tree = new Tree(treeName, userName, userPhone, userEmail);
+		ActivityHistory activity = ActivityHistory.builder()
+			.user(user)
+			.tree(tree)
+			.activityType(ActivityType.TREE)
+			.fileUrl("추가 예정")
+			.build();
+
+		activityRepository.save(activity);
+	}
+
+
 }

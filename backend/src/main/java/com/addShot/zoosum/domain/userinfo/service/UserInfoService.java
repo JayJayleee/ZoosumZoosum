@@ -1,5 +1,6 @@
 package com.addShot.zoosum.domain.userinfo.service;
 
+import com.addShot.zoosum.domain.userinfo.dto.request.TreeCampaignRequest;
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.MainInfoResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.MainResponse;
@@ -35,5 +36,12 @@ public interface UserInfoService {
 	 * @return List<BadgeListItemResponse>
 	 */
 	List<BadgeListItemResponse> getUserBadgeList(String userId);
+
+	/**
+	 * userinfo 5번 - 나무 캠페인 참여 데이터 입력
+	 * @param userId
+	 */
+	void insertTreeCampaignData(TreeCampaignRequest request, String userId);
+
 
 }
