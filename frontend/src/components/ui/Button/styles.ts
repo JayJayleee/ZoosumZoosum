@@ -50,5 +50,18 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'NPSfont_bold',
     fontSize : 20,
-  }
+  },
+  picnic: {
+    width: '60%',
+    backgroundColor: '#34D399',
+    borderRadius: 20,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  picnicText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize : 22,
+  },
 });
