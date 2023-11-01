@@ -41,7 +41,7 @@ export default function LoginPage({navigation}: LoginScreenProps) {
   return (
   <ImageBackground
     style={StyleSheet.absoluteFill}
-    source={require('@/assets/loginpage_image/login_background.png')}
+    source={require('@/assets/animation/background_anime.gif')}
     resizeMode='cover'>
     <TouchableOpacity 
       style={styles.container} 
