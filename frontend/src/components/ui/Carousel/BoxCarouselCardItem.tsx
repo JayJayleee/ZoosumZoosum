@@ -17,9 +17,9 @@ export function BoxCarouselCardItem({
   activeIndex,
 }: ItemCarouselCardItemProps) {
   const [headerText, setHeaderText] = useState('상자에 뭐가 들어있을까요?');
-  const [imageSrc, setImageSrc] = useState<any>({
-    uri: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Activity/09d7ee77-a711-4952-b024-929771982e2c_pencil.png',
-  });
+  const [imageSrc, setImageSrc] = useState<any>(
+    require('@/assets/img_icon/gift_img.png'),
+  );
   const bounceValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -60,9 +60,7 @@ export function BoxCarouselCardItem({
       }, 3000);
     } else {
       setHeaderText('상자에 뭐가 들어있을까요?');
-      setImageSrc({
-        uri: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Activity/09d7ee77-a711-4952-b024-929771982e2c_pencil.png',
-      });
+      setImageSrc(require('@/assets/img_icon/gift_img.png'));
       bounceValue.setValue(0);
     }
 

@@ -137,14 +137,14 @@ export default function CarouselCards() {
       {index === combinedData.length - 1 ? (
         // 마지막 페이지인 경우
         <AppButton
-          variant="carouselButton"
+          variant="carouselBtn"
           children="끝!"
           onPress={() => console.log('끝!')}
         />
       ) : (
         //마지막 페이지가 아닌 경우
         <AppButton
-          variant="carouselButton"
+          variant="carouselBtn"
           children="다음으로"
           onPress={() => isCarousel.current?.snapToNext()}
         />

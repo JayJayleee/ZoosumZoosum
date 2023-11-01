@@ -11,6 +11,7 @@ import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {CamerascreenProps} from '../../types/path';
 import {AppState, AppStateStatus} from 'react-native';
 import styles from './style';
+
 interface Photo {
   path: string;
 }

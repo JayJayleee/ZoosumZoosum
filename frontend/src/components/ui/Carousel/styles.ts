@@ -23,13 +23,16 @@ const styles = StyleSheet.create({
   },
   seedimage: {
     width: ITEM_WIDTH,
-    height: 300,
-    zIndex: 1,
-    position: 'absolute',
+    aspectRatio: 1, // 비율 유지
+    zIndex: 1, // z-index 높게 설정해서 위에 올림
+    position: 'absolute', // 절대위치
+    resizeMode: 'contain',
   },
   image: {
     width: ITEM_WIDTH,
-    height: 300,
+    aspectRatio: 1, // 비율 유지
+    position: 'absolute', // 절대위치
+    resizeMode: 'contain',
   },
   boxImage: {
     width: 10,
@@ -49,6 +52,8 @@ const styles = StyleSheet.create({
     fontSize: 28,
     paddingLeft: 20,
     paddingTop: 50,
+    position: 'absolute',
+    top: 10,
   },
   body: {
     color: 'white',
