@@ -16,7 +16,6 @@ import data from '../../../pages/PloggingResultPage/data';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
 import AppButton from '../Button';
 import styles from './styles';
-import AppText from '../Text';
 
 interface CarouselProps {
   item: any;

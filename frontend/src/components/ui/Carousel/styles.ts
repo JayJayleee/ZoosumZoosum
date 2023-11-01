@@ -22,23 +22,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   seedimage: {
-    width: ITEM_WIDTH,
-    aspectRatio: 1, // 비율 유지
-    zIndex: 1, // z-index 높게 설정해서 위에 올림
-    position: 'absolute', // 절대위치
+    width: ITEM_WIDTH - 80,
+    aspectRatio: 1,
+    zIndex: 1,
+    position: 'absolute',
     resizeMode: 'contain',
   },
   image: {
+    width: ITEM_WIDTH - 20,
+    aspectRatio: 1,
+    position: 'absolute',
+    resizeMode: 'contain',
+  },
+  badgeimage: {
     width: ITEM_WIDTH,
-    aspectRatio: 1, // 비율 유지
-    position: 'absolute', // 절대위치
+    aspectRatio: 1,
+    zIndex: 1,
+    position: 'relative',
+    top: 20,
+    resizeMode: 'contain',
+  },
+  animalimage: {
+    width: ITEM_WIDTH,
+    aspectRatio: 1,
+    zIndex: 1,
+    position: 'relative',
+    top: 40,
     resizeMode: 'contain',
   },
   boxImage: {
-    width: 10,
-    height: 200,
+    // width: 10,
+    height: 180,
     aspectRatio: 1,
-    marginTop: 80,
+    position: 'absolute',
+    resizeMode: 'contain',
   },
   progressHeader: {
     color: 'white',
@@ -60,6 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingLeft: 20,
     paddingRight: 20,
+    position: 'relative',
   },
   input: {
     padding: 10,
@@ -72,6 +90,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     borderBottomColor: 'white',
     borderBottomWidth: 2,
+    zIndex: 10,
+  },
+  animalName: {
+    color: 'white',
+    textAlign: 'center',
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
+    marginTop: 10,
   },
   progressContainer: {
     display: 'flex',
@@ -83,6 +109,18 @@ const styles = StyleSheet.create({
   doubleprogressContainer: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  inputcontainer: {
+    alignItems: 'center',
+    position: 'relative',
+    bottom: 40,
   },
 });
 

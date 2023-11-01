@@ -26,10 +26,12 @@ export function AnimalCarouselCardItem({
     require('@/assets/animation/eggshake.gif'),
   );
   const [showInput, setShowInput] = useState(false);
-  const [animalName, setAnimalName] = useState(''); // 동물 이름을 저장하는 상태
+  const [animalName, setAnimalName] = useState(item.animalName); // 동물 이름을 저장하는 상태
+  const [isNameSaved, setIsNameSaved] = useState(false);
 
   const handleSaveName = () => {
     console.log(`이름이 저장되었습니다: ${animalName}`);
+    setIsNameSaved(true);
     // TODO: 서버에 이름 저장
   };
 
@@ -48,27 +50,34 @@ export function AnimalCarouselCardItem({
     } else {
       setHeaderText('어떤 정령이 들어있을까요?');
       setImageSrc(require('@/assets/animation/eggshake.gif'));
-      setShowInput(false); // 이 부분은 다른 카드를 보게 되면 input과 버튼을 숨김
+      setShowInput(false);
     }
   }, [activeIndex]);
+
   return (
     <View style={styles.container} key={index}>
       <AppText style={styles.header}>{headerText}</AppText>
-      <Image source={imageSrc} style={styles.image} />
+      <Image source={imageSrc} style={styles.animalimage} />
       {showInput && (
-        <View style={{alignItems: 'center'}}>
-          <TextInput
-            style={styles.input}
-            value={animalName}
-            onChangeText={setAnimalName}
-            placeholder={item.animalName}
-            placeholderTextColor="rgba(255, 255, 255, 0.3)"
-          />
-          <AppButton
-            variant="animalName"
-            children="너의 이름은..."
-            onPress={handleSaveName}
-          />
+        <View style={styles.inputcontainer}>
+          {isNameSaved ? (
+            <AppText style={styles.animalName}>{animalName}</AppText> // 이름이 저장되었다면 AppText로 이름 출력
+          ) : (
+            <>
+              <TextInput
+                style={styles.input}
+                value={animalName}
+                onChangeText={setAnimalName}
+                placeholder={item.animalName}
+                placeholderTextColor="rgba(255, 255, 255, 0.3)"
+              />
+              <AppButton
+                variant="animalName"
+                children="너의 이름은..."
+                onPress={handleSaveName}
+              />
+            </>
+          )}
         </View>
       )}
     </View>
