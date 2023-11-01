@@ -5,7 +5,7 @@ import AppText from '../Text';
 
 type ButtonProps = {
   children?: string;
-  variant?: 'default' | 'primary';
+  variant?: 'default' | 'primary' | 'animalName' | 'carouselButton';
   onPress: () => void;
 };
 
@@ -31,6 +31,14 @@ export default function AppButton({
     case 'primary':
       variantStyle = styles.primary;
       textStyle = styles.defaultText;
+      break;
+    case 'animalName':
+      variantStyle = styles.animalName;
+      textStyle = styles.animalNameText;
+      break;
+    case 'carouselButton':
+      variantStyle = styles.carouselButton;
+      textStyle = styles.animalNameText;
       break;
   }
 

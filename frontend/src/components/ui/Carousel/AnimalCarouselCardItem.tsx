@@ -31,7 +31,6 @@ export function AnimalCarouselCardItem({
   const handleSaveName = () => {
     console.log(`이름이 저장되었습니다: ${animalName}`);
     // TODO: 서버에 이름 저장
-    // 저장 API 뭔지 물어볼것....
   };
 
   useEffect(() => {
@@ -57,14 +56,19 @@ export function AnimalCarouselCardItem({
       <AppText style={styles.header}>{headerText}</AppText>
       <Image source={imageSrc} style={styles.image} />
       {showInput && (
-        <View style={{marginTop: 20}}>
+        <View style={{alignItems: 'center'}}>
           <TextInput
             style={styles.input}
             value={animalName}
             onChangeText={setAnimalName}
             placeholder={item.animalName}
+            placeholderTextColor="rgba(255, 255, 255, 0.3)"
           />
-          <AppButton children="이름 저장" onPress={handleSaveName} />
+          <AppButton
+            variant="animalName"
+            children="너의 이름은..."
+            onPress={handleSaveName}
+          />
         </View>
       )}
     </View>

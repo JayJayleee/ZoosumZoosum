@@ -21,9 +21,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  seedimage: {
+    width: ITEM_WIDTH,
+    height: 300,
+    zIndex: 1,
+    position: 'absolute',
+  },
   image: {
     width: ITEM_WIDTH,
     height: 300,
+  },
+  boxImage: {
+    width: 10,
+    height: 200,
+    aspectRatio: 1,
+    marginTop: 80,
   },
   progressHeader: {
     color: 'white',
@@ -36,7 +48,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 28,
     paddingLeft: 20,
-    paddingTop: 20,
+    paddingTop: 50,
   },
   body: {
     color: 'white',
@@ -47,9 +59,14 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
     marginBottom: 10,
-    width: ITEM_WIDTH / 3,
-    backgroundColor: 'white',
+    width: ITEM_WIDTH / 2,
+    color: 'white',
     textAlign: 'center',
+    // borderRadius: 5,
+    fontFamily: 'NPSfont_regular',
+    fontSize: 20,
+    borderBottomColor: 'white',
+    borderBottomWidth: 2,
   },
   progressContainer: {
     display: 'flex',

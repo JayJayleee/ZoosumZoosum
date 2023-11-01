@@ -24,6 +24,10 @@ export function SeedCarouselCardItem({item, index}: CarouselCardItemProps) {
       </AppText>
       <Image
         source={require('@/assets/img_icon/seed_icon.png')}
+        style={styles.seedimage}
+      />
+      <Image
+        source={require('@/assets/img_icon/light_effect.png')}
         style={styles.image}
       />
     </View>
