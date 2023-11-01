@@ -1,7 +1,7 @@
 package com.addShot.zoosum.domain.activity.repository;
 
+import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.entity.ActivityHistory;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,5 +16,10 @@ public interface ActivityCustomRepository {
      */
     Page<ActivityHistory> findAllByUserId(String userId, Pageable pageable);
 
+    /**
+     * activityId를 통해 활동 내역을 조회한다.
+     * @param activityId 활동 ID
+     * @return 활동내역 상세
+     */
     Optional<ActivityHistory> findByActivityId(Long activityId);
 }

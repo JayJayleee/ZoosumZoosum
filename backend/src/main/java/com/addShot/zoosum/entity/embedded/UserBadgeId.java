@@ -2,10 +2,11 @@ package com.addShot.zoosum.entity.embedded;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Objects;
 
 @Embeddable
-public class UserBadgeId implements Serializable {
+public class UserBadgeId implements Serializable, Iterable<UserBadgeId> {
 
 	private String userId;
 	private String badgeId;
@@ -30,4 +31,9 @@ public class UserBadgeId implements Serializable {
 	public int hashCode() {
 		return Objects.hash(userId, badgeId);
 	}
+
+    @Override
+    public Iterator<UserBadgeId> iterator() {
+        return null;
+    }
 }

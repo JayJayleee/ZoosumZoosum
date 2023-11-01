@@ -1,5 +1,6 @@
 package com.addShot.zoosum.entity;
 
+import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.entity.enums.ItemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,14 +12,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "ITEM")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Item {
 
     // 아이템 ID
@@ -39,12 +43,23 @@ public class Item {
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
-    @Builder
-    public Item(Long itmeId, ItemType itemType, String itemName, String fileUrl) {
-        this.itmeId = itmeId;
-        this.itemType = itemType;
-        this.itemName = itemName;
-        this.fileUrl = fileUrl;
+    public ItemResponseDto toResponseDto() {
+        return ItemResponseDto.builder()
+            .itemId(this.getItmeId())
+            .itemName(this.getItemName())
+            .itemType(this.getItemType().toString())
+            .fileUrl(this.getFileUrl())
+            .build();
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+            "itmeId=" + itmeId +
+            ", itemType=" + itemType +
+            ", itemName='" + itemName + '\'' +
+            ", fileUrl='" + fileUrl + '\'' +
+            '}';
     }
 
     @Override

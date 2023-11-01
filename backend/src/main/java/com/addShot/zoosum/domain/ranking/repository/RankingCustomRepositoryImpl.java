@@ -3,6 +3,7 @@ package com.addShot.zoosum.domain.ranking.repository;
 import static com.addShot.zoosum.entity.QUser.user;
 import static com.addShot.zoosum.entity.QUserPlogInfo.userPlogInfo;
 
+import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.enums.Region;
 import com.querydsl.core.BooleanBuilder;
@@ -22,10 +23,10 @@ import org.springframework.data.domain.Sort;
 @Slf4j
 public class RankingCustomRepositoryImpl implements RankingCustomRepository {
 
-    private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory queryFactory;
 
     public RankingCustomRepositoryImpl(EntityManager em) {
-        this.jpaQueryFactory = new JPAQueryFactory(em);
+        this.queryFactory = new JPAQueryFactory(em);
     }
 
     @Override
@@ -41,19 +42,51 @@ public class RankingCustomRepositoryImpl implements RankingCustomRepository {
             builder.and(userPlogInfo.user.region.eq(Region.valueOf(region)));
         }
 
-        QueryResults<UserPlogInfo> usedProductQueryResults = jpaQueryFactory
+        List<UserPlogInfo> results = queryFactory
             .selectFrom(userPlogInfo)
             .join(userPlogInfo.user, user).fetchJoin()
             .where(builder)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .orderBy(getOrderSpecifiers(pageable).toArray(new OrderSpecifier[0]))
-            .fetchResults();
+            .fetch();
 
-        List<UserPlogInfo> results = usedProductQueryResults.getResults();
         log.info("Ranking Repository results : {}", results);
-        long total = usedProductQueryResults.getTotal();
+        long total = results.size();
         return new PageImpl<>(results, pageable, total);
+    }
+
+    @Override
+    public Integer findMyLocalRank(User user) {
+        List<UserPlogInfo> localRanking = queryFactory
+            .selectFrom(userPlogInfo)
+            .where(userPlogInfo.user.region.eq(user.getRegion()))
+            .orderBy(userPlogInfo.score.desc())
+            .fetch();
+
+        UserPlogInfo userInfo = queryFactory
+            .selectFrom(userPlogInfo)
+            .where(userPlogInfo.user.eq(user))
+            .fetchOne();
+
+        int index = localRanking.indexOf(userInfo) + 1;
+        return index;
+    }
+
+    @Override
+    public Integer findMyAllRank(User user) {
+        List<UserPlogInfo> allRanking = queryFactory
+            .selectFrom(userPlogInfo)
+            .orderBy(userPlogInfo.score.desc())
+            .fetch();
+
+        UserPlogInfo userInfo = queryFactory
+            .selectFrom(userPlogInfo)
+            .where(userPlogInfo.user.eq(user))
+            .fetchOne();
+
+        int index = allRanking.indexOf(userInfo) + 1;
+        return index;
     }
 
     private List<OrderSpecifier<?>> getOrderSpecifiers(Pageable pageable) {

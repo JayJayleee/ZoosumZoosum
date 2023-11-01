@@ -87,6 +87,7 @@ public class AnimalServiceImpl implements AnimalService {
 		AnimalDrawResponse response = AnimalDrawResponse.builder()
 			.animalId(animalId)
 			.animalName(animal.getAnimalName())
+			.description(animal.getDescription())
 			.fileUrl(animalMotionRepository.findMotion(animalId).get().getFileUrl())
 			.build();
 
