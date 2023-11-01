@@ -24,15 +24,32 @@ const styles = StyleSheet.create({
   },
   buttonToggle :{
     height: 90,
-    borderColor: 'blakc',
-    borderWidth: 1,
+    paddingTop: 20,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  toggleButton: {
+    position: 'absolute',
+    right: 20,
+  },
+  toggleBtnImage:{
+    width: 60,
+    height: 60,
+  },
+  toggleBtnText: {
+    color: 'white',
+    fontSize : 11,
+  },
+  toggleMoveButton: {
+    position: 'absolute',
+    top: -50,
+    left: 115,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   centerImage: {
     height: 500,
-    borderColor: 'red',
-    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -89,6 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
 })
 
 export default styles;
