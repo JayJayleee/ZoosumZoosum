@@ -17,6 +17,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin : 10,
   },
+  list_container : {
+    width : '100%',
+    height : '100%'
+  },
   title_head : {
     color : 'white',
     fontSize : 35,
@@ -92,18 +96,40 @@ const styles = StyleSheet.create({
   },
   headItem : {
     width : '100%',
-    height : '5%'
+    height : '5%',
+    justifyContent : 'center',
+    alignItems : 'center'
   },
   bodyItem: {
     backgroundColor : '#646567',
     borderRadius : 10,
-    width : '300%',
-    height : '50%'
+    width : '100%',
+    height : '40%',
+    justifyContent : 'flex-start',
+    alignItems : 'center',
+    paddingTop : 20,
   },
   body2Item : {
-
+    paddingTop : 20,
+    width : '90%',
+    height : '30%',
   },
-
+  islandCard : {
+    backgroundColor: "white",
+    borderRadius : 10,
+    width : '90%',
+    height : '80%',
+    marginBottom : 10,
+    justifyContent : 'flex-start',
+    alignItems : 'center'
+  },
+  islandCard_image : {
+    height : 200,
+    width : 310,
+  },
+  islandCard_title : {
+    fontSize: 18,
+  },
 });
 
 export default styles;

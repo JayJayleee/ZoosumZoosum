@@ -15,7 +15,7 @@ import styles from './style';
 import IslandList from './IslandList';
 import TreeList from './TreeList';
 
-export default function FriendListPage({navigation}: ItemListscreenProps) {
+export default function ItemListPage({navigation}: ItemListscreenProps) {
 
   // 두 개의 컴포넌트를 토글하기 위한 상태 변수 정의
   const [showComponent1, setShowComponent1] = useState(true);
@@ -38,6 +38,11 @@ export default function FriendListPage({navigation}: ItemListscreenProps) {
     setShowComponent2(true);
     setShowComponent1(false);
   };
+  
+  // 섬 선택 호출 함수(props로 전달)
+  const goToSelectIsland = () => {
+    navigation.navigate('PickFriend')
+  }
 
   return (
     <ImageBackground
@@ -64,8 +69,8 @@ export default function FriendListPage({navigation}: ItemListscreenProps) {
           onPress={toggleComponent2}/>
          </View>
         </View>
-        <View>
-          {showComponent1 && <IslandList />}
+        <View style={styles.list_container}>
+          {showComponent1 && <IslandList goToSelectIsland={goToSelectIsland}/>}
           {showComponent2 && <TreeList />}
         </View>
       </View>
