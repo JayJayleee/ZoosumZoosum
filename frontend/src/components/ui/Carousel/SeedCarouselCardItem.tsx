@@ -1,7 +1,9 @@
-import React from 'react';
-import {View, Image} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {View, Image, Animated, Easing} from 'react-native';
 import AppText from '../Text';
 import styles from './styles';
+import {ShiningEffect} from './ShiningEffect';
+
 interface CarouselCardItemProps {
   item: {
     totalRewardCount: number;
@@ -24,8 +26,10 @@ export function SeedCarouselCardItem({item, index}: CarouselCardItemProps) {
       </AppText>
       <Image
         source={require('@/assets/img_icon/seed_icon.png')}
-        style={styles.image}
+        style={styles.seedimage}
       />
+
+      <ShiningEffect />
     </View>
   );
 }

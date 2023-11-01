@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {FlatListProps, View, Button} from 'react-native';
+import {
+  FlatListProps,
+  View,
+  Button,
+  Touchable,
+  TouchableOpacity,
+} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
 import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
@@ -129,11 +135,15 @@ export default function CarouselCards() {
       )}
       {index === combinedData.length - 1 ? (
         // 마지막 페이지인 경우
-        <AppButton children="끝!" onPress={() => console.log('끝!')} />
-      ) : (
-        // 마지막 페이지가 아닌 경우
-        // TODO: 버튼 만들어놓기....
         <AppButton
+          variant="carouselBtn"
+          children="끝!"
+          onPress={() => console.log('끝!')}
+        />
+      ) : (
+        //마지막 페이지가 아닌 경우
+        <AppButton
+          variant="carouselBtn"
           children="다음으로"
           onPress={() => isCarousel.current?.snapToNext()}
         />
