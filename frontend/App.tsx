@@ -17,11 +17,7 @@ import PloggingPage from '@/pages/PloggingPage';
 import CameraPage from '@/pages/CameraPage';
 import LoginPage from '@/pages/LoginPage';
 
-// import MainPage from './src/pages/MainPage';
-// import PloggingPage from './src/pages/PloggingPage';
-// import CameraPage from './src/pages/CameraPage';
-// import LoginPage from './src/pages/LoginPage';
-import PloggingResultPage from './src/pages/PloggingResultPage';
+import PloggingResultPage from '@/pages/PloggingResultPage';
 import UserInfoPage from '@/pages/UserInfoPage';
 
 import FriendListPage from '@/pages/FriendListPage';
