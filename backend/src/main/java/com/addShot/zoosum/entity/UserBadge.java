@@ -86,12 +86,12 @@ public class UserBadge {
         this.badgeGet = b;
     }
 
-    public UserBadgeResponseDto toResponseDto(UserBadge ub) {
+    public UserBadgeResponseDto toResponseDto() {
         return UserBadgeResponseDto.builder()
-            .badgeId(ub.getBadge().getBadgeId())
-            .badgeName(ub.getBadge().getBadgeName())
-            .badgeCondition(ub.getBadge().getBadgeCondition())
-            .fileUrl(ub.getBadge().getFileUrl())
+            .badgeId(this.getBadge().getBadgeId())
+            .badgeName(this.getBadge().getBadgeName())
+            .badgeCondition(this.getBadge().getBadgeCondition())
+            .fileUrl(this.getBadge().getFileUrl())
             .build();
     }
 }

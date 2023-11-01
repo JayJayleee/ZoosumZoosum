@@ -16,7 +16,7 @@ import com.addShot.zoosum.domain.ranking.repository.RankingRepository;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
 import com.addShot.zoosum.entity.ActivityHistory;
-import com.addShot.zoosum.entity.Animal;
+import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Item;
 import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserAnimal;
@@ -37,7 +37,6 @@ import com.addShot.zoosum.util.activity.MissionReward;
 import com.addShot.zoosum.util.activity.Score;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,17 +135,17 @@ public class ActivityServiceImpl implements ActivityService {
 
         List<ItemResponseDto> islandList = new ArrayList<>();
         for (Item item : missionReward.getIslandList()) {
-            islandList.add(item.toResponseDto(item));
+            islandList.add(item.toResponseDto());
         }
 
         List<ItemResponseDto> treeList = new ArrayList<>();
         for (Item item : missionReward.getTreeList()) {
-            treeList.add(item.toResponseDto(item));
+            treeList.add(item.toResponseDto());
         }
 
         List<AnimalDrawResponse> animalList = new ArrayList<>();
-        for (Animal animal : missionReward.getAnimalList()) {
-            animalList.add(animal.toResponseDto(animal));
+        for (AnimalMotion animalMotion : missionReward.getAnimalList()) {
+            animalList.add(animalMotion.toResponseDto());
         }
 
         UserPlogInfo userPlogInfo = (UserPlogInfo) resultMap.get("userPlogInfo");
@@ -155,7 +154,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         List<UserBadgeResponseDto> userBadgeList = new ArrayList<>();
         for (UserBadge userBadge : (List<UserBadge>) resultMap.get("newBadgeList")) {
-            userBadgeList.add(userBadge.toResponseDto(userBadge));
+            userBadgeList.add(userBadge.toResponseDto());
         }
 
         // ResponseDto 로 변환
@@ -318,7 +317,7 @@ public class ActivityServiceImpl implements ActivityService {
         }
         log.info("동물 리워드 지급");
         while (mTrashQ-- > 0) { // 동물 리워드
-            Animal animal = animalRepository.findRandomAnimal();
+            AnimalMotion animal = animalRepository.findRandomAnimal();
             log.info("animal ; {}", animal);
             saveUserAnimal(user, animal);
             missionReward.getAnimalList().add(animal);
@@ -352,14 +351,14 @@ public class ActivityServiceImpl implements ActivityService {
      * @param animal 동물 Entity
      */
     @Transactional
-    private void saveUserAnimal(User user, Animal animal) {
+    private void saveUserAnimal(User user, AnimalMotion animal) {
         log.info("USER_ANIMAL 테이블에 리워드 저장");
         UserAnimal userAnimal = UserAnimal.builder()
-            .id(new UserAnimalId(user.getUserId(), animal.getAnimalId()))
+            .id(new UserAnimalId(user.getUserId(), animal.getAnimal().getAnimalId()))
             .user(user)
-            .animal(animal)
+            .animal(animal.getAnimal())
             .selected(false)
-            .userAnimalName(animal.getAnimalName())
+            .userAnimalName(animal.getAnimal().getAnimalName())
             .time(new Time(LocalDateTime.now(), LocalDateTime.now()))
             .build();
         UserAnimal save = userAnimalRepository.save(userAnimal);

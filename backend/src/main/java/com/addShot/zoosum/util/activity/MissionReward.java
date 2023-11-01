@@ -1,6 +1,6 @@
 package com.addShot.zoosum.util.activity;
 
-import com.addShot.zoosum.entity.Animal;
+import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,6 @@ public class MissionReward {
     private List<Item> treeList = new ArrayList<>();
     
     // 동물 목록
-    private List<Animal> animalList = new ArrayList<>();
+    private List<AnimalMotion> animalList = new ArrayList<>();
 
 }

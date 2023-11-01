@@ -44,12 +44,12 @@ public class Item {
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
-    public ItemResponseDto toResponseDto(Item item) {
+    public ItemResponseDto toResponseDto() {
         return ItemResponseDto.builder()
-            .itemId(item.getItmeId())
-            .itemName(item.getItemName())
-            .itemType(item.getItemType().toString())
-            .fileUrl(item.getFileUrl())
+            .itemId(this.getItmeId())
+            .itemName(this.getItemName())
+            .itemType(this.getItemType().toString())
+            .fileUrl(this.getFileUrl())
             .build();
     }
 
