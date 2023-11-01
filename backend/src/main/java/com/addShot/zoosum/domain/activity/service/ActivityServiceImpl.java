@@ -38,6 +38,7 @@ import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.activity.ActivityLimit;
 import com.addShot.zoosum.util.activity.MissionReward;
 import com.addShot.zoosum.util.activity.Score;
+import com.addShot.zoosum.util.s3.S3Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +69,7 @@ public class ActivityServiceImpl implements ActivityService {
     private final RankingRepository rankingRepository;
     private final UserBadgeRepository userBadgeRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     @Override
     public Page<ActivityResponseDto> activityList(String userId, Pageable pageable) {
@@ -185,9 +187,8 @@ public class ActivityServiceImpl implements ActivityService {
      */
     @Transactional
     public Long insertActivity(User user, MultipartFile activityImg, ActivityRequestDto activityRequestDto) {
-        log.info("activityImg : {}", activityImg);
         // S3에 이미지를 저장하고, 이미지 URL 을 반환
-        String fileUrl = "";
+        String fileUrl = s3Service.S3ImageUploadToAWS(activityImg, "Activity/", user.getUserId());
 
         // 플로깅 데이터 저장
         ActivityHistory activityHistoryEntity = ActivityRequestDto
