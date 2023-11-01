@@ -65,16 +65,16 @@ export const styles = StyleSheet.create({
     fontSize : 22,
   },
   menuToggle: {
-    width: 50,
-    backgroundColor: '#34D399',
-    borderRadius: 15,
-    height: 50,
+    width: 60,
+    // backgroundColor: '#34D399',
+    // borderRadius: 15,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuToggleText: {
-    color: 'white',
+    color: 'black',
     fontFamily: 'NPSfont_bold',
-    fontSize : 22,
+    fontSize : 40,
   },
 });
