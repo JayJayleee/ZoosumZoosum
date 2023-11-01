@@ -7,7 +7,25 @@ import AppButton from '@/components/ui/Button';
 import { fetchMyIslandInfo, fetchMyStatusInfo } from '@/apis/Island';
 import AppText from '@/components/ui/Text';
 
+type timeObj = {
+  minute: number;
+  second: number;
+}
+
 export default function MainPage({navigation}: MainScreenProps) {
+
+  // 내 상태를 보여줄 변수 생성
+  const [getTrash, setTrash] = useState<number>(0);
+  const [getTime, setTime] = useState<timeObj>({
+    minute: 0,
+    second: 0,
+  });
+  const [getDistance, setDistance] = useState<number>(0);
+  const [getSeed, setSeed] = useState<number>(0);
+
+  // 내가 심은 나무 개수와 전체가 심은 나무 개수를 저장할 변수 생성
+  const [treeCount, setTreeCount] = useState<number>(0);
+  const [allTreeCount, setAllTreeCount] = useState<number>(0);
 
   // 버튼 토글 상태를 나타낼 변수
   const [toggle, setToggle] = useState<boolean>(false);
@@ -21,27 +39,90 @@ export default function MainPage({navigation}: MainScreenProps) {
     }).start();
   }, [animation, toggle])
 
+  // 프로필 클릭 시, 이동하는 함수
+  const goToProfile = () => {
+    navigation.navigate({
+      name: 'Profile',
+      params: {userId: "example123"}
+    });
+  }
+
+  // 랭킹 클릭 시, 이동하는 함수
+  const goToRanking = () => {
+    navigation.navigate('Ranking');
+  }
+
+  // 동물 클릭 시, 이동하는 함수
+  const goToAnimalList = () => {
+    navigation.navigate('FriendList');
+  }
+
   const islandUri: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png"
   const treeUri: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Trees/Tree_01.png"
-  const animal1: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/ArcticFox/ArcticFox_2.gif"
+  const animal1: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Cow/Cow_2.gif"
   const animal2: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Camel/Camel_2.gif"
-  const animal3: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Camel/Camel_1.gif"
+  const animal3: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Camel/Camel_3.gif"
   const animal4: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/ArcticFox/ArcticFox_1.gif"
   const animal5: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/ArcticFox/ArcticFox_3.gif"
 
 
   // 닫힌 상태의 토글 버튼
-  const closedButton = <AppButton children='<' onPress={() => setToggle(!toggle)} variant='menuToggle'/>
+  const closedButton = <TouchableOpacity onPress={() => setToggle(!toggle)}>
+    <Image source={require("@/assets/mainpage_image/left_arrow.png")} style={{width: 70, height: 70}} />
+  </TouchableOpacity>
+
   // 열린 상태의 토글 버튼
-  const openedButton = <AppButton children='>' onPress={() => setToggle(!toggle)} variant='menuToggle'/>
+  const openedButton = <TouchableOpacity onPress={() => setToggle(!toggle)}>
+    <Image source={require("@/assets/mainpage_image/right_arrow.png")} style={{width: 70, height: 70}} />
+  </TouchableOpacity>
 
   return (
     <ImageBackground source={require("@/assets/mainpage_image/Background.png")} style={StyleSheet.absoluteFill}>
       <View style={styles.upperStatus}>
-        <Text>여기는 상단 스탯 바가 들어갈 자리</Text>
+        <View style={styles.statusBox}>
+          <Image source={require("@/assets/img_icon/trash_icon.png")} style={{width:25, height:25}} />
+          <AppText style={{justifyContent: 'center', alignContent: 'center', color: 'white'}}>
+            {getTrash}
+          </AppText>
+        </View>
+        <View style={styles.statusBox}>
+          <Image source={require("@/assets/img_icon/sand_clock_icon.png")} style={{width:25, height:25}} />
+          <AppText style={{justifyContent: 'center', alignContent: 'center', color: 'white'}}>
+            {getTime.minute < 10? `0${getTime.minute}` : getTime.minute}:{getTime.second < 10? `0${getTime.second}` : getTime.second}
+          </AppText>
+        </View>
+        <View style={styles.statusBox}>
+          <Image source={require("@/assets/img_icon/shoe_icon.png")} style={{width:25, height:25}} />
+          <AppText style={{justifyContent: 'center', alignContent: 'center', color: 'white'}}>
+            {getDistance}km
+          </AppText>
+        </View>
+        <View style={styles.statusBox}>
+          <Image source={require("@/assets/img_icon/seed_icon.png")} style={{width:25, height:25}} />
+          <AppText style={{justifyContent: 'center', alignContent: 'center', color: 'white'}}>
+            {getSeed}
+          </AppText>
+        </View>
       </View>
       <View style={styles.banner}>
-        <Text>여기는 배너가 들어갈 자리</Text>
+        <View style={styles.bannerBox}>
+          <Image source={require("@/assets/mainpage_image/single_tree_img.png")} style={{width: 70, height: 70}}/>
+          <View>
+            <AppText children="내가 심은 나무 수" style={{color: 'white', textAlign: 'right', fontSize: 12}} />
+            <AppText style={{color: 'white', textAlign: 'right', fontSize: 12}}>
+              {treeCount} 그루
+            </AppText>
+          </View>
+        </View>
+        <View style={styles.bannerBox}>
+          <Image source={require("@/assets/mainpage_image/multiple_tree_img.png")} style={{width: 70, height: 80}}/>
+          <View>
+            <AppText children="현재까지 심어진 나무 수" style={{color: 'white', textAlign: 'right', fontSize: 12}} />
+            <AppText style={{color: 'white', textAlign: 'right', fontSize: 12}}>
+              {allTreeCount} 그루
+            </AppText>
+          </View>
+        </View>
       </View>
       <View style={styles.buttonToggle}>
         <Animated.View
@@ -53,7 +134,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           inputRange: [0, 1],
           outputRange: [0, 1],
          })}]}>
-          <TouchableOpacity onPress={toggle? () => {console.log("지구 클릭했어요")} : undefined } style={styles.toggleMoveButton}>
+          <TouchableOpacity onPress={toggle? () => {goToRanking()} : undefined } style={styles.toggleMoveButton}>
             <Image source={require("@/assets/img_icon/animal_earth_icon.png")} style={styles.toggleBtnImage} />
             <AppText children="랭킹 보기" style={styles.toggleBtnText}/>
           </TouchableOpacity>
@@ -67,7 +148,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           inputRange: [0, 1],
           outputRange: [0, 1],
          })}]}>
-          <TouchableOpacity onPress={toggle? () => {console.log("프로필 클릭했어요")} : undefined } style={styles.toggleMoveButton}>
+          <TouchableOpacity onPress={toggle? () => {goToProfile()} : undefined } style={styles.toggleMoveButton}>
             <Image source={require("@/assets/img_icon/profile_icon.png")} style={styles.toggleBtnImage} />
             <AppText children="나의 프로필" style={styles.toggleBtnText}/>
           </TouchableOpacity>
@@ -95,7 +176,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           inputRange: [0, 1],
           outputRange: [0, 1],
          })}]}>
-          <TouchableOpacity onPress={toggle? () => {console.log("집 클릭했어요")} : undefined } style={styles.toggleMoveButton}>
+          <TouchableOpacity onPress={toggle? () => {goToAnimalList()} : undefined } style={styles.toggleMoveButton}>
             <Image source={require("@/assets/img_icon/animal_house_icon.png")} style={styles.toggleBtnImage} />
             <AppText children="내 동물 보기" style={styles.toggleBtnText}/>
           </TouchableOpacity>
