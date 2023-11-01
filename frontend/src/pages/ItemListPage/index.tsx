@@ -59,20 +59,24 @@ export default function ItemListPage({navigation}: ItemListscreenProps) {
             내가 보유한 아이템
           </AppText>
           <View style={styles.button_container}>
-          <AppButton
-            variant='selectLeft'
-            children='ISLAND'
-            onPress={toggleComponent1}/>
-          <AppButton
-          variant='selectRight'
-          children='TREE'
-          onPress={toggleComponent2}/>
+            <AppButton
+              variant='selectLeft'
+              children='ISLAND'
+              onPress={toggleComponent1}/>
+            <AppButton
+            variant='selectRight'
+            children='TREE'
+            onPress={toggleComponent2}/>
          </View>
         </View>
         <View style={styles.list_container}>
           {showComponent1 && <IslandList goToSelectIsland={goToSelectIsland}/>}
           {showComponent2 && <TreeList />}
         </View>
+        <AppButton
+        variant='gotoisland'
+        children='섬으로 돌아가기'
+        onPress={() => navigation.navigate('Main')}/>
       </View>
     </ImageBackground>  
   )

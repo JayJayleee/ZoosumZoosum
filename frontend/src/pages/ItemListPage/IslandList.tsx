@@ -50,9 +50,7 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
   return (
     <View style={styles.itemList}>
       <View style={styles.headItem}>
-        <AppText>
-          내가 선택한 섬
-        </AppText>
+        <AppText style={styles.headItemTitle}>내가 선택한 섬</AppText>
       </View>
       <View style={styles.bodyItem}>
         <View style={styles.islandCard}>
