@@ -50,5 +50,31 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'NPSfont_bold',
     fontSize : 20,
-  }
+  },
+  selectLeft: {
+    width: '30%',
+    backgroundColor: '#ECA3A3',
+    borderRadius: 8,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal : 10,
+  },
+  selectLeftText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+  },
+  selectRight: {
+    width: '30%',
+    backgroundColor: '#ECA3A3',
+    borderRadius: 8,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal : 10,
+  },
+  selectRightText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+  },
 });

@@ -16,6 +16,7 @@ export type RootStackParamList = {
   UserInfo: undefined;
   PickFriend : undefined;
   PickPloggingFriend: undefined;
+  ItemList : undefined;
 };
 
 export type LoginScreenProps = NativeStackScreenProps<
@@ -61,4 +62,9 @@ export type PickFriendscreenProps = NativeStackScreenProps<
 export type PickPloggingFriendscreenProps = NativeStackScreenProps<
   RootStackParamList,
   'PickPloggingFriend'
+>;
+
+export type ItemListscreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ItemList'
 >;
