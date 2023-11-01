@@ -2,10 +2,12 @@ package com.addShot.zoosum.entity.embedded;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @Embeddable
 @NoArgsConstructor
 public class Mission {

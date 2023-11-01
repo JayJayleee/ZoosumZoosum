@@ -4,34 +4,36 @@ import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
 import com.addShot.zoosum.entity.embedded.Mission;
 import com.addShot.zoosum.entity.embedded.SumPlogging;
 import com.addShot.zoosum.entity.embedded.Time;
+import com.addShot.zoosum.entity.embedded.UserPlogInfoId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Builder
 @Table(name = "USER_PLOG_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UserPlogInfo {
 
-    @Id
-    @Column(name = "user_id")
-    private String userId;
+    @EmbeddedId
+    private UserPlogInfoId id;
 
-    @MapsId
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -58,18 +60,6 @@ public class UserPlogInfo {
     // 시간
     @Embedded
     private Time time;
-
-    @Builder
-    public UserPlogInfo(User user, Integer plogCount, SumPlogging sumPloggingData, Mission mission,
-        Integer score, Integer seed, Time time) {
-        this.user = user;
-        this.plogCount = plogCount;
-        this.sumPloggingData = sumPloggingData;
-        this.mission = mission;
-        this.score = score;
-        this.seed = seed;
-        this.time = time;
-    }
 
     public RankingResponseDto toResponse(){
         return RankingResponseDto.builder()
@@ -99,5 +89,9 @@ public class UserPlogInfo {
     @Override
     public int hashCode() {
         return Objects.hash(user, plogCount, sumPloggingData, mission, score, seed, time);
+    }
+
+    public void setSeed(int i) {
+        this.seed = i;
     }
 }

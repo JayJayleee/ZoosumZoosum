@@ -48,9 +48,9 @@ public class User {
     @Embedded
     private Time time;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY
-        , optional = false)
-    private UserPlogInfo userPlogInfo;
+    public User (String userId) {
+        this.userId = userId;
+    }
 
     @Builder
     public User(String userId, String email, Region region, String nickname, Social socialType,

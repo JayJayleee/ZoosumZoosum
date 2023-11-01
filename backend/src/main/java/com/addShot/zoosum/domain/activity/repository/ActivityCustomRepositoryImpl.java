@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.activity.repository;
 
 import static com.addShot.zoosum.entity.QActivityHistory.activityHistory;
 
+import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.entity.ActivityHistory;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import com.querydsl.core.QueryResults;
