@@ -5,7 +5,13 @@ import AppText from '../Text';
 
 type ButtonProps = {
   children?: string;
-  variant?: 'default' | 'primary' | 'animalName' | 'carouselButton';
+  variant?:
+    | 'default'
+    | 'primary'
+    | 'animalName'
+    | 'carouselButton'
+    | 'pickfriend'
+    | 'gotoisland';
   onPress: () => void;
 };
 
@@ -39,6 +45,13 @@ export default function AppButton({
     case 'carouselButton':
       variantStyle = styles.carouselButton;
       textStyle = styles.animalNameText;
+    case 'pickfriend':
+      variantStyle = styles.pickfriend;
+      textStyle = styles.pickfriendText;
+      break;
+    case 'gotoisland':
+      variantStyle = styles.gotoisland;
+      textStyle = styles.gotoislandText;
       break;
   }
 

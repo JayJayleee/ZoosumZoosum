@@ -36,11 +36,34 @@ export const styles = StyleSheet.create({
 
   carouselButton: {
     width: 300,
+  pickfriend :{
+    width: '30%',
+    backgroundColor: '#F1B0B0',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding : 10,
+    marginBottom :10,
+  },
+  pickfriendText :{
+    color: 'white',
+    fontFamily: 'NPSfont_regular',
+    fontSize : 15,
+  },
+  gotoisland :{
+    width: '50%',
     backgroundColor: '#34D399',
     borderRadius: 8,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    position : 'absolute',
+    top : '85%',
   },
+  gotoislandText :{
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize : 20,
+  }
 });

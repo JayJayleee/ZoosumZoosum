@@ -10,6 +10,7 @@ import {
 import {PickFriendscreenProps} from 'typePath';
 import styles from './style';
 import AppText from '@/components/ui/Text';
+import AppButton from '@/components/ui/Button';
 import PickAnimalCardlist from './PickAnimalCardlist';
 
 export default function PickFriendPage({navigation}: PickFriendscreenProps) {
@@ -36,10 +37,10 @@ export default function PickFriendPage({navigation}: PickFriendscreenProps) {
             <PickAnimalCardlist />
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-            <AppText style={styles.button_text}>섬으로 돌아가기</AppText>
-        </TouchableOpacity>
-        
+        <AppButton
+        variant='gotoisland'
+        children='선택완료'
+        onPress={() => navigation.navigate('Main')}/>
       </View>  
     </ImageBackground>
   )

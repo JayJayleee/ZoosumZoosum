@@ -2,46 +2,88 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
   upperStatus: {
-    justifyContent: 'center',
+    height: 50,
+    borderColor: 'black',
+    borderWidth: 1,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   banner: {
+    height: 100,
+    borderColor: 'blue',
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonToggle :{
+    height: 90,
+    borderColor: 'blakc',
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   centerImage: {
+    height: 500,
+    borderColor: 'red',
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   island: {
-    width: 480,
-    height: 100,
+    position: 'absolute',
+    top: 70,
+    width: 470,
+    height: 300,
   },
   tree: {
-    width:100,
-    height: 100,
+    position: 'absolute',
+    top: 20,
+    left: 110,
+    width: 400,
+    height: 220,
   },
   firstAnimal: {
-
+    position: 'absolute',
+    left: 130,
+    width: 200,
+    height: 100,
   },
   secondAnimal: {
-    
+    position: 'absolute',
+    transform: 'scaleX(-1)',
+    top: 180,
+    left: 70,
+    width: 200,
+    height: 100,
   },
   thirdAnimal: {
-
+    position: 'absolute',
+    top: 180,
+    left: 190,
+    width: 200,
+    height: 100,
   },
   fourthAnimal: {
-
+    position: 'absolute',
+    transform: 'scaleX(-1)',
+    top: 140,
+    left: 0,
+    width: 200,
+    height: 100,
   },
   fifthAnimal: {
-
+    position: 'absolute',
+    top: 140,
+    left: 240,
+    width: 200,
+    height: 100,
   },
   ploggingButton: {
     justifyContent: 'center',
