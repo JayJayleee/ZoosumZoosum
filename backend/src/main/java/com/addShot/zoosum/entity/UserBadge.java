@@ -4,6 +4,7 @@ import com.addShot.zoosum.entity.embedded.UserBadgeId;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,12 +25,12 @@ public class UserBadge {
     @EmbeddedId
     private UserBadgeId id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("badgeId")
 	@JoinColumn(name = "badge_id")
 	private Badge badge;

@@ -1,7 +1,6 @@
 package com.addShot.zoosum.domain.animal.service;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
-import com.addShot.zoosum.domain.animal.dto.request.MyIslandAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
@@ -13,7 +12,10 @@ import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.UserAnimal;
+import com.addShot.zoosum.entity.embedded.Time;
+import com.addShot.zoosum.entity.embedded.UserAnimalId;
 import com.addShot.zoosum.util.RandomUtil;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -131,10 +133,14 @@ public class AnimalServiceImpl implements AnimalService {
 					userAnimalRepository.save(ua);
 				},
 				() -> { //존재하지 않는 경우
+					UserAnimalId uaId = new UserAnimalId(userId, animalId);
+					Time time = new Time(LocalDateTime.now(), LocalDateTime.now());
 					UserAnimal ua = UserAnimal.builder()
+						.id(uaId)
 						.user(userRepository.findById(userId).get())
 						.animal(animalRepository.findById(animalId).get())
 						.userAnimalName(request.getUserAnimalName())
+						.time(time)
 						.build();
 					userAnimalRepository.save(ua);
 				}
@@ -143,17 +149,24 @@ public class AnimalServiceImpl implements AnimalService {
 
 	@Override
 	@Transactional
-	public void updateUserAnimal(MyIslandAnimalRequest request, String userId) {
+	public void updateUserAnimal(List<Long> request, String userId) {
+		//이미 선택되어 있는 애들 false로
+		Optional<List<UserAnimal>> selected = userAnimalRepository.findAllSelectedByUserId(userId);
+		if(selected.isPresent()) {
+			for(UserAnimal ua: selected.get()) {
+				ua.setSelected(false);
 
-		List<Long> animalIdList = request.getAnimalIdList();
+				userAnimalRepository.save(ua);
+			}
+		}
 
-		for(Long id: animalIdList) {
+		//새로운 애들 true로
+		for(Long id: request) {
 			UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId, id).get();
 			ua.setSelected(true);
 
 			userAnimalRepository.save(ua);
 		}
-
 	}
 
 

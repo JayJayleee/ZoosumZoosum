@@ -19,7 +19,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-@Table(name = "animal")
+@Table(name = "animal_motion")
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnimalMotion {
