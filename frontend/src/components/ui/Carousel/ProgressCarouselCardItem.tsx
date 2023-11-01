@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text} from 'react-native';
+import AppText from '../Text';
 import AnimatedProgressCircle from './CircleProgress';
 import styles from './styles';
 interface ProgressCarouselCardItemProps {
@@ -23,19 +24,19 @@ export function ProgressCarouselCardItem({
 }: ProgressCarouselCardItemProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.progressHeader}>오늘의 플로깅 결과는?!</Text>
+      <AppText style={styles.progressHeader}>오늘의 플로깅 결과는?!</AppText>
       <View style={styles.progressContainer}>
         <AnimatedProgressCircle progress={0.75} />
-        <Text style={styles.body}>짜란</Text>
+        <AppText style={styles.body}>쓰레기 수</AppText>
       </View>
       <View style={styles.doubleprogressContainer}>
         <View style={styles.progressContainer}>
           <AnimatedProgressCircle progress={0.85} />
-          <Text style={styles.body}>짜란</Text>
+          <AppText style={styles.body}>걸음 수</AppText>
         </View>
         <View style={styles.progressContainer}>
           <AnimatedProgressCircle progress={0.75} />
-          <Text style={styles.body}>짜란</Text>
+          <AppText style={styles.body}>걸은 시간</AppText>
         </View>
       </View>
     </View>

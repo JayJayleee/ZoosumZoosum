@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Image} from 'react-native';
 import styles from './styles';
-
+import AppText from '../Text';
 interface ItemCarouselCardItemProps {
   item: {
     fileUrl: string;
@@ -17,7 +17,9 @@ export function BoxCarouselCardItem({
   activeIndex,
 }: ItemCarouselCardItemProps) {
   const [headerText, setHeaderText] = useState('상자에 뭐가 들어있을까요?');
-  const [imageSrc, setImageSrc] = useState('https://i.imgur.com/VH8N3fp.png');
+  const [imageSrc, setImageSrc] = useState<any>(
+    require('@/assets/animation/box_shake.gif'),
+  );
   const [isInitialRender, setIsInitialRender] = useState(index === activeIndex);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export function BoxCarouselCardItem({
       console.log(activeIndex, '액티브함');
       const timer = setTimeout(() => {
         setHeaderText(`${item.itemName}을 얻었어요!`);
-        setImageSrc(item.fileUrl);
+        setImageSrc({uri: item.fileUrl});
       }, 3000);
 
       return () => {
@@ -38,14 +40,14 @@ export function BoxCarouselCardItem({
       };
     } else {
       setHeaderText('상자에 뭐가 들어있을까요?');
-      setImageSrc('https://i.imgur.com/VH8N3fp.png');
+      setImageSrc(require('@/assets/animation/box_shake.gif'));
     }
   }, [activeIndex]);
 
   return (
     <View style={styles.container} key={index}>
-      <Text style={styles.header}>{headerText}</Text>
-      <Image source={{uri: imageSrc}} style={styles.image} />
+      <AppText style={styles.header}>{headerText}</AppText>
+      <Image source={imageSrc} style={styles.image} />
     </View>
   );
 }

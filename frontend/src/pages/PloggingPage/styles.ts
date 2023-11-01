@@ -7,18 +7,32 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'green',
   },
-  bottomTap: {
+  topContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    width: '100%',
+    alignItems: 'center',
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
   },
   cameraBtn: {
-    height: '20%',
     width: '20%',
     resizeMode: 'contain',
-    position: 'absolute',
-    top: '85%',
-    left: '77%',
+    alignSelf: 'flex-start',
   },
   text: {
     color: 'white',
+    fontSize: 24,
+    paddingTop: 20,
+    fontFamily: 'NPSfont_bold',
+  },
+  textContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '77%',
+    paddingLeft: 10,
   },
 });

@@ -28,15 +28,13 @@ const styles = StyleSheet.create({
   progressHeader: {
     color: 'white',
     fontSize: 28,
-    fontWeight: 'bold',
     paddingLeft: 20,
-    paddingTop: 20,
+    paddingTop: 80,
     paddingBottom: 30,
   },
   header: {
     color: 'white',
     fontSize: 28,
-    fontWeight: 'bold',
     paddingLeft: 20,
     paddingTop: 20,
   },

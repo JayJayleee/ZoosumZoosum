@@ -17,7 +17,7 @@ const data = {
     // 정령 리워드 수
     animalRewardCount: 0,
     // 씨앗 리워드 수
-    seedCount: 0,
+    seedCount: 1,
     // 뱃지 리워드 리스트
     badgeRewardList: [
       {

@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
-
+import {View, Image} from 'react-native';
+import AppText from '../Text';
 import styles from './styles';
 interface CarouselCardItemProps {
   item: {
@@ -16,9 +16,9 @@ interface CarouselCardItemProps {
 export function BadgeCarouselCardItem({item, index}: CarouselCardItemProps) {
   return (
     <View style={styles.container} key={index}>
-      <Text style={styles.header}>뱃지를 얻었어요!</Text>
+      <AppText style={styles.header}>뱃지를 얻었어요!</AppText>
       <Image source={{uri: item.fileUrl}} style={styles.image} />
-      <Text style={styles.body}>{item.badgeName}</Text>
+      <AppText style={styles.body}>{item.badgeName}</AppText>
     </View>
   );
 }
