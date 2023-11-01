@@ -16,6 +16,9 @@ export type RootStackParamList = {
   UserInfo: undefined;
   PickFriend : undefined;
   PickPloggingFriend: undefined;
+  Profile: {
+    userId: string;
+  };
 };
 
 export type LoginScreenProps = NativeStackScreenProps<
@@ -61,4 +64,9 @@ export type PickFriendscreenProps = NativeStackScreenProps<
 export type PickPloggingFriendscreenProps = NativeStackScreenProps<
   RootStackParamList,
   'PickPloggingFriend'
+>;
+
+export type ProfilescreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Profile'
 >;
