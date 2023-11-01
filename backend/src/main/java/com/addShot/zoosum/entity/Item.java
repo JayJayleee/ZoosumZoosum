@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "ITEM")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode
 public class Item {
 
     // 아이템 ID
@@ -61,5 +61,24 @@ public class Item {
             ", itemName='" + itemName + '\'' +
             ", fileUrl='" + fileUrl + '\'' +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Item item = (Item) o;
+        return Objects.equals(itmeId, item.itmeId) && itemType == item.itemType
+            && Objects.equals(itemName, item.itemName) && Objects.equals(fileUrl,
+            item.fileUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itmeId, itemType, itemName, fileUrl);
     }
 }
