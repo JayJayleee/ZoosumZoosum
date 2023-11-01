@@ -64,17 +64,4 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize : 22,
   },
-  menuToggle: {
-    width: 60,
-    // backgroundColor: '#34D399',
-    // borderRadius: 15,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuToggleText: {
-    color: 'black',
-    fontFamily: 'NPSfont_bold',
-    fontSize : 40,
-  },
 });
