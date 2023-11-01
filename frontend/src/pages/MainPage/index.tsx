@@ -3,6 +3,8 @@ import { Button, View, Text, Image, ImageBackground, StyleSheet } from 'react-na
 import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
+import AppButton from '@/components/ui/Button';
+import { fetchMyIslandInfo, fetchMyStatusInfo } from '@/apis/Island';
 
 export default function MainPage({navigation}: MainScreenProps) {
 
@@ -36,7 +38,7 @@ export default function MainPage({navigation}: MainScreenProps) {
         <FastImage style={styles.fifthAnimal} source={{uri: animal5}} resizeMode={FastImage.resizeMode.contain} />
       </View>
       <View style={styles.ploggingButton}>
-        <Button title="산책하기" onPress={() => navigation.navigate('PickPloggingFriend')} />
+        <AppButton children="산책하기" onPress={() => navigation.navigate('PickPloggingFriend')} variant='picnic' />
       </View>
     </ImageBackground>
   );
