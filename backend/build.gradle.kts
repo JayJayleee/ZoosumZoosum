@@ -44,6 +44,10 @@ dependencies {
 	//Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
+	// S3
+	//AWS Cloud와 통합을 쉽게 해주는 Spring Cloud AWS 모듈의 스타터 패키지. 내부적으로는 AWS SDK를 포함.
+	implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+
 }
 
 tasks.withType<Test> {

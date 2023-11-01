@@ -79,12 +79,12 @@ public class ActivityController {
         description = "플로깅 정보를 입력하는 동시에, 리워드를 제공")
     @PostMapping("/{userId}")
     public ResponseEntity<?> writeActivity(@PathVariable(name = "userId") String userId,
-        @RequestPart(name = "activityImg", required = false) MultipartFile activityImg,
+        @RequestPart(name = "activityImg") MultipartFile activityImg,
         @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto){
-        log.info("ActivityController userId : {}, activityImg", userId, activityImg);
-        if (userId == null || activityRequestDto == null) {
+        if (userId == null || activityRequestDto == null || activityImg == null) {
             return badRequest400();
         }
+        log.info("ActivityController userId : {}, activityImg : {}", userId, activityImg);
 
         // 입력
         ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto);
