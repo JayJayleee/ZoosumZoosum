@@ -3,6 +3,9 @@ package com.addShot.zoosum.domain.activity.service;
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.MissionResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.ScoreResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.SeedResponseDto;
 import com.addShot.zoosum.domain.activity.repository.ActivityRepository;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
@@ -130,7 +133,9 @@ public class ActivityServiceImpl implements ActivityService {
         log.info("writeActivityAndReward result : {}", resultMap);
 
         log.info("DTO 변환");
-        Mission mission = (Mission) resultMap.get("mission");
+        List<MissionResponseDto> missionList = new ArrayList<>();
+        missionList.add((MissionResponseDto) resultMap.get("missionResponseDto"));
+
         MissionReward missionReward = (MissionReward) resultMap.get("missionReward");
 
         List<ItemResponseDto> islandList = new ArrayList<>();
@@ -148,9 +153,10 @@ public class ActivityServiceImpl implements ActivityService {
             animalList.add(animalMotion.toResponseDto());
         }
 
-        UserPlogInfo userPlogInfo = (UserPlogInfo) resultMap.get("userPlogInfo");
-        Integer addSeed = (Integer) resultMap.get("addSeed");
-        Integer addScore = (Integer) resultMap.get("addScore");
+        List<SeedResponseDto> seedList = new ArrayList<>();
+        List<ScoreResponseDto> scoreList = new ArrayList<>();
+        seedList.add(new SeedResponseDto((Integer) resultMap.get("addSeed")));
+        scoreList.add(new ScoreResponseDto((Integer) resultMap.get("addScore")));
 
         List<UserBadgeResponseDto> userBadgeList = new ArrayList<>();
         for (UserBadge userBadge : (List<UserBadge>) resultMap.get("newBadgeList")) {
@@ -159,16 +165,12 @@ public class ActivityServiceImpl implements ActivityService {
 
         // ResponseDto 로 변환
         ActivityRewardResponseDto responseDto = ActivityRewardResponseDto.builder()
-            .missionLength(mission.getMissionLength())
-            .missionTime(mission.getMissionTime())
-            .missionTrash(mission.getMissionTrash())
+            .missionList(missionList)
             .islandList(islandList)
             .treeList(treeList)
             .animalList(animalList)
-            .addSeed(addSeed)
-            .totalSeed(userPlogInfo.getSeed())
-            .addScore(addScore)
-            .totalScore(userPlogInfo.getScore())
+            .seedList(seedList)
+            .scoreList(scoreList)
             .userBadgeList(userBadgeList)
             .build();
         return responseDto;
@@ -227,12 +229,21 @@ public class ActivityServiceImpl implements ActivityService {
         Integer missionLength = originMission.getMissionLength() + requestLength;
         Integer missionTime = originMission.getMissionTime() + requestTime;
         Integer missionTrash = originMission.getMissionTrash() + requestTrash;
+        log.info("updateUserPlogInfo missionLength : {}, missionTime : {}, missionTrash : {}",
+            missionLength, missionTime, missionTrash);
         Mission mission = updateMission(missionLength, missionTime, missionTrash);
+
+        MissionResponseDto missionResponseDto = MissionResponseDto.builder()
+            .missionLength(missionLength / ActivityLimit.LENGTH_DIVIDE / ActivityLimit.TEN)
+            .missionTime(missionTime / ActivityLimit.TIME_DIVIDE / ActivityLimit.HUNDRED)
+            .missionTrash(missionTrash / ActivityLimit.HUNDRED)
+            .build();
 
         // 리워드 계산
         int mTrashQ = missionTrash / ActivityLimit.TRASH;   // 쓰레기 수 몫
 
         resultMap.put("mission", mission);
+        resultMap.put("missionResponseDto", missionResponseDto);
         resultMap.put("missionReward", missionReward(user, missionLength, missionTime, missionTrash));
         resultMap.put("addSeed", mTrashQ);
 
@@ -431,7 +442,7 @@ public class ActivityServiceImpl implements ActivityService {
         int sumLength = userInfo.getSumPloggingData().getSumLength() / ActivityLimit.LENGTH_DIVIDE;
         int sumTime = userInfo.getSumPloggingData().getSumTime() / ActivityLimit.TIME_DIVIDE;
         int sumTrash = userInfo.getSumPloggingData().getSumTrash();
-        log.info("{}, {}, {}", sumLength, sumTime, sumTrash);
+        log.info("{}km, {}분, {}개", sumLength, sumTime, sumTrash);
 
 
         // 내가 갖지 않은 뱃지를 순회하며, 내가 가질 자격이 있는 뱃지는 badgeGet을 1로 바꾸고, resultMap에 저장한다.

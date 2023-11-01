@@ -2,6 +2,9 @@ package com.addShot.zoosum.util.activity;
 
 public class ActivityLimit {
 
+    public static final float TEN = 10f;
+    public static final float HUNDRED = 100f;
+
     /**
      * 길이(m) 10km -> 섬
      */
