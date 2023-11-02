@@ -1,25 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AppText from '@/components/ui/Text';
-
-
-interface AnimalCardProps {
+interface PickTreeCardProps {
   id : string,
   title : string,
-  imgURI : string,
+  imgurl : string,
 }
 
-export default function AnimalCard({title, imgURI}: AnimalCardProps) {
+export default function PickTreeCard({title, imgurl}: PickTreeCardProps) {
   return (
     <View style={styles.card}>
       <TouchableOpacity style={styles.card}>
-        <View style={styles.circle}>
-          <Image style={styles.image} source={{uri : imgURI }} />
-        </View>
-        <AppText style={styles.title}>{title}</AppText>
+        <Image style={styles.image} source={{uri : imgurl }} />
+        <Text style={styles.title} numberOfLines={1}>{title}</Text>
       </TouchableOpacity>
-      
-
     </View>
   );
 };
@@ -42,14 +36,5 @@ const styles = StyleSheet.create({
   image: {
     height : 100,
     width : 100,
-  },
-  circle: {
-    width : 90,
-    height : 90,
-    flex :1,
-    justifyContent : 'center',
-    alignItems : 'center',
-    backgroundColor : '#FFD7D7',
-    borderRadius : 100,
   }
 });

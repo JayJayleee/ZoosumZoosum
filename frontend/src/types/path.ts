@@ -1,7 +1,6 @@
 // navigation 사용 시 필요한 타입을 모아둔 페이지
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import RankingPage from './../pages/RankingPage/index';
 
 
 // 해당 리스트는 각 페이지 네임에 해당하는 route 받을 때 그 route를 통해 전달하는 params의 타입을 의미함. 아무것도 안 줄 거면 일단 UNDEFINED
@@ -22,6 +21,8 @@ export type RootStackParamList = {
     userId: string;
   };
   Ranking: undefined;
+  PickIsland : undefined;
+  PickTree : undefined;
 };
 
 export type LoginScreenProps = NativeStackScreenProps<
@@ -81,4 +82,14 @@ export type ProfilescreenProps = NativeStackScreenProps<
 export type RankingScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'Ranking'
+>;
+
+export type PickIslandScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'PickIsland'
+>;
+
+export type PickTreeScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'PickTree'
 >;
