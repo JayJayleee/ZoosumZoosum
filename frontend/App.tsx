@@ -11,6 +11,10 @@ enableScreens();
 // type 가져오기
 import {RootStackParamList} from 'typePath';
 
+// api 호출을 위한 queryClient, QueryClientProvider 추가
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+
 //page 가져오기
 import MainPage from '@/pages/MainPage';
 import PloggingPage from '@/pages/PloggingPage';
@@ -29,36 +33,43 @@ import RankingPage from '@/pages/RankingPage';
 import ItemListPage from '@/pages/ItemListPage'
 import PickIslandPage from '@/pages/PickIslandPage';
 import PickTreePage from '@/pages/PickITreePage';
-
+import FriendDetailPage from '@/pages/FriendDetailPage';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
+// QueryClient 선언 
+const queryClient = new QueryClient()
+
 
 function App() {
   return (
-    <NavigationContainer>
-      {/* initialRouteName 는 가장 처음 나타나는 화면을 의미한다 */}
-      <Stack.Navigator
-        initialRouteName="Login"
-        // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
-        screenOptions={{headerShown: false}}
-      >
-        <Stack.Screen name="Login" component={LoginPage} />
-        <Stack.Screen name="Main" component={MainPage} />
-        <Stack.Screen name="Plogging" component={PloggingPage} />
-        <Stack.Screen name="PloggingResult" component={PloggingResultPage} />
-        <Stack.Screen name="Camera" component={CameraPage} />
-        <Stack.Screen name="FriendList" component={FriendListPage} />
-        <Stack.Screen name="UserInfo" component={UserInfoPage} />
-        <Stack.Screen name="PickFriend" component={PickFriendPage} />
-        <Stack.Screen name="PickPloggingFriend" component={PickPloggingFriendPage}/>
-        <Stack.Screen name="ItemList" component={ItemListPage} />
-        <Stack.Screen name="Profile" component={ProfilePage} />
-        <Stack.Screen name="Ranking" component={RankingPage} />
-        <Stack.Screen name="PickIsland" component={PickIslandPage} />
-        <Stack.Screen name="PickTree" component={PickTreePage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
+        {/* initialRouteName 는 가장 처음 나타나는 화면을 의미한다 */}
+        <Stack.Navigator
+          initialRouteName="FriendDetail"
+          // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
+          screenOptions={{headerShown: false}}
+        >
+          <Stack.Screen name="Login" component={LoginPage} />
+          <Stack.Screen name="Main" component={MainPage} />
+          <Stack.Screen name="Plogging" component={PloggingPage} />
+          <Stack.Screen name="PloggingResult" component={PloggingResultPage} />
+          <Stack.Screen name="Camera" component={CameraPage} />
+          <Stack.Screen name="FriendList" component={FriendListPage} />
+          <Stack.Screen name="UserInfo" component={UserInfoPage} />
+          <Stack.Screen name="PickFriend" component={PickFriendPage} />
+          <Stack.Screen name="PickPloggingFriend" component={PickPloggingFriendPage}/>
+          <Stack.Screen name="ItemList" component={ItemListPage} />
+          <Stack.Screen name="Profile" component={ProfilePage} />
+          <Stack.Screen name="Ranking" component={RankingPage} />
+          <Stack.Screen name="PickIsland" component={PickIslandPage} />
+          <Stack.Screen name="PickTree" component={PickTreePage} />
+          <Stack.Screen name="FriendDetail" component={FriendDetailPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </QueryClientProvider>
+    
   );
 }
 export default App;
