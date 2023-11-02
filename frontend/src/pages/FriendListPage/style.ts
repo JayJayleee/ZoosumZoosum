@@ -49,31 +49,6 @@ const styles = StyleSheet.create({
     height : '100%',
     marginTop : 10,
   },
-  button : {
-    width : 200,
-    height : 50,
-    justifyContent : 'center',
-    alignItems : 'center',
-    backgroundColor : '#34D399',
-    borderRadius : 15,
-    position : 'absolute',
-    top : '85%',
-  },
-  button_select : {
-    width : 150,
-    height : 40,
-    backgroundColor : '#F1B0B0',
-    borderRadius : 10,
-    padding : 10,
-    marginBottom :10,
-    justifyContent : 'center',
-    alignItems : 'center'
-  },
-  button_text : {
-    color : 'white',
-    fontSize : 15,
-    fontWeight : "600",
-  },
   hiddenCard: {
     width: 115,
     height: 130,
