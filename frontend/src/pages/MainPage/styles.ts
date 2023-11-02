@@ -10,29 +10,64 @@ const styles = StyleSheet.create({
   },
   upperStatus: {
     height: 50,
-    borderColor: 'black',
-    borderWidth: 1,
-    justifyContent: 'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
+  },
+  statusBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    top: 10,
+    width: 85,
+    height: 25,
+    borderRadius: 7,
   },
   banner: {
     height: 100,
-    borderColor: 'blue',
-    borderWidth: 1,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  bannerBox: {
+    width: 200,
+    height: 70,
+    paddingRight: 10,
+    backgroundColor: 'rgba(33, 148, 93, 0.3)',
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   buttonToggle :{
     height: 90,
-    borderColor: 'blakc',
-    borderWidth: 1,
+    paddingTop: 20,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  toggleButton: {
+    position: 'absolute',
+    right: 10,
+  },
+  toggleBtnImage:{
+    width: 60,
+    height: 60,
+  },
+  toggleBtnText: {
+    color: 'white',
+    fontSize : 11,
+  },
+  toggleMoveButton: {
+    position: 'absolute',
+    top: -50,
+    left: 115,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   centerImage: {
     height: 500,
-    borderColor: 'red',
-    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -89,6 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
 })
 
 export default styles;

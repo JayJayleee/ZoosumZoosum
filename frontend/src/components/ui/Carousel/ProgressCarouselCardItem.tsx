@@ -26,7 +26,7 @@ export function ProgressCarouselCardItem({
     <View style={styles.container}>
       <AppText style={styles.progressHeader}>오늘의 플로깅 결과는?!</AppText>
       <View style={styles.progressContainer}>
-        <AnimatedProgressCircle progress={0.75} />
+        <AnimatedProgressCircle progress={1.2} />
         <AppText style={styles.body}>쓰레기 수</AppText>
       </View>
       <View style={styles.doubleprogressContainer}>

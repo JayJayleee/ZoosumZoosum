@@ -1,11 +1,12 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import AppText from '../Text';
 
 type ButtonProps = {
   children?: string;
-  variant?: 'default' | 'primary' | 'pickfriend'|'gotoisland' | "selectLeft" | 'selectRight';
+
+  variant?: 'default' | 'primary' | 'pickfriend'|'gotoisland' | "selectLeft" | 'selectRight' | 'carouselBtn' | 'picnic' ;
   onPress: () => void;
 };
 
@@ -32,6 +33,14 @@ export default function AppButton({
       variantStyle = styles.primary;
       textStyle = styles.defaultText;
       break;
+    case 'animalName':
+      variantStyle = styles.animalName;
+      textStyle = styles.animalNameText;
+      break;
+    case 'carouselBtn':
+      variantStyle = styles.carouselBtn;
+      textStyle = styles.animalNameText;
+      break;
     case 'pickfriend':
       variantStyle = styles.pickfriend;
       textStyle = styles.pickfriendText;
@@ -40,6 +49,7 @@ export default function AppButton({
       variantStyle = styles.gotoisland;
       textStyle = styles.gotoislandText;
       break;
+
     case 'selectLeft':
       variantStyle = styles.selectLeft;
       textStyle = styles.selectLeftText;
@@ -47,6 +57,11 @@ export default function AppButton({
     case 'selectRight':
       variantStyle = styles.selectRight;
       textStyle = styles.selectRightText;
+
+    case 'picnic':
+      variantStyle = styles.picnic;
+      textStyle = styles.picnicText;
+
       break;
   }
 

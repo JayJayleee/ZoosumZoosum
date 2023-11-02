@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = "https://zoosum.co.kr/api"
+const BASE_URL = 'https://zoosum.co.kr/api';
 
 // storage에 저장된 token 가져오기(get)
 export const getStorage = async (key: string) => {
@@ -43,7 +43,7 @@ const request = async (path: string, init?: RequestInit, json = true) => {
   const response = await fetch(`${BASE_URL}${path}`, {
     ...init,
     headers: {
-      ...(json && { "Content-Type": "application/json" }),
+      ...(json && {'Content-Type': 'application/json'}),
       ...init?.headers,
     },
   });
@@ -52,27 +52,42 @@ const request = async (path: string, init?: RequestInit, json = true) => {
 
 // api
 export const api = {
-  get: <T = unknown>(path: string, init?: RequestInit) => 
-    request(path, init).then<T>((response) => response.json()),
+  get: <T = unknown>(path: string, init?: RequestInit) =>
+    request(path, init).then<T>(response => response.json()),
 
   put: <T = unknown>(path: string, payload?: T, init?: RequestInit) =>
     request(path, {
       headers: init?.headers,
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(payload),
     }),
 
   post: <T = unknown>(path: string, payload?: T, init?: RequestInit) =>
     request(path, {
       headers: init?.headers,
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(payload),
     }),
 
-  delete: <T = unknown>(path: string, payload?: T, init?: RequestInit) => 
+  delete: <T = unknown>(path: string, payload?: T, init?: RequestInit) =>
     request(path, {
       headers: init?.headers,
-      method: "DELETE",
+      method: 'DELETE',
       body: JSON.stringify(payload),
-    })
-}
+    }),
+
+  // postPhoto: (path: string, photo: File, init?: RequestInit) => {
+  //   const formData = new FormData();
+  //   formData.append("file", photo);
+
+  //   return request(
+  //     path,
+  //     {
+  //       headers: init?.headers,
+  //       method: "POST",
+  //       body: formData,
+  //     },
+  //     false
+  //   );
+  // },
+};

@@ -1,6 +1,11 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
+import { RankingScreenProps } from '@/types/path';
 
-export default function RankingPage() {
-  return <View>index</View>;
+export default function RankingPage({navigation}: RankingScreenProps) {
+  return (
+  <View>
+    <Text>여기는 랭킹 페이지입니다.</Text>
+  </View>
+  );
 }

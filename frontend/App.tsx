@@ -23,6 +23,8 @@ import UserInfoPage from '@/pages/UserInfoPage';
 import FriendListPage from '@/pages/FriendListPage';
 import PickFriendPage from '@/pages/PickFriendPage';
 import PickPloggingFriendPage from '@/pages/PickPloggingFriendPage';
+import ProfilePage from '@/pages/ProfilePage';
+import RankingPage from '@/pages/RankingPage';
 
 import ItemListPage from '@/pages/ItemListPage'
 
@@ -46,11 +48,10 @@ function App() {
         <Stack.Screen name="FriendList" component={FriendListPage} />
         <Stack.Screen name="UserInfo" component={UserInfoPage} />
         <Stack.Screen name="PickFriend" component={PickFriendPage} />
-        <Stack.Screen
-          name="PickPloggingFriend"
-          component={PickPloggingFriendPage}
-        />
+        <Stack.Screen name="PickPloggingFriend" component={PickPloggingFriendPage}/>
         <Stack.Screen name="ItemList" component={ItemListPage} />
+        <Stack.Screen name="Profile" component={ProfilePage} />
+        <Stack.Screen name="Ranking" component={RankingPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

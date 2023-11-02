@@ -21,36 +21,57 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     height: 40,
   },
-  pickfriend :{
+  animalName: {
+    width: 170,
+    backgroundColor: '#7ED3A1',
+    borderRadius: 30,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animalNameText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+  },
+  carouselBtn: {
+    width: 300,
+    backgroundColor: '#7ED3A1',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pickfriend: {
     width: '30%',
     backgroundColor: '#F1B0B0',
     borderRadius: 8,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    padding : 10,
-    marginBottom :10,
+    padding: 10,
+    marginBottom: 10,
   },
-  pickfriendText :{
+  pickfriendText: {
     color: 'white',
     fontFamily: 'NPSfont_regular',
-    fontSize : 15,
+    fontSize: 15,
   },
-  gotoisland :{
+  gotoisland: {
     width: '50%',
     backgroundColor: '#34D399',
     borderRadius: 8,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    position : 'absolute',
-    top : '85%',
+    position: 'absolute',
+    top: '85%',
   },
-  gotoislandText :{
+  gotoislandText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
     fontSize : 20,
   },
+
   selectLeft: {
     width: '30%',
     backgroundColor: '#ECA3A3',
@@ -76,5 +97,18 @@ export const styles = StyleSheet.create({
   selectRightText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
+
+  picnic: {
+    width: '60%',
+    backgroundColor: '#34D399',
+    borderRadius: 20,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  picnicText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize : 22,
   },
 });
