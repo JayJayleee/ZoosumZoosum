@@ -1,18 +1,16 @@
-import {api, Header} from './index'
+import {api, Header} from './index';
 
-type AnimalList = {
-  animalList: Array<Animal>;
-}
+// type AnimalList = {
+//   animalList: Array<Animal>;
+// };
 
 type Animal = {
-  animalId : number,
-  animalName : string,
-  fileUrl : string,
-  selected : boolean,
-}
-
+  animalId: number;
+  animalName: string;
+  fileUrl: string;
+  selected: boolean;
+};
 
 export const fetchMyAnimalListInfo = async () => {
-  return await api.get<AnimalList>("/animal/id001", Header())
-}
-
+  return await api.get<Animal[]>('/animal/id001', await Header());
+};
