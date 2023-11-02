@@ -47,7 +47,7 @@ function App() {
       <NavigationContainer>
         {/* initialRouteName 는 가장 처음 나타나는 화면을 의미한다 */}
         <Stack.Navigator
-          initialRouteName="FriendDetail"
+          initialRouteName="Login"
           // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
           screenOptions={{headerShown: false}}
         >
