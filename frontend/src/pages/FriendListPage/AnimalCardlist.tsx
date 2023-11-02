@@ -1,34 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, FlatList } from 'react-native';
 import AnimalCard from './AnimalCard';
 import styles from './style';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchMyAnimalListInfo } from '@/apis/animal';
 
-interface DataItem {
-  id : string,
-  title : string,
-  imgurl : string,
+type Animal = {
+  animalId : number,
+  animalName : string,
+  fileUrl : string,
+  selected : boolean,
 }
 
-const data: DataItem[] = [
-  { id: '1', title: '송송이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/ArcticFox/ArcticFox_0.png' },
-  { id: '2', title: '불불이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Ox/Ox_0.png' },
-  { id: '3', title: '핑구', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Penguin/Penguin_0.png' },
-  { id: '4', title: '당당이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Pinedeer/Pinedeer_0.png' },
-  { id: '5', title: '은빛이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/SnowWeasel/SnowWeasel_0.png' },
-  { id: '6', title: '코코', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/SnowOwl/SnowOwl_0.png' },
-  { id: '7', title: '뚜이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Buffalo/Buffalo_0.png' },
-  { id: '8', title: '삐약이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Chick/Chick_0.png' },
-  { id: '9', title: '밀키', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Cow/Cow_0.png' },
-  { id: '10', title: '동키', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Donkey/Donkey_0.png' },
-  { id: '11', title: '꽥꽥이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Duck/Duck_0.png' },
-  // { id: '12', title: '토실이', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Pig/Pig_0.png' },
-
-
-  // 다른 카드 항목 추가
-];
+type AnimalList = {
+  animalList : Animal[]
+}
 const targetNumColumns = 3; // 원하는 열의 수
 
 export default function AnimalCardlist() {
+
+  //React-Query 클라이언트 인스턴스 정의
+  const queryClient = useQueryClient();
+  // 상태 감지를 위한 useState
+  const [animals, setanimals] = useState<Animal[]>([]);
+
+  // api 호출
+  const { isError: isAnimalListError, error: animallistError } = useQuery<AnimalList, Error>( 
+  "AnimalKey", // 고정된 쿼리 키 써주기.
+  fetchMyAnimalListInfo, //걍 api 냅다 호출
+  {
+    onSuccess: (data) => {
+      setanimals(data.animalList);
+    },
+  }
+)
   // 3열 배열을 지정하기 위한 변수 선언
   const totalCards = data.length;
   const numColumns = Math.min(targetNumColumns, Math.ceil(totalCards / targetNumColumns));
