@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   logoImage: {
     marginBottom: 10
   },
-  hiddeneLoginButton: {
+  hiddenLoginButton: {
     opacity: 0,
     justifyContent: 'center',
     alignItems: 'center',

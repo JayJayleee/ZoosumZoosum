@@ -33,8 +33,8 @@ export default function LoginPage({navigation}: LoginScreenProps) {
   }
 
   // 로그인 버튼 컴포넌트
-  const LoginButton = <View style={isClicked? styles.showLoginButton: styles.hiddeneLoginButton}>
-    <KakaoLoginButton movePage={MovePage}/>
+  const LoginButton = <View style={isClicked? styles.showLoginButton: styles.hiddenLoginButton}>
+    <KakaoLoginButton moveUserInfoPage={MovePage} moveMainPage={() => navigation.navigate('Main')} checkState={isClicked} setState={setIsClicked} />
     {/* <NaverLoginButton /> */}
   </View>
 
