@@ -38,17 +38,17 @@ public class UserBadge {
     @Column(name = "badge_get", columnDefinition = "TINYINT DEFAULT 0", nullable = false)
     private Boolean badgeGet;
 
-    @Column(name = "create_time", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
-    private LocalDateTime createTime;
+    @Column(name = "get_time", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
+    private LocalDateTime getTime;
 
     @Builder
     public UserBadge(UserBadgeId id, User user, Badge badge, Boolean badgeGet,
-        LocalDateTime createTime) {
+        LocalDateTime getTime) {
         this.id = id;
         this.user = user;
         this.badge = badge;
         this.badgeGet = badgeGet;
-        this.createTime = createTime;
+        this.getTime = getTime;
     }
 
     @Override
@@ -63,12 +63,12 @@ public class UserBadge {
         return Objects.equals(id, userBadge.id) && Objects.equals(user,
             userBadge.user) && Objects.equals(badge, userBadge.badge)
             && Objects.equals(badgeGet, userBadge.badgeGet) && Objects.equals(
-            createTime, userBadge.createTime);
+            getTime, userBadge.getTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, badge, badgeGet, createTime);
+        return Objects.hash(id, user, badge, badgeGet, getTime);
     }
 
     @Override
@@ -78,13 +78,14 @@ public class UserBadge {
             ", user=" + user.getUserId() +
             ", badge=" + badge.getBadgeId() +
             ", badgeGet=" + badgeGet +
-            ", createTime=" + createTime +
+            ", createTime=" + getTime +
             '}';
     }
 
     public void setBadgeGet(boolean b) {
         this.badgeGet = b;
     }
+    public void setGetTime(LocalDateTime l) {this.getTime = l;}
 
     public UserBadgeResponseDto toResponseDto() {
         return UserBadgeResponseDto.builder()
