@@ -1,7 +1,6 @@
 package com.addShot.zoosum.domain.animal.controller;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
-import com.addShot.zoosum.domain.animal.dto.request.MyIslandAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
@@ -44,6 +43,7 @@ public class AnimalController {
 			return ResponseEntity.ok(userAnimalList);
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -60,6 +60,7 @@ public class AnimalController {
 			return ResponseEntity.ok(response);
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -72,6 +73,7 @@ public class AnimalController {
 			return ResponseEntity.ok(response);
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -87,6 +89,7 @@ public class AnimalController {
 			return ResponseEntity.ok(flogAnimalList);
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -101,13 +104,14 @@ public class AnimalController {
 			return ResponseEntity.ok("완료되었습니다.");
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
 
 	//animal 6번 - 섬에 내보낼 동물 선택
 	@PutMapping("/island/{userId}")
-	public ResponseEntity<?> updateUserAnimal(@RequestBody MyIslandAnimalRequest request, @PathVariable String userId) {
+	public ResponseEntity<?> updateUserAnimal(@RequestBody List<Long> request, @PathVariable String userId) {
 		try {
 			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
 			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
@@ -115,6 +119,7 @@ public class AnimalController {
 			return ResponseEntity.ok("완료되었습니다.");
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}

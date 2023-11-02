@@ -14,7 +14,6 @@ import com.addShot.zoosum.domain.userinfo.dto.response.MainInfoResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.MainResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.SelectedAnimalResponse;
-import com.addShot.zoosum.domain.userinfo.dto.response.SelectedItemResponse;
 import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
 import com.addShot.zoosum.entity.ActivityHistory;
 import com.addShot.zoosum.entity.Animal;
@@ -26,12 +25,14 @@ import com.addShot.zoosum.entity.UserBadge;
 import com.addShot.zoosum.entity.UserItem;
 import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.Mission;
+import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.Tree;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
 import com.addShot.zoosum.entity.embedded.UserPlogInfoId;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.RandomUtil;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,8 +59,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public MainResponse getUserMain(String userId) {
 		List<UserAnimal> userAnimals = userAnimalRepository.findAllSelectedByUserId(userId).get();
-
 		List<SelectedAnimalResponse> animalResponses = new ArrayList<>();
+
 		for (UserAnimal ua : userAnimals) {
 			Long animalId = ua.getAnimal().getAnimalId();
 			List<AnimalMotion> animalMotions = animalMotionRepository.findByAnimalId(animalId).get();
@@ -67,9 +68,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 			SelectedAnimalResponse response = SelectedAnimalResponse.builder()
 				.animalId(animalId)
-				.animalName(ua.getUserAnimalName())
 				.fileUrl(randomMotion.getFileUrl())
 				.build();
+
 			animalResponses.add(response);
 		}
 		//섬에 나와있는 동물 리스트 조회
@@ -77,25 +78,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 		UserItem islandItem = userItemRepository.findSelectedItem(userId, ItemType.ISLAND);
 		//섬 테마 조회
 
-		SelectedItemResponse island = SelectedItemResponse.builder()
-			.itemId(islandItem.getItem().getItmeId())
-			.itemName(islandItem.getItem().getItemName())
-			.itemFileUrl(islandItem.getItem().getFileUrl())
-			.build();
-
 		UserItem treeItem = userItemRepository.findSelectedItem(userId, ItemType.TREE);
 		//나무 조회
 
-		SelectedItemResponse tree = SelectedItemResponse.builder()
-			.itemId(treeItem.getItem().getItmeId())
-			.itemName(treeItem.getItem().getItemName())
-			.itemFileUrl(treeItem.getItem().getFileUrl())
-			.build();
-
 		MainResponse response = MainResponse.builder()
+			.userId(userId)
+			.islandUrl(islandItem.getItem().getFileUrl())
+			.treeUrl(treeItem.getItem().getFileUrl())
 			.animalList(animalResponses)
-			.island(island)
-			.tree(tree)
 			.build();
 
 		return response;
@@ -106,7 +96,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
 		List<ActivityHistory> all = activityRepository.findAll();
 		List<ActivityHistory> userActivities = activityRepository.findByUserIdAndActivityType(
-			userId, ActivityType.TREE.toString());
+			userId, ActivityType.TREE);
 
 		Mission mission = userPlogInfo.getMission();
 		MainInfoResponse response = MainInfoResponse.builder()
@@ -150,7 +140,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 			BadgeListItemResponse badgeListItemResponse = BadgeListItemResponse.builder()
 				.badgeId(b.getBadgeId())
-				.userId(userId)
 				.badgeName(b.getBadgeName())
 				.fileUrl(b.getFileUrl())
 				.isHave(isHave)
@@ -176,12 +165,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 		userPlogInfoRepository.save(userPlogInfo);
 
 		//나무 등록
-		Tree tree = new Tree(treeName, userName, userPhone, userEmail);
 		ActivityHistory activity = ActivityHistory.builder()
 			.user(user)
-			.tree(tree)
+			.tree(new Tree(treeName, userName, userPhone, userEmail))
 			.activityType(ActivityType.TREE)
 			.fileUrl("추가 예정")
+			.time(new Time(LocalDateTime.now(), LocalDateTime.now()))
 			.build();
 
 		activityRepository.save(activity);

@@ -1,12 +1,10 @@
 package com.addShot.zoosum.domain.animal.service;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
-import com.addShot.zoosum.domain.animal.dto.request.MyIslandAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
-import com.addShot.zoosum.entity.UserAnimal;
 import java.util.List;
 
 public interface AnimalService {
@@ -48,8 +46,8 @@ public interface AnimalService {
 	/**
 	 * animal 6 - 섬에 내보낼 동물 선택
 	 * @param List<Long> 동물 번호 리스트
-	 * @param userId
+	 * @param String userId
 	 */
-	void updateUserAnimal(MyIslandAnimalRequest request, String userId);
+	void updateUserAnimal(List<Long> request, String userId);
 
 }

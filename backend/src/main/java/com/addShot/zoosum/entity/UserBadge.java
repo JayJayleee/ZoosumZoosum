@@ -32,8 +32,8 @@ public class UserBadge {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("badgeId")
-	@JoinColumn(name = "badge_id")
-	private Badge badge;
+    @JoinColumn(name = "badge_id")
+    private Badge badge;
 
     @Column(name = "badge_get", columnDefinition = "TINYINT DEFAULT 0", nullable = false)
     private Boolean badgeGet;

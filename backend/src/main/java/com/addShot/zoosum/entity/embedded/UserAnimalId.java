@@ -8,12 +8,16 @@ import lombok.NoArgsConstructor;
 
 //유저-동물 복합키 클래스
 @Embeddable
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserAnimalId implements Serializable {
 
 	private String userId;
 	private Long animalId;
+
+	public UserAnimalId() {}
+	public UserAnimalId(String userId, Long animalId) {
+		this.userId = userId;
+		this.animalId = animalId;
+	}
 
 	@Override
 	public boolean equals(Object o) {
