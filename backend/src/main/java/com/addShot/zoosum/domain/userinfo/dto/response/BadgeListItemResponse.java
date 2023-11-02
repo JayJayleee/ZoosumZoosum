@@ -15,5 +15,6 @@ public class BadgeListItemResponse {
 	private String badgeName;
 	private String fileUrl;
 	private boolean isHave;
+	private String badgeCondition;
 
 }

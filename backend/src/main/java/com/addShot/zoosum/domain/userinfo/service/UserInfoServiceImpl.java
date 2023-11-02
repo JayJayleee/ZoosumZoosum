@@ -120,6 +120,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			.sumLength(userPlogInfo.getSumPloggingData().getSumLength())
 			.sumTime(userPlogInfo.getSumPloggingData().getSumTime())
 			.sumTrash(userPlogInfo.getSumPloggingData().getSumTrash())
+			.nickname(userPlogInfo.getUser().getNickname())
 			.build();
 
 		return response;
@@ -143,6 +144,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 				.badgeName(b.getBadgeName())
 				.fileUrl(b.getFileUrl())
 				.isHave(isHave)
+				.badgeCondition(b.getBadgeCondition())
 				.build();
 
 			response.add(badgeListItemResponse);
