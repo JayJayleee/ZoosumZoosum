@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class BadgeListItemResponse {
 
 	private String badgeId;
-	private String userId;
 	private String badgeName;
 	private String fileUrl;
 	private boolean isHave;

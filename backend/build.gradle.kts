@@ -52,6 +52,12 @@ dependencies {
 	implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation ("io.jsonwebtoken:jjwt-impl:0.11.5")
 	implementation ("io.jsonwebtoken:jjwt-jackson:0.11.5")
+	// S3
+	//AWS Cloud와 통합을 쉽게 해주는 Spring Cloud AWS 모듈의 스타터 패키지. 내부적으로는 AWS SDK를 포함.
+	implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+
+	// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+	implementation("javax.xml.bind:jaxb-api:2.3.1")
 
 }
 

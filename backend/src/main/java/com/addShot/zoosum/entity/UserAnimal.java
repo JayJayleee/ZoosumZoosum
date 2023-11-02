@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,12 +28,12 @@ public class UserAnimal {
 	@EmbeddedId
 	private UserAnimalId id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("userId")
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("animalId")
 	@JoinColumn(name = "animal_id")
 	private Animal animal;
@@ -54,5 +55,16 @@ public class UserAnimal {
 
 	@Embedded
 	private Time time;
+
+	public static UserAnimal toEntity(UserAnimalId id, User user, Animal animal, String userAnimalName, Time time) {
+		UserAnimal ua = UserAnimal.builder()
+			.id(id)
+			.user(user)
+			.animal(animal)
+			.userAnimalName(userAnimalName)
+			.time(time)
+			.build();
+		return ua;
+	}
 
 }

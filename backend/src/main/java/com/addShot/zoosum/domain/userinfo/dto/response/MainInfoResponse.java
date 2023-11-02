@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MainInfoResponse {
 
-	private String userId;
 	private int missionLength;
 	private int missionTime;
 	private int missionTrash;

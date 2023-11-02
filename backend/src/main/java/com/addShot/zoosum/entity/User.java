@@ -52,9 +52,9 @@ public class User {
     @Embedded
     private Time time;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY
-        , optional = false)
-    private UserPlogInfo userPlogInfo;
+    public User (String userId) {
+        this.userId = userId;
+    }
 
     public void setNickname(String nickname){
         this.nickname = nickname;

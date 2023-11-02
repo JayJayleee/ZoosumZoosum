@@ -1,9 +1,12 @@
 package com.addShot.zoosum.domain.activity.service;
 
+import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ActivityService {
 
@@ -22,4 +25,13 @@ public interface ActivityService {
      * @return ActivityResponseDto
      */
     ActivityResponseDto certificateDetail(Long activityId);
+
+    /**
+     * 플로깅 기록 및 리워드 반환
+     * @param userId 사용자 ID
+     * @param activityImg 활동 이미지
+     * @param activityRequestDto 플로깅 객체
+     * @return 리워드 객체 반환
+     */
+    ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto);
 }

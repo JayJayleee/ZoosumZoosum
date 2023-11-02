@@ -32,6 +32,7 @@ public class UserInfoController {
 			return ResponseEntity.ok(userInfoService.getUserMain(userId));
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -45,6 +46,7 @@ public class UserInfoController {
 			return ResponseEntity.ok(userInfoService.getUserInfoMain(userId));
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -59,6 +61,7 @@ public class UserInfoController {
 			return ResponseEntity.ok(record);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -73,6 +76,7 @@ public class UserInfoController {
 			return ResponseEntity.ok(userBadgeList);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}
@@ -85,6 +89,7 @@ public class UserInfoController {
 			return ResponseEntity.ok("완료되었습니다.");
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
 		}
 	}

@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class SelectedAnimalResponse {
 
 	private Long animalId;
-	private String animalName;
 	private String fileUrl;
 
 }

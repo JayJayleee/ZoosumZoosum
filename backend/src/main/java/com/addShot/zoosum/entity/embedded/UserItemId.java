@@ -4,9 +4,12 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 //유저-아이템 복합키 클래스
+@Getter @Setter
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor

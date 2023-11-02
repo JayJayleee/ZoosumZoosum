@@ -1,5 +1,6 @@
 package com.addShot.zoosum.entity;
 
+import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
 import com.addShot.zoosum.entity.enums.MotionCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-@Table(name = "animal")
+@Table(name = "animal_motion")
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnimalMotion {
@@ -38,5 +39,14 @@ public class AnimalMotion {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "animal_id")
 	private Animal animal; //단방향
+
+	public AnimalDrawResponse toResponseDto() {
+		return AnimalDrawResponse.builder()
+			.animalId(this.getAnimal().getAnimalId())
+			.animalName(this.getAnimal().getAnimalName())
+			.description(this.getAnimal().getDescription())
+			.fileUrl(this.getFileUrl())
+			.build();
+	}
 
 }

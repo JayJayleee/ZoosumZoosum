@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MainResponse {
 
-	private SelectedItemResponse island;
-	private SelectedItemResponse tree;
+	private String userId;
+	private String islandUrl;
+	private String treeUrl;
 	private List<SelectedAnimalResponse> animalList;
 
 }
