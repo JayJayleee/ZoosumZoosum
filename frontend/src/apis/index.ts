@@ -32,7 +32,7 @@ export const containStorage = async (key: string) => {
 // api header
 export const Header = async () => ({
   headers: {
-    Authorization: `Bearer ${await getStorage('Accesstoken')}`,
+    Authorization: `Bearer ${await getStorage('AccessToken')}`,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Credentials': 'true',
   },
