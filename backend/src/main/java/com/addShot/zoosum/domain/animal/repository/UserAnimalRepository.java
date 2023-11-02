@@ -25,12 +25,12 @@ public interface UserAnimalRepository extends JpaRepository<UserAnimal, UserAnim
 
 	//기존에 섬에 선택되어 있던 애들 제거
 	@Modifying
-	@Query("update UserAnimal ua set ua.selected = false where ua.selected=true")
-	void updateUserAnimalToOut();
+	@Query("update UserAnimal ua set ua.selected = false where ua.selected=true and ua.user.userId=:userId")
+	void updateUserAnimalToOut(@Param("userId") String userId);
 
 	//새로운 애들 섬에 추가
 	@Modifying
-	@Query("update UserAnimal ua set ua.selected = true where ua.animal.animalId in :animalIds")
-	void updateUserAnimalToIn(@Param("animalIds") List<Long> animalIds);
+	@Query("update UserAnimal ua set ua.selected = true where ua.user.userId =:userId and ua.animal.animalId in :animalIds")
+	void updateUserAnimalToIn(@Param("userId") String userId, @Param("animalIds") List<Long> animalIds);
 
 }

@@ -150,8 +150,8 @@ public class AnimalServiceImpl implements AnimalService {
 	@Override
 	@Transactional
 	public void updateUserAnimal(List<Long> request, String userId) {
-		userAnimalRepository.updateUserAnimalToOut(); //이미 선택되어 있는 애들 false로
-		userAnimalRepository.updateUserAnimalToIn(request); //새로운 애들 true로
+		userAnimalRepository.updateUserAnimalToOut(userId); //이미 선택되어 있는 애들 false로
+		userAnimalRepository.updateUserAnimalToIn(userId, request); //새로운 애들 true로
 	}
 
 
