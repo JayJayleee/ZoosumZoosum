@@ -71,6 +71,20 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize : 20,
   },
+
+  selectItem: {
+    width: '30%',
+    backgroundColor: '#ECA3A3',
+    borderRadius: 8,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal : 10,
+  },
+  selectItemText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+  },
   picnic: {
     width: '60%',
     backgroundColor: '#34D399',

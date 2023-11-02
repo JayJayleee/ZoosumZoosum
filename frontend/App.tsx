@@ -26,6 +26,8 @@ import PickPloggingFriendPage from '@/pages/PickPloggingFriendPage';
 import ProfilePage from '@/pages/ProfilePage';
 import RankingPage from '@/pages/RankingPage';
 
+import ItemListPage from '@/pages/ItemListPage'
+
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -34,7 +36,7 @@ function App() {
     <NavigationContainer>
       {/* initialRouteName 는 가장 처음 나타나는 화면을 의미한다 */}
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="ItemList"
         // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
         // screenOptions={{headerShown: false}}
       >
@@ -46,10 +48,8 @@ function App() {
         <Stack.Screen name="FriendList" component={FriendListPage} />
         <Stack.Screen name="UserInfo" component={UserInfoPage} />
         <Stack.Screen name="PickFriend" component={PickFriendPage} />
-        <Stack.Screen
-          name="PickPloggingFriend"
-          component={PickPloggingFriendPage}
-        />
+        <Stack.Screen name="PickPloggingFriend" component={PickPloggingFriendPage}/>
+        <Stack.Screen name="ItemList" component={ItemListPage} />
         <Stack.Screen name="Profile" component={ProfilePage} />
         <Stack.Screen name="Ranking" component={RankingPage} />
       </Stack.Navigator>

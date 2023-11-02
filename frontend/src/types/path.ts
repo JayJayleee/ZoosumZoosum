@@ -17,6 +17,7 @@ export type RootStackParamList = {
   UserInfo: undefined;
   PickFriend : undefined;
   PickPloggingFriend: undefined;
+  ItemList : undefined;
   Profile: {
     userId: string;
   };
@@ -68,6 +69,10 @@ export type PickPloggingFriendscreenProps = NativeStackScreenProps<
   'PickPloggingFriend'
 >;
 
+export type ItemListscreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ItemList'
+> ;
 export type ProfilescreenProps = NativeStackScreenProps<
   RootStackParamList,
   'Profile'
