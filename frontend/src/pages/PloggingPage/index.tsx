@@ -1,17 +1,19 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
-  Button,
   View,
-  Text,
   Image,
   TouchableOpacity,
   ImageBackground,
+  FlatList,
+  SafeAreaView,
 } from 'react-native';
 import {PloggingScreenProps} from 'typePath';
+import {TrashList} from '@/types/plogging';
 import ModalComponent from '@/components/ui/Modal';
 import {styles} from './styles';
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
+import {DATA} from './TrashImageList';
 // import {StyleSheet} from 'react-native';
 
 export default function PloggingPage({navigation, route}: PloggingScreenProps) {
@@ -62,6 +64,22 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     navigation.navigate('PloggingResult');
   };
 
+  // Item List
+
+  const Item = ({title, img}: TrashList) => (
+    <View style={{width: 120, justifyContent: 'center', alignItems: 'center'}}>
+      <Image
+        style={{height: 100, aspectRatio: 1, resizeMode: 'contain'}}
+        source={img}
+      />
+      <AppText style={{color: 'black', fontSize: 14, marginTop: 5}}>
+        {title}
+      </AppText>
+    </View>
+  );
+
+  const numColumns = 2;
+
   return (
     <View style={{flex: 1}}>
       <ModalComponent
@@ -69,9 +87,24 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         onClose={() => setModalVisible(false)}
         onRequestClose={() => setModalVisible(false)}
         buttonInnerText={'닫기'}>
-        <View>
-          <Text>여기는 모달</Text>
-        </View>
+        <AppText
+          style={{
+            color: 'black',
+            fontFamily: 'NPSfont_bold',
+            fontSize: 25,
+            marginBottom: 15,
+          }}>
+          방금 주운 쓰레기
+        </AppText>
+        <FlatList
+          data={DATA}
+          columnWrapperStyle={{
+            justifyContent: 'space-between',
+          }}
+          renderItem={({item}) => <Item title={item.title} img={item.img} />}
+          keyExtractor={(_, index) => index.toString()}
+          numColumns={numColumns}
+        />
       </ModalComponent>
 
       <View style={styles.container}>

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Animated, Easing} from 'react-native';
 import styles from './styles';
-import {EffectProps} from '@/apis/plogging';
+import {EffectProps} from '@/types/plogging';
 
 // 빛나는 효과만 따로 빼둔 컴포넌트임. duration으로 속도 수정 가능
 export function ShiningEffect(props: EffectProps) {

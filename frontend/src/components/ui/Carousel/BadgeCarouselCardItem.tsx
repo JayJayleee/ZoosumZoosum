@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Image} from 'react-native';
 import AppText from '../Text';
 import {ShiningEffect} from './ShiningEffect';
-import {CarouselCardItemProps} from '@/apis/plogging';
+import {CarouselCardItemProps} from '@/types/plogging';
 
 import styles from './styles';
 
