@@ -1,9 +1,13 @@
 import { Image, TouchableOpacity } from "react-native"
 import * as KakaoLogin from '@react-native-seoul/kakao-login'
+import { getStorage } from '@/apis/index';
 
 // 로그인 페이지에서 전달받은 함수를 타입을 정의
 interface PropsType {
-  movePage: () => void;
+  moveUserInfoPage: () => void;
+  moveMainPage: () => void;
+  checkState: boolean;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // 프로필을 통해 얻은 id와 이메일의 타입을 정의
@@ -12,11 +16,19 @@ interface ProfileType {
   email: String;
 }
 
-export default function KakaoLoginButton({movePage}: PropsType) {
+export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkState, setState}: PropsType) {
 
-  const isFirstLogin =async ({id, email}: ProfileType) => {
+  const checkLoginState = () => {
+    if (getStorage("Accesstoken") !== null) {
+      moveMainPage();
+    } else {
+      setState(true);
+    }
+  }
+
+  const isFirstLogin = async ({id, email}: ProfileType) => {
     console.log("전달받은 데이터 :", JSON.stringify({socialType: "kakao", id, email}))
-    movePage();
+    moveUserInfoPage();
   }
 
   // 카카오 로그인 성공 시, 해당 계정의 id와 이메일을 가져오는 함수
@@ -45,7 +57,7 @@ export default function KakaoLoginButton({movePage}: PropsType) {
 
   return (
   // 카카오 로그인 버튼 컴포넌트로 이미지를 클릭했을 때 효과를 넣기 위해 TouchableOpacity로 감싸놓음
-  <TouchableOpacity onPress={() => KakaoLoginHandler()}>
+  <TouchableOpacity onPress={checkState? () => KakaoLoginHandler() : () => checkLoginState()}>
     <Image source={require("@/assets/loginpage_image/kakao_login_button.png")}/>
   </TouchableOpacity>
   )

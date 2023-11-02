@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Button, View, Text, Image, ImageBackground, StyleSheet, Animated, TouchableOpacity } from 'react-native';
+import { View, Image, ImageBackground, StyleSheet, Animated, TouchableOpacity, Modal, BackHandler } from 'react-native';
 import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
@@ -14,6 +14,42 @@ type timeObj = {
 
 export default function MainPage({navigation}: MainScreenProps) {
 
+  // 뒤로가기 클릭 시, 앱 종료 여부를 묻는 모달 생성
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+
+  const exitFtn = () => {
+    BackHandler.exitApp();
+    navigation.navigate('Login');
+    return true;
+  }
+
+  const appCloseModal = <Modal animationType='slide' visible={isModalVisible} onRequestClose={() => setModalVisible(false)} >
+    <View>
+      <AppText children="앱을 종료하시겠습니까?" />
+      <View>
+      <AppButton children='확인' onPress={exitFtn} />
+      <AppButton children='취소' onPress={() => setModalVisible(false)} />
+      </View>  
+    </View>
+  </Modal>
+
+  // 뒤로 가기 클릭 시 종료 여부 묻도록 설정
+  useEffect(() => {
+    const backAction = () => {
+      if (navigation.isFocused()) {
+        setModalVisible(true);
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => {
+      backHandler.remove();
+    }
+  }, [])
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);
   const [getTime, setTime] = useState<timeObj>({
@@ -78,6 +114,7 @@ export default function MainPage({navigation}: MainScreenProps) {
 
   return (
     <ImageBackground source={require("@/assets/mainpage_image/Background.png")} style={StyleSheet.absoluteFill}>
+      {isModalVisible && appCloseModal}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
           <Image source={require("@/assets/img_icon/trash_icon.png")} style={{width:25, height:25}} />
