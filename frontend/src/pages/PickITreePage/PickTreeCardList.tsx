@@ -22,7 +22,7 @@ const data: DataItem[] = [
 ];
 const targetNumColumns = 3; // 원하는 열의 수
 
-export default function PickTreeCardCardlist() {
+export default function PickTreeCardlist() {
   // 3열 배열을 지정하기 위한 변수 선언
   const totalCards = data.length;
   const numColumns = Math.min(targetNumColumns, Math.ceil(totalCards / targetNumColumns));
