@@ -5,7 +5,7 @@ import AppText from '../Text';
 
 type ButtonProps = {
   children?: string;
-  variant?:'default' | 'primary' | 'animalName' | 'carouselBtn' | 'pickfriend' | 'gotoisland'; | 'picnic'
+  variant?:'default' | 'primary' | 'animalName' | 'carouselBtn' | 'pickfriend' | 'gotoisland' | 'picnic';
   onPress: () => void;
 };
 
