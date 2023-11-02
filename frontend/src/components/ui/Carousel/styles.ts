@@ -21,6 +21,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  giftcarouselcontainer: {
+    borderRadius: 8,
+    width: ITEM_WIDTH,
+    paddingBottom: 40,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+
   seedimage: {
     width: ITEM_WIDTH - 80,
     aspectRatio: 1,
@@ -47,7 +59,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     zIndex: 1,
     position: 'relative',
-    top: 40,
+    top: 60,
     resizeMode: 'contain',
   },
   boxImage: {

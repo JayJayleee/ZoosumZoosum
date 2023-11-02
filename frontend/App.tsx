@@ -12,8 +12,7 @@ enableScreens();
 import {RootStackParamList} from 'typePath';
 
 // api 호출을 위한 queryClient, QueryClientProvider 추가
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 //page 가져오기
 import MainPage from '@/pages/MainPage';
@@ -30,16 +29,15 @@ import PickPloggingFriendPage from '@/pages/PickPloggingFriendPage';
 import ProfilePage from '@/pages/ProfilePage';
 import RankingPage from '@/pages/RankingPage';
 
-import ItemListPage from '@/pages/ItemListPage'
+import ItemListPage from '@/pages/ItemListPage';
 import PickIslandPage from '@/pages/PickIslandPage';
 import PickTreePage from '@/pages/PickITreePage';
 import FriendDetailPage from '@/pages/FriendDetailPage';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
-// QueryClient 선언 
-const queryClient = new QueryClient()
-
+// QueryClient 선언
+const queryClient = new QueryClient();
 
 function App() {
   return (
@@ -49,8 +47,7 @@ function App() {
         <Stack.Navigator
           initialRouteName="FriendDetail"
           // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
-          screenOptions={{headerShown: false}}
-        >
+          screenOptions={{headerShown: false}}>
           <Stack.Screen name="Login" component={LoginPage} />
           <Stack.Screen name="Main" component={MainPage} />
           <Stack.Screen name="Plogging" component={PloggingPage} />
@@ -59,7 +56,10 @@ function App() {
           <Stack.Screen name="FriendList" component={FriendListPage} />
           <Stack.Screen name="UserInfo" component={UserInfoPage} />
           <Stack.Screen name="PickFriend" component={PickFriendPage} />
-          <Stack.Screen name="PickPloggingFriend" component={PickPloggingFriendPage}/>
+          <Stack.Screen
+            name="PickPloggingFriend"
+            component={PickPloggingFriendPage}
+          />
           <Stack.Screen name="ItemList" component={ItemListPage} />
           <Stack.Screen name="Profile" component={ProfilePage} />
           <Stack.Screen name="Ranking" component={RankingPage} />
@@ -69,7 +69,6 @@ function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </QueryClientProvider>
-    
   );
 }
 export default App;
