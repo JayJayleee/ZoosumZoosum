@@ -19,8 +19,9 @@ export default function LoginPage({navigation}: LoginScreenProps) {
 
   // 이미 로그인한 상태일 경우, 바로 메인페이지로 이동하는 함수 생성
   const isLoginState = async () => {
-    const bol = await getStorage("Accesstoken");
-    if (bol !== null) {
+    const token = await getStorage("Accesstoken");
+    console.log("token :", token);
+    if (token !== null) {
       navigation.navigate('Main');
     } else {
       setIsClicked(true)
