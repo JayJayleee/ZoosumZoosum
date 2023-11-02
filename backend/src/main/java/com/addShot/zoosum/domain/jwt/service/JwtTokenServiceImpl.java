@@ -35,7 +35,10 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
     public JwtToken findJwtToken(String accessToken) {
         Optional<JwtToken> jwtToken = jwtTokenRepository.findById(accessToken);
-//        if (jwtToken.isEmpty())
+        if (jwtToken.isEmpty()){
+            log.error("토큰이 유효하지 않습니다.");
+            return null;
+        }
 //            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
         return jwtToken.get();
     }

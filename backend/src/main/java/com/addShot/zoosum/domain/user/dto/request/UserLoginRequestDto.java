@@ -4,14 +4,16 @@ import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.embedded.CheckYN;
 import com.addShot.zoosum.entity.enums.Region;
 import com.addShot.zoosum.entity.enums.Social;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class UserLoginRequestDto {
     String id;
@@ -23,7 +25,6 @@ public class UserLoginRequestDto {
             .userId(this.id)
             .email(this.email)
             .socialType(Social.valueOf(this.socialType))
-//            .checkYN(new CheckYN("N","N","N"))
             .build();
     }
 }

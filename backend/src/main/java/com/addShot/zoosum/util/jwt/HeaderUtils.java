@@ -4,10 +4,10 @@ import com.addShot.zoosum.domain.jwt.service.JwtTokenService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HeaderUtil {
+public class HeaderUtils {
     private final JwtTokenService jwtTokenService;
 
-    public HeaderUtil(JwtTokenService jwtTokenService) {
+    public HeaderUtils(JwtTokenService jwtTokenService) {
         this.jwtTokenService = jwtTokenService;
     }
 

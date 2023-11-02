@@ -33,9 +33,12 @@ spring:
       refresh-expiration-time: 604800000
   data:
     redis:
-      host: localhost
+#      host: localhost
+#      port: 6379
+#      password: ssafyTest
+      host: 3.35.137.8
       port: 6379
-#      password: temp
+      password: joinitasrai
 
 server:
   port: 5000

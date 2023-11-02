@@ -1,6 +1,7 @@
 package com.addShot.zoosum.util.jwt;
 
 
+import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.entity.JwtToken;
@@ -40,16 +41,23 @@ public class JwtTokenProvider {
         this.userRepository = userRepository;
     }
 
-    public JwtToken generateToken(UserLoginRequestDto userLoginRequestDto) {
+    public JwtToken generateToken(String userId) {
 
-        Optional<User> optionalUser = userRepository.findById(userLoginRequestDto.getId());
+        Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
 //            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
         }
         User user = optionalUser.get();
+
+        //초기 값을 결정할 수가 없음...
+        String nickname = "newUser";
+        if(user.getNickname() != null && !user.getNickname().equals("")){
+            nickname = user.getNickname();
+        }
+
         //accessToken 생성
         String accessToken = Jwts.builder()
-            .setSubject(user.getNickname())
+            .setSubject(nickname)
             .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
@@ -62,27 +70,28 @@ public class JwtTokenProvider {
             .build();
     }
 
-//    public JwtToken generateNewToken(Authentication authentication) {
-//
-//        String userId = userDetails.getUsername();
-//        Optional<String> nickname = userRepository.findNicknameByUserId(userId);
-//        if (nickname.isEmpty()) {
+    //처음 입력인지 수정인지 고려해서 진행..?
+    public JwtToken generateNewToken(UserInfoUpdateRequestDto updateResponseDto) {
+
+        Optional<User> optionalUser = userRepository.findById(updateResponseDto.getNickname());
+        if (optionalUser.isEmpty()) {
 //            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
-//        }
-//
-//        //accessToken 생성
-//        String accessToken = Jwts.builder()
+        }
+
+
+
+        //accessToken 생성
+        String accessToken = Jwts.builder()
 //            .setSubject(nickname.get())
-//            .claim("auth", authorities)
-//            .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
-//            .signWith(key, SignatureAlgorithm.HS256)
-//            .compact();
-//
-//        //JwtToken 생성
-//        return JwtToken.builder()
-//            .grantType(AUTHENTICATION_PREFIX)
-//            .accessToken(accessToken)
-//            .userId("userId")
-//            .build();
-//    }
+            .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
+
+        //JwtToken 생성
+        return JwtToken.builder()
+            .grantType(AUTHENTICATION_PREFIX)
+            .accessToken(accessToken)
+            .userId("userId")
+            .build();
+    }
 }

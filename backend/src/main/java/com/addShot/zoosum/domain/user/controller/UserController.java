@@ -5,7 +5,7 @@ import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
 import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
 import com.addShot.zoosum.domain.user.service.UserService;
-import com.addShot.zoosum.util.jwt.HeaderUtil;
+import com.addShot.zoosum.util.jwt.HeaderUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-    private final HeaderUtil headerUtil;
+    private final HeaderUtils headerUtils;
     private final JwtTokenService jwtTokenService;
 
     @Operation(summary = "로그인 기능", description = "줘야 하는 값 : id, email, socialType, 프론트로 넘겨주는 값 : Access-Token \n" +
@@ -57,16 +58,17 @@ public class UserController {
         "LOGOUT_IS_OK(1200, \"로그아웃이 성공적으로 이루어졌습니다.\"),\n" +
         "세 가지 경우의 결과가 나옵니다. 200OK 받으면 성공적으로 로그아웃 된 것.")
     @GetMapping("/logout")
-    public ResponseEntity<?> logoutUser(HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> logoutUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) throws IOException {
         //access 토큰을 입력
         //header 에서 잘라내서 redis 방문하서 id가져옴
+        userService.logoutUser(authorizationHeader);
 
-        return userService.logoutUser(request);
+        return ResponseEntity.status(HttpStatus.OK).body("정상적으로 로그아웃되었습니다.");
     }
 
     @PutMapping("/info")
     public ResponseEntity<UserInfoUpdateResponseDto> UserInfoUpdate(@RequestBody UserInfoUpdateRequestDto updateRequest, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-        String userId = headerUtil.getUserId(authorizationHeader);
+        String userId = headerUtils.getUserId(authorizationHeader);
 
         String accessToken = authorizationHeader.substring(7);
         String token = userService.updateUserInfo(updateRequest, userId);
@@ -78,12 +80,6 @@ public class UserController {
         return ResponseEntity.ok(new UserInfoUpdateResponseDto(token, message));
     }
     //유저 정보 수정 - 유저 5, 6번
-
-    @GetMapping("/kakao")
-    public void temp(@RequestParam String code){
-        System.out.println(code);
-
-    }
 
 
 }
