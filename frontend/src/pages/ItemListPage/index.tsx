@@ -60,13 +60,13 @@ export default function ItemListPage({navigation}: ItemListscreenProps) {
           </AppText>
           <View style={styles.button_container}>
             <AppButton
-              variant='selectLeft'
+              variant='selectItem'
               children='ISLAND'
               onPress={toggleComponent1}/>
             <AppButton
-            variant='selectRight'
-            children='TREE'
-            onPress={toggleComponent2}/>
+              variant='selectItem'
+              children='TREE'
+              onPress={toggleComponent2}/>
          </View>
         </View>
         <View style={styles.list_container}>
