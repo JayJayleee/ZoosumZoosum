@@ -93,6 +93,11 @@ export default function MainPage({navigation}: MainScreenProps) {
     navigation.navigate('FriendList');
   }
 
+  // 섬 클릭 시, 이동하는 함수
+  const goToItemList = () => {
+    navigation.navigate("ItemList")
+  }
+
   const islandUri: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png"
   const treeUri: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Trees/Tree_01.png"
   const animal1: string = "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Cow/Cow_2.gif"
@@ -199,9 +204,9 @@ export default function MainPage({navigation}: MainScreenProps) {
           inputRange: [0, 1],
           outputRange: [0, 1],
          })}]}>
-          <TouchableOpacity onPress={toggle? () => {console.log("섬 클릭했어요")} : undefined } style={styles.toggleMoveButton}>
+          <TouchableOpacity onPress={toggle? () => {goToItemList()} : undefined } style={styles.toggleMoveButton}>
             <Image source={require("@/assets/img_icon/island_icon.png")} style={styles.toggleBtnImage} />
-            <AppText children="나의 섬 테마" style={styles.toggleBtnText}/>
+            <AppText children="나의 아이템" style={styles.toggleBtnText}/>
           </TouchableOpacity>
         </Animated.View>
         <Animated.View
