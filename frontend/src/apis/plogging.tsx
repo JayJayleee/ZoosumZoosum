@@ -51,11 +51,7 @@ export interface ProgressCarouselCardItemProps {
 
 export interface SeedCarouselCardItemProps {
   item: {
-    totalRewardCount: number;
-    badgeRewardCount: string;
-    itemRewardCount: number;
-    animalRewardCount: number;
-    seedCount: number;
+    addSeed: number;
   };
   index: number;
   activeIndex?: number;

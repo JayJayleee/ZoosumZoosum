@@ -29,7 +29,7 @@ export default function CarouselCards() {
     ...(resultDataList.treeList ? resultDataList.treeList : []),
     ...(resultDataList.animalList ? resultDataList.animalList : []),
     ...(resultDataList.seedList ? resultDataList.seedList : []),
-    ...(resultDataList.scoreList ? resultDataList.scoreList : []),
+    // ...(resultDataList.scoreList ? resultDataList.scoreList : []),
     ...(resultDataList.userBadgeList ? resultDataList.userBadgeList : []),
   ];
 
@@ -109,7 +109,10 @@ export default function CarouselCards() {
         <AppButton
           variant="carouselBtn"
           children="다음으로"
-          onPress={() => isCarousel.current?.snapToNext()}
+          onPress={() => {
+            console.log(combinedData[index]);
+            isCarousel.current?.snapToNext();
+          }}
         />
       )}
     </View>
