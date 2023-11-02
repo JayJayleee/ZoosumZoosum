@@ -56,4 +56,15 @@ public class UserAnimal {
 	@Embedded
 	private Time time;
 
+	public static UserAnimal toEntity(UserAnimalId id, User user, Animal animal, String userAnimalName, Time time) {
+		UserAnimal ua = UserAnimal.builder()
+			.id(id)
+			.user(user)
+			.animal(animal)
+			.userAnimalName(userAnimalName)
+			.time(time)
+			.build();
+		return ua;
+	}
+
 }

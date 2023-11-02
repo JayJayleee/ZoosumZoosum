@@ -165,14 +165,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 		userPlogInfoRepository.save(userPlogInfo);
 
 		//나무 등록
-		Tree tree = new Tree(treeName, userName, userPhone, userEmail);
-		Time time = new Time(LocalDateTime.now(), LocalDateTime.now());
 		ActivityHistory activity = ActivityHistory.builder()
 			.user(user)
-			.tree(tree)
+			.tree(new Tree(treeName, userName, userPhone, userEmail))
 			.activityType(ActivityType.TREE)
 			.fileUrl("추가 예정")
-			.time(time)
+			.time(new Time(LocalDateTime.now(), LocalDateTime.now()))
 			.build();
 
 		activityRepository.save(activity);

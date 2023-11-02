@@ -5,6 +5,7 @@ import com.addShot.zoosum.entity.embedded.UserAnimalId;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,5 +23,14 @@ public interface UserAnimalRepository extends JpaRepository<UserAnimal, UserAnim
 	@Query("select ua from UserAnimal ua where ua.user.userId =:userId and ua.selected = true")
 	Optional<List<UserAnimal>> findAllSelectedByUserId(@Param("userId") String userId);
 
+	//기존에 섬에 선택되어 있던 애들 제거
+	@Modifying
+	@Query("update UserAnimal ua set ua.selected = false where ua.selected=true")
+	void updateUserAnimalToOut();
+
+	//새로운 애들 섬에 추가
+	@Modifying
+	@Query("update UserAnimal ua set ua.selected = true where ua.animal.animalId in :animalIds")
+	void updateUserAnimalToIn(@Param("animalIds") List<Long> animalIds);
 
 }

@@ -11,6 +11,7 @@ import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
+import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.UserAnimalId;
@@ -135,14 +136,12 @@ public class AnimalServiceImpl implements AnimalService {
 				},
 				() -> { //존재하지 않는 경우
 					UserAnimalId uaId = new UserAnimalId(userId, animalId);
+					User user = userRepository.findById(userId).get();
+					Animal animal = animalRepository.findById(animalId).get();
+					String userAnimalName = request.getUserAnimalName();
 					Time time = new Time(LocalDateTime.now(), LocalDateTime.now());
-					UserAnimal ua = UserAnimal.builder()
-						.id(uaId)
-						.user(userRepository.findById(userId).get())
-						.animal(animalRepository.findById(animalId).get())
-						.userAnimalName(request.getUserAnimalName())
-						.time(time)
-						.build();
+					UserAnimal ua = UserAnimal.toEntity(uaId, user, animal, userAnimalName, time);
+
 					userAnimalRepository.save(ua);
 				}
 			);
@@ -151,23 +150,8 @@ public class AnimalServiceImpl implements AnimalService {
 	@Override
 	@Transactional
 	public void updateUserAnimal(List<Long> request, String userId) {
-		//이미 선택되어 있는 애들 false로
-		Optional<List<UserAnimal>> selected = userAnimalRepository.findAllSelectedByUserId(userId);
-		if(selected.isPresent()) {
-			for(UserAnimal ua: selected.get()) {
-				ua.setSelected(false);
-
-				userAnimalRepository.save(ua);
-			}
-		}
-
-		//새로운 애들 true로
-		for(Long id: request) {
-			UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId, id).get();
-			ua.setSelected(true);
-
-			userAnimalRepository.save(ua);
-		}
+		userAnimalRepository.updateUserAnimalToOut(); //이미 선택되어 있는 애들 false로
+		userAnimalRepository.updateUserAnimalToIn(request); //새로운 애들 true로
 	}
 
 
