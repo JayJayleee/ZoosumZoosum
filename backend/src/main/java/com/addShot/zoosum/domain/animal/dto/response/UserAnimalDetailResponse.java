@@ -18,7 +18,9 @@ public class UserAnimalDetailResponse {
 	private String description;
 	private LocalDateTime createTime;
 	private int trashTogether;
-	private int timeTogether;
+	private int hour;
+	private int minute;
+	private int second;
 	private int lengthTogether;
 	private String fileUrl;
 

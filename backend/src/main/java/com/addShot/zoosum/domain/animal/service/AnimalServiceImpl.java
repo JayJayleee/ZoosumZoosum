@@ -70,12 +70,42 @@ public class AnimalServiceImpl implements AnimalService {
 			.animalId(animalId)
 			.userAnimalName(userAnimal.getUserAnimalName())
 			.createTime(userAnimal.getTime().getCreateTime())
-			.timeTogether(userAnimal.getTimeTogether())
 			.trashTogether(userAnimal.getTrashTogether())
 			.lengthTogether(userAnimal.getLengthTogether())
 			.fileUrl(randomMotion.getFileUrl())
 			.description(animal.getDescription())
 			.build();
+
+		int time = userAnimal.getTimeTogether();
+		int hour = 0, minute = 0, second = 0;
+		if(time>=3600) {
+			hour = time / 3600;
+			time = time % 3600;
+			minute = time / 60;
+			time = time % 60;
+			second = time;
+		}
+		else if(time>=60) {
+			minute = time / 60;
+			time = time % 60;
+			second = time;
+		}
+		else {
+			second = time;
+		}
+
+		if(hour != 0) {
+			response.setHour(hour);
+			response.setMinute(minute);
+			response.setSecond(second);
+		}
+		else if(minute != 0) {
+			response.setMinute(minute);
+			response.setSecond(second);
+		}
+		else {
+			response.setSecond(second);
+		}
 
 		return response;
 	}
