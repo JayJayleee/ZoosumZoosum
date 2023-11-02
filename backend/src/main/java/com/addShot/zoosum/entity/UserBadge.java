@@ -1,8 +1,10 @@
 package com.addShot.zoosum.entity;
 
 import com.addShot.zoosum.domain.common.dto.response.UserBadgeResponseDto;
+import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,16 +12,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "USER_BADGE")
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserBadge {
 
     @EmbeddedId
@@ -38,18 +42,8 @@ public class UserBadge {
     @Column(name = "badge_get", columnDefinition = "TINYINT DEFAULT 0", nullable = false)
     private Boolean badgeGet;
 
-    @Column(name = "get_time", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
-    private LocalDateTime getTime;
-
-    @Builder
-    public UserBadge(UserBadgeId id, User user, Badge badge, Boolean badgeGet,
-        LocalDateTime getTime) {
-        this.id = id;
-        this.user = user;
-        this.badge = badge;
-        this.badgeGet = badgeGet;
-        this.getTime = getTime;
-    }
+    @Embedded
+    private Time time;
 
     @Override
     public boolean equals(Object o) {
@@ -62,30 +56,33 @@ public class UserBadge {
         UserBadge userBadge = (UserBadge) o;
         return Objects.equals(id, userBadge.id) && Objects.equals(user,
             userBadge.user) && Objects.equals(badge, userBadge.badge)
-            && Objects.equals(badgeGet, userBadge.badgeGet) && Objects.equals(
-            getTime, userBadge.getTime);
+            && Objects.equals(badgeGet, userBadge.badgeGet) && Objects.equals(time,
+            userBadge.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, badge, badgeGet, getTime);
+        return Objects.hash(id, user, badge, badgeGet, time);
     }
 
     @Override
     public String toString() {
         return "UserBadge{" +
             "id=" + id +
-            ", user=" + user.getUserId() +
-            ", badge=" + badge.getBadgeId() +
+            ", user=" + user +
+            ", badge=" + badge +
             ", badgeGet=" + badgeGet +
-            ", createTime=" + getTime +
+            ", time=" + time +
             '}';
     }
 
     public void setBadgeGet(boolean b) {
         this.badgeGet = b;
     }
-    public void setGetTime(LocalDateTime l) {this.getTime = l;}
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
 
     public UserBadgeResponseDto toResponseDto() {
         return UserBadgeResponseDto.builder()

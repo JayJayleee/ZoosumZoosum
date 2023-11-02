@@ -497,7 +497,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     private static void getBadge(List<UserBadge> newBadgeList, UserBadge userBadge) {
         userBadge.setBadgeGet(true);
-        userBadge.setGetTime(LocalDateTime.now());
+        userBadge.setTime(new Time(userBadge.getTime().getCreateTime(), LocalDateTime.now()));
         newBadgeList.add(userBadge);
     }
 }
