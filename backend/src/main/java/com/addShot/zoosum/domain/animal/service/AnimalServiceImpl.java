@@ -63,7 +63,8 @@ public class AnimalServiceImpl implements AnimalService {
 		Animal animal = animalRepository.findById(animalId).get();
 		UserAnimal userAnimal = userAnimalRepository.findByUserIdAndAnimalId(userId, animalId)
 			.get();
-		AnimalMotion animalMotion = animalMotionRepository.findMotion(animalId).get();
+		List<AnimalMotion> animalMotions = animalMotionRepository.findByAnimalId(animalId).get();
+		AnimalMotion randomMotion = RandomUtil.getRandomElement(animalMotions);
 
 		UserAnimalDetailResponse response = UserAnimalDetailResponse.builder()
 			.animalId(animalId)
@@ -72,7 +73,7 @@ public class AnimalServiceImpl implements AnimalService {
 			.timeTogether(userAnimal.getTimeTogether())
 			.trashTogether(userAnimal.getTrashTogether())
 			.lengthTogether(userAnimal.getLengthTogether())
-			.fileUrl(animalMotion.getFileUrl())
+			.fileUrl(randomMotion.getFileUrl())
 			.description(animal.getDescription())
 			.build();
 
