@@ -1,11 +1,5 @@
-import React, {Component} from 'react';
-import {
-  FlatListProps,
-  View,
-  Button,
-  Touchable,
-  TouchableOpacity,
-} from 'react-native';
+import React, {Component, useState} from 'react';
+import {FlatListProps, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
 import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
@@ -16,72 +10,40 @@ import data from '../../../pages/PloggingResultPage/data';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
 import AppButton from '../Button';
 import styles from './styles';
-
-interface CarouselProps {
-  item: any;
-  index: any;
-  activeIndex?: any;
-}
+import {CarouselProps, NewData} from '@/apis/plogging';
 
 export default function CarouselCards() {
+  const [resultDataList, setResultDataList] = useState<NewData>(data);
+
   const isCarousel = React.useRef<
     Carousel<any> & Component<FlatListProps<any>, {}, any>
   >(null);
 
   const [index, setIndex] = React.useState(0);
-  // 사용중인 라이브러리에서는 데이터를 무조건 리스트 형태로 받은 뒤 넣어야 페이지로 인식함
-  // 미션에 대한 단일 데이터 합친 리스트
-  const missionData = [
-    {
-      missonTrashLimit: data.resposeRewardDto.missonTrashLimit,
-      missonLengthLimit: data.resposeRewardDto.missonLengthLimit,
-      missonTimeLimit: data.resposeRewardDto.missonTimeLimit,
-      missonTrash: data.resposeRewardDto.missonTrash,
-      missonLength: data.resposeRewardDto.missonLength,
-      missonTime: data.resposeRewardDto.missonTime,
-    },
-  ];
-
-  // 씨앗과 및 그 외 데이터 모아둔 리스트
-  const seed_TotalData = [
-    {
-      totalRewardCount: data.resposeRewardDto.totalRewardCount,
-      badgeRewardCount: data.resposeRewardDto.badgeRewardCount,
-      itemRewardCount: data.resposeRewardDto.itemRewardCount,
-      animalRewardCount: data.resposeRewardDto.animalRewardCount,
-      seedCount: data.resposeRewardDto.seedCount,
-    },
-  ];
 
   // 데이터 합친 리스트, 값이 없으면 빈 값을 반환하여 리스트로 들어오지 않음.
   // 여기서 데이터 순서 바꾸면, 리스트 순서도 바뀐다.
   const combinedData = [
-    ...(data.resposeRewardDto.missonTrashLimit ||
-    data.resposeRewardDto.missonLengthLimit ||
-    data.resposeRewardDto.missonTimeLimit
-      ? missionData
-      : []),
-    ...(data.resposeRewardDto.seedCount ? seed_TotalData : []),
-    ...(data.resposeRewardDto.badgeRewardList.length > 0
-      ? data.resposeRewardDto.badgeRewardList
-      : []),
-    ...(data.resposeRewardDto.itemRewardList.length > 0
-      ? data.resposeRewardDto.itemRewardList
-      : []),
-    ...(data.resposeRewardDto.animalRewardList.length > 0
-      ? data.resposeRewardDto.animalRewardList
-      : []),
+    ...(resultDataList.missionList ? resultDataList.missionList : []),
+    ...(resultDataList.islandList ? resultDataList.islandList : []),
+    ...(resultDataList.treeList ? resultDataList.treeList : []),
+    ...(resultDataList.animalList ? resultDataList.animalList : []),
+    ...(resultDataList.seedList ? resultDataList.seedList : []),
+    ...(resultDataList.scoreList ? resultDataList.scoreList : []),
+    ...(resultDataList.userBadgeList ? resultDataList.userBadgeList : []),
   ];
 
   const renderItem = ({item, index: itemIndex}: CarouselProps) => {
-    if (item.missonTrashLimit) {
+    if (item.missionLength) {
       return <ProgressCarouselCardItem item={item} index={itemIndex} />;
     }
-    if (item.seedCount)
+    if (item.addSeed) {
       return <SeedCarouselCardItem item={item} index={itemIndex} />;
-    if (item.badgeId)
+    }
+    if (item.badgeId) {
       return <BadgeCarouselCardItem item={item} index={itemIndex} />;
-    if (item.itemId)
+    }
+    if (item.itemId) {
       return (
         <BoxCarouselCardItem
           item={item}
@@ -89,7 +51,8 @@ export default function CarouselCards() {
           activeIndex={index}
         />
       );
-    if (item.animalId)
+    }
+    if (item.animalId) {
       return (
         <AnimalCarouselCardItem
           item={item}
@@ -97,6 +60,7 @@ export default function CarouselCards() {
           activeIndex={index}
         />
       );
+    }
   };
 
   return (
@@ -138,7 +102,7 @@ export default function CarouselCards() {
         <AppButton
           variant="carouselBtn"
           children="끝!"
-          onPress={() => console.log('끝!')}
+          onPress={() => console.log(combinedData)}
         />
       ) : (
         //마지막 페이지가 아닌 경우

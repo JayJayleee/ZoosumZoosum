@@ -3,18 +3,9 @@ import {View, Image, TextInput} from 'react-native';
 import AppText from '../Text';
 import AppButton from '../Button';
 import styles from './styles';
-interface AnimalCarouselCardItemProps {
-  item: {
-    fileUrl: string;
-    animalName: string;
-    description: string;
-    animalId: string;
-  };
-  index: number;
-  activeIndex?: number;
-}
-
-// 동물에 대한 캐롯셀 아이템
+import {Egg} from '../animation/LottieEffect';
+import {AnimalCarouselCardItemProps} from '@/apis/plogging';
+// import {ShiningEffect} from './ShiningEffect';
 
 export function AnimalCarouselCardItem({
   item,
@@ -22,46 +13,52 @@ export function AnimalCarouselCardItem({
   activeIndex,
 }: AnimalCarouselCardItemProps) {
   const [headerText, setHeaderText] = useState('어떤 정령이 들어있을까요?');
-  const [imageSrc, setImageSrc] = useState<any>(
-    require('@/assets/animation/eggshake.gif'),
-  );
+  const [imageSrc, setImageSrc] = useState<any>(null); // 초기 이미지 소스를 null로 설정
   const [showInput, setShowInput] = useState(false);
-  const [animalName, setAnimalName] = useState(item.animalName); // 동물 이름을 저장하는 상태
+  const [animalName, setAnimalName] = useState(item.animalName);
   const [isNameSaved, setIsNameSaved] = useState(false);
+  const [showEgg, setShowEgg] = useState(true); // 로티 애니메이션을 보여줄 상태 변수
 
   const handleSaveName = () => {
     console.log(`이름이 저장되었습니다: ${animalName}`);
     setIsNameSaved(true);
-    // TODO: 서버에 이름 저장
   };
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (index === activeIndex) {
       console.log(activeIndex, '액티브함');
-      const timer = setTimeout(() => {
+
+      setShowEgg(true); // 로티 애니메이션을 보여줌
+
+      timer = setTimeout(() => {
+        setShowEgg(false); // 로티 애니메이션을 숨김
         setHeaderText(`${item.animalName}가 태어났어요!`);
         setImageSrc({uri: item.fileUrl});
-        setShowInput(true); // setTimeout 후에 input과 버튼을 보이게 함
-      }, 3000);
+        setShowInput(true);
+      }, 2000);
 
       return () => {
         clearTimeout(timer);
       };
     } else {
+      setShowEgg(true); // 인덱스가 activeIndex와 다르면 로티 애니메이션을 다시 보여줌
       setHeaderText('어떤 정령이 들어있을까요?');
-      setImageSrc(require('@/assets/animation/eggshake.gif'));
+      setImageSrc(null);
       setShowInput(false);
     }
   }, [activeIndex]);
 
   return (
-    <View style={styles.container} key={index}>
+    <View style={styles.giftcarouselcontainer} key={index}>
       <AppText style={styles.header}>{headerText}</AppText>
-      <Image source={imageSrc} style={styles.animalimage} />
+      {showEgg && <Egg key={activeIndex} />}
+      {imageSrc && <Image source={imageSrc} style={styles.animalimage} />}
+      {/* {imageSrc && <ShiningEffect />} */}
       {showInput && (
         <View style={styles.inputcontainer}>
           {isNameSaved ? (
-            <AppText style={styles.animalName}>{animalName}</AppText> // 이름이 저장되었다면 AppText로 이름 출력
+            <AppText style={styles.animalName}>{animalName}</AppText>
           ) : (
             <>
               <TextInput

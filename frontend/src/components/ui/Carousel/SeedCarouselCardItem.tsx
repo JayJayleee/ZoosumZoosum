@@ -1,24 +1,12 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Image, Animated, Easing} from 'react-native';
+import React from 'react';
+import {View, Image} from 'react-native';
 import AppText from '../Text';
 import styles from './styles';
 import {ShiningEffect} from './ShiningEffect';
-
-interface CarouselCardItemProps {
-  item: {
-    totalRewardCount: number;
-    badgeRewardCount: string;
-    itemRewardCount: number;
-    animalRewardCount: number;
-    seedCount: number;
-  };
-  index: number;
-  activeIndex?: number;
-}
-
+import {SeedCarouselCardItemProps} from '@/apis/plogging';
 // 뱃지, 아이템 등에 대한 캐롯셀 아이템
 
-export function SeedCarouselCardItem({item, index}: CarouselCardItemProps) {
+export function SeedCarouselCardItem({item, index}: SeedCarouselCardItemProps) {
   return (
     <View style={styles.container} key={index}>
       <AppText style={styles.header}>

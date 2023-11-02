@@ -1,11 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Animated} from 'react-native';
+import {View, Animated} from 'react-native';
 import {Circle} from 'react-native-progress';
 import AppText from '../Text';
-type AnimatedProgressCircleProps = {
-  progress: number;
-  duration?: number;
-};
+import {AnimatedProgressCircleProps} from '@/apis/plogging';
 
 function AnimatedProgressCircle({
   progress,

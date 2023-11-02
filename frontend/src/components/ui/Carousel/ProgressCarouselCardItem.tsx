@@ -1,20 +1,9 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import AppText from '../Text';
 import AnimatedProgressCircle from './CircleProgress';
 import styles from './styles';
-interface ProgressCarouselCardItemProps {
-  item: {
-    missonTrashLimit: number;
-    missonLengthLimit: number;
-    missonTimeLimit: number;
-    missonTrash: number;
-    missonLength: number;
-    missonTime: number;
-  };
-  index: number;
-  activeIndex?: number;
-}
+import {ProgressCarouselCardItemProps} from '@/apis/plogging';
 
 // 플로깅 모든 통계에 대한 캐롯셀 아이템
 
