@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     fontSize : 20,
   },
 
-  selectLeft: {
+  selectItem: {
     width: '30%',
     backgroundColor: '#ECA3A3',
     borderRadius: 8,
@@ -81,23 +81,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal : 10,
   },
-  selectLeftText: {
+  selectItemText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
   },
-  selectRight: {
-    width: '30%',
-    backgroundColor: '#ECA3A3',
-    borderRadius: 8,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal : 10,
-  },
-  selectRightText: {
-    color: 'white',
-    fontFamily: 'NPSfont_bold',
-
   picnic: {
     width: '60%',
     backgroundColor: '#34D399',
