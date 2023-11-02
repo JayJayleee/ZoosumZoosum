@@ -12,7 +12,7 @@ import ModalComponent from '@/components/ui/Modal';
 import {styles} from './styles';
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
-import {PloggingMap} from '@/components/ui/Map';
+import PloggingMap from '@/components/ui/Map';
 // import {StyleSheet} from 'react-native';
 
 export default function PloggingPage({navigation, route}: PloggingScreenProps) {
@@ -93,7 +93,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
             onPress={() => navigation.navigate('Camera')}>
             <Image
               source={require('@/assets/plogingpage_image/cameraBtn.png')}
-              />
+            />
           </TouchableOpacity>
         </ImageBackground>
         {/* 지도 import */}
