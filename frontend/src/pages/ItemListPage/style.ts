@@ -1,4 +1,4 @@
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   backgroungcolor : {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     width : '90%',
     height : '30%',
   },
-  islandCard : {
+  ItemCardSelect : {
     backgroundColor: "white",
     borderRadius : 10,
     width : '90%',
@@ -75,11 +75,24 @@ const styles = StyleSheet.create({
     justifyContent : 'flex-start',
     alignItems : 'center'
   },
+  ItemCardSelectImgage : {
+    height: "80%",
+    width : "80%"
+  },
   islandCard_image : {
-    height : 200,
-    width : 310,
+    height : '100%',
+    width : '100%',
+    resizeMode: 'contain',
   },
   islandCard_title : {
+    fontSize: 25,
+  },
+  treeCard_image : {
+    height : '130%',
+    width : '100%',
+    // resizeMode: 'contain',
+  },
+  treeCard_title : {
     fontSize: 25,
   },
 });
