@@ -20,8 +20,8 @@ export default function AnimalCardlist() {
     queryFn: fetchMyAnimalListInfo,
   });
 
-  if (isLoading) return console.log('로딩');
-  if (isError) return console.log('에러', error);
+  if (isLoading) return <Text>로딩...</Text>;
+  if (isError) return <Text>에러: {error?.message}</Text>;
 
   const animalsArray: Animal[] = data as Animal[];
 

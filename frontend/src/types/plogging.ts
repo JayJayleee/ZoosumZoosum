@@ -100,5 +100,11 @@ export interface BadgeType {
 
 export interface TrashList {
   img: ImageSourcePropType;
-  title: string;
+  title: string | number;
+}
+
+export interface ploggingResultTrash {
+  timerValue: number;
+  trashCountValue: number;
+  ploggingDistanceValue: number;
 }
