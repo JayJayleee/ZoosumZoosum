@@ -86,6 +86,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String findUserIdByNickname(String nickname){
+        User findUser = userRepository.findUserByNickname(nickname);
+
+        if(findUser != null) {
+            return findUser.getUserId();
+        }
+
+//        throw new Exception();
+        return null;
+
+    }
+
+    @Override
     @Transactional
     public String updateUserInfo(UserInfoUpdateRequestDto updateResponseDto, String userId) {
 
