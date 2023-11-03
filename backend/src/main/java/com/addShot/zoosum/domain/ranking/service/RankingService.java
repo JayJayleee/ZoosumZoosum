@@ -1,6 +1,7 @@
 package com.addShot.zoosum.domain.ranking.service;
 
 import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
@@ -13,5 +14,5 @@ public interface RankingService {
      * @param pageable 정렬의 기준이 되는 column, 오름차순과 내림차순 여부, 데이터의 개수가 들어있는 객체
      * @return 조건에 맞는 플로깅 랭킹 반환
      */
-    Page<RankingResponseDto> ploggingRankingList(String region, Pageable pageable);
+    List<RankingResponseDto> ploggingRankingList(String region, Pageable pageable);
 }

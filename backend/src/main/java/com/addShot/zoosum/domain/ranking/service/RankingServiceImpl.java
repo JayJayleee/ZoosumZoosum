@@ -42,7 +42,7 @@ public class RankingServiceImpl implements RankingService {
     }).collect(Collectors.toMap(item -> item[0], item -> item[1]));
 
     @Override
-    public Page<RankingResponseDto> ploggingRankingList(String region, Pageable pageable) {
+    public List<RankingResponseDto> ploggingRankingList(String region, Pageable pageable) {
         log.info("RankingService region: {}, pageable: {}", region, pageable);
 
         // 한글 지역을 영어로 변환
@@ -56,7 +56,7 @@ public class RankingServiceImpl implements RankingService {
         // Page 데이터 중, content 데이터만 따로 가져온다.
         List<UserPlogInfo> RankingList = rankingPages.getContent();
         // content의 데이터들을 Dto로 변환하여 저장할 새로운 List 생성
-        List<RankingResponseDto> RankingResponseList = new ArrayList<>();
+        List<RankingResponseDto> rankingResponseList = new ArrayList<>();
 
         log.info("RankingService rankingPages: {}", rankingPages);
 
@@ -65,13 +65,15 @@ public class RankingServiceImpl implements RankingService {
             RankingResponseDto rankingResponseDto = userPlogInfo.toResponse();
 
             // Dto로 변환한 데이터를 리스트에 추가하기
-            RankingResponseList.add(rankingResponseDto);
+            rankingResponseList.add(rankingResponseDto);
         }
 
-        log.info("RankingService RankingResponseList : {}", RankingResponseList);
+        log.info("RankingService RankingResponseList : {}", rankingResponseList);
 
-        // Page 데이터로 다시 변환하여 반환
-        return new PageImpl<>(RankingResponseList, rankingPages.getPageable(), rankingPages.getTotalElements());
+        // Page 데이터로 다시 변환하여 반환 -> 취소. 간단하게 보내자.
+//        return new PageImpl<>(rankingResponseList, rankingPages.getPageable(), rankingPages.getTotalElements());
+
+        return rankingResponseList;
     }
 
     public String convertKoreanToEnglish(String korRegion) {
