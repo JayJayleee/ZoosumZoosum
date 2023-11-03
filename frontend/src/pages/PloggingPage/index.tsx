@@ -95,8 +95,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   };
 
   //플로깅 완료 시 작동될 로직.
-  //Todo: 타이머 멈추고 params로 해당 값을 result 페이지로 가져갈 것.
-  //Todo: 이미지, json 형태로 거리/시간/쓰레기 개수 보내기
 
   const stopAndResetTimer = () => {
     // 타이머 멈추기
