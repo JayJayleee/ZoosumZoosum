@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @OpenAPIDefinition(
     servers = {
-        @Server(url = "/", description = "Default Server URL")
+        @Server(url = "/api", description = "Default Server URL")
     }
 )
 @RequestMapping("/activity")
