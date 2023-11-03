@@ -32,7 +32,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(
-            Arrays.asList("http://localhost:3000", "https://zoosum.co.kr", "http://localhost:5000", "https://zoosum.co.kr/api/swagger-ui/index.html#/"));
+            Arrays.asList("http://localhost:3000", "https://zoosum.co.kr", "http://localhost:5000", "http://zoosum.co.kr/api/"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PATCH", "PUT"));
 
