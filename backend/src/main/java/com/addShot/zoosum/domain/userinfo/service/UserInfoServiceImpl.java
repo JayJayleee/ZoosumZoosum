@@ -85,7 +85,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		//나무 조회
 
 		MainResponse response = MainResponse.builder()
-			.userId(userId)
 			.islandUrl(islandItem.getItem().getFileUrl())
 			.treeUrl(treeItem.getItem().getFileUrl())
 			.animalList(animalResponses)
@@ -123,7 +122,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public PlogRecordResponse getPlogRecord(String userId) {
+	public PlogRecordResponse getPlogRecord(String nickname) {
+		String userId = userRepository.findUserByNickname(nickname).getUserId();
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
 		double meter = userPlogInfo.getSumPloggingData().getSumLength();
 

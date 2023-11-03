@@ -24,11 +24,11 @@ public interface UserInfoService {
 	MainInfoResponse getUserInfoMain(String userId);
 
 	/**
-	 * userinfo 3번 - 나의 산책 기록 조회
-	 * @param userId
+	 * userinfo 3번 - 산책 기록 조회
+	 * @param nickname
 	 * @return PlogRecordResponse
 	 */
-	PlogRecordResponse getPlogRecord(String userId);
+	PlogRecordResponse getPlogRecord(String nickname);
 
 	/**
 	 * userinfo 4번 - 내 뱃지 조회 (전체 뱃지 조회 후, 가지고 있는 여부 반환)

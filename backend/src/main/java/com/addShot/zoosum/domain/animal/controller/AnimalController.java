@@ -8,17 +8,20 @@ import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.service.AnimalService;
 import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.util.Response;
+import com.addShot.zoosum.util.jwt.HeaderUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,15 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnimalController {
 
 	private final AnimalService animalService;
+	private final HeaderUtils headerUtils;
 
 	//animal 1번 - 내 동물 리스트 조회 (도감용)
-//	@GetMapping
-	@GetMapping("/{userId}")
-	public ResponseEntity<?> findUserAnimal(@PathVariable String userId) {
-		log.info("AnimalController userId : {}", userId);
+	@GetMapping
+	public ResponseEntity<?> findUserAnimal(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
 		try {
-			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
-			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			String userId = headerUtils.getUserId(authorizationHeader);
 			List<UserAnimalListResponse> userAnimalList = animalService.getUserAnimalList(userId);
 			return ResponseEntity.ok(new Response(userAnimalList));
 		}
@@ -53,13 +54,11 @@ public class AnimalController {
 	}
 
 	//animal 2번 - 내 동물 상세 조회
-	//	@GetMapping("/{animalId}")
-	@GetMapping("{userId}/{animalId}")
-	public ResponseEntity<?> findUserAnimalDetail(@PathVariable String userId, @PathVariable Long animalId) {
+	@GetMapping("/{animalId}")
+	public ResponseEntity<?> findUserAnimalDetail(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long animalId) {
 		log.info("AnimalController animalId : {}", animalId);
 		try {
-			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
-			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			String userId = headerUtils.getUserId(authorizationHeader);
 			UserAnimalDetailResponse response = animalService.getUserAnimalDetail(userId, animalId);
 			return ResponseEntity.ok(response);
 		}
@@ -83,12 +82,11 @@ public class AnimalController {
 	}
 
 	//animal 4번 - 산책 나갈 동물 리스트
-	@GetMapping("/plog/{userId}")
-	public ResponseEntity<?> findFlogAnimalList(@PathVariable("userId") String userId) {
+	@GetMapping("/plog")
+	public ResponseEntity<?> findFlogAnimalList(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
 
 		try {
-			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
-			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			String userId = headerUtils.getUserId(authorizationHeader);
 			List<PlogAnimalResponse> flogAnimalList = animalService.getFlogAnimalList(userId);
 			return ResponseEntity.ok(new Response(flogAnimalList));
 		}
@@ -99,11 +97,10 @@ public class AnimalController {
 	}
 
 	//animal 5번 - 내 동물로 등록
-	@PostMapping("/{userId}")
-	public ResponseEntity<?> registUserAnimal(@RequestBody MyAnimalRequest myAnimalRequest, @PathVariable String userId) {
+	@PostMapping()
+	public ResponseEntity<?> registUserAnimal(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestBody MyAnimalRequest myAnimalRequest) {
 		try {
-			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
-			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			String userId = headerUtils.getUserId(authorizationHeader);
 			animalService.registUserAnimal(myAnimalRequest, userId);
 			return ResponseEntity.ok("완료되었습니다.");
 		}
@@ -114,11 +111,10 @@ public class AnimalController {
 	}
 
 	//animal 6번 - 섬에 내보낼 동물 선택
-	@PutMapping("/island/{userId}")
-	public ResponseEntity<?> updateUserAnimal(@RequestBody List<Long> request, @PathVariable String userId) {
+	@PutMapping("/island")
+	public ResponseEntity<?> updateUserAnimal(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestBody List<Long> request) {
 		try {
-			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
-			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
+			String userId = headerUtils.getUserId(authorizationHeader);
 			animalService.updateUserAnimal(request, userId);
 			return ResponseEntity.ok("완료되었습니다.");
 		}
