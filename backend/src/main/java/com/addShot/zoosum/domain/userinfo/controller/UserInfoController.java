@@ -4,6 +4,8 @@ import com.addShot.zoosum.domain.userinfo.dto.request.TreeCampaignRequest;
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import com.addShot.zoosum.domain.userinfo.service.UserInfoService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+	servers = {
+		@Server(url = "/api", description = "Default Server URL")
+	}
+)
 @RequestMapping("/userinfo")
 public class UserInfoController {
 
