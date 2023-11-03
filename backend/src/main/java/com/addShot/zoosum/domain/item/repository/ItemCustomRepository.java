@@ -10,4 +10,12 @@ public interface ItemCustomRepository {
      * @return
      */
     Item findRandomItem(ItemType itemType);
+
+    /**
+     * 아이템 이름으로 아이템을 조회한다.
+     * 조회할 아이템의 이름이 없는 경우 오류발생*
+     * @param itemName
+     * @return
+     */
+    Item findItemByItemName(String itemName);
 }

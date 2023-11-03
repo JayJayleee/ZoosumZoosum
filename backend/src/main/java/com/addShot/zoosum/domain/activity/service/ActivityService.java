@@ -3,7 +3,11 @@ package com.addShot.zoosum.domain.activity.service;
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
+import com.addShot.zoosum.entity.AnimalMotion;
+import com.addShot.zoosum.entity.Item;
+import com.addShot.zoosum.entity.User;
 import java.util.List;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,4 +38,7 @@ public interface ActivityService {
      * @return 리워드 객체 반환
      */
     ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto);
+
+    public void saveUserItem(User user, Item item);
+    public void saveUserAnimal(User user, AnimalMotion animal);
 }
