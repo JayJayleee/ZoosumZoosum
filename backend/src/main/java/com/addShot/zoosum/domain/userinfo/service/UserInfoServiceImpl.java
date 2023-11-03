@@ -24,6 +24,7 @@ import com.addShot.zoosum.entity.UserAnimal;
 import com.addShot.zoosum.entity.UserBadge;
 import com.addShot.zoosum.entity.UserItem;
 import com.addShot.zoosum.entity.UserPlogInfo;
+import com.addShot.zoosum.entity.embedded.DivideTime;
 import com.addShot.zoosum.entity.embedded.Mission;
 import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.Tree;
@@ -31,7 +32,9 @@ import com.addShot.zoosum.entity.embedded.UserBadgeId;
 import com.addShot.zoosum.entity.embedded.UserPlogInfoId;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import com.addShot.zoosum.entity.enums.ItemType;
+import com.addShot.zoosum.util.DistanceUtil;
 import com.addShot.zoosum.util.RandomUtil;
+import com.addShot.zoosum.util.TimeUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,14 +102,22 @@ public class UserInfoServiceImpl implements UserInfoService {
 			userId, ActivityType.TREE);
 
 		Mission mission = userPlogInfo.getMission();
+		double kilometer = DistanceUtil.getKilometer(mission.getMissionLength());
+		System.out.println(kilometer);
+
 		MainInfoResponse response = MainInfoResponse.builder()
-			.missionLength(mission.getMissionLength())
-			.missionTime(mission.getMissionTime())
+			.missionLength(kilometer)
 			.missionTrash(mission.getMissionTrash())
 			.seed(userPlogInfo.getSeed())
 			.treeAllCount(all.size())
 			.treeCount(userActivities.size())
 			.build();
+
+		int missionTime = mission.getMissionTime();
+		DivideTime divideTime = TimeUtil.getTime(missionTime);
+		response.setHour(divideTime.getHour());
+		response.setMinute(divideTime.getMinute());
+		response.setSecond(divideTime.getSecond());
 
 		return response;
 	}
@@ -114,14 +125,20 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public PlogRecordResponse getPlogRecord(String userId) {
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
+		double meter = userPlogInfo.getSumPloggingData().getSumLength();
 
 		PlogRecordResponse response = PlogRecordResponse.builder()
 			.plogCount(userPlogInfo.getPlogCount())
-			.sumLength(userPlogInfo.getSumPloggingData().getSumLength())
-			.sumTime(userPlogInfo.getSumPloggingData().getSumTime())
+			.sumLength(DistanceUtil.getKilometer(meter))
 			.sumTrash(userPlogInfo.getSumPloggingData().getSumTrash())
 			.nickname(userPlogInfo.getUser().getNickname())
 			.build();
+
+		int missionTime = userPlogInfo.getSumPloggingData().getSumTime();
+		DivideTime divideTime = TimeUtil.getTime(missionTime);
+		response.setHour(divideTime.getHour());
+		response.setMinute(divideTime.getMinute());
+		response.setSecond(divideTime.getSecond());
 
 		return response;
 	}
