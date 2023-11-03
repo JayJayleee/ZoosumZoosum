@@ -2,8 +2,11 @@ package com.addShot.zoosum.domain.ranking.controller;
 
 import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
 import com.addShot.zoosum.domain.ranking.service.RankingService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+    servers = {
+        @Server(url = "/api", description = "Default Server URL")
+    }
+)
 @RequestMapping("/ranking")
 public class RankingController {
 
@@ -34,7 +42,7 @@ public class RankingController {
     @Operation(summary = "플로깅 랭킹 리스트", description = "일반 랭킹 조회 : ?sort=score,desc&size=50, "
         + "지역 랭킹 조회 : ?region=울산&sort=score,desc&size=")
     @GetMapping
-    public ResponseEntity<Page<RankingResponseDto>> ploggingRankingList(
+    public ResponseEntity<List<RankingResponseDto>> ploggingRankingList(
         @RequestParam(name = "region", required = false) String region, Pageable pageable) {
         // 지역 데이터, page 조건 확인
         log.info("controller region : {}, pageable : {}", region, pageable);
@@ -51,7 +59,7 @@ public class RankingController {
         });
         
         // service 호출, Page 형식으로 데이터 반환
-        Page<RankingResponseDto> rankingResponseDto = rankingService.ploggingRankingList(region, pageable);
+        List<RankingResponseDto> rankingResponseDto = rankingService.ploggingRankingList(region, pageable);
 
         // 데이터가 저장되어 있지 않으면, 500 Error 반환
         if (rankingResponseDto == null || rankingResponseDto.isEmpty() == true) {

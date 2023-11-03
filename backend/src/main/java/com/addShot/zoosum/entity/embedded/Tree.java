@@ -1,5 +1,6 @@
 package com.addShot.zoosum.entity.embedded;
 
+import com.addShot.zoosum.domain.activity.dto.response.TreeResponseDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -32,5 +33,14 @@ public class Tree {
         this.userName = userName;
         this.userPhone = userPhone;
         this.userEmail = userEmail;
+    }
+
+    public static TreeResponseDto toResponseDto(Tree tree) {
+        return TreeResponseDto.builder()
+            .treeName(tree.getTreeName())
+            .userName(tree.getUserName())
+            .userPhone(tree.getUserPhone())
+            .userEmail(tree.getUserEmail())
+            .build();
     }
 }

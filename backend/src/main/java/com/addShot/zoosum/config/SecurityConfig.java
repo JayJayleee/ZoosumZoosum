@@ -42,7 +42,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(
-            Arrays.asList("http://localhost:3000", "https://zoosum.co.kr", "http://localhost:5000", "http://zoosum.co.kr/api/"));
+            Arrays.asList("http://localhost:8081", "http://zoosum.co.kr", "https://zoosum.co.kr", "http://localhost:5000"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PATCH", "PUT"));
 

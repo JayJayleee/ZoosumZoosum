@@ -10,15 +10,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlogAnimalResponse {
+public class PlogAnimalResponse {
 
 	private Long animalId;
 	private String userAnimalName;
 	private String description;
 	private LocalDateTime createTime;
 	private int trashTogether;
-	private int lengthTogether;
-	private int timeTogether;
+	private double lengthTogether;
+	private int hour;
+	private int minute;
+	private int second;
 	private String fileUrl;
 
 }

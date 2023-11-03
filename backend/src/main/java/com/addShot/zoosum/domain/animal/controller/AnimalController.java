@@ -2,30 +2,33 @@ package com.addShot.zoosum.domain.animal.controller;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
-import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
+import com.addShot.zoosum.domain.animal.dto.response.PlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.service.AnimalService;
 import com.addShot.zoosum.entity.UserAnimal;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+	servers = {
+		@Server(url = "/api", description = "Default Server URL")
+	}
+)
 @RequestMapping("/animal")
 public class AnimalController {
 
@@ -79,13 +82,13 @@ public class AnimalController {
 	}
 
 	//animal 4번 - 산책 나갈 동물 리스트
-	@GetMapping("/flog/{userId}")
+	@GetMapping("/plog/{userId}")
 	public ResponseEntity<?> findFlogAnimalList(@PathVariable("userId") String userId) {
 
 		try {
 			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
 			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
-			List<FlogAnimalResponse> flogAnimalList = animalService.getFlogAnimalList(userId);
+			List<PlogAnimalResponse> flogAnimalList = animalService.getFlogAnimalList(userId);
 			return ResponseEntity.ok(flogAnimalList);
 		}
 		catch(Exception e) {

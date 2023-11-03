@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.activity.service;
 
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDtoAndSize;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
@@ -22,7 +23,7 @@ public interface ActivityService {
      * @param pageable 페이징 정보, 몇번째 페이지인지, 얼만큼 조회할 것인지
      * @return List<ActivityResponseDto>
      */
-    Page<ActivityResponseDto> activityList(String userId, Pageable pageable);
+    ActivityResponseDtoAndSize activityList(String userId, Pageable pageable);
 
     /**
      * 인증서 상세 조회

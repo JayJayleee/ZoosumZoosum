@@ -1,6 +1,7 @@
 package com.addShot.zoosum.entity.embedded;
 
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
+import com.addShot.zoosum.domain.activity.dto.response.PloggingResponseDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Builder;
@@ -36,6 +37,14 @@ public class Plogging {
             .ploggingLength(activityRequestDto.getLength())
             .ploggingTime(activityRequestDto.getTime())
             .ploggingTrash(activityRequestDto.getTrash())
+            .build();
+    }
+
+    public static PloggingResponseDto toResponseDto(Plogging plogging) {
+        return PloggingResponseDto.builder()
+            .ploggingLength(plogging.getPloggingLength())
+            .ploggingTime(plogging.getPloggingTime())
+            .ploggingTrash(plogging.getPloggingTrash())
             .build();
     }
 }

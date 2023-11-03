@@ -4,15 +4,20 @@ import static com.addShot.zoosum.util.httpstatus.ReturnResponseEntity.*;
 
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDtoAndSize;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
 import com.addShot.zoosum.domain.activity.service.ActivityService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +30,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+    servers = {
+        @Server(url = "/api", description = "Default Server URL")
+    }
+)
 @RequestMapping("/activity")
 public class ActivityController {
 
@@ -49,11 +59,11 @@ public class ActivityController {
         // 다른 사람의 활동 기록도 볼 수 있으므로, 추가적인 인가처리를 하지 않는다.
         
         // 목록 조회
-        Page<ActivityResponseDto> list = activityServicel.activityList(userId, pageable);
-        if (list == null) {
+        ActivityResponseDtoAndSize result = activityServicel.activityList(userId, pageable);
+        if (result == null) {
             return serverError500();
         }
-        return ok200(list);
+        return ok200(result);
     }
 
     @Operation(summary = "나무 인증서 상세 조회",
