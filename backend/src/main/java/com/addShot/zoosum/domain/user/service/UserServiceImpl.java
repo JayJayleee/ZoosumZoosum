@@ -16,6 +16,7 @@ import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.Item;
 import com.addShot.zoosum.entity.JwtToken;
 import com.addShot.zoosum.entity.User;
+import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.jwt.HeaderUtils;
 import com.addShot.zoosum.util.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +48,10 @@ public class UserServiceImpl implements UserService {
     private final AnimalService animalService;
     private final UserAnimalRepository userAnimalRepository;
 
+    private final String DEFAULT_TREE = "그냥나무";
+    private final String DEFAULT_ISLAND = "주섬주섬";
+    private final String DEFAULT_ANIMAL = "송송이";
+
 
     @Override
     @Transactional
@@ -63,19 +68,20 @@ public class UserServiceImpl implements UserService {
             userLoginResponseDto.setIsFirst("Y");
 
             //그냥나무
-            Item tree = itemRepository.findItemByItemName("그냥나무");
+            Item tree = itemRepository.findItemByItemName(DEFAULT_TREE);
+
+            //주섬주섬
+            Item island = itemRepository.findItemByItemName(DEFAULT_ISLAND);
 
             //송송이
-            Item island = itemRepository.findItemByItemName("주섬주섬");
-
-            Animal animal = animalRepository.findAnimalByAnimalName("송송이");
+            Animal animal = animalRepository.findAnimalByAnimalName(DEFAULT_ANIMAL);
 
             activityService.saveUserItem(user, tree);
             activityService.saveUserItem(user, island);
             activityService.saveUserAnimal(user, animal);
 
-            itemService.itemUpdate(user.getUserId(), "TREE", tree.getItmeId());
-            itemService.itemUpdate(user.getUserId(), "ISLAND", island.getItmeId());
+            itemService.itemUpdate(user.getUserId(), ItemType.TREE, tree.getItmeId());
+            itemService.itemUpdate(user.getUserId(), ItemType.ISLAND, island.getItmeId());
 
             List<Long> request = new ArrayList<>();
             request.add(animal.getAnimalId());

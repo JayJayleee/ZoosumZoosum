@@ -39,10 +39,10 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     @Transactional
-    public Long itemUpdate(String userId, String itemType, Long itemId) {
+    public Long itemUpdate(String userId, ItemType itemType, Long itemId) {
         User user = userRepository.findById(userId).orElseThrow();
         Item item = itemRepository.findById(itemId).orElseThrow();
 
-        return userItemRepository.updateSelected(user, ItemType.valueOf(itemType), item);
+        return userItemRepository.updateSelected(user, itemType, item);
     }
 }

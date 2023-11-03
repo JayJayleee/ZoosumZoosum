@@ -3,6 +3,7 @@ package com.addShot.zoosum.domain.item.controller;
 import com.addShot.zoosum.domain.item.dto.request.ItemRequestDto;
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.domain.item.service.ItemService;
+import com.addShot.zoosum.entity.enums.ItemType;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -77,7 +78,7 @@ public class ItemController {
         // 1. Header 사용하는 방법, 2. JWT payload와 userId를 비교하는 방법
 
         // 아이템 선택 반영
-        Long result = itemService.itemUpdate(userId, itemType, item.getItemId());
+        Long result = itemService.itemUpdate(userId, ItemType.valueOf(itemType), item.getItemId());
         if (result == null || result == 0L) { // 데이터 수정이 안 되었을 때
             message = "서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다.";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
