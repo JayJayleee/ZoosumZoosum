@@ -7,6 +7,7 @@ import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.service.AnimalService;
 import com.addShot.zoosum.entity.UserAnimal;
+import com.addShot.zoosum.util.Response;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 import java.util.List;
@@ -43,7 +44,7 @@ public class AnimalController {
 			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
 			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
 			List<UserAnimalListResponse> userAnimalList = animalService.getUserAnimalList(userId);
-			return ResponseEntity.ok(userAnimalList);
+			return ResponseEntity.ok(new Response(userAnimalList));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -89,7 +90,7 @@ public class AnimalController {
 			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
 			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
 			List<PlogAnimalResponse> flogAnimalList = animalService.getFlogAnimalList(userId);
-			return ResponseEntity.ok(flogAnimalList);
+			return ResponseEntity.ok(new Response(flogAnimalList));
 		}
 		catch(Exception e) {
 			e.printStackTrace();

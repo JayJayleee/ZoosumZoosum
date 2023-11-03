@@ -4,6 +4,7 @@ import com.addShot.zoosum.domain.userinfo.dto.request.TreeCampaignRequest;
 import com.addShot.zoosum.domain.userinfo.dto.response.BadgeListItemResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import com.addShot.zoosum.domain.userinfo.service.UserInfoService;
+import com.addShot.zoosum.util.Response;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 import java.util.List;
@@ -80,7 +81,7 @@ public class UserInfoController {
 			//@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader
 			//String userId = headerUtils.getUserId(authorizationHeader); //규성이가 user부분 하면 @RequestHeader넣고 이거 주석 풀기
 			List<BadgeListItemResponse> userBadgeList = userInfoService.getUserBadgeList(userId);
-			return ResponseEntity.ok(userBadgeList);
+			return ResponseEntity.ok(new Response(userBadgeList));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
