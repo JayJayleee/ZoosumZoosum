@@ -4,6 +4,7 @@ import com.addShot.zoosum.domain.item.dto.request.ItemRequestDto;
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.domain.item.service.ItemService;
 import com.addShot.zoosum.entity.enums.ItemType;
+import com.addShot.zoosum.util.Response;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -57,7 +58,7 @@ public class ItemController {
             message = "서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다.";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(itemList);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response(itemList));
     }
 
     @Operation(summary = "사용자 아이템 변경",

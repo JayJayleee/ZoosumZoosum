@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.ranking.controller;
 
 import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
 import com.addShot.zoosum.domain.ranking.service.RankingService;
+import com.addShot.zoosum.util.Response;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -42,7 +43,7 @@ public class RankingController {
     @Operation(summary = "플로깅 랭킹 리스트", description = "일반 랭킹 조회 : ?sort=score,desc&size=50, "
         + "지역 랭킹 조회 : ?region=울산&sort=score,desc&size=")
     @GetMapping
-    public ResponseEntity<List<RankingResponseDto>> ploggingRankingList(
+    public ResponseEntity<?> ploggingRankingList(
         @RequestParam(name = "region", required = false) String region, Pageable pageable) {
         // 지역 데이터, page 조건 확인
         log.info("controller region : {}, pageable : {}", region, pageable);
@@ -66,6 +67,6 @@ public class RankingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(rankingResponseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response(rankingResponseDto));
     }
 }
