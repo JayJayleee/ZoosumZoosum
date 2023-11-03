@@ -51,7 +51,8 @@ public class UserItemCustomRepositoryImpl implements UserItemCustomRepository {
             .set(userItem.selected, false)
             .set(userItem.time.updateTime, LocalDateTime.now())
             .where(userItem.user.eq(user)
-                .and(userItem.item.ne(item)))
+                .and(userItem.item.ne(item))
+                .and(userItem.item.itemType.eq(itemType)))
             .execute();
 
         // itemId인 selected를 true로 변경
@@ -59,7 +60,8 @@ public class UserItemCustomRepositoryImpl implements UserItemCustomRepository {
             .set(userItem.selected, true)
             .set(userItem.time.updateTime, LocalDateTime.now())
             .where(userItem.user.eq(user)
-                .and(userItem.item.eq(item)))
+                .and(userItem.item.eq(item))
+                .and(userItem.item.itemType.eq(itemType)))
             .execute();
 
         /*

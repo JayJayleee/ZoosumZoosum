@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.activity.service;
 
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDtoAndSize;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.MissionResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ScoreResponseDto;
@@ -72,7 +73,7 @@ public class ActivityServiceImpl implements ActivityService {
     private final S3Service s3Service;
 
     @Override
-    public Page<ActivityResponseDto> activityList(String userId, Pageable pageable) {
+    public ActivityResponseDtoAndSize activityList(String userId, Pageable pageable) {
 
         Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserId(userId, pageable);
         List<ActivityHistory> getList = activityHistoryList.getContent();
@@ -89,7 +90,7 @@ public class ActivityServiceImpl implements ActivityService {
         }
         log.info("resultList : {}", resultList);
 
-        return new PageImpl<>(resultList, activityHistoryList.getPageable(), activityHistoryList.getTotalElements());
+        return new ActivityResponseDtoAndSize(resultList, resultList.size());
     }
 
     @Override

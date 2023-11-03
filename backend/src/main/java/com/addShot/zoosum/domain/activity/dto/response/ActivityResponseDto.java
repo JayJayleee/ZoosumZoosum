@@ -1,8 +1,6 @@
 package com.addShot.zoosum.domain.activity.dto.response;
 
-import com.addShot.zoosum.entity.embedded.Plogging;
-import com.addShot.zoosum.entity.embedded.Time;
-import com.addShot.zoosum.entity.embedded.Tree;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,11 +25,11 @@ public class ActivityResponseDto {
     private String fileUrl;
 
     // 플로깅
-    private Plogging plogging;
+    private PloggingResponseDto plogging;
 
     // 나무
-    private Tree tree;
+    private TreeResponseDto tree;
 
     // 시간
-    private Time time;
+    private LocalDateTime createTime;
 }

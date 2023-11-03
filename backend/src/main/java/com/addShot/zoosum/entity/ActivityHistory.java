@@ -1,6 +1,7 @@
 package com.addShot.zoosum.entity;
 
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.PloggingResponseDto;
 import com.addShot.zoosum.entity.embedded.Plogging;
 import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.Tree;
@@ -77,8 +78,8 @@ public class ActivityHistory {
             .userId(ah.user.getUserId())
             .activityType(ah.activityType.toString())
             .fileUrl(ah.fileUrl)
-            .plogging(ah.plogging)
-            .time(ah.time)
+            .plogging(Plogging.toResponseDto(ah.plogging))
+            .createTime(ah.time.getCreateTime())
             .build();
     }
 
@@ -88,8 +89,8 @@ public class ActivityHistory {
             .userId(ah.user.getUserId())
             .activityType(ah.activityType.toString())
             .fileUrl(ah.fileUrl)
-            .tree(ah.tree)
-            .time(ah.time)
+            .tree(Tree.toResponseDto(ah.tree))
+            .createTime(ah.time.getCreateTime())
             .build();
     }
 
