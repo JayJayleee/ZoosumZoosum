@@ -12,7 +12,8 @@ import ModalComponent from '@/components/ui/Modal';
 import {styles} from './styles';
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
-import PloggingMap from '@/components/ui/Map';
+import GoogleMap from '@/components/ui/Map/GoogleMap';
+import KakaoMap from '@/components/ui/Map/KakaoMap';
 // import {StyleSheet} from 'react-native';
 
 export default function PloggingPage({navigation, route}: PloggingScreenProps) {
@@ -97,7 +98,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           </TouchableOpacity>
         </ImageBackground>
         {/* 지도 import */}
-        <PloggingMap></PloggingMap>
+        {/* <GoogleMap></GoogleMap> */}
+        <KakaoMap></KakaoMap>
       </View>
     </View>
   );

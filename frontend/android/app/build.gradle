@@ -103,6 +103,10 @@ android {
     }
 }
 
+// repositories {
+//     maven { url 'https://devrepo.kakao.com/nexus/repository/kakaomap-releases/' }
+// }
+
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation project(':lottie-react-native')
@@ -119,6 +123,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    // google map
+    implementation project(':react-native-maps')
+    // kakao map
+    // implementation('com.kakao.maps.open:android:2.6.0')
     
 }
 
