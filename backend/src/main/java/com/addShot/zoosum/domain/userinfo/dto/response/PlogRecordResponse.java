@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 public class PlogRecordResponse {
 
 	private int plogCount;
-	private int sumLength;
-	private int sumTime;
+	private double sumLength;
+	private int hour;
+	private int minute;
+	private int second;
 	private int sumTrash;
 	private String nickname;
 

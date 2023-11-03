@@ -21,7 +21,7 @@ public class UserAnimalDetailResponse {
 	private int hour;
 	private int minute;
 	private int second;
-	private int lengthTogether;
+	private double lengthTogether;
 	private String fileUrl;
 
 }

@@ -13,9 +13,12 @@ import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserAnimal;
+import com.addShot.zoosum.entity.embedded.DivideTime;
 import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.UserAnimalId;
+import com.addShot.zoosum.util.DistanceUtil;
 import com.addShot.zoosum.util.RandomUtil;
+import com.addShot.zoosum.util.TimeUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,46 +69,22 @@ public class AnimalServiceImpl implements AnimalService {
 		List<AnimalMotion> animalMotions = animalMotionRepository.findByAnimalId(animalId).get();
 		AnimalMotion randomMotion = RandomUtil.getRandomElement(animalMotions);
 
+		double meter = userAnimal.getLengthTogether();
 		UserAnimalDetailResponse response = UserAnimalDetailResponse.builder()
 			.animalId(animalId)
 			.userAnimalName(userAnimal.getUserAnimalName())
 			.createTime(userAnimal.getTime().getCreateTime())
 			.trashTogether(userAnimal.getTrashTogether())
-			.lengthTogether(userAnimal.getLengthTogether())
+			.lengthTogether(DistanceUtil.getKilometer(meter))
 			.fileUrl(randomMotion.getFileUrl())
 			.description(animal.getDescription())
 			.build();
 
 		int time = userAnimal.getTimeTogether();
-		int hour = 0, minute = 0, second = 0;
-		if(time>=3600) {
-			hour = time / 3600;
-			time = time % 3600;
-			minute = time / 60;
-			time = time % 60;
-			second = time;
-		}
-		else if(time>=60) {
-			minute = time / 60;
-			time = time % 60;
-			second = time;
-		}
-		else {
-			second = time;
-		}
-
-		if(hour != 0) {
-			response.setHour(hour);
-			response.setMinute(minute);
-			response.setSecond(second);
-		}
-		else if(minute != 0) {
-			response.setMinute(minute);
-			response.setSecond(second);
-		}
-		else {
-			response.setSecond(second);
-		}
+		DivideTime divideTime = TimeUtil.getTime(time);
+		response.setHour(divideTime.getHour());
+		response.setMinute(divideTime.getMinute());
+		response.setSecond(divideTime.getSecond());
 
 		return response;
 	}
@@ -136,6 +115,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 			Optional<Animal> optionalAnimal = animalRepository.findById(animalId);
 			Optional<AnimalMotion> optionMotion = animalMotionRepository.findMotion(animalId);
+			double meter = ua.getLengthTogether();
 
 			FlogAnimalResponse response = FlogAnimalResponse.builder()
 				.animalId(animalId)
@@ -143,10 +123,15 @@ public class AnimalServiceImpl implements AnimalService {
 				.description(optionalAnimal.get().getDescription())
 				.createTime(ua.getTime().getCreateTime())
 				.trashTogether(ua.getTrashTogether())
-				.lengthTogether(ua.getLengthTogether())
-				.timeTogether(ua.getTimeTogether())
+				.lengthTogether(DistanceUtil.getKilometer(meter))
 				.fileUrl(optionMotion.get().getFileUrl())
 				.build();
+
+			int time = ua.getTimeTogether();
+			DivideTime divideTime = TimeUtil.getTime(time);
+			response.setHour(divideTime.getHour());
+			response.setMinute(divideTime.getMinute());
+			response.setSecond(divideTime.getSecond());
 
 			responseList.add(response);
 		}

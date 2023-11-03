@@ -79,7 +79,7 @@ public class AnimalController {
 	}
 
 	//animal 4번 - 산책 나갈 동물 리스트
-	@GetMapping("/flog/{userId}")
+	@GetMapping("/plog/{userId}")
 	public ResponseEntity<?> findFlogAnimalList(@PathVariable("userId") String userId) {
 
 		try {

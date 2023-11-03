@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MainInfoResponse {
 
-	private int missionLength;
-	private int missionTime;
+	private double missionLength;
+	private int hour;
+	private int minute;
+	private int second;
 	private int missionTrash;
 	private int seed;
 	private int treeAllCount;

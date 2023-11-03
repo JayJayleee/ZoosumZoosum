@@ -17,8 +17,10 @@ public class FlogAnimalResponse {
 	private String description;
 	private LocalDateTime createTime;
 	private int trashTogether;
-	private int lengthTogether;
-	private int timeTogether;
+	private double lengthTogether;
+	private int hour;
+	private int minute;
+	private int second;
 	private String fileUrl;
 
 }
