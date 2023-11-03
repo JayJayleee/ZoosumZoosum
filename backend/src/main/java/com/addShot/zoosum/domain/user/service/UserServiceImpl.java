@@ -1,11 +1,18 @@
 package com.addShot.zoosum.domain.user.service;
 
+import com.addShot.zoosum.domain.activity.service.ActivityService;
+import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
+import com.addShot.zoosum.domain.animal.service.AnimalService;
+import com.addShot.zoosum.domain.item.repository.ItemRepository;
+import com.addShot.zoosum.domain.item.service.ItemService;
 import com.addShot.zoosum.domain.jwt.service.JwtTokenService;
 import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
 import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
 import com.addShot.zoosum.domain.user.dto.response.UserLoginResponseDto;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
+import com.addShot.zoosum.entity.Animal;
+import com.addShot.zoosum.entity.Item;
 import com.addShot.zoosum.entity.JwtToken;
 import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.util.jwt.HeaderUtils;
@@ -30,6 +37,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtTokenService jwtTokenService;
+    private final ActivityService activityService;
+    private final ItemService itemService;
+    private final ItemRepository itemRepository;
+    private final AnimalRepository animalRepository;
+    private final AnimalService animalService;
 
 
     @Override
@@ -93,6 +105,23 @@ public class UserServiceImpl implements UserService {
         //access token, jwt token 재발급
         JwtToken jwtToken = jwtTokenProvider.generateNewToken(updateResponseDto);
         jwtTokenService.saveJwtToken(jwtToken);
+
+
+
+        //그냥나무
+        Item tree = itemRepository.findItemByItemName("그냥나무");
+
+        //송송이
+        Item island = itemRepository.findItemByItemName("주섬주섬");
+
+        Animal animal = animalRepository.findAnimalByAnimalName("송송이");
+
+//        activityService.saveUserItem(user, tree);
+//        activityService.saveUserItem(user, island);
+//
+//
+//        animalService.registUserAnimal(user, animal);
+
 
         return jwtToken.getAccessToken();
     }

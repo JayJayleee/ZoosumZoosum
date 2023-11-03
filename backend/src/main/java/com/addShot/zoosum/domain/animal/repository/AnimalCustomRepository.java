@@ -10,4 +10,10 @@ public interface AnimalCustomRepository {
      * @return
      */
     AnimalMotion findRandomAnimal();
+
+    /**
+     * 동물 이름으로 동물 데이터 하나를 가져온다.
+     * @return
+     */
+    Animal findAnimalByAnimalName(String animalName);
 }

@@ -343,8 +343,9 @@ public class ActivityServiceImpl implements ActivityService {
      * @param user 사용자 Entity
      * @param item 아이템 Entity
      */
+    @Override
     @Transactional
-    private void saveUserItem(User user, Item item) {
+    public void saveUserItem(User user, Item item) {
         log.info("USER_ITEM 테이블에 리워드 저장");
         UserItem userItem = UserItem.builder()
             .id(new UserItemId(user.getUserId(), item.getItmeId()))
@@ -362,8 +363,9 @@ public class ActivityServiceImpl implements ActivityService {
      * @param user 사용자 Entity
      * @param animal 동물 Entity
      */
+    @Override
     @Transactional
-    private void saveUserAnimal(User user, AnimalMotion animal) {
+    public void saveUserAnimal(User user, AnimalMotion animal) {
         log.info("USER_ANIMAL 테이블에 리워드 저장");
         UserAnimal userAnimal = UserAnimal.builder()
             .id(new UserAnimalId(user.getUserId(), animal.getAnimal().getAnimalId()))
@@ -391,7 +393,7 @@ public class ActivityServiceImpl implements ActivityService {
      * @param resultMap 결과 데이터 map
      */
     @Transactional
-    private void updateBadge(User user, Map<String, Object> resultMap) {
+    public void updateBadge(User user, Map<String, Object> resultMap) {
         // User Entity
         log.info("User Entity: {}", user);
 
