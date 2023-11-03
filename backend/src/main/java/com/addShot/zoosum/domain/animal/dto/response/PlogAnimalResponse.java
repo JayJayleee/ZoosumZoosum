@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlogAnimalResponse {
+public class PlogAnimalResponse {
 
 	private Long animalId;
 	private String userAnimalName;

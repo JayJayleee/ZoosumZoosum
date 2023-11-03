@@ -2,7 +2,7 @@ package com.addShot.zoosum.domain.animal.service;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
-import com.addShot.zoosum.domain.animal.dto.response.FlogAnimalResponse;
+import com.addShot.zoosum.domain.animal.dto.response.PlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
@@ -106,9 +106,9 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	@Override
-	public List<FlogAnimalResponse> getFlogAnimalList(String userId) {
+	public List<PlogAnimalResponse> getFlogAnimalList(String userId) {
 		List<UserAnimal> userAnimals = userAnimalRepository.findAllSelectedByUserId(userId).get();
-		List<FlogAnimalResponse> responseList = new ArrayList<>();
+		List<PlogAnimalResponse> responseList = new ArrayList<>();
 
 		for(UserAnimal ua: userAnimals) {
 			Long animalId = ua.getAnimal().getAnimalId();
@@ -117,7 +117,7 @@ public class AnimalServiceImpl implements AnimalService {
 			Optional<AnimalMotion> optionMotion = animalMotionRepository.findMotion(animalId);
 			double meter = ua.getLengthTogether();
 
-			FlogAnimalResponse response = FlogAnimalResponse.builder()
+			PlogAnimalResponse response = PlogAnimalResponse.builder()
 				.animalId(animalId)
 				.userAnimalName(ua.getUserAnimalName())
 				.description(optionalAnimal.get().getDescription())
