@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import AppText from '../Text';
 import AnimatedProgressCircle from './CircleProgress';
 import styles from './styles';
-import {ProgressCarouselCardItemProps} from '@/apis/plogging';
+import {ProgressCarouselCardItemProps} from '@/types/plogging';
 
 // 플로깅 모든 통계에 대한 캐롯셀 아이템
 

@@ -4,7 +4,7 @@ import AppText from '../Text';
 import AppButton from '../Button';
 import styles from './styles';
 import {Egg} from '../animation/LottieEffect';
-import {AnimalCarouselCardItemProps} from '@/apis/plogging';
+import {AnimalCarouselCardItemProps} from '@/types/plogging';
 // import {ShiningEffect} from './ShiningEffect';
 
 export function AnimalCarouselCardItem({
