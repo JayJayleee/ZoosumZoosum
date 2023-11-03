@@ -2,7 +2,9 @@ package com.addShot.zoosum.domain.ranking.controller;
 
 import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
 import com.addShot.zoosum.domain.ranking.service.RankingService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+    servers = {
+        @Server(url = "/api", description = "Default Server URL")
+    }
+)
 @RequestMapping("/ranking")
 public class RankingController {
 

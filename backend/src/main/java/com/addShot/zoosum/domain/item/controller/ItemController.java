@@ -3,7 +3,9 @@ package com.addShot.zoosum.domain.item.controller;
 import com.addShot.zoosum.domain.item.dto.request.ItemRequestDto;
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.domain.item.service.ItemService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+    servers = {
+        @Server(url = "/api", description = "Default Server URL")
+    }
+)
 @RequestMapping("/item")
 public class ItemController {
 

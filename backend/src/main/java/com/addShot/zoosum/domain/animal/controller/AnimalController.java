@@ -7,6 +7,8 @@ import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
 import com.addShot.zoosum.domain.animal.service.AnimalService;
 import com.addShot.zoosum.entity.UserAnimal;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+	servers = {
+		@Server(url = "/api", description = "Default Server URL")
+	}
+)
 @RequestMapping("/animal")
 public class AnimalController {
 
