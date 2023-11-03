@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.user.service;
 
 import com.addShot.zoosum.domain.activity.service.ActivityService;
 import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
+import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.animal.service.AnimalService;
 import com.addShot.zoosum.domain.item.repository.ItemRepository;
 import com.addShot.zoosum.domain.item.service.ItemService;
@@ -19,6 +20,8 @@ import com.addShot.zoosum.util.jwt.HeaderUtils;
 import com.addShot.zoosum.util.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
     private final ItemRepository itemRepository;
     private final AnimalRepository animalRepository;
     private final AnimalService animalService;
+    private final UserAnimalRepository userAnimalRepository;
 
 
     @Override
@@ -58,14 +62,36 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
             userLoginResponseDto.setIsFirst("Y");
 
+            //그냥나무
+            Item tree = itemRepository.findItemByItemName("그냥나무");
+
+            //송송이
+            Item island = itemRepository.findItemByItemName("주섬주섬");
+
+            Animal animal = animalRepository.findAnimalByAnimalName("송송이");
+
+            activityService.saveUserItem(user, tree);
+            activityService.saveUserItem(user, island);
+            activityService.saveUserAnimal(user, animal);
+
+            itemService.itemUpdate(user.getUserId(), "TREE", tree.getItmeId());
+            itemService.itemUpdate(user.getUserId(), "ISLAND", island.getItmeId());
+
+            List<Long> request = new ArrayList<>();
+            request.add(animal.getAnimalId());
+            userAnimalRepository.updateUserAnimalToIn(user.getUserId(), request); //새로운 애들 true로
+
             // 기존 유저라면 기존에 보관 중인 jwtToken 제거해야 하는데 이걸 제거할 수가 없음
             // 근데 logout 과정에서 token을 삭제할 거기 때문에 여기서 삭제할 필요는 없음
         } else {
-//            User user = findUser.get();
-//            jwtTokenService.
-//            user.getUserId()
-//
-//            jwtTokenService.deleteJwtToken();
+            User user = findUser.get();
+
+            //email, 소셜 타입 추가 확인
+            if(!user.getEmail().equals(userLoginRequestDto.getEmail())
+                || !user.getSocialType().equals(userLoginRequestDto.getSocialType())){
+//                throw  new Exception();
+            }
+
             userLoginResponseDto.setIsFirst("N");
         }
 
@@ -107,6 +133,7 @@ public class UserServiceImpl implements UserService {
         //기존 유저가 아니라면..?
         if (findUser.isEmpty()){
             //throw exception
+
         }
 
         User user = findUser.get();
@@ -121,19 +148,6 @@ public class UserServiceImpl implements UserService {
 
 
 
-        //그냥나무
-        Item tree = itemRepository.findItemByItemName("그냥나무");
-
-        //송송이
-        Item island = itemRepository.findItemByItemName("주섬주섬");
-
-        Animal animal = animalRepository.findAnimalByAnimalName("송송이");
-
-//        activityService.saveUserItem(user, tree);
-//        activityService.saveUserItem(user, island);
-//
-//
-//        animalService.registUserAnimal(user, animal);
 
 
         return jwtToken.getAccessToken();

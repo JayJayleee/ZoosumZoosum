@@ -3,6 +3,7 @@ package com.addShot.zoosum.domain.activity.service;
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
+import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Item;
 import com.addShot.zoosum.entity.User;
@@ -39,6 +40,7 @@ public interface ActivityService {
      */
     ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto);
 
-    public void saveUserItem(User user, Item item);
-    public void saveUserAnimal(User user, AnimalMotion animal);
+    void saveUserItem(User user, Item item);
+    void saveUserAnimal(User user, AnimalMotion animal);
+    void saveUserAnimal(User user, Animal animal);
 }
