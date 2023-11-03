@@ -497,8 +497,9 @@ public class ActivityServiceImpl implements ActivityService {
         resultMap.put("newBadgeList", newBadgeList);
     }
 
-    private static void getBadge(List<UserBadge> newBadgeList, UserBadge badge) {
-        badge.setBadgeGet(true);
-        newBadgeList.add(badge);
+    private static void getBadge(List<UserBadge> newBadgeList, UserBadge userBadge) {
+        userBadge.setBadgeGet(true);
+        userBadge.setTime(new Time(userBadge.getTime().getCreateTime(), LocalDateTime.now()));
+        newBadgeList.add(userBadge);
     }
 }

@@ -15,5 +15,6 @@ public class PlogRecordResponse {
 	private int sumLength;
 	private int sumTime;
 	private int sumTrash;
+	private String nickname;
 
 }
