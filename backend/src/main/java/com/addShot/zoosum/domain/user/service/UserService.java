@@ -23,6 +23,13 @@ public interface UserService {
     void logoutUser(String accessToken);
 
     /**
+     * 닉네임으로 userId 찾기
+     * @param nickname
+     * @return
+     */
+    String findUserIdByNickname(String nickname);
+
+    /**
      * 회원 정보 수정 후 access 토큰 재발급
      * @param updateRequestDto
      * @param userId

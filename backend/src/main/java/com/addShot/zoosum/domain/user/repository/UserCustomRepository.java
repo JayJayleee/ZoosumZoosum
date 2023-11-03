@@ -10,4 +10,11 @@ public interface UserCustomRepository {
      * @return User Entity
      */
     User findUser(String userId);
+
+    /**
+     * nickname을 통해 User Entitu를 조회한다.
+     * @param nickname 사용자 닉네임
+     * @return User Entity
+     */
+    User findUserByNickname(String nickname);
 }

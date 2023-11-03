@@ -20,6 +20,7 @@ import com.addShot.zoosum.domain.ranking.repository.RankingRepository;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
 import com.addShot.zoosum.entity.ActivityHistory;
+import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Item;
 import com.addShot.zoosum.entity.User;
@@ -374,6 +375,27 @@ public class ActivityServiceImpl implements ActivityService {
             .animal(animal.getAnimal())
             .selected(false)
             .userAnimalName(animal.getAnimal().getAnimalName())
+            .time(new Time(LocalDateTime.now(), LocalDateTime.now()))
+            .build();
+        UserAnimal save = userAnimalRepository.save(userAnimal);
+        log.info("USER_ANIMAL 테이블에 리워드 저장 save : {}", save);
+    }
+
+    /**
+     * USER_ANIMAL 테이블에 리워드 저장
+     * @param user 사용자 Entity
+     * @param animal 동물 Entity
+     */
+    @Override
+    @Transactional
+    public void saveUserAnimal(User user, Animal animal) {
+        log.info("USER_ANIMAL 테이블에 리워드 저장");
+        UserAnimal userAnimal = UserAnimal.builder()
+            .id(new UserAnimalId(user.getUserId(), animal.getAnimalId()))
+            .user(user)
+            .animal(animal)
+            .selected(false)
+            .userAnimalName(animal.getAnimalName())
             .time(new Time(LocalDateTime.now(), LocalDateTime.now()))
             .build();
         UserAnimal save = userAnimalRepository.save(userAnimal);

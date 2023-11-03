@@ -6,8 +6,11 @@ import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.entity.JwtToken;
 import com.addShot.zoosum.entity.User;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.xml.bind.DatatypeConverter;
 import java.security.Key;
@@ -93,5 +96,27 @@ public class JwtTokenProvider {
             .accessToken(accessToken)
             .userId("userId")
             .build();
+    }
+
+
+    public boolean validateToken(String token) throws Exception {
+        String message = "";
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("Invalid JWT Token", e);
+            message = "Invalid JWT Token";
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+            message = "Expired JWT Token";
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+            message = "Unsupported JWT Token";
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty.", e);
+            message = "JWT claims string is empty.";
+        }
+        throw new Exception(message);
     }
 }

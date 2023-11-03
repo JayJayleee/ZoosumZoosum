@@ -1,6 +1,7 @@
 package com.addShot.zoosum.domain.item.service;
 
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
+import com.addShot.zoosum.entity.enums.ItemType;
 import java.util.List;
 
 public interface ItemService {
@@ -28,5 +29,5 @@ public interface ItemService {
      * @param itemId 아이템 아이디
      * @return 변경 여부 1, 0
      */
-    Long itemUpdate(String userId, String itemType, Long itemId);
+    Long itemUpdate(String userId, ItemType itemType, Long itemId);
 }

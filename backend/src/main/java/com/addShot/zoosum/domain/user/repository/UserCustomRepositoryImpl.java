@@ -20,4 +20,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             .where(user.userId.eq(userId))
             .fetchOne();
     }
+
+    @Override
+    public User findUserByNickname(String nickname){
+        return queryFactory.selectFrom(user)
+            .where(user.nickname.eq(nickname))
+            .fetchOne();
+    }
+
 }
