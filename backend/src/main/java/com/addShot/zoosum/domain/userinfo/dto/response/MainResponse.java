@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MainResponse {
 
-	private String userId;
 	private String islandUrl;
 	private String treeUrl;
 	private List<SelectedAnimalResponse> animalList;
