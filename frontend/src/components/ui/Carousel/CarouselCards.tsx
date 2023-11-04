@@ -12,7 +12,11 @@ import AppButton from '../Button';
 import styles from './styles';
 import {CarouselProps, NewData} from '@/types/plogging';
 
-export default function CarouselCards() {
+interface CarouselCardsProps {
+  onNavigate: () => void;
+}
+
+export default function CarouselCards({onNavigate}: CarouselCardsProps) {
   const [resultDataList, setResultDataList] = useState<NewData>(data);
 
   const isCarousel = React.useRef<
@@ -49,6 +53,7 @@ export default function CarouselCards() {
           item={item}
           index={itemIndex}
           activeIndex={index}
+          itemType={item.itemType}
         />
       );
     }
@@ -99,11 +104,7 @@ export default function CarouselCards() {
       )}
       {index === combinedData.length - 1 ? (
         // 마지막 페이지인 경우
-        <AppButton
-          variant="carouselBtn"
-          children="끝!"
-          onPress={() => console.log(combinedData)}
-        />
+        <AppButton variant="carouselBtn" children="끝!" onPress={onNavigate} />
       ) : (
         //마지막 페이지가 아닌 경우
         <AppButton

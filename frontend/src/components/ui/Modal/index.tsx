@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {ModalProps as RNModalProps} from 'react-native';
-import {Modal, TouchableOpacity, View, Text} from 'react-native';
+import {Modal, TouchableOpacity, View, Text, Image} from 'react-native';
 import styles from './styles';
 
 interface ModalComponentProps
@@ -11,6 +11,9 @@ interface ModalComponentProps
   onClose: () => void;
   children: ReactNode;
   buttonInnerText: String;
+  modalStyle?: 'top' | 'default';
+  noButton?: boolean;
+  TopChildren?: ReactNode;
 }
 
 //  isVisible={isModalVisible(해당 페이지에서 모달 보여줄 지 결정할 요소)},onClose={() => setModalVisible(false)}, onRequestClose={() => setModalVisible(false)}
@@ -21,24 +24,43 @@ export default function ModalComponent({
   isVisible,
   onClose,
   children,
+  TopChildren,
   animationType = 'slide', // 기본값을 'slide'로 설정
-  transparent = true, // 기본값을 true로 설정
+  transparent = true,
   onRequestClose,
   buttonInnerText,
+  noButton = false,
+  modalStyle = 'default',
 }: ModalComponentProps) {
+  console.log('Current modalStyle:', modalStyle);
+  let variantStyle;
+
+  switch (modalStyle) {
+    case 'default':
+      variantStyle = styles.centeredView;
+      break;
+    case 'top':
+      variantStyle = styles.topView;
+      break;
+  }
+
+  console.log('switch modalStyle:', modalStyle);
   return (
     <Modal
+      key={modalStyle}
       transparent={transparent}
       animationType={animationType}
       visible={isVisible}
       onRequestClose={onRequestClose}>
-      <View style={styles.centeredView}>
+      <View style={variantStyle}>
+        {TopChildren}
         <View style={styles.modalView}>
           {children}
-
-          <TouchableOpacity style={styles.button} onPress={onClose}>
-            <Text style={styles.textStyle}>{buttonInnerText}</Text>
-          </TouchableOpacity>
+          {!noButton && (
+            <TouchableOpacity style={styles.button} onPress={onClose}>
+              <Text style={styles.textStyle}>{buttonInnerText}</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </Modal>

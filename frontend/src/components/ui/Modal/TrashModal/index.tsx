@@ -12,6 +12,7 @@ interface TrashModalProps {
   data: TrashList[];
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }
+
 const TrashModal = ({
   isVisible,
   onClose,

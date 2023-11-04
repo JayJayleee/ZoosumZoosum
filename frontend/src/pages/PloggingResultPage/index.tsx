@@ -3,12 +3,15 @@ import {View, StyleSheet} from 'react-native';
 import {PloggingResultscreenProps} from '../../types/path';
 import CarouselCards from '../../components/ui/Carousel/CarouselCards';
 
-export default function PloggingResultPage(
-  navigation: PloggingResultscreenProps,
-) {
+export default function PloggingResultPage({
+  navigation,
+}: PloggingResultscreenProps) {
+  const handleNavigation = () => {
+    navigation.navigate('Main');
+  };
   return (
     <View style={styles.container}>
-      <CarouselCards />
+      <CarouselCards onNavigate={handleNavigation} />
     </View>
   );
 }

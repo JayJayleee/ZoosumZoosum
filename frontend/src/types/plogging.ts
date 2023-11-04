@@ -27,6 +27,7 @@ export interface ItemCarouselCardItemProps {
   };
   index: number;
   activeIndex?: number;
+  itemType?: string;
 }
 
 export interface CarouselProps {

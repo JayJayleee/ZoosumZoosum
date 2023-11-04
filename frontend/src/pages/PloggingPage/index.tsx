@@ -29,8 +29,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     }
   }, [route.params]);
   const [resultData, setResultData] = useState<TrashList[]>();
-  const [ploggingDistance, setPloggingDistance] = useState(0);
-  const [trashCount, setTrashCount] = useState(0);
+  const [ploggingDistance, setPloggingDistance] = useState(2.4);
+  const [trashCount, setTrashCount] = useState(23);
   const [timer, setTimer] = useState<number>(0);
 
   // --------------------------------------------  타이머 기능을 위한 변수  --------------------------------------------
@@ -107,10 +107,13 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         img: require('@/assets/img_icon/sand_clock_icon.png'),
         title: formatTime(timer),
       },
-      {img: require('@/assets/img_icon/trash_icon.png'), title: trashCount},
+      {
+        img: require('@/assets/img_icon/trash_icon.png'),
+        title: `${trashCount} 개`,
+      },
       {
         img: require('@/assets/img_icon/shoe_icon.png'),
-        title: ploggingDistance,
+        title: `${ploggingDistance} km`,
       },
     ]);
 

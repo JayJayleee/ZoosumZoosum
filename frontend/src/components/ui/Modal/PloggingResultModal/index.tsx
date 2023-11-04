@@ -1,9 +1,10 @@
 import React from 'react';
 import AppButton from '../../Button';
-import {View, Image, FlatList} from 'react-native';
+import {View, Image, FlatList, Text} from 'react-native';
 import ModalComponent from '@/components/ui/Modal';
 import AppText from '@/components/ui/Text';
 import {TrashList} from '@/types/plogging';
+import styles from './styles';
 
 interface TrashModalProps {
   isVisible: boolean;
@@ -17,40 +18,51 @@ const PloggingResultModal = ({
   data,
   navigation,
 }: TrashModalProps) => {
-  const Item = ({title, img}: TrashList) => (
-    <View style={{width: 120, justifyContent: 'center', alignItems: 'center'}}>
+  const topContent = (
+    <View style={styles.overlayContainer}>
+      <AppText style={styles.overlayText}>오늘도 주섬주섬 성공!</AppText>
       <Image
-        style={{height: 100, aspectRatio: 1, resizeMode: 'contain'}}
-        source={img}
+        source={{uri: 'https://i.imgur.com/Rr9HDQw.png'}}
+        style={styles.overlayImage}
       />
-      <AppText style={{color: 'black', fontSize: 14, marginTop: 5}}>
-        {title}
-      </AppText>
+      {/* 
+      <Image
+        source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
+        style={styles.overlayRightImage}
+      /> */}
+    </View>
+  );
+
+  const Item = ({title, img}: TrashList) => (
+    <View style={styles.ItemContainer}>
+      <Image style={styles.ItemImage} source={img} />
+      <View style={styles.ItemAlign}>
+        <AppText style={styles.ItemText}>{title}</AppText>
+      </View>
     </View>
   );
 
   return (
-    <ModalComponent
-      isVisible={isVisible}
-      onClose={onClose}
-      onRequestClose={onClose}
-      buttonInnerText={'닫기'}>
-      <AppText
-        style={{
-          color: 'black',
-          fontFamily: 'NPSfont_bold',
-          fontSize: 25,
-          marginBottom: 15,
-        }}>
-        오늘의 플로깅 결과
-      </AppText>
-      <FlatList
-        data={data}
-        renderItem={({item}) => <Item title={item.title} img={item.img} />}
-        keyExtractor={(_, index) => index.toString()}
-      />
-      <AppButton onPress={navigation}>결과 보기</AppButton>
-    </ModalComponent>
+    <>
+      <ModalComponent
+        isVisible={isVisible}
+        onClose={onClose}
+        onRequestClose={onClose}
+        noButton={true}
+        buttonInnerText={'닫기'}
+        modalStyle="top"
+        TopChildren={topContent}>
+        <AppText style={styles.Title}>오늘의 플로깅 결과</AppText>
+        <FlatList
+          data={data}
+          renderItem={({item}) => <Item title={item.title} img={item.img} />}
+          keyExtractor={(_, index) => index.toString()}
+        />
+        <AppButton variant={'ploggingRST'} onPress={navigation}>
+          결과 보기
+        </AppButton>
+      </ModalComponent>
+    </>
   );
 };
 

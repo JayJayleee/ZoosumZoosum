@@ -7,6 +7,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
+  topView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(14, 113, 55,1)',
+  },
   modalView: {
     width: '80%',
     backgroundColor: 'white',
