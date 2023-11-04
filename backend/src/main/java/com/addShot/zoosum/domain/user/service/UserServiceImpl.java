@@ -18,6 +18,7 @@ import com.addShot.zoosum.entity.JwtToken;
 import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.enums.CustomErrorType;
 import com.addShot.zoosum.entity.enums.ItemType;
+import com.addShot.zoosum.entity.enums.Social;
 import com.addShot.zoosum.util.exception.UnsatisfiedUserLoginDataException;
 import com.addShot.zoosum.util.exception.UserNotFoundException;
 import com.addShot.zoosum.util.jwt.HeaderUtils;
@@ -96,8 +97,8 @@ public class UserServiceImpl implements UserService {
 
             //email, 소셜 타입 추가 확인
             if(!user.getEmail().equals(userLoginRequestDto.getEmail())
-                || !user.getSocialType().equals(userLoginRequestDto.getSocialType())){
-                throw new UnsatisfiedUserLoginDataException("유저 로그인 정보가 충분하지 않습니다. email, 소셜 타입을 확인하세요.");
+                || !user.getSocialType().name().equals(userLoginRequestDto.getSocialType())){
+                throw new UnsatisfiedUserLoginDataException(CustomErrorType.UNSATISFIED_USER_LOGIN_DATA.getMessage());
             }
 
             userLoginResponseDto.setIsFirst("N");
@@ -154,7 +155,7 @@ public class UserServiceImpl implements UserService {
         JwtToken jwtToken = jwtTokenProvider.generateNewToken(updateResponseDto);
 
         jwtTokenService.deleteJwtToken(token);
-        jwtTokenService.saveJwtToken(token, userId);
+        jwtTokenService.saveJwtToken(jwtToken.getAccessToken(), userId);
 
         return jwtToken.getAccessToken();
     }
