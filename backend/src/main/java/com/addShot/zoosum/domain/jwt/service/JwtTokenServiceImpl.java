@@ -2,6 +2,8 @@ package com.addShot.zoosum.domain.jwt.service;
 
 import com.addShot.zoosum.domain.jwt.repository.JwtTokenRepository;
 import com.addShot.zoosum.entity.JwtToken;
+import com.addShot.zoosum.entity.enums.CustomErrorType;
+import com.addShot.zoosum.util.exception.InvalidTokenException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,10 +38,8 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     public JwtToken findJwtToken(String accessToken) {
         Optional<JwtToken> jwtToken = jwtTokenRepository.findById(accessToken);
         if (jwtToken.isEmpty()){
-            log.error("토큰이 유효하지 않습니다.");
-            return null;
+            throw new InvalidTokenException(CustomErrorType.USER_NOT_FOUND.getMessage());
         }
-//            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
         return jwtToken.get();
     }
 

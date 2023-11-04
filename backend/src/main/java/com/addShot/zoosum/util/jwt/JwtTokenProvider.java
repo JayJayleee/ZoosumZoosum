@@ -6,6 +6,8 @@ import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.entity.JwtToken;
 import com.addShot.zoosum.entity.User;
+import com.addShot.zoosum.entity.enums.CustomErrorType;
+import com.addShot.zoosum.util.exception.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -48,12 +51,13 @@ public class JwtTokenProvider {
 
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
-//            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
         }
         User user = optionalUser.get();
 
-        //초기 값을 결정할 수가 없음...
-        String nickname = "newUser";
+        //초기 값 난수로 임의 생성
+        String uuid = UUID.randomUUID().toString();
+        String nickname = "ZoosumNewUser"+ uuid;
         if(user.getNickname() != null && !user.getNickname().equals("")){
             nickname = user.getNickname();
         }

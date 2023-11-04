@@ -35,7 +35,7 @@ public interface UserService {
      * @param userId
      * @return
      */
-    String updateUserInfo(UserInfoUpdateRequestDto updateRequestDto, String userId);
+    String updateUserInfo(String accessToken, UserInfoUpdateRequestDto updateRequestDto, String userId);
 
 
 }
