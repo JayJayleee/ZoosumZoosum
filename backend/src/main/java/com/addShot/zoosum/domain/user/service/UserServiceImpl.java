@@ -16,7 +16,10 @@ import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.Item;
 import com.addShot.zoosum.entity.JwtToken;
 import com.addShot.zoosum.entity.User;
+import com.addShot.zoosum.entity.enums.CustomErrorType;
 import com.addShot.zoosum.entity.enums.ItemType;
+import com.addShot.zoosum.util.exception.UnsatisfiedUserLoginDataException;
+import com.addShot.zoosum.util.exception.UserNotFoundException;
 import com.addShot.zoosum.util.jwt.HeaderUtils;
 import com.addShot.zoosum.util.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,7 +66,6 @@ public class UserServiceImpl implements UserService {
         //기존 유저가 아니라면 유저를 저장하고 반환하며, 다음 닉네임, 지역 입력을 위한 임시 토큰 발급
         if (findUser.isEmpty()){
             User user = userLoginRequestDto.toEntity();
-//            userRepository.
             userRepository.save(user);
             userLoginResponseDto.setIsFirst("Y");
 
@@ -95,7 +97,7 @@ public class UserServiceImpl implements UserService {
             //email, 소셜 타입 추가 확인
             if(!user.getEmail().equals(userLoginRequestDto.getEmail())
                 || !user.getSocialType().equals(userLoginRequestDto.getSocialType())){
-//                throw  new Exception();
+                throw new UnsatisfiedUserLoginDataException("유저 로그인 정보가 충분하지 않습니다. email, 소셜 타입을 확인하세요.");
             }
 
             userLoginResponseDto.setIsFirst("N");
@@ -121,25 +123,26 @@ public class UserServiceImpl implements UserService {
     public String findUserIdByNickname(String nickname){
         User findUser = userRepository.findUserByNickname(nickname);
 
-        if(findUser != null) {
-            return findUser.getUserId();
+        if(findUser == null){
+            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
         }
 
-//        throw new Exception();
-        return null;
+        return findUser.getUserId();
+
 
     }
 
     @Override
     @Transactional
-    public String updateUserInfo(UserInfoUpdateRequestDto updateResponseDto, String userId) {
+    public String updateUserInfo(String accessToken, UserInfoUpdateRequestDto updateResponseDto, String userId) {
+
+        String token = accessToken.substring(7);
 
         Optional<User> findUser = userRepository.findById(userId);
 
-        //기존 유저가 아니라면..?
+        //유저 정보가 부정확
         if (findUser.isEmpty()){
-            //throw exception
-
+            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
         }
 
         User user = findUser.get();
@@ -147,14 +150,11 @@ public class UserServiceImpl implements UserService {
         User updatedUser = updateResponseDto.toEntity(user);
         userRepository.save(updatedUser);
 
-        //jwtToken 삭제
         //access token, jwt token 재발급
         JwtToken jwtToken = jwtTokenProvider.generateNewToken(updateResponseDto);
-        jwtTokenService.saveJwtToken(jwtToken);
 
-
-
-
+        jwtTokenService.deleteJwtToken(token);
+        jwtTokenService.saveJwtToken(token, userId);
 
         return jwtToken.getAccessToken();
     }

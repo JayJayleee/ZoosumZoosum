@@ -5,6 +5,7 @@ import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
 import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
 import com.addShot.zoosum.domain.user.service.UserService;
+import com.addShot.zoosum.util.exception.UserException;
 import com.addShot.zoosum.util.jwt.HeaderUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +43,6 @@ public class UserController {
 
     private final UserService userService;
     private final HeaderUtils headerUtils;
-    private final JwtTokenService jwtTokenService;
 
     @Operation(summary = "로그인 기능", description = "줘야 하는 값 : id, email, socialType, 프론트로 넘겨주는 값 : Access-Token \n" +
         "    LOGIN_HAVE_NO_ACCOUT(-1101, \"일치하는 계정이 없습니다.\"),\n" +
@@ -64,9 +64,7 @@ public class UserController {
         "LOGOUT_IS_OK(1200, \"로그아웃이 성공적으로 이루어졌습니다.\"),\n" +
         "세 가지 경우의 결과가 나옵니다. 200OK 받으면 성공적으로 로그아웃 된 것.")
     @GetMapping("/logout")
-    public ResponseEntity<?> logoutUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) throws IOException {
-        //access 토큰을 입력
-        //header 에서 잘라내서 redis 방문하서 id가져옴
+    public ResponseEntity<?> logoutUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
         userService.logoutUser(authorizationHeader);
 
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 로그아웃되었습니다.");
@@ -76,10 +74,7 @@ public class UserController {
     public ResponseEntity<UserInfoUpdateResponseDto> UserInfoUpdate(@RequestBody UserInfoUpdateRequestDto updateRequest, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
         String userId = headerUtils.getUserId(authorizationHeader);
 
-        String accessToken = authorizationHeader.substring(7);
-        String token = userService.updateUserInfo(updateRequest, userId);
-        jwtTokenService.deleteJwtToken(accessToken);
-        jwtTokenService.saveJwtToken(token, userId);
+        String token = userService.updateUserInfo(authorizationHeader, updateRequest, userId);
 
         String message = "유저 정보 업데이트에 성공했습니다.";
 
