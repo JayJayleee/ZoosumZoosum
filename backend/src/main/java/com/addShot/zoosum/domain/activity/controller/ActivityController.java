@@ -46,10 +46,9 @@ public class ActivityController {
 
     @Operation(summary = "활동내역(플로깅, 인증서) 목록 조회",
         description = "사용자가 활동한 플로깅 내역과 인증서를 한 화면에서 목록 조회")
-    @GetMapping()
-    public ResponseEntity<?> activityList(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> activityList(@PathVariable(name = "userId") String userId,
         Pageable pageable) {
-		String userId = headerUtils.getUserId(authorizationHeader);
         log.info("ActivityController userId : {}", userId);
         // PageNumber: PageSize를 기준으로 잘랐을 때 몇 번째 페이지인지
         // PageSize: 페이지를 나누는 기준이 되는 수
