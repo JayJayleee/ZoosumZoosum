@@ -4,6 +4,10 @@ import {api, Header} from './index';
 //   animalList: Array<Animal>;
 // };
 
+type ApiResponse = {
+  data: Animal[];
+};
+
 type Animal = {
   animalId: number;
   animalName: string;
@@ -12,5 +16,5 @@ type Animal = {
 };
 
 export const fetchMyAnimalListInfo = async () => {
-  return await api.get<Animal[]>('/animal/id001', await Header());
+  return await api.get<ApiResponse>('/animal', await Header());
 };

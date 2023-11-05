@@ -3,18 +3,19 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AppText from '@/components/ui/Text';
 
 
-interface SelectAnimalCardProps {
-  id : string,
-  title : string,
-  imgurl : string,
-}
+type Animal = {
+  animalId: number;
+  userAnimalName: string;
+  fileUrl: string;
+  navigation: (data: number) => void;
+};
 
-export default function SelectAnimalCard({title, imgurl}: SelectAnimalCardProps) {
+export default function SelectAnimalCard({navigation, animalId, userAnimalName, fileUrl}: Animal) {
   return (
     <View style={styles.card}>
-      <TouchableOpacity style={styles.card2} >
-      <AppText style={styles.title}>{title}</AppText>
-        <Image style={styles.image} source={{uri : imgurl }} />
+      <TouchableOpacity style={styles.card2} onPress={() => navigation(animalId)} >
+      <AppText style={styles.title}>{userAnimalName}</AppText>
+        <Image style={styles.image} source={{uri : fileUrl }} />
       </TouchableOpacity>
     </View>
   );
