@@ -42,9 +42,10 @@ public class ActivityController {
 
     @Operation(summary = "활동내역(플로깅, 인증서) 목록 조회",
         description = "사용자가 활동한 플로깅 내역과 인증서를 한 화면에서 목록 조회")
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> activityList(@PathVariable(name = "userId") String userId,
+    @GetMapping()
+    public ResponseEntity<?> activityList(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         Pageable pageable) {
+		String userId = headerUtils.getUserId(authorizationHeader);
         log.info("ActivityController userId : {}", userId);
         // PageNumber: PageSize를 기준으로 잘랐을 때 몇 번째 페이지인지
         // PageSize: 페이지를 나누는 기준이 되는 수
@@ -87,10 +88,11 @@ public class ActivityController {
 
     @Operation(summary = "플로깅 기록과 리워드 반환",
         description = "플로깅 정보를 입력하는 동시에, 리워드를 제공")
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> writeActivity(@PathVariable(name = "userId") String userId,
+    @PostMapping()
+    public ResponseEntity<?> writeActivity(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestPart(name = "activityImg", required = false) MultipartFile activityImg,
         @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto){
+        String userId = headerUtils.getUserId(authorizationHeader);
         if (userId == null || activityRequestDto == null) {
             return badRequest400();
         }

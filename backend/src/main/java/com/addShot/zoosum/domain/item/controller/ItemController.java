@@ -38,9 +38,10 @@ public class ItemController {
 
     @Operation(summary = "사용자 보유 아이템 목록",
         description = "사용자가 현재 획득한 아이템들의 목록을 반환합니다.")
-    @GetMapping("/{userId}") // GET은 HTTP Body가 없기 때문에, URI에 파라미터를 넣는다.
-    public ResponseEntity<?> userItemList(@PathVariable(name = "userId") String userId,
+    @GetMapping() // GET은 HTTP Body가 없기 때문에, URI에 파라미터를 넣는다.
+    public ResponseEntity<?> userItemList(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestParam(name = "itemType") String itemType) {
+        String userId = headerUtils.getUserId(authorizationHeader);
         String message = "";
 
         log.info("ItemController userId, itemType : {}, {}", userId, itemType);
@@ -63,10 +64,11 @@ public class ItemController {
 
     @Operation(summary = "사용자 아이템 변경",
         description = "사용자가 현재 획득한 아이템 중, 섬이나 나무를 선택하여 변경합니다.")
-    @PutMapping("/{userId}") // 위와 같은 형식을 사용하되, itemId는 Body에 넣는다.
-    public ResponseEntity<?> userItemUpdate(@PathVariable(name = "userId") String userId,
+    @PutMapping() // 위와 같은 형식을 사용하되, itemId는 Body에 넣는다.
+    public ResponseEntity<?> userItemUpdate(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestParam(name = "itemType") String itemType,
         @RequestBody ItemRequestDto item) {
+        String userId = headerUtils.getUserId(authorizationHeader);
         String message = "";
 
         log.info("ItemController userId, itemType, itemId : {}, {}, {}", userId, itemType, item.getItemId());
