@@ -34,7 +34,7 @@ public class S3Service {
 
     // 경매상품 추가시 사진을 DB와 S3에 모두 저장
     public String S3ImageUploadToAWS(MultipartFile file, String dirName, String userId) {
-        if (file == null || file.getOriginalFilename().equals("")) return "URL없음";
+        if (file == null || file.getOriginalFilename().equals("")) return "Image 없음";
 
         String originName = file.getOriginalFilename();
         String path = dirName + userId + "/" + originName;
