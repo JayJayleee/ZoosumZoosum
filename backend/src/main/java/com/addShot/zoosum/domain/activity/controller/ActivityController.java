@@ -91,10 +91,10 @@ public class ActivityController {
     public ResponseEntity<?> writeActivity(@PathVariable(name = "userId") String userId,
         @RequestPart(name = "activityImg") MultipartFile activityImg,
         @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto){
-        if (userId == null || activityRequestDto == null || activityImg == null) {
+        if (userId == null || activityRequestDto == null || activityImg == null || activityImg.getOriginalFilename().equals("")) {
             return badRequest400();
         }
-        log.info("ActivityController userId : {}, activityImg : {}", userId, activityImg);
+        log.info("ActivityController userId: {}, activityImg: {}, imgContentType: {}", userId, activityImg, activityImg.getContentType());
 
         // 입력
         ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto);
