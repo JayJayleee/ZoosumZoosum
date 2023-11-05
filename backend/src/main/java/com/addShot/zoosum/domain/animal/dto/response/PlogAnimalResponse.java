@@ -1,5 +1,6 @@
 package com.addShot.zoosum.domain.animal.dto.response;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ public class PlogAnimalResponse {
 	private Long animalId;
 	private String userAnimalName;
 	private String description;
-	private LocalDateTime createTime;
+	private LocalDate createTime;
 	private int trashTogether;
 	private double lengthTogether;
 	private int hour;
