@@ -11,19 +11,26 @@ type Animal = {
   fileUrl: string;
   selected: boolean;
 };
+type AnimalList = {
+  data : Animal[];
+}
+
+interface AnimalCardListProps {
+  navigation: (data: number) => void;
+}
 
 const targetNumColumns = 3; // 원하는 열의 수
 
-export default function AnimalCardlist() {
-  const {data, isLoading, isError, error} = useQuery<Animal[]>({
-    queryKey: ['animalList'],
+export default function AnimalCardlist( {navigation} : AnimalCardListProps) {
+  const {data, isLoading, isError, error} = useQuery<AnimalList>({
+    queryKey: ['animalListKey'],
     queryFn: fetchMyAnimalListInfo,
   });
 
-  if (isLoading) return console.log('로딩');
-  if (isError) return console.log('에러', error);
+  if (isLoading) return <Text>로딩...</Text>;
+  if (isError) return <Text>에러: {error?.message}</Text>;
 
-  const animalsArray: Animal[] = data as Animal[];
+  const animalsArray: Animal[] = data?.data || [];
 
   const totalCards = animalsArray.length;
   const numColumns = Math.min(
@@ -58,9 +65,10 @@ export default function AnimalCardlist() {
           }
           return (
             <AnimalCard
-              id={item.animalId.toString()}
-              title={item.animalName}
-              imgurl={item.fileUrl}
+              animalId={item.animalId}
+              animalName={item.animalName}
+              fileUrl={item.fileUrl}
+              navigation={navigation}
             />
           );
         }}

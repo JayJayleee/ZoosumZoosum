@@ -23,7 +23,9 @@ export type RootStackParamList = {
   Ranking: undefined;
   PickIsland : undefined;
   PickTree : undefined;
-  FriendDetail : undefined;
+  FriendDetail : {
+    animalId : number;
+  }
 };
 
 export type LoginScreenProps = NativeStackScreenProps<

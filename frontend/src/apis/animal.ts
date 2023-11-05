@@ -10,7 +10,10 @@ type Animal = {
   fileUrl: string;
   selected: boolean;
 };
+type AnimalList = {
+  data : Animal[];
+}
 
 export const fetchMyAnimalListInfo = async () => {
-  return await api.get<Animal[]>('/animal/id001', await Header());
+  return await api.get<AnimalList>('/animal/3141238159', await Header());
 };
