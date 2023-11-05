@@ -41,9 +41,12 @@ export default function ItemListPage({navigation}: ItemListscreenProps) {
   
   // 섬 선택 호출 함수(props로 전달)
   const goToSelectIsland = () => {
-    navigation.navigate('PickFriend')
+    navigation.navigate('PickIsland')
   }
-
+  // 나무 선택 호출 함수(props로 전달)
+  const goToSelectTree = () => {
+    navigation.navigate('PickTree')
+  }
   return (
     <ImageBackground
       style={StyleSheet.absoluteFill}
@@ -71,7 +74,7 @@ export default function ItemListPage({navigation}: ItemListscreenProps) {
         </View>
         <View style={styles.list_container}>
           {showComponent1 && <IslandList goToSelectIsland={goToSelectIsland}/>}
-          {showComponent2 && <TreeList />}
+          {showComponent2 && <TreeList goToSelectTree={goToSelectTree}/>}
         </View>
         <AppButton
         variant='gotoisland'

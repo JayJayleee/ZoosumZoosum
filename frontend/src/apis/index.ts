@@ -30,9 +30,9 @@ export const containStorage = async (key: string) => {
 };
 
 // api header
-export const Header = () => ({
+export const Header = async () => ({
   headers: {
-    Authorization: `Bearer ${getStorage('Accesstoken')}`,
+    Authorization: `Bearer ${await getStorage('AccessToken')}`,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Credentials': 'true',
   },
@@ -75,19 +75,4 @@ export const api = {
       method: 'DELETE',
       body: JSON.stringify(payload),
     }),
-
-  // postPhoto: (path: string, photo: File, init?: RequestInit) => {
-  //   const formData = new FormData();
-  //   formData.append("file", photo);
-
-  //   return request(
-  //     path,
-  //     {
-  //       headers: init?.headers,
-  //       method: "POST",
-  //       body: formData,
-  //     },
-  //     false
-  //   );
-  // },
 };

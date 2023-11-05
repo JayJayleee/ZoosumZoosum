@@ -1,17 +1,10 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Image, Animated, Easing} from 'react-native';
+import React from 'react';
+import {View, Image} from 'react-native';
 import AppText from '../Text';
 import {ShiningEffect} from './ShiningEffect';
+import {CarouselCardItemProps} from '@/types/plogging';
 
 import styles from './styles';
-interface CarouselCardItemProps {
-  item: {
-    fileUrl: string;
-    badgeName: string;
-  };
-  index: number;
-  activeIndex?: number;
-}
 
 // 뱃지, 아이템 등에 대한 캐롯셀 아이템
 

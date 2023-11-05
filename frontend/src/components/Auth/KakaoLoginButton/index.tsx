@@ -1,6 +1,7 @@
 import { Image, TouchableOpacity } from "react-native"
 import * as KakaoLogin from '@react-native-seoul/kakao-login'
-import { getStorage } from '@/apis/index';
+import { getStorage, setStorage } from '@/apis/index';
+import { loginFtn } from "@/apis/login";
 
 // 로그인 페이지에서 전달받은 함수를 타입을 정의
 interface PropsType {
@@ -12,12 +13,14 @@ interface PropsType {
 
 // 프로필을 통해 얻은 id와 이메일의 타입을 정의
 interface ProfileType {
-  id: String;
-  email: String;
+  id: string;
+  email: string;
+  socialType: string;
 }
 
 export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkState, setState}: PropsType) {
-
+  
+  // 버튼이 보이지 않을 때, 해당 영역 클릭 시 실행하는 함수
   const checkLoginState = () => {
     if (getStorage("Accesstoken") !== null) {
       moveMainPage();
@@ -26,16 +29,26 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkS
     }
   }
 
-  const isFirstLogin = async ({id, email}: ProfileType) => {
-    console.log("전달받은 데이터 :", JSON.stringify({socialType: "kakao", id, email}))
-    moveUserInfoPage();
+  // 첫 로그인 후, 유저 정보 입력 페이지로 이동하도록 하는 함수
+  const isFirstLogin = async (data: ProfileType) => {
+    // 로그인 함수를 통해 얻은 결과를 json 형식으로 변환하기
+    const response = await loginFtn(data)
+    const result = await response.json();
+    // 받은 유저 토큰을 기본적으로 storage에 저장
+    await setStorage("AccessToken", result.accessToken)
+    if (result.isFirst !== "N") {
+      moveMainPage();
+    } else {
+      moveUserInfoPage();
+    }
   }
 
   // 카카오 로그인 성공 시, 해당 계정의 id와 이메일을 가져오는 함수
   const getProfile = () => {
     KakaoLogin.getProfile().then((profile) => {
-      console.log("GetProfile Success", JSON.stringify(profile));
-      isFirstLogin({id: profile.id, email: profile.email});
+      // console.log("GetProfile Success", JSON.stringify(profile));
+      const data = {id: profile.id, email: profile.email, socialType: "KAKAO"}
+      isFirstLogin(data);
     }).catch((error) => {
       console.log(`GetProfile Fail(code:${error.code})`, error.message);
     })
@@ -44,7 +57,6 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkS
   // 카카오 로그인 화면을 띄우고, 로그인 성공 시 access token과 refresh token을 가져오는 함수
   const KakaoLoginHandler = () => {
     KakaoLogin.login().then((result) => {
-      console.log("Login Success", JSON.stringify(result));
       getProfile();
     }).catch((error) => {
       if (error.code === 'E_CANCELLED_OPERATION') {

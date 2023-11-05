@@ -3,7 +3,12 @@ import { View, ImageBackground, Image, TextInput, StyleSheet, Text, Touchable, T
 import { SingleSelect } from '@/components/ui/SelectList';
 import ModalComponent from '@/components/ui/Modal';
 import { UserInfoscreenProps } from '@/types/path';
-import { setStorage } from '@/apis/index';
+import { getStorage, setStorage, clearStorage } from '@/apis/index';
+import { setUserInfoFtn } from '@/apis/login';
+
+type regionObj = {
+  [key: string]: string;
+}
 
 export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
@@ -21,7 +26,12 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
   // 지역 리스트 생성
   const regionList = ["서울", "부산", "인천", "대구", "대전", "광주", "울산", "세종",
-   "경기도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "강원도", "제주도"]
+   "경기도", "충청도", "전라도", "경상도", "강원도", "제주도"]
+
+  const regionDict:regionObj = {
+    "서울" : "SEOUL", "부산": "BUSAN", "인천": "INCHEON", "대구": "DAEGU", "대전": "DAEJEON", "광주": "GWANGJU", "울산": "ULSAN", "세종": "SEJONG",
+    "경기도": "GYEONGGI", "충청도": "CHUNGCUNG", "전라도": "JEONLA", "경상도": "GYEONGSANG", "강원도": "KANGWON", "제주도": "JEJU"
+  }
 
   // 닉네임 창에서 버튼 클릭 시 발생할 이벤트
   const NicknameButton = async () => {
@@ -29,7 +39,10 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       setModalVisible(false);
       setNickDuplicated(true);
       if (nickDuplicated === true) {
-        await setStorage("Accesstoken", "loginSuccess");
+        const response = await setUserInfoFtn({nickname: userNickname, region: regionDict[userRegion]});
+        const result = await response.json();
+        await setStorage("AccessToken", result.token);
+        // console.log("token :", await getStorage("AccessToken"))
         navigation.navigate('Main');
       } else {
         setModalVisible(true);
@@ -40,7 +53,7 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
   };
 
   // 지역 창에서 버튼 클릭 시 발생할 이벤트
-  const RegionButton = () => {
+  const RegionButton = async () => {
     if(userRegion !== "") {
       setModalVisible(false);
       setRegionOk(true);
