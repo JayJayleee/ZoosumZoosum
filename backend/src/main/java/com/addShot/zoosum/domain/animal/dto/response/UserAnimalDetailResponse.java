@@ -16,7 +16,7 @@ public class UserAnimalDetailResponse {
 	private Long animalId;
 	private String userAnimalName;
 	private String description;
-	private LocalDateTime createTime;
+	private LocalDate createTime;
 	private int trashTogether;
 	private int hour;
 	private int minute;

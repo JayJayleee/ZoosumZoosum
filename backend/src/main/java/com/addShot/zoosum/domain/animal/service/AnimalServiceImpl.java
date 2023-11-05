@@ -23,6 +23,7 @@ import com.addShot.zoosum.util.TimeUtil;
 import com.addShot.zoosum.util.exception.ExceedRequestException;
 import com.addShot.zoosum.util.exception.NotExistAnimalException;
 import com.addShot.zoosum.util.exception.UserNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,11 +92,14 @@ public class AnimalServiceImpl implements AnimalService {
 		List<AnimalMotion> animalMotions = animalMotionRepository.findByAnimalId(animalId).get();
 		AnimalMotion randomMotion = RandomUtil.getRandomElement(animalMotions);
 
+		LocalDateTime create = userAnimal.getTime().getCreateTime();
+		LocalDate createTime = create.toLocalDate(); //날짜 데이터로 변환
 		double meter = userAnimal.getLengthTogether();
+
 		UserAnimalDetailResponse response = UserAnimalDetailResponse.builder()
 			.animalId(animalId)
 			.userAnimalName(userAnimal.getUserAnimalName())
-			.createTime(userAnimal.getTime().getCreateTime())
+			.createTime(createTime)
 			.trashTogether(userAnimal.getTrashTogether())
 			.lengthTogether(DistanceUtil.getKilometer(meter))
 			.fileUrl(randomMotion.getFileUrl())
@@ -147,13 +151,16 @@ public class AnimalServiceImpl implements AnimalService {
 
 			Optional<Animal> optionalAnimal = animalRepository.findById(animalId);
 			Optional<AnimalMotion> optionMotion = animalMotionRepository.findMotion(animalId);
+
+			LocalDateTime create = ua.getTime().getCreateTime();
+			LocalDate createTime = create.toLocalDate(); //날짜 데이터로 변환
 			double meter = ua.getLengthTogether();
 
 			PlogAnimalResponse response = PlogAnimalResponse.builder()
 				.animalId(animalId)
 				.userAnimalName(ua.getUserAnimalName())
 				.description(optionalAnimal.get().getDescription())
-				.createTime(ua.getTime().getCreateTime())
+				.createTime(createTime)
 				.trashTogether(ua.getTrashTogether())
 				.lengthTogether(DistanceUtil.getKilometer(meter))
 				.fileUrl(optionMotion.get().getFileUrl())
