@@ -32,10 +32,10 @@ public interface UserInfoService {
 
 	/**
 	 * userinfo 4번 - 내 뱃지 조회 (전체 뱃지 조회 후, 가지고 있는 여부 반환)
-	 * @param userId
+	 * @param nickname
 	 * @return List<BadgeListItemResponse>
 	 */
-	List<BadgeListItemResponse> getUserBadgeList(String userId);
+	List<BadgeListItemResponse> getUserBadgeList(String nickname);
 
 	/**
 	 * userinfo 5번 - 나무 캠페인 참여 데이터 입력
