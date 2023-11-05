@@ -7,6 +7,7 @@ import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDtoAndSize;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
 import com.addShot.zoosum.domain.activity.service.ActivityService;
+import com.addShot.zoosum.util.jwt.HeaderUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ActivityController {
 
     private final ActivityService activityServicel;
+    private final HeaderUtils headerUtils;
 
     @Operation(summary = "활동내역(플로깅, 인증서) 목록 조회",
         description = "사용자가 활동한 플로깅 내역과 인증서를 한 화면에서 목록 조회")
