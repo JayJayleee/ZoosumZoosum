@@ -36,6 +36,8 @@ services:
         container_name: spring-container
         networks:
             - zoosumnetwork
+        environment:
+            TZ: "Asia/Seoul"
         restart: always
         expose: # 컨테이너 내부에서 도커 네트워크에게 열어주는 포트
             - "5000"
