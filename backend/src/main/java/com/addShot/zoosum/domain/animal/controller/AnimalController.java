@@ -11,6 +11,7 @@ import com.addShot.zoosum.util.Response;
 import com.addShot.zoosum.util.jwt.HeaderUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "[ANIMAL]", description = "동물 관련 API")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -42,86 +44,50 @@ public class AnimalController {
 	//animal 1번 - 내 동물 리스트 조회 (도감용)
 	@GetMapping
 	public ResponseEntity<?> findUserAnimal(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-		try {
-			String userId = headerUtils.getUserId(authorizationHeader);
-			List<UserAnimalListResponse> userAnimalList = animalService.getUserAnimalList(userId);
-			return ResponseEntity.ok(new Response(userAnimalList));
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
-		}
+		String userId = headerUtils.getUserId(authorizationHeader);
+		List<UserAnimalListResponse> userAnimalList = animalService.getUserAnimalList(userId);
+		return ResponseEntity.ok(new Response(userAnimalList));
 	}
 
 	//animal 2번 - 내 동물 상세 조회
 	@GetMapping("/{animalId}")
 	public ResponseEntity<?> findUserAnimalDetail(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PathVariable Long animalId) {
 		log.info("AnimalController animalId : {}", animalId);
-		try {
-			String userId = headerUtils.getUserId(authorizationHeader);
-			UserAnimalDetailResponse response = animalService.getUserAnimalDetail(userId, animalId);
-			return ResponseEntity.ok(response);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
-		}
+
+		String userId = headerUtils.getUserId(authorizationHeader);
+		UserAnimalDetailResponse response = animalService.getUserAnimalDetail(userId, animalId);
+		return ResponseEntity.ok(response);
 	}
 
 	//animal 3번 - 동물 뽑기
 	@GetMapping("/draw")
 	public ResponseEntity<?> findAnimalDraw() {
-		try {
-			AnimalDrawResponse response = animalService.getAnimalDraw();
-			return ResponseEntity.ok(response);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
-		}
+		AnimalDrawResponse response = animalService.getAnimalDraw();
+		return ResponseEntity.ok(response);
 	}
 
 	//animal 4번 - 산책 나갈 동물 리스트
 	@GetMapping("/plog")
 	public ResponseEntity<?> findFlogAnimalList(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-
-		try {
-			String userId = headerUtils.getUserId(authorizationHeader);
-			List<PlogAnimalResponse> flogAnimalList = animalService.getFlogAnimalList(userId);
-			return ResponseEntity.ok(new Response(flogAnimalList));
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
-		}
+		String userId = headerUtils.getUserId(authorizationHeader);
+		List<PlogAnimalResponse> flogAnimalList = animalService.getFlogAnimalList(userId);
+		return ResponseEntity.ok(new Response(flogAnimalList));
 	}
 
 	//animal 5번 - 내 동물로 등록
 	@PostMapping()
 	public ResponseEntity<?> registUserAnimal(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestBody MyAnimalRequest myAnimalRequest) {
-		try {
-			String userId = headerUtils.getUserId(authorizationHeader);
-			animalService.registUserAnimal(myAnimalRequest, userId);
-			return ResponseEntity.ok("완료되었습니다.");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
-		}
+		String userId = headerUtils.getUserId(authorizationHeader);
+		animalService.registUserAnimal(myAnimalRequest, userId);
+		return ResponseEntity.ok("완료되었습니다.");
 	}
 
 	//animal 6번 - 섬에 내보낼 동물 선택
 	@PutMapping("/island")
 	public ResponseEntity<?> updateUserAnimal(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestBody List<Long> request) {
-		try {
-			String userId = headerUtils.getUserId(authorizationHeader);
-			animalService.updateUserAnimal(request, userId);
-			return ResponseEntity.ok("완료되었습니다.");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body("잘못된 요청입니다.");
-		}
+		String userId = headerUtils.getUserId(authorizationHeader);
+		animalService.updateUserAnimal(request, userId);
+		return ResponseEntity.ok("완료되었습니다.");
 	}
 
 }

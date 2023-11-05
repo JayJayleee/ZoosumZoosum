@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler({UserNotFoundException.class, UnsatisfiedUserLoginDataException.class})
+    @ExceptionHandler({UserNotFoundException.class, UnsatisfiedUserLoginDataException.class, NotEnoughSeedException.class, NotEnoughInputException.class,
+        NotExistTreeException.class, NotExistAnimalException.class, NotExistIslandException.class, ExceedRequestException.class})
     public ResponseEntity<CustomErrorResponse> customBadRequestException(Exception e){
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomErrorResponse(e.getMessage()));
     }
 
@@ -28,4 +28,6 @@ public class GlobalExceptionHandler {
 //    public ResponseEntity<CustomErrorResponse> commonBadRequestException(Exception e) {
 //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomErrorResponse(CustomErrorType.BAD_REQUEST.getMessage()));
 //    }
+
+
 }

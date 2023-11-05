@@ -31,10 +31,17 @@ import com.addShot.zoosum.entity.embedded.Tree;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
 import com.addShot.zoosum.entity.embedded.UserPlogInfoId;
 import com.addShot.zoosum.entity.enums.ActivityType;
+import com.addShot.zoosum.entity.enums.CustomErrorType;
 import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.DistanceUtil;
 import com.addShot.zoosum.util.RandomUtil;
 import com.addShot.zoosum.util.TimeUtil;
+import com.addShot.zoosum.util.exception.NotEnoughInputException;
+import com.addShot.zoosum.util.exception.NotEnoughSeedException;
+import com.addShot.zoosum.util.exception.NotExistAnimalException;
+import com.addShot.zoosum.util.exception.NotExistIslandException;
+import com.addShot.zoosum.util.exception.NotExistTreeException;
+import com.addShot.zoosum.util.exception.UserNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +68,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public MainResponse getUserMain(String userId) {
+
+		if(userId == null) {
+			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+		}
+
 		List<UserAnimal> userAnimals = userAnimalRepository.findAllSelectedByUserId(userId).get();
 		List<SelectedAnimalResponse> animalResponses = new ArrayList<>();
+
+		if (userAnimals.size() == 0) {
+			throw new NotExistAnimalException(CustomErrorType.NOT_EXIST.getMessage());
+		}
 
 		for (UserAnimal ua : userAnimals) {
 			Long animalId = ua.getAnimal().getAnimalId();
@@ -79,10 +95,18 @@ public class UserInfoServiceImpl implements UserInfoService {
 		//섬에 나와있는 동물 리스트 조회
 
 		UserItem islandItem = userItemRepository.findSelectedItem(userId, ItemType.ISLAND);
+
+		if (islandItem == null) {
+			throw new NotExistIslandException(CustomErrorType.NOT_EXIST.getMessage());
+		}
 		//섬 테마 조회
 
 		UserItem treeItem = userItemRepository.findSelectedItem(userId, ItemType.TREE);
 		//나무 조회
+
+		if(treeItem == null) {
+			throw new NotExistTreeException(CustomErrorType.NOT_EXIST.getMessage());
+		}
 
 		MainResponse response = MainResponse.builder()
 			.islandUrl(islandItem.getItem().getFileUrl())
@@ -95,6 +119,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public MainInfoResponse getUserInfoMain(String userId) {
+
+		if(userId == null) {
+			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+		}
+
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
 		List<ActivityHistory> all = activityRepository.findAll();
 		List<ActivityHistory> userActivities = activityRepository.findByUserIdAndActivityType(
@@ -123,7 +152,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public PlogRecordResponse getPlogRecord(String nickname) {
+
 		String userId = userRepository.findUserByNickname(nickname).getUserId();
+
+		if(userId == null) {
+			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+		}
+
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
 		double meter = userPlogInfo.getSumPloggingData().getSumLength();
 
@@ -144,7 +179,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public List<BadgeListItemResponse> getUserBadgeList(String userId) {
+	public List<BadgeListItemResponse> getUserBadgeList(String nickname) {
+
+		String userId = userRepository.findUserByNickname(nickname).getUserId();
+
+		if(userId == null) {
+			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+		}
+
 		List<Badge> all = badgeRepository.findAll();
 		List<BadgeListItemResponse> response = new ArrayList<>();
 
@@ -172,14 +214,28 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Transactional
 	@Override
 	public void insertTreeCampaignData(TreeCampaignRequest request, String userId) {
+
+		if(userId == null) {
+			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+		}
+
 		String treeName = request.getTreeName();
 		String userName = request.getUserName();
 		String userPhone = request.getUserPhone();
 		String userEmail = request.getUserEmail();
 
+		if(treeName == null || userName == null || userPhone == null || userEmail == null) { //작성 안한 항목이 있다면
+			throw new NotEnoughInputException(CustomErrorType.UNSATISFIED_ALL_INPUT.getMessage());
+		}
+
 		//씨앗 갯수 차감
 		User user = userRepository.findById(userId).get();
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(user.getUserId())).get();
+
+		if(userPlogInfo.getSeed() < 100) { //씨앗 갯수가 100개 미만이라면
+			throw new NotEnoughSeedException(CustomErrorType.UNSATISFIED_SEED_COUNT.getMessage());
+		}
+
 		userPlogInfo.setSeed(userPlogInfo.getSeed()-100);
 		userPlogInfoRepository.save(userPlogInfo);
 
