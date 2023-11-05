@@ -43,7 +43,7 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
             섬에 나와있는 동물들
           </AppText>
           <View style={styles.select_cardlist}>
-            <SelectAnimalCardlist />
+            <SelectAnimalCardlist navigation={propsFtn} />
           </View>
         </View>
         <AppButton

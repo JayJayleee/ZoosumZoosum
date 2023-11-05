@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
     height : '80%',
     marginTop : 10,
     backgroundColor : '#646567',
-    borderRadius : 10
+    borderRadius : 10,
+    justifyContent : 'center'
   },
   having_cardlist : {
     width : '85%',
