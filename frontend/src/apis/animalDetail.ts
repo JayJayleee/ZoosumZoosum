@@ -16,5 +16,5 @@ type Animal = {
 
 export const fetchMyAnimalDetailInfo = async (animalId: number ) => {
   // const nickname = await getStorage("Nickname")
-  return await api.get<Animal>(`/animal/3141238159/${animalId}`, await Header());
+  return await api.get<Animal>(`/animal/${animalId}`, await Header());
 };
