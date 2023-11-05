@@ -98,8 +98,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           </TouchableOpacity>
         </ImageBackground>
         {/* 지도 import */}
-        {/* <GoogleMap></GoogleMap> */}
-        <KakaoMap></KakaoMap>
+        <GoogleMap props={`aaa`}></GoogleMap>
+        {/* <KakaoMap></KakaoMap> */}
       </View>
     </View>
   );

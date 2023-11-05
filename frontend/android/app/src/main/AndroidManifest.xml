@@ -5,12 +5,14 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="true"  
+      android:requestLegacyExternalStorage="true"
       android:theme="@style/AppTheme"><!--allowBackup을 false -> true로 변경해 로그인 후 앱으로 돌아올 수 있도록 설정-->
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
