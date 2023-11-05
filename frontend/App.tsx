@@ -41,29 +41,6 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-<<<<<<< HEAD
-    <NavigationContainer>
-      {/* initialRouteName 는 가장 처음 나타나는 화면을 의미한다 */}
-      <Stack.Navigator
-        initialRouteName="Login"
-        // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
-        // screenOptions={{headerShown: false}}
-      >
-        <Stack.Screen name="Login" component={LoginPage} />
-        <Stack.Screen name="Main" component={MainPage} />
-        <Stack.Screen name="Plogging" component={PloggingPage} />
-        <Stack.Screen name="PloggingResult" component={PloggingResultPage} />
-        <Stack.Screen name="Camera" component={CameraPage} />
-        <Stack.Screen name="FriendList" component={FriendListPage} />
-        <Stack.Screen name="UserInfo" component={UserInfoPage} />
-        <Stack.Screen name="PickFriend" component={PickFriendPage} />
-        <Stack.Screen name="PickPloggingFriend" component={PickPloggingFriendPage}/>
-        <Stack.Screen name="ItemList" component={ItemListPage} />
-        <Stack.Screen name="Profile" component={ProfilePage} />
-        <Stack.Screen name="Ranking" component={RankingPage} />
-      </Stack.Navigator>
-    </NavigationContainer>
-=======
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         {/* initialRouteName 는 가장 처음 나타나는 화면을 의미한다 */}
@@ -92,7 +69,6 @@ function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </QueryClientProvider>
->>>>>>> b73e4e7c2af7a5535391e0b4f0575b70796807c4
   );
 }
 export default App;
