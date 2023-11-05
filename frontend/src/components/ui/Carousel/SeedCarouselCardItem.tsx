@@ -3,7 +3,7 @@ import {View, Image} from 'react-native';
 import AppText from '../Text';
 import styles from './styles';
 import {ShiningEffect} from './ShiningEffect';
-import {SeedCarouselCardItemProps} from '@/apis/plogging';
+import {SeedCarouselCardItemProps} from '@/types/plogging';
 // 뱃지, 아이템 등에 대한 캐롯셀 아이템
 
 export function SeedCarouselCardItem({item, index}: SeedCarouselCardItemProps) {

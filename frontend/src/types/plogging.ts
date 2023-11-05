@@ -1,4 +1,5 @@
-// 캐롯셸 내 동물 카드용 props
+import {ImageSourcePropType} from 'react-native';
+
 export interface AnimalCarouselCardItemProps {
   item: {
     fileUrl: string;
@@ -95,4 +96,15 @@ export interface BadgeType {
   badgeName: string;
   badgeCondition: string;
   fileUrl: string;
+}
+
+export interface TrashList {
+  img: ImageSourcePropType;
+  title: string | number;
+}
+
+export interface ploggingResultTrash {
+  timerValue: number;
+  trashCountValue: number;
+  ploggingDistanceValue: number;
 }

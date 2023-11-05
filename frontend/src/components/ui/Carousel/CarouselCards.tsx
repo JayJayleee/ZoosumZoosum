@@ -10,7 +10,7 @@ import data from '../../../pages/PloggingResultPage/data';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
 import AppButton from '../Button';
 import styles from './styles';
-import {CarouselProps, NewData} from '@/apis/plogging';
+import {CarouselProps, NewData} from '@/types/plogging';
 
 export default function CarouselCards() {
   const [resultDataList, setResultDataList] = useState<NewData>(data);

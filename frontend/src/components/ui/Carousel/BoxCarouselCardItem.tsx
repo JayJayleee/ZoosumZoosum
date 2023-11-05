@@ -3,7 +3,7 @@ import {View, Image} from 'react-native';
 import styles from './styles';
 import AppText from '../Text';
 import {Gift} from '../animation/LottieEffect';
-import {ItemCarouselCardItemProps} from '@/apis/plogging';
+import {ItemCarouselCardItemProps} from '@/types/plogging';
 
 export function BoxCarouselCardItem({
   item,
