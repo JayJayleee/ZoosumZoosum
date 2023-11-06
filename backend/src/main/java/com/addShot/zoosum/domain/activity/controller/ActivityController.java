@@ -95,15 +95,16 @@ public class ActivityController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> writeActivity(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestPart(name = "activityImg", required = false) MultipartFile activityImg,
-        @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto){
+        @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto,
+        @RequestPart(name = "animalId", required = false) Long animalId) {
         String userId = headerUtils.getUserId(authorizationHeader);
         if (userId == null || activityRequestDto == null) {
             return badRequest400();
         }
-        log.info("ActivityController userId: {}, activityImg: {}", userId, activityImg);
+        log.info("ActivityController userId: {}, activityImg: {}, animalId: {}", userId, activityImg, animalId);
 
         // 입력
-        ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto);
+        ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto, animalId);
         if (responseDto == null) {
             return serverError500("입력에 실패했습니다.");
         }
