@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
             }
 
             userLoginResponseDto.setIsFirst("N");
+            userLoginResponseDto.setNickname(user.getNickname());
         }
 
         //access 토큰, jwt 토큰 발급 후 저장

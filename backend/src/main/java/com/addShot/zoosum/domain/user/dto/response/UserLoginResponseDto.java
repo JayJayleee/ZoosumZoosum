@@ -15,4 +15,5 @@ public class UserLoginResponseDto {
 
     String accessToken;
     String isFirst;
+    String nickname;
 }
