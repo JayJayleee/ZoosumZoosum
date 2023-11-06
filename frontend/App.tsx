@@ -33,6 +33,8 @@ import ItemListPage from '@/pages/ItemListPage';
 import PickIslandPage from '@/pages/PickIslandPage';
 import PickTreePage from '@/pages/PickITreePage';
 import FriendDetailPage from '@/pages/FriendDetailPage';
+import {useEffect} from 'react';
+import {PermissionsAndroid} from 'react-native';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -40,6 +42,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
 
 function App() {
+  useEffect(() => {
+    PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    ]);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>

@@ -15,6 +15,14 @@ import SelectAnimalCardlist from './SelectAnimalCardlist';
 
 
 export default function FriendListPage({navigation}: FriendListscreenProps) {
+
+  const propsFtn = (data: number) => {
+    navigation.navigate({
+      name: 'FriendDetail',
+      params: {animalId: data}
+    })
+  }
+
   return (
     <ImageBackground
       style={StyleSheet.absoluteFill}
@@ -35,7 +43,7 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
             섬에 나와있는 동물들
           </AppText>
           <View style={styles.select_cardlist}>
-            <SelectAnimalCardlist />
+            <SelectAnimalCardlist navigation={propsFtn} />
           </View>
         </View>
         <AppButton
@@ -44,7 +52,7 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
         onPress={() => navigation.navigate('PickFriend')}/>
         <View style={styles.body2}>
           <View style={styles.having_cardlist}>
-            <AnimalCardlist />
+            <AnimalCardlist navigation={propsFtn} />
           </View>
         </View>
         <AppButton

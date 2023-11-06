@@ -25,9 +25,11 @@ export type RootStackParamList = {
     userId: string;
   };
   Ranking: undefined;
-  PickIsland: undefined;
-  PickTree: undefined;
-  FriendDetail: undefined;
+  PickIsland : undefined;
+  PickTree : undefined;
+  FriendDetail : {
+    animalId : number;
+  }
 };
 
 export type LoginScreenProps = NativeStackScreenProps<

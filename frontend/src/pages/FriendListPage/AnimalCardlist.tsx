@@ -11,6 +11,13 @@ type Animal = {
   fileUrl: string;
   selected: boolean;
 };
+type ApiResponse = {
+  data: Animal[];
+};
+
+interface AnimalCardListProps {
+  navigation: (data: number) => void;
+}
 
 type ApiResponse = {
   data: Animal[];
@@ -18,7 +25,7 @@ type ApiResponse = {
 
 const targetNumColumns = 3;
 
-export default function AnimalCardlist() {
+export default function AnimalCardlist({navigation}: AnimalCardListProps) {
   const [animalsArray, setAnimalsArray] = useState<Animal[]>([]);
   const [numColumns, setNumColumns] = useState<number>(targetNumColumns);
 
@@ -26,6 +33,7 @@ export default function AnimalCardlist() {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
       console.log(data);
+      // console.log(data);
       const totalCards = data.length;
       const calculatedNumColumns = Math.min(
         targetNumColumns,
@@ -76,9 +84,10 @@ export default function AnimalCardlist() {
           }
           return (
             <AnimalCard
-              id={item.animalId.toString()}
-              title={item.animalName}
-              imgurl={item.fileUrl}
+              animalId={item.animalId}
+              animalName={item.animalName}
+              fileUrl={item.fileUrl}
+              navigation={navigation}
             />
           );
         }}
