@@ -41,12 +41,19 @@ export default function ItemListPage({navigation}: ItemListscreenProps) {
   };
   
   // 섬 선택 호출 함수(props로 전달)
-  const goToSelectIsland = () => {
-    navigation.navigate('PickIsland')
+  const goToSelectIsland = (data: number) => {
+    navigation.navigate({
+      name :'PickIsland',
+      params: {itemId: data}
+    })
   }
+
   // 나무 선택 호출 함수(props로 전달)
-  const goToSelectTree = () => {
-    navigation.navigate('PickTree')
+  const goToSelectTree = (data: number) => {
+    navigation.navigate({
+      name :'PickTree',
+      params: {itemId: data}
+    })
   }
   return (
     <ImageBackground
