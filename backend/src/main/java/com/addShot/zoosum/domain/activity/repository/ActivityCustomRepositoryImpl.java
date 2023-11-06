@@ -1,9 +1,11 @@
 package com.addShot.zoosum.domain.activity.repository;
 
 import static com.addShot.zoosum.entity.QActivityHistory.activityHistory;
+import static com.addShot.zoosum.entity.QUser.user;
 
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.entity.ActivityHistory;
+import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.enums.ActivityType;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,7 +25,13 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     }
 
     @Override
-    public Page<ActivityHistory> findAllByUserId(String nickname, Pageable pageable) {
+    public Page<ActivityHistory> findAllByUserNickname(String nickname, Pageable pageable) {
+
+        User findUser = queryFactory.selectFrom(user).where(user.nickname.eq(nickname)).fetchOne();
+        if (findUser == null) {
+            return null;
+        }
+
         QueryResults<ActivityHistory> result = queryFactory.selectFrom(activityHistory)
             .where(activityHistory.user.nickname.eq(nickname))
             .orderBy(activityHistory.activityId.desc())

@@ -76,7 +76,10 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public ActivityResponseDtoAndSize activityList(String nickname, Pageable pageable) {
 
-        Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserId(nickname, pageable);
+        Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserNickname(nickname, pageable);
+        if (activityHistoryList == null) {
+            return null;
+        }
         List<ActivityHistory> getList = activityHistoryList.getContent();
         List<ActivityResponseDto> resultList = new ArrayList<>();
 
