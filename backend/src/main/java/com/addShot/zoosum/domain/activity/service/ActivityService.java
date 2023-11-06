@@ -19,11 +19,11 @@ public interface ActivityService {
     /**
      * 사용자가 활동한 플로깅 내역과 인증서 목록 조회
      * TREE 테이블과 PLOGGING 테이블을 활용한다.
-     * @param userId 사용자 ID
+     * @param nickname 사용자 닉네임
      * @param pageable 페이징 정보, 몇번째 페이지인지, 얼만큼 조회할 것인지
      * @return List<ActivityResponseDto>
      */
-    ActivityResponseDtoAndSize activityList(String userId, Pageable pageable);
+    ActivityResponseDtoAndSize activityList(String nickname, Pageable pageable);
 
     /**
      * 인증서 상세 조회
@@ -39,7 +39,7 @@ public interface ActivityService {
      * @param activityRequestDto 플로깅 객체
      * @return 리워드 객체 반환
      */
-    ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto);
+    ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto, Long animalId);
 
     void saveUserItem(User user, Item item);
     void saveUserAnimal(User user, AnimalMotion animal);

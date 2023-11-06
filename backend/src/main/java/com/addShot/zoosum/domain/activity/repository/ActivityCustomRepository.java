@@ -10,11 +10,11 @@ public interface ActivityCustomRepository {
 
     /**
      * 사용자가 활동한 플로깅 내역과 인증서 목록을 조회한다.
-     * @param userId 사용자 ID
+     * @param nickname 사용자 닉네임
      * @param pageable 페이지네이션 정보
      * @return
      */
-    Page<ActivityHistory> findAllByUserId(String userId, Pageable pageable);
+    Page<ActivityHistory> findAllByUserNickname(String nickname, Pageable pageable);
 
     /**
      * activityId를 통해 활동 내역을 조회한다.

@@ -35,8 +35,10 @@ public class RankingCustomRepositoryImpl implements RankingCustomRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         // 삭제되지 않은 데이터만 조회한다.
-        builder.and(userPlogInfo.time.deleteTime.isNull());
-        builder.and(userPlogInfo.user.userId.eq(user.userId));
+        builder.and(userPlogInfo.time.deleteTime.isNull())
+            .and(userPlogInfo.user.userId.eq(user.userId))
+            .and(user.nickname.isNotNull())
+            .and(user.region.isNotNull());
 
         if (region != null) {
             builder.and(userPlogInfo.user.region.eq(Region.valueOf(region)));

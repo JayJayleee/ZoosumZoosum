@@ -63,7 +63,6 @@ public class UserPlogInfo {
 
     public RankingResponseDto toResponse(){
         return RankingResponseDto.builder()
-            .userId(this.user.getUserId())
             .nickname(this.user.getNickname())
             .region(String.valueOf(this.user.getRegion()))
             .score(this.score)
