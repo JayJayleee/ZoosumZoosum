@@ -4,19 +4,19 @@ import AppText from '@/components/ui/Text';
 
 
 interface ItemCardProps {
-  id : string,
-  title : string,
-  imgURI : string,
+  itemId : number,
+  itemName : string,
+  fileUrl : string,
 }
 
-export default function ItemCard({title, imgURI}: ItemCardProps) {
+export default function ItemCard({itemName, fileUrl}: ItemCardProps) {
   return (
     <View style={styles.card}>
       <TouchableOpacity style={styles.card}>
         <View style={styles.circle}>
-          <Image style={styles.image} source={{uri : imgURI }} />
+          <Image style={styles.image} source={{uri : fileUrl }} />
         </View>
-        <Text style={styles.title} numberOfLines={1}>{title}</Text>
+        <Text style={styles.title} numberOfLines={1}>{itemName}</Text>
       </TouchableOpacity>
       
 

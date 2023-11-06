@@ -15,6 +15,7 @@ import styles from './style';
 import IslandList from './IslandList';
 import TreeList from './TreeList';
 
+
 export default function ItemListPage({navigation}: ItemListscreenProps) {
 
   // 두 개의 컴포넌트를 토글하기 위한 상태 변수 정의
