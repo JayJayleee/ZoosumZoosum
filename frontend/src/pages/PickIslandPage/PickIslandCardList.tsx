@@ -1,62 +1,86 @@
-import React from 'react';
-import { View, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, FlatList, Text } from 'react-native';
 import PickIslandCard from './PickIslandCard';
 import styles from './style';
+import { fetchMyItemListInfo } from '@/apis/Item';
+import { useQuery } from '@tanstack/react-query';
 
-interface DataItem {
-  id : string,
-  title : string,
-  imgurl : string,
+type ApiResponse = {
+  data: Item[];
+};
+
+type Item = {
+  itemId: number;
+  itemName: string;
+  itemType: string;
+  fileUrl: string;
+  selected: boolean;
+};
+
+interface PickIslandCardListProps {
+  navigation: () => void;
 }
 
-const data: DataItem[] = [
-  { id: '1', title: '주섬주섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png' },
-  { id: '2', title: '등대섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_1.png' },
-  { id: '3', title: '사막섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_2.png' },
-  { id: '4', title: '빙하섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_3.png' },
-  { id: '5', title: '분홍섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_4.png' },
-  { id: '6', title: '바위섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_5.png' },
-  { id: '7', title: '해변섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_6.png' },
-  { id: '8', title: '오두막섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_7.png' },
-  { id: '9', title: '별장섬', imgurl: 'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_8.png' },
-  // 다른 카드 항목 추가
-];
-const targetNumColumns = 3; // 원하는 열의 수
+export default function PickIslandCardList({navigation} : PickIslandCardListProps) {
+  const [ItemArray, setItemArray] = useState<Item[]>();
+  const itemType = 'ISLAND';
 
-export default function PickIslandCardlist() {
-  // 3열 배열을 지정하기 위한 변수 선언
-  const totalCards = data.length;
-  const numColumns = Math.min(targetNumColumns, Math.ceil(totalCards / targetNumColumns));
-  const missingCards = numColumns - (totalCards % numColumns);
-  
-  // 타겟 열 수와 다르다면 hidden card 만드는 예외처리 
-  if (missingCards !== targetNumColumns) {
-    for (let i = 0; i < missingCards; i++) {
-      data.push({ id: `hidden_${i}`, title: '', imgurl: '' });
-    }
-  }
+  useQuery(['ItemList'], () => fetchMyItemListInfo(itemType), {
+    onSuccess: (response: ApiResponse) => {
+      const data = response.data;
+
+      if (!Array.isArray(data)) {
+        console.error('Data는 배열이 아닙니다:', data);
+        return;
+      }
+      let processedData = [...data];
+
+      const numColumns = 3;
+
+      const remainingCards = numColumns - (processedData.length % numColumns);
+
+      if (remainingCards > 0) {
+        for (let i = 0; i < remainingCards; i++) {
+          processedData.push({
+            itemId: i + processedData.length,
+            itemName: '',
+            itemType: '',
+            fileUrl: '',
+            selected: false,
+          });
+        }
+      }
+      setItemArray(processedData);
+    },
+
+    onError: (error) => {
+      console.error('돌발돌발', error);
+    },
+  });
+
+  if (!ItemArray?.length) return <Text>로딩...</Text>;
+
   return (
     <View>
       <FlatList
-        horizontal={false} // 수직으로 정렬
-        numColumns={numColumns} // 한 줄에 표시할 카드 수 설정
-        data={data}
-        keyExtractor={(item) => item.id}
+        horizontal={false}
+        numColumns={3}
+        data={ItemArray}
+        keyExtractor={(item) => item.itemId.toString()}
         renderItem={({ item }) => {
-          if (item.id.startsWith('hidden_')) {
+          if (!item.itemName) {
             return <View style={styles.hiddenCard} />;
           }
           return (
             <PickIslandCard
-              id={item.id}
-              title={item.title}
-              imgurl={item.imgurl}
+              itemId={item.itemId}
+              itemName={item.itemName}
+              fileUrl={item.fileUrl}
+              navigation={navigation}
             />
           );
         }}
       />
     </View>
   );
-};
-
-
+}

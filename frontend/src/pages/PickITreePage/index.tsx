@@ -10,10 +10,13 @@ import {
 import {PickTreeScreenProps} from 'typePath';
 import styles from './style';
 import AppText from '@/components/ui/Text';
-import AppButton from '@/components/ui/Button';
 import PickTreeCardList from './PickTreeCardList';
 
 export default function PickTreePage({navigation}: PickTreeScreenProps) {
+  const propsFtn = () => {
+    navigation.navigate('Main')
+  }
+  
   return (
     <ImageBackground
       style={StyleSheet.absoluteFill}
@@ -34,13 +37,9 @@ export default function PickTreePage({navigation}: PickTreeScreenProps) {
         </View>
         <View style={styles.body1}>
           <View style={styles.having_cardlist}>
-            <PickTreeCardList />
+            <PickTreeCardList navigation={propsFtn}/>
           </View>
         </View>
-        <AppButton
-        variant='gotoisland'
-        children='선택완료'
-        onPress={() => navigation.navigate('ItemList')}/>
       </View>  
     </ImageBackground>
   )

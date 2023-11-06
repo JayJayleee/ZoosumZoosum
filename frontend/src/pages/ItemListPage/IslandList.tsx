@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList, TouchableOpacity,Image } from 'react-native';
 import styles from './style';
 import AppText from '@/components/ui/Text';
@@ -8,7 +8,7 @@ import {fetchMyItemListInfo} from '@/apis/Item';
 import {useQuery} from '@tanstack/react-query';
 
 interface IslandListProps {
-  goToSelectIsland : () => void;
+  goToSelectIsland : (data: number) => void;
 }
 
 type ApiResponse = {
@@ -33,6 +33,7 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
   const itemType = "ISLAND"
   const [selectedIslandImgURI, setSelectedIslandImgURI] = useState('');
   const [selectedIslandTitle, setSelectedIslandTitle] = useState('');
+  const [selectedIslandItemId, setselectedIslandItemId] = useState(0);
 
   useQuery(['ItemList'], 
   () => fetchMyItemListInfo(itemType), {
@@ -43,28 +44,25 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
       if (selectedIsland) {
         setSelectedIslandImgURI(selectedIsland.fileUrl)
         setSelectedIslandTitle(selectedIsland.itemName)
+        setselectedIslandItemId(selectedIsland.itemId)
       }
-      const totalCards = data.length;
-
-      const calculatedNumColumns = Math.min(
-        targetNumColumns,
-        Math.ceil(totalCards / targetNumColumns),
-      );
-      setNumColumns(calculatedNumColumns);
-
-      const missingCards =
-        calculatedNumColumns - (totalCards % calculatedNumColumns);
-
+      
       if (!Array.isArray(data)) {
         console.error('Data는 배열이 아닙니다:', data);
         return;
       }
+
       let processedData = [...data];
 
-      if (missingCards !== targetNumColumns) {
-        for (let i = 0; i < missingCards; i++) {
+
+      const numColumns = 3;
+
+      const remainingCards = numColumns - (processedData.length % numColumns);
+
+      if (remainingCards > 0) {
+        for (let i = 0; i < remainingCards; i++) {
           processedData.push({
-            itemId: i,
+            itemId: i + processedData.length,
             itemName: '',
             itemType: '',
             fileUrl: '',
@@ -97,12 +95,12 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
         <AppButton
         children='섬 선택하기'
         variant='pickfriend'
-        onPress={goToSelectIsland}/>
+        onPress={() => goToSelectIsland(selectedIslandItemId)}/>
       </View>
       <View style={styles.body2Item}>
         <FlatList
           horizontal={false} // 수직으로 정렬
-          numColumns={numColumns} // 한 줄에 표시할 카드 수 설정
+          numColumns={3} // 한 줄에 표시할 카드 수 설정
           data={ItemArray}
           keyExtractor={item => item.itemId.toString()}
           renderItem={({ item }) => {
