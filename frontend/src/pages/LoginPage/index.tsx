@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { getStorage } from '@/apis/index';
 import {
   View,
@@ -16,10 +16,17 @@ import KakaoLoginButton from '@/components/Auth/KakaoLoginButton';
 export default function LoginPage({navigation}: LoginScreenProps) {
   // 로그인 상태가 아닐 때, 카카오 버튼을 띄우기 위한 변수 생성
   const [isClicked, setIsClicked] = useState(false);
+  let token = null;
+
+  // 페이지에 들어오면 초기 상태로 돌려놓기
+  useEffect(() => {
+    setIsClicked(false)
+    token = null;
+  }, [])
 
   // 이미 로그인한 상태일 경우, 바로 메인페이지로 이동하는 함수 생성
   const isLoginState = async () => {
-    const token = await getStorage("AccessToken");
+    token = await getStorage('AccessToken');
 
     if (token !== null) {
       navigation.navigate('Main');
