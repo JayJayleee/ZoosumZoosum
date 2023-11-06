@@ -24,7 +24,7 @@ public class Tree {
     @Column(name = "user_phone", length = 30)
     private String userPhone;
 
-    // 나무 심는 사람의 이메일
+    // 나무 심는 사람의 생년월일
     @Column(name = "user_birth", length = 100)
     private String userBirth;
 
