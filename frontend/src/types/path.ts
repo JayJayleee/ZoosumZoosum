@@ -22,7 +22,7 @@ export type RootStackParamList = {
   PickPloggingFriend: undefined;
   ItemList: undefined;
   Profile: {
-    userId: string;
+    nickname: string;
   };
   Ranking: undefined;
   PickIsland : undefined;

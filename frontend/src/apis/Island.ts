@@ -1,25 +1,5 @@
 import {api, Header} from './index';
-
-type animalForm = {
-  animalId: number;
-  animalFileUrl: string;
-};
-
-type islandInfo = {
-  userId: string;
-  island: string;
-  tree: string;
-  animalList: Array<animalForm>;
-};
-
-type statusInfo = {
-  missionLength: number;
-  missionTime: number;
-  missionTrash: number;
-  seed: number;
-  treeAllCount: number;
-  treeCount: number;
-};
+import { timeObj, animalForm, islandInfo, statusInfo  } from '@/types/island';
 
 export const fetchMyIslandInfo = async () => {
   return await api.get<islandInfo>('/userinfo/main', await Header());

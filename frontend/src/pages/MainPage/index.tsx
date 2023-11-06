@@ -13,38 +13,47 @@ import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import AppButton from '@/components/ui/Button';
-import {fetchMyIslandInfo, fetchMyStatusInfo} from '@/apis/Island';
+import { fetchMyIslandInfo, fetchMyStatusInfo } from '@/apis/Island';
+import {statusInfo, islandInfo, timeObj, animalForm } from '@/types/island';
 import AppText from '@/components/ui/Text';
+import { useQuery } from '@tanstack/react-query';
+import { getStorage } from '@/apis';
 
-type timeObj = {
-  minute: number;
-  second: number;
-};
 
 export default function MainPage({navigation}: MainScreenProps) {
+
+  // 내 상태를 보여줄 변수 생성
+  const [getTrash, setTrash] = useState<number>(0);
+  const [getTime, setTime] = useState<timeObj>({
+    hour: 0,
+    minute: 0,
+    second: 0,
+  });
+  const [getDistance, setDistance] = useState<number>(0);
+  const [getSeed, setSeed] = useState<number>(0);
+
+  // 내가 심은 나무 개수와 전체가 심은 나무 개수를 저장할 변수 생성
+  const [treeCount, setTreeCount] = useState<number>(0);
+  const [allTreeCount, setAllTreeCount] = useState<number>(0);
+
   // 뒤로가기 클릭 시, 앱 종료 여부를 묻는 모달 생성
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
-  const exitFtn = () => {
-    BackHandler.exitApp();
-    navigation.navigate('Login');
-    return true;
-  };
+  // 버튼 토글 상태를 나타낼 변수
+  const [toggle, setToggle] = useState<boolean>(false);
 
-  const appCloseModal = (
-    <Modal
-      animationType="slide"
-      visible={isModalVisible}
-      onRequestClose={() => setModalVisible(false)}>
-      <View>
-        <AppText children="앱을 종료하시겠습니까?" />
-        <View>
-          <AppButton children="확인" onPress={exitFtn} />
-          <AppButton children="취소" onPress={() => setModalVisible(false)} />
-        </View>
-      </View>
-    </Modal>
+  // 섬 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 섬 링크
+  const [islandUri, setIslandUri] = useState<string>(
+    "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png"
   );
+  // 나무 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 나무 링크
+  const [treeUri, setTreeUri] = useState<string>(
+    "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Trees/Tree_01.png"
+  );
+  // 동물 gif 링크를 저장할 변수 생성
+  const [animalUri, setAnimalUri] = useState<animalForm[]>([]);
+  // 동물 리스트의 갯수를 저장할 변수 생성
+  const [numberAnimal, setNumberAnimal] = useState<number>(0);
 
   // 뒤로 가기 클릭 시 종료 여부 묻도록 설정
   useEffect(() => {
@@ -66,21 +75,7 @@ export default function MainPage({navigation}: MainScreenProps) {
       backHandler.remove();
     };
   }, []);
-  // 내 상태를 보여줄 변수 생성
-  const [getTrash, setTrash] = useState<number>(0);
-  const [getTime, setTime] = useState<timeObj>({
-    minute: 0,
-    second: 0,
-  });
-  const [getDistance, setDistance] = useState<number>(0);
-  const [getSeed, setSeed] = useState<number>(0);
 
-  // 내가 심은 나무 개수와 전체가 심은 나무 개수를 저장할 변수 생성
-  const [treeCount, setTreeCount] = useState<number>(0);
-  const [allTreeCount, setAllTreeCount] = useState<number>(0);
-
-  // 버튼 토글 상태를 나타낼 변수
-  const [toggle, setToggle] = useState<boolean>(false);
   // 버튼 토글 애니메이션을 위한 값 생성
   const animation = useRef(new Animated.Value(0)).current;
   // 버튼 클릭 시, 애니메이션 실행
@@ -91,12 +86,81 @@ export default function MainPage({navigation}: MainScreenProps) {
     }).start();
   }, [animation, toggle]);
 
+  const exitFtn = () => {
+    BackHandler.exitApp();
+    navigation.navigate('Login');
+    return true;
+  };
+
+  // 종료 모달 창
+  const appCloseModal = (
+    <Modal
+      animationType="slide"
+      visible={isModalVisible}
+      onRequestClose={() => setModalVisible(false)}>
+      <View>
+        <AppText children="앱을 종료하시겠습니까?" />
+        <View>
+          <AppButton children="확인" onPress={exitFtn} />
+          <AppButton children="취소" onPress={() => setModalVisible(false)} />
+        </View>
+      </View>
+    </Modal>
+  );
+
+  // 상단 스탯 api 호출 및 상태 저장하는 코드 생성
+  const { isLoading: isStatusLoading, isError: isStatusError, error: StatusError} = useQuery<statusInfo>(
+    ['mainStatus'],
+    fetchMyStatusInfo,
+    {
+      onSuccess: (statusContent) => {
+        setTrash(statusContent.missionTrash)
+        setSeed(statusContent.seed)
+        setTreeCount(statusContent.treeCount)
+        setAllTreeCount(statusContent.treeAllCount)
+        setTime({hour: statusContent.hour, minute: statusContent.minute, second: statusContent.second})
+        setDistance(statusContent.missionLength)
+      },
+    }
+  );
+  // 에러 발생 시, 콘솔 창에 해당 에러 찍는 코드
+  if (isStatusError && StatusError) {
+    console.log("에러 발생 :", StatusError)
+  }
+
+  // 섬과 나무, 동물 링크 api 호출 및 상태 저장하는 코드 생성
+  const {isLoading: isIslandLoading, isError: isIslandError, error: IslandError } = useQuery<islandInfo>(
+    ['mainIsland'],
+    fetchMyIslandInfo,
+    {
+      onSuccess: (data) => {
+        setIslandUri(data.islandUrl)
+        setTreeUri(data.treeUrl)
+        setAnimalUri(data.animalList)
+        setNumberAnimal(data.animalList.length);
+      },
+    }
+  );
+
+  // 에러 발생 시, 콘솔 창에 해당 에러 찍는 코드
+  if (isIslandError && IslandError) {
+    console.log("에러 발생 :", IslandError)
+  }
+  // 로딩 중일 때, 로딩 페이지를 띄우는 코드
+  if (isIslandLoading || isStatusLoading){
+    return <View>
+    </View>
+  }
+
   // 프로필 클릭 시, 이동하는 함수
-  const goToProfile = () => {
-    navigation.navigate({
-      name: 'Profile',
-      params: {userId: 'example123'},
-    });
+  const goToProfile = async () => {
+    const nickname = await getStorage('Nickname');
+    if (nickname !== null) {
+      navigation.navigate({
+        name: 'Profile',
+        params: {nickname: nickname},
+      });
+    }
   };
 
   // 랭킹 클릭 시, 이동하는 함수
@@ -114,20 +178,6 @@ export default function MainPage({navigation}: MainScreenProps) {
     navigation.navigate('ItemList');
   };
 
-  const islandUri: string =
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png';
-  const treeUri: string =
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Trees/Tree_01.png';
-  const animal1: string =
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Cow/Cow_2.gif';
-  const animal2: string =
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Camel/Camel_2.gif';
-  const animal3: string =
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/Camel/Camel_3.gif';
-  const animal4: string =
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/ArcticFox/ArcticFox_1.gif';
-  const animal5: string =
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/ArcticFox/ArcticFox_3.gif';
 
   // 닫힌 상태의 토글 버튼
   const closedButton = (
@@ -393,31 +443,31 @@ export default function MainPage({navigation}: MainScreenProps) {
           source={{uri: treeUri}}
           resizeMode="stretch"
         />
-        <FastImage
+        {numberAnimal > 0 && <FastImage
           style={styles.firstAnimal}
-          source={{uri: animal1}}
+          source={{uri: animalUri[0].fileUrl}}
           resizeMode={FastImage.resizeMode.contain}
-        />
-        <FastImage
+        />}
+        {numberAnimal > 1 && <FastImage
           style={styles.secondAnimal}
-          source={{uri: animal2}}
+          source={{uri: animalUri[1].fileUrl}}
           resizeMode={FastImage.resizeMode.contain}
-        />
-        <FastImage
+        />}
+        {numberAnimal > 2 && <FastImage
           style={styles.thirdAnimal}
-          source={{uri: animal3}}
+          source={{uri: animalUri[2].fileUrl}}
           resizeMode={FastImage.resizeMode.contain}
-        />
-        <FastImage
+        />}
+        {numberAnimal > 3 && <FastImage
           style={styles.fourthAnimal}
-          source={{uri: animal4}}
+          source={{uri: animalUri[3].fileUrl}}
           resizeMode={FastImage.resizeMode.contain}
-        />
-        <FastImage
+        />}
+        {numberAnimal > 4 && <FastImage
           style={styles.fifthAnimal}
-          source={{uri: animal5}}
+          source={{uri: animalUri[4].fileUrl}}
           resizeMode={FastImage.resizeMode.contain}
-        />
+        />}
       </View>
       <View style={styles.ploggingButton}>
         <AppButton
