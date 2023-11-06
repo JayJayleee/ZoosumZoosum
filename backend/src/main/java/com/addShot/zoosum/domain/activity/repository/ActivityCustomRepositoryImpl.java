@@ -26,6 +26,9 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
 
     @Override
     public Page<ActivityHistory> findAllByUserNickname(String nickname, Pageable pageable) {
+        if (nickname == null) {
+            return null;
+        }
 
         User findUser = queryFactory.selectFrom(user).where(user.nickname.eq(nickname)).fetchOne();
         if (findUser == null) {

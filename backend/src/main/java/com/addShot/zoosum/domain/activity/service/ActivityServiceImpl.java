@@ -201,18 +201,20 @@ public class ActivityServiceImpl implements ActivityService {
         // S3에 이미지를 저장하고, 이미지 URL 을 반환
         String fileUrl = s3Service.S3ImageUploadToAWS(activityImg, "Activity/", user.getUserId());
 
-        Optional<UserAnimal> optionalUserAnimal = userAnimalRepository.findByUserIdAndAnimalId(user.getUserId(), animalId);
-        if (optionalUserAnimal.isEmpty()) {
-            return null;
+        if (animalId != null) {
+            Optional<UserAnimal> optionalUserAnimal = userAnimalRepository.findByUserIdAndAnimalId(user.getUserId(), animalId);
+            if (optionalUserAnimal.isEmpty()) {
+                return null;
+            }
+
+            // 활동 데이터 저장 - 동물과 함께한 시간, 거리, 쓰레기 수
+            UserAnimal userAnimal = optionalUserAnimal.get();
+            userAnimal.setTimeTogether(activityRequestDto.getTime());
+            userAnimal.setTrashTogether(activityRequestDto.getTrash());
+            userAnimal.setLengthTogether(activityRequestDto.getLength());
+            userAnimal.setTime(new Time(userAnimal.getTime().getCreateTime(), LocalDateTime.now()));
+            userAnimalRepository.save(userAnimal);
         }
-        
-        // 활동 데이터 저장 - 동물과 함께한 시간, 거리, 쓰레기 수
-        UserAnimal userAnimal = optionalUserAnimal.get();
-        userAnimal.setTimeTogether(activityRequestDto.getTime());
-        userAnimal.setTrashTogether(activityRequestDto.getTrash());
-        userAnimal.setLengthTogether(activityRequestDto.getLength());
-        userAnimal.setTime(new Time(userAnimal.getTime().getCreateTime(), LocalDateTime.now()));
-        userAnimalRepository.save(userAnimal);
 
         // 플로깅 데이터 저장
         ActivityHistory activityHistoryEntity = ActivityRequestDto

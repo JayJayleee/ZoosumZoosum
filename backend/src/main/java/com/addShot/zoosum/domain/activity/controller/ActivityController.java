@@ -96,9 +96,9 @@ public class ActivityController {
     public ResponseEntity<?> writeActivity(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestPart(name = "activityImg", required = false) MultipartFile activityImg,
         @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto,
-        @RequestPart(name = "animalId") Long animalId) {
+        @RequestPart(name = "animalId", required = false) Long animalId) {
         String userId = headerUtils.getUserId(authorizationHeader);
-        if (userId == null || activityRequestDto == null || animalId == null) {
+        if (userId == null || activityRequestDto == null) {
             return badRequest400();
         }
         log.info("ActivityController userId: {}, activityImg: {}, animalId: {}", userId, activityImg, animalId);
