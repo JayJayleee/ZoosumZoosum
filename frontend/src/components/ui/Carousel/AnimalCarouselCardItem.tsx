@@ -29,10 +29,13 @@ export function AnimalCarouselCardItem({
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const handleSaveName = () => {
-    const nameToSave = animalName.trim() !== '' ? animalName : item.animalName;
-    setSavedName(nameToSave);
-    setHeaderText(`${nameToSave}가 태어났어요!`);
-    setIsNameSaved(true);
+    if (item) {
+      const nameToSave =
+        animalName.trim() !== '' ? animalName : item?.animalName;
+      setSavedName(nameToSave);
+      setHeaderText(`${nameToSave}가 태어났어요!`);
+      setIsNameSaved(true);
+    }
   };
 
   useEffect(() => {
@@ -66,8 +69,8 @@ export function AnimalCarouselCardItem({
 
       timer = setTimeout(() => {
         setShowEgg(false); // 로티 애니메이션을 숨김
-        setHeaderText(`${item.animalName}가 태어났어요!`);
-        setImageSrc({uri: item.fileUrl});
+        setHeaderText(`${item?.animalName}가 태어났어요!`);
+        setImageSrc({uri: item?.fileUrl});
         setShowInput(true);
       }, 2000);
 
@@ -108,7 +111,7 @@ export function AnimalCarouselCardItem({
                   <TextInput
                     style={styles.input}
                     onChangeText={setAnimalName}
-                    placeholder={item.animalName}
+                    placeholder={item?.animalName}
                     placeholderTextColor="rgba(255, 255, 255, 0.3)"
                   />
                   <AppButton

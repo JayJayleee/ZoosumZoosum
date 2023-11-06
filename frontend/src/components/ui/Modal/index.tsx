@@ -32,7 +32,6 @@ export default function ModalComponent({
   noButton = false,
   modalStyle = 'default',
 }: ModalComponentProps) {
-  console.log('Current modalStyle:', modalStyle);
   let variantStyle;
 
   switch (modalStyle) {
@@ -43,8 +42,6 @@ export default function ModalComponent({
       variantStyle = styles.topView;
       break;
   }
-
-  console.log('switch modalStyle:', modalStyle);
   return (
     <Modal
       key={modalStyle}

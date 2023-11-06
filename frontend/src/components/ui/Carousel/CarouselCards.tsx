@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {FlatListProps, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
@@ -6,22 +6,27 @@ import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
 import {AnimalCarouselCardItem} from '../Carousel/AnimalCarouselCardItem';
 import {ProgressCarouselCardItem} from './ProgressCarouselCardItem';
 import {SeedCarouselCardItem} from './SeedCarouselCardItem';
-import data from '../../../pages/PloggingResultPage/data';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
 import AppButton from '../Button';
 import styles from './styles';
 import {CarouselProps, NewData} from '@/types/plogging';
-
+import phonedata from '@/pages/PloggingResultPage/data';
+import AppText from '../Text';
 interface CarouselCardsProps {
   onNavigate: () => void;
+  data: NewData;
 }
 
-export default function CarouselCards({onNavigate}: CarouselCardsProps) {
-  const [resultDataList, setResultDataList] = useState<NewData>(data);
+export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
+  const [resultDataList, setResultDataList] = useState<any>(data);
 
   const isCarousel = React.useRef<
     Carousel<any> & Component<FlatListProps<any>, {}, any>
   >(null);
+
+  useEffect(() => {
+    setResultDataList(data);
+  }, [data]);
 
   const [index, setIndex] = React.useState(0);
 
@@ -38,7 +43,9 @@ export default function CarouselCards({onNavigate}: CarouselCardsProps) {
   ];
 
   const renderItem = ({item, index: itemIndex}: CarouselProps) => {
-    if (item.missionLength) {
+    if (item.missionLength !== undefined) {
+      console.log('들어오는거', combinedData);
+      console.log('컴바인', combinedData.length);
       return <ProgressCarouselCardItem item={item} index={itemIndex} />;
     }
     if (item.addSeed) {
@@ -116,6 +123,9 @@ export default function CarouselCards({onNavigate}: CarouselCardsProps) {
           }}
         />
       )}
+      {/* {combinedData.map((item, index) => (
+        <AppText key={index}>{JSON.stringify(item)}</AppText>
+      ))} */}
     </View>
   );
 }

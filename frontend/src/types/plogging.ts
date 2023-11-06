@@ -1,7 +1,7 @@
 import {ImageSourcePropType} from 'react-native';
 
 export interface AnimalCarouselCardItemProps {
-  item: {
+  item?: {
     fileUrl: string;
     animalName: string;
     description: string;
@@ -12,7 +12,7 @@ export interface AnimalCarouselCardItemProps {
 }
 
 export interface CarouselCardItemProps {
-  item: {
+  item?: {
     fileUrl: string;
     badgeName: string;
   };
@@ -21,7 +21,7 @@ export interface CarouselCardItemProps {
 }
 
 export interface ItemCarouselCardItemProps {
-  item: {
+  item?: {
     fileUrl: string;
     itemName: string;
   };
@@ -31,7 +31,7 @@ export interface ItemCarouselCardItemProps {
 }
 
 export interface CarouselProps {
-  item: any;
+  item?: any;
   index: any;
   activeIndex?: any;
 }
@@ -43,16 +43,16 @@ export interface AnimatedProgressCircleProps {
 
 export interface ProgressCarouselCardItemProps {
   item: {
-    missonTrash: number;
-    missonLength: number;
-    missonTime: number;
+    missionTrash: number;
+    missionLength: number;
+    missionTime: number;
   };
   index: number;
   activeIndex?: number;
 }
 
 export interface SeedCarouselCardItemProps {
-  item: {
+  item?: {
     addSeed: number;
   };
   index: number;
@@ -64,17 +64,17 @@ export interface EffectProps {
 }
 
 export interface NewData {
-  missionList: Array<{
-    missionTrash: number;
-    missionLength: number;
-    missionTime: number;
+  missionList?: Array<{
+    missionTrash?: number;
+    missionLength?: number;
+    missionTime?: number;
   }>;
-  islandList: Array<ItemType>;
-  treeList: Array<ItemType>;
-  animalList: Array<AnimalType>;
-  seedList: Array<{addSeed: number}>;
-  scoreList: Array<{addScore: number}>;
-  userBadgeList: Array<BadgeType>;
+  islandList?: Array<ItemType>;
+  treeList?: Array<ItemType>;
+  animalList?: Array<AnimalType>;
+  seedList?: Array<{addSeed: number}>;
+  scoreList?: Array<{addScore: number}>;
+  userBadgeList?: Array<BadgeType>;
 }
 
 export interface ItemType {
@@ -108,4 +108,13 @@ export interface ploggingResultTrash {
   timerValue: number;
   trashCountValue: number;
   ploggingDistanceValue: number;
+}
+
+export interface ActivityDataType {
+  activityImg: string; // 이미지에 대한 타입을 가정
+  activityRequestDto: {
+    length: number;
+    time: number;
+    trash: number;
+  };
 }

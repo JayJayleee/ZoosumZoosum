@@ -10,7 +10,7 @@ export function SeedCarouselCardItem({item, index}: SeedCarouselCardItemProps) {
   return (
     <View style={styles.container} key={index}>
       <AppText style={styles.header}>
-        생명의 씨앗 {item.addSeed}개 획득!
+        생명의 씨앗 {item?.addSeed}개 획득!
       </AppText>
 
       <Image
