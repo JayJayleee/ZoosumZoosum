@@ -39,7 +39,7 @@ public interface ActivityService {
      * @param activityRequestDto 플로깅 객체
      * @return 리워드 객체 반환
      */
-    ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto);
+    ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg, ActivityRequestDto activityRequestDto, Long animalId);
 
     void saveUserItem(User user, Item item);
     void saveUserAnimal(User user, AnimalMotion animal);

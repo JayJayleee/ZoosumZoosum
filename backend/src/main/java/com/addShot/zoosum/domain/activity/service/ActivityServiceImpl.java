@@ -117,15 +117,21 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     @Transactional
     public ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg,
-        ActivityRequestDto activityRequestDto) {
+        ActivityRequestDto activityRequestDto, Long animalId) {
         // User Entity 구하기
         log.info("User Entity 구하기");
         User user = userRepository.findUser(userId);
+        if (user == null) {
+            return null;
+        }
 
         // 플로깅 데이터 저장
         log.info("플로깅 데이터 저장");
-        Long id = insertActivity(user, activityImg, activityRequestDto);
+        Long id = insertActivity(user, activityImg, activityRequestDto, animalId);
         log.info("writeActivityAndReward insert : {}", id);
+        if (id == null) {
+            return null;
+        }
 
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -191,9 +197,22 @@ public class ActivityServiceImpl implements ActivityService {
      * @return 새롭게 생긴 활동 ID
      */
     @Transactional
-    public Long insertActivity(User user, MultipartFile activityImg, ActivityRequestDto activityRequestDto) {
+    public Long insertActivity(User user, MultipartFile activityImg, ActivityRequestDto activityRequestDto, Long animalId) {
         // S3에 이미지를 저장하고, 이미지 URL 을 반환
         String fileUrl = s3Service.S3ImageUploadToAWS(activityImg, "Activity/", user.getUserId());
+
+        Optional<UserAnimal> optionalUserAnimal = userAnimalRepository.findByUserIdAndAnimalId(user.getUserId(), animalId);
+        if (optionalUserAnimal.isEmpty()) {
+            return null;
+        }
+        
+        // 활동 데이터 저장 - 동물과 함께한 시간, 거리, 쓰레기 수
+        UserAnimal userAnimal = optionalUserAnimal.get();
+        userAnimal.setTimeTogether(activityRequestDto.getTime());
+        userAnimal.setTrashTogether(activityRequestDto.getTrash());
+        userAnimal.setLengthTogether(activityRequestDto.getLength());
+        userAnimal.setTime(new Time(userAnimal.getTime().getCreateTime(), LocalDateTime.now()));
+        userAnimalRepository.save(userAnimal);
 
         // 플로깅 데이터 저장
         ActivityHistory activityHistoryEntity = ActivityRequestDto
