@@ -34,4 +34,16 @@ export const styles = StyleSheet.create({
     width: '77%',
     paddingLeft: 10,
   },
+  mapContainer: {
+    borderRadius: 8,
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: -1,
+  },
 });

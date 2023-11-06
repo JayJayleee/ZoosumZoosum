@@ -1690,6 +1690,18 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
+"@react-native-community/geolocation@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.1.0.tgz#573881e9536d55cc2af74762183fa7ba575b2553"
+  integrity sha512-Aj76wMeCLz9kczpe7W2IXxSRNj+hRR7sqyfXq9ZaJIWNH23jeJfzMpovclg+e1uM8Vr8jCYEcZyD4rKub6Vc/Q==
+
+"@react-native-maps/polyline-direction@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-maps/polyline-direction/-/polyline-direction-1.0.0.tgz#5384a8aeaa19b2effe5b572257ac511a6a7f1b11"
+  integrity sha512-XlnegW6BBHHfWOOkr3SxYqqqM7gtyNkX6ICJA9q0a3FKZI4r9n2DhfQxm96Je/xTy+Nn5Xwyh+YW6U5CjJDDAw==
+  dependencies:
+    prop-types "^15.7.2"
+
 "@react-native-seoul/kakao-login@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@react-native-seoul/kakao-login/-/kakao-login-5.3.0.tgz#1c0cf2ecb9f8e7f7dc7adaa12167a843d957573a"
