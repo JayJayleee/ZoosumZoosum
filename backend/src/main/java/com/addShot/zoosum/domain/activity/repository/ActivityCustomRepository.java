@@ -14,7 +14,7 @@ public interface ActivityCustomRepository {
      * @param pageable 페이지네이션 정보
      * @return
      */
-    Page<ActivityHistory> findAllByUserId(String nickname, Pageable pageable);
+    Page<ActivityHistory> findAllByUserNickname(String nickname, Pageable pageable);
 
     /**
      * activityId를 통해 활동 내역을 조회한다.
