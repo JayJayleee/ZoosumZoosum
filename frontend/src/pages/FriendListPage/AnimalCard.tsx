@@ -1,22 +1,24 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AppText from '@/components/ui/Text';
-
+import FastImage from 'react-native-fast-image';
 
 interface AnimalCardProps {
-  id : string,
-  title : string,
-  imgurl : string,
+  animalId : number,
+  animalName : string,
+  fileUrl : string,
+  navigation: (data: number) => void;
 }
 
-export default function AnimalCard({title, imgurl}: AnimalCardProps) {
+export default function AnimalCard({navigation, animalId, animalName, fileUrl}: AnimalCardProps) {
+
   return (
     <View style={styles.card}>
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity style={styles.card} onPress={() => navigation(animalId)}>
         <View style={styles.circle}>
-          <Image style={styles.image} source={{uri : imgurl }} />
+          <FastImage style={styles.image} source={{uri : fileUrl }} />
         </View>
-        <AppText style={styles.title}>{title}</AppText>
+        <Text numberOfLines={1} style={styles.title}>{animalName}</Text>
       </TouchableOpacity>
       
 
