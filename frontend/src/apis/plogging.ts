@@ -147,7 +147,7 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
   const formData = new FormData();
 
   formData.append('activityImg', {
-    uri: `file://${activityData.activityImg}`,
+    uri: activityData.activityImg,
     name: '20220912.jpg', // 실제 파일 이름이나 업로드시 사용할 이름
     type: 'image/jpeg',
   });

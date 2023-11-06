@@ -31,24 +31,29 @@ const PloggingResultModal = ({
   navigation,
   activityData,
 }: PloggingResultModalProps) => {
-  const [imageSource, setImageSource] = useState<string | null>(null);
+  // console.log('activityData 없음', activityData);
+  // const [imageSource, setImageSource] = useState<string | null>(null);
 
   //임시로 촬영된 이미지 가져옴
-  useEffect(() => {
-    const loadImage = async () => {
-      try {
-        const imagePath = await AsyncStorage.getItem('@photo_path');
-        setImageSource(`file://${imagePath}`);
-        console.log(imagePath, 'result 모달에서 업데이트 된 쓰레기 이미지');
-      } catch (e) {
-        console.error('Failed to load the photo path.', e);
-      }
-    };
+  // useEffect(() => {
+  //   const loadImage = async () => {
+  //     try {
+  //       const imagePath = await AsyncStorage.getItem('@photo_path');
+  //       console.log(imagePath, 'imagePath');
+  //       setImageSource(imagePath);
+  //     } catch (e) {
+  //       console.error('Failed to load the photo path.', e);
+  //     }
+  //   };
 
-    if (isVisible) {
-      loadImage();
-    }
-  }, [isVisible]);
+  //   if (isVisible) {
+  //     loadImage();
+  //   }
+  // }, [isVisible]);
+
+  // useEffect(() => {
+  //   console.log(imageSource, 'result 모달에서 업데이트 된 쓰레기 이미지');
+  // }, [imageSource]);
 
   // useMutation을 사용하여 서버 요청을 관리합니다.
   const mutation = useMutation(
@@ -79,15 +84,15 @@ const PloggingResultModal = ({
     }
   };
 
-  const topContent = (
+  const topContent = activityData ? (
     <View style={styles.overlayContainer}>
       <AppText style={styles.overlayText}>오늘도 주섬주섬 성공!</AppText>
       <Image
-        source={{uri: `file://${imageSource}`}}
+        source={{uri: `file://${activityData.activityImg}`}}
         style={styles.overlayImage}
       />
     </View>
-  );
+  ) : null;
 
   const Item = ({title, img}: TrashList) => (
     <View style={styles.ItemContainer}>

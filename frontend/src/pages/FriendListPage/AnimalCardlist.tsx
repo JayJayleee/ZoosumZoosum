@@ -11,9 +11,6 @@ type Animal = {
   fileUrl: string;
   selected: boolean;
 };
-type ApiResponse = {
-  data: Animal[];
-};
 
 interface AnimalCardListProps {
   navigation: (data: number) => void;

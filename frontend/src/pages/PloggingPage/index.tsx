@@ -22,7 +22,7 @@ import {DATA} from './TrashImageList';
 import PloggingResultModal from '@/components/ui/Modal/PloggingResultModal';
 // import {StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {storeImage} from '../CameraPage/savePhoto';
 interface ActivityDataType {
   activityImg: string; // 이미지에 대한 타입을 가정
   activityRequestDto: {
@@ -117,79 +117,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       '0',
     )}:${String(seconds).padStart(2, '0')}`;
   };
-  const loadImage = async () => {
-    try {
-      const imagePath = await AsyncStorage.getItem('@photo_path');
-      if (imagePath !== null) {
-        setTrashImage(imagePath);
-        console.log(imagePath, '폰 내 이미지 경로');
-      }
-    } catch (e) {
-      // 로딩 에러 처리
-      console.error('Failed to load the photo path.', e);
-    }
-  };
+
   //플로깅 완료 시 작동될 로직.
-
-  const stopAndResetTimer = async () => {
-    // 플로깅 종료 신호 넘겨주기
-    endPlog = false;
-
-    // 타이머 멈추기
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-
-    // resultList와 activityData를 동시에 설정
-    const newResultData = [
-      {
-        img: require('@/assets/img_icon/sand_clock_icon.png'),
-        title: formatTime(timer),
-      },
-      {
-        img: require('@/assets/img_icon/trash_icon.png'),
-        title: `${trashCount} 개`,
-      },
-      {
-        img: require('@/assets/img_icon/shoe_icon.png'),
-        title: `${ploggingDistance} km`,
-      },
-    ];
-
-    const newActivityData = {
-      activityImg: trashImage,
-      activityRequestDto: {
-        length: ploggingDistance,
-        time: timer,
-        trash: trashCount,
-      },
-    };
-
-    await loadImage();
-    setResultData(newResultData);
-    setActivityData(newActivityData);
-
-    // console.log('총 플로깅 시간', formatTime(timer));
-    setIsEndModalVisible(true);
-
-    // 타이머 리셋
-    setTimer(0);
-
-    // 스크린샷 찍기
-    onCapture();
-
-    // resultList를 PloggingResult 페이지로 전달하며 네비게이트
-    // navigation.navigate('PloggingResult');
-    //, { resultList: currentResultList }
-  };
-
-  const resultNav = (newData: NewData) => {
-    navigation.navigate('PloggingResult', {
-      resultList: resultData,
-      activityData: activityData,
-      newData: newData, // the new data received from the mutation onSuccess
-    });
-  };
 
   // --------------------------------------------  스크린샷 기능을 위한 변수  --------------------------------------------
 
@@ -217,12 +146,15 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const onCapture = async () => {
     try {
       const uri = await getPhotoUri();
-      const options = {
-        title: 'Share Title',
-        message: 'Share Message',
-        url: uri,
-        type: 'image/jpeg',
-      };
+      if (uri) {
+        const storedImagePath = await storeImage(uri);
+        if (storedImagePath) {
+          setTrashImage(storedImagePath); // 새 경로로 상태 업데이트
+          console.log(`Image stored at: ${storedImagePath}`);
+        } else {
+          console.log('Failed to obtain stored image path');
+        }
+      }
     } catch (e) {
       console.log('😻😻😻 snapshot failed', e);
     }
@@ -252,6 +184,70 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     console.log('갤러리 result', result);
   };
   */
+
+  const stopAndResetTimer = async () => {
+    // 플로깅 종료 신호 넘겨주기
+    endPlog = false;
+
+    // 타이머 멈추기
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    setTimer(0);
+    await onCapture(); // 스크린샷 찍기
+    await loadImage();
+  };
+  const loadImage = async () => {
+    try {
+      const imagePath = await AsyncStorage.getItem('@photo_path');
+      if (imagePath !== null) {
+        setTrashImage(imagePath);
+      }
+    } catch (e) {
+      // 로딩 에러 처리
+      console.error('Failed to load the photo path.', e);
+    }
+  };
+  useEffect(() => {
+    const newActivityData = {
+      activityImg: trashImage, // This will use the updated trashImage.
+      activityRequestDto: {
+        length: ploggingDistance,
+        time: timer,
+        trash: trashCount,
+      },
+    };
+
+    const newResultData = [
+      {
+        img: require('@/assets/img_icon/sand_clock_icon.png'),
+        title: formatTime(timer),
+      },
+      {
+        img: require('@/assets/img_icon/trash_icon.png'),
+        title: `${trashCount} 개`,
+      },
+      {
+        img: require('@/assets/img_icon/shoe_icon.png'),
+        title: `${ploggingDistance} km`,
+      },
+    ];
+
+    // Only set the activity data if trashImage is not empty.
+    if (trashImage) {
+      setResultData(newResultData);
+      setActivityData(newActivityData);
+      setIsEndModalVisible(true);
+    }
+  }, [trashImage]);
+
+  const resultNav = (newData: NewData) => {
+    navigation.navigate('PloggingResult', {
+      resultList: resultData,
+      activityData: activityData,
+      newData: newData, // the new data received from the mutation onSuccess
+    });
+  };
 
   return (
     <View style={{flex: 1}}>

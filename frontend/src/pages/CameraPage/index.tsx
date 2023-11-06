@@ -126,7 +126,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
 
       setShowCamera(false);
       setImageSource(photo.path);
-      await storeImage(photo.path); // 이미지 경로 저장
+      // await storeImage(photo.path); // 이미지 경로 저장
       navigation.navigate('Plogging', {shouldOpenModal: true});
     }
   };
