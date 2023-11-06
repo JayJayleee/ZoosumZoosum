@@ -2,6 +2,7 @@ import { Image, TouchableOpacity } from "react-native"
 import * as KakaoLogin from '@react-native-seoul/kakao-login'
 import { getStorage, setStorage } from '@/apis/index';
 import { loginFtn } from "@/apis/login";
+import { ProfileType } from "@/types/login";
 
 // 로그인 페이지에서 전달받은 함수를 타입을 정의
 interface PropsType {
@@ -11,12 +12,6 @@ interface PropsType {
   setState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// 프로필을 통해 얻은 id와 이메일의 타입을 정의
-interface ProfileType {
-  id: string;
-  email: string;
-  socialType: string;
-}
 
 export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkState, setState}: PropsType) {
   
@@ -36,7 +31,8 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkS
     const result = await response.json();
     // 받은 유저 토큰을 기본적으로 storage에 저장
     await setStorage("AccessToken", result.accessToken)
-    if (result.isFirst !== "N") {
+
+    if (result.isFirst === "N") {
       moveMainPage();
     } else {
       moveUserInfoPage();
@@ -46,8 +42,8 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkS
   // 카카오 로그인 성공 시, 해당 계정의 id와 이메일을 가져오는 함수
   const getProfile = () => {
     KakaoLogin.getProfile().then((profile) => {
-      // console.log("GetProfile Success", JSON.stringify(profile));
-      const data = {id: profile.id, email: profile.email, socialType: "KAKAO"}
+      console.log("GetProfile Success", JSON.stringify(profile));
+      const data: ProfileType = {id: profile.id, email: profile.email, socialType: "KAKAO"}
       isFirstLogin(data);
     }).catch((error) => {
       console.log(`GetProfile Fail(code:${error.code})`, error.message);

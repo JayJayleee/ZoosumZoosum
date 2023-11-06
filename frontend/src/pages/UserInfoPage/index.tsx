@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { View, ImageBackground, Image, TextInput, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native';
+import { View, ImageBackground, Image, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { SingleSelect } from '@/components/ui/SelectList';
 import ModalComponent from '@/components/ui/Modal';
 import { UserInfoscreenProps } from '@/types/path';
-import { getStorage, setStorage, clearStorage } from '@/apis/index';
-import { setUserInfoFtn } from '@/apis/login';
+import { setStorage } from '@/apis/index';
+import { setUserInfoFtn, nicknameDuplicate } from '@/apis/login';
+import { regionObj } from '@/types/login';
 
-type regionObj = {
-  [key: string]: string;
-}
 
 export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
@@ -36,14 +34,16 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
   // 닉네임 창에서 버튼 클릭 시 발생할 이벤트
   const NicknameButton = async () => {
     if(userNickname !== "") {
-      setModalVisible(false);
-      setNickDuplicated(true);
-      if (nickDuplicated === true) {
-        const response = await setUserInfoFtn({nickname: userNickname, region: regionDict[userRegion]});
-        const result = await response.json();
-        await setStorage("AccessToken", result.token);
-        // console.log("token :", await getStorage("AccessToken"))
-        navigation.navigate('Main');
+      const res = await nicknameDuplicate({nickname: userNickname});
+      const nickDu = await res.json();
+
+      if (nickDu.isDuplicate !== false) {
+        setModalVisible(false);
+        setNickDuplicated(true);
+
+        await setStorage("Nickname", userNickname)
+
+        await LastLoginFtn();
       } else {
         setModalVisible(true);
       }
@@ -51,6 +51,20 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       setModalVisible(true);
     }
   };
+
+  // 백엔드에 새로운 토큰 발급 받기
+  const LastLoginFtn = async () => {
+    if (nickDuplicated === true) {
+      const response = await setUserInfoFtn({nickname: userNickname, region: regionDict[userRegion]});
+      const result = await response.json();
+
+      await setStorage("AccessToken", result.token);
+
+      navigation.navigate('Main');
+    } else {
+      setModalVisible(true);
+    }
+  }
 
   // 지역 창에서 버튼 클릭 시 발생할 이벤트
   const RegionButton = async () => {
@@ -86,7 +100,7 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
   </View>
 
   // 에러 문구를 띄울 모달 창 생성
-  const ErrorModal = () => <ModalComponent
+  const ErrorModal = <ModalComponent
     isVisible={isModalVisible}
     onClose={() => setModalVisible(false)}
     onRequestClose={() => setModalVisible(false)}
@@ -102,6 +116,7 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
   style={StyleSheet.absoluteFill}
   source={require('@/assets/loginpage_image/login_background.png')}
   resizeMode='cover'>
+    {ErrorModal}
     <Image source={require("@/assets/loginpage_image/zooisland_logo.png")}/>
     <ImageBackground source={require("@/assets/loginpage_image/login_inputbox.png")}>
       {!isRegionOk? RegionInputModal : NicknameInputModal}

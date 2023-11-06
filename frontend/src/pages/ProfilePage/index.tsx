@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, Text }
 import { ProfilescreenProps } from '@/types/path';
 import { ImageBackground } from 'react-native';
 import AppText from '@/components/ui/Text';
+import { getStorage } from '@/apis';
 // import styles from './styles';
 
 type statisticInfo = {
@@ -51,9 +52,7 @@ type activityHistory = {
 
 export default function ProfilePage({navigation, route}: ProfilescreenProps) {
   // 페이지 이동 시 받을 변수를 저장할 변수 생성
-  const [getUserId, setUserId] = useState<string>("");
   const [isMyProfile, setIsMyProfile] = useState<boolean>(true);
-  const [userNickname, setNickname] = useState<string>("");
   const [badgeList, setBadgeList] = useState<badgeInfo[]>([]);
   const [statisticList, setStatisticList] = useState<statisticInfo>({
     plogCount: 0,
@@ -66,6 +65,21 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
     last: true,
     empty: true,
   })
+
+  // 들어온 프로필 페이지가 자신인지 타인인지 판단하는 코드
+  useEffect(() => {
+    const compareNickname = async () => {
+      const myNickName = await getStorage("Nickname")
+      if (myNickName !== route.params.nickname) {
+        setIsMyProfile(false)
+      } else {
+        setIsMyProfile(true)
+      }
+      return true
+    }
+    
+    compareNickname();
+  }, [])
 
   // 뱃지 변수에 받아온 결과를 저장하는 코드
   useEffect(() => {
@@ -160,14 +174,10 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
   // 하단 페이지 탭 변화 저장을 위한 변수 생성
   const [pageNumber, setPageNumber] = useState<number>(0);
 
-  useEffect(()=> {
-    setUserId(route.params.userId);
-  }, [route.params]);
-
   // 산책 통계 페이지
   const statisticPage = <>
     <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 40, top:30, color: 'white', justifyContent:'center', textAlign: 'center'}} >
-      {isMyProfile? "나의 산책 기록" :`${userNickname}님의 산책 기록`}
+      {isMyProfile? "나의 산책 기록" :`${route.params.nickname}님의 산책 기록`}
     </AppText>
     <ImageBackground source={require("@/assets/profile_image/profile_recipe.png")} style={{width: 400, height: 650, top:30, justifyContent: 'center', alignItems: 'center'}}>
       <View style={{width: 300, height: 130, top: 25, flexDirection:'row',justifyContent:'space-evenly', alignItems: 'center'}}>
@@ -230,7 +240,7 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
   // 뱃지 페이지
   const badgePage = <>
     <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 40, top:30, color: 'white', justifyContent:'center', textAlign: 'center'}} >
-      {isMyProfile? "내가 모은 뱃지" :`${userNickname}님이 모은 뱃지`}
+      {isMyProfile? "내가 모은 뱃지" :`${route.params.nickname}님이 모은 뱃지`}
     </AppText>
     <View style={{width: 400, height: 500, top:50, justifyContent: 'center', alignItems: 'center'}}>
       <ScrollView>
@@ -253,7 +263,7 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
   // 활동 내역 페이지
   const historyPage = <>
     <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 40, top:30, color: 'white', justifyContent:'center', textAlign: 'center'}} >
-      {isMyProfile? "나의 활동 기록" :`${userNickname}님의 활동 기록`}
+      {isMyProfile? "나의 활동 기록" :`${route.params.nickname}님의 활동 기록`}
     </AppText>
     <View style={{width: 400, height: 650, top:30, justifyContent: 'center', alignItems: 'center'}}>
       {activityList.empty? <AppText children="아직 활동 기록이 없습니다." style={{justifyContent: 'center', textAlign: 'center', color: 'white', fontSize: 40}} />
