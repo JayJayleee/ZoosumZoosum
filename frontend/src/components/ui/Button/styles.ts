@@ -66,10 +66,20 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: '85%',
   },
+  ploggingRST: {
+    width: '50%',
+    backgroundColor: '#34D399',
+    borderRadius: 8,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '5%',
+    marginTop: '8%',
+  },
   gotoislandText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
-    fontSize : 20,
+    fontSize: 20,
   },
 
   selectItem: {
@@ -79,7 +89,7 @@ export const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal : 10,
+    marginHorizontal: 10,
   },
   selectItemText: {
     color: 'white',
@@ -96,6 +106,6 @@ export const styles = StyleSheet.create({
   picnicText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
-    fontSize : 22,
+    fontSize: 22,
   },
 });
