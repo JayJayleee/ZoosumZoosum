@@ -222,9 +222,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 		String treeName = request.getTreeName();
 		String userName = request.getUserName();
 		String userPhone = request.getUserPhone();
-		String userEmail = request.getUserEmail();
+		String userBirth = request.getUserBirth();
 
-		if(treeName == null || userName == null || userPhone == null || userEmail == null) { //작성 안한 항목이 있다면
+		if(treeName == null || userName == null || userPhone == null || userBirth == null) { //작성 안한 항목이 있다면
 			throw new NotEnoughInputException(CustomErrorType.UNSATISFIED_ALL_INPUT.getMessage());
 		}
 
@@ -242,7 +242,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		//나무 등록
 		ActivityHistory activity = ActivityHistory.builder()
 			.user(user)
-			.tree(new Tree(treeName, userName, userPhone, userEmail))
+			.tree(new Tree(treeName, userName, userPhone, userBirth))
 			.activityType(ActivityType.TREE)
 			.fileUrl("추가 예정")
 			.time(new Time(LocalDateTime.now(), LocalDateTime.now()))

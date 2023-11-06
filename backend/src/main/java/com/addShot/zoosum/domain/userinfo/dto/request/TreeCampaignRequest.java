@@ -14,6 +14,6 @@ public class TreeCampaignRequest {
 	private String userName;
 	private String treeName;
 	private String userPhone;
-	private String userEmail;
+	private String userBirth;
 
 }
