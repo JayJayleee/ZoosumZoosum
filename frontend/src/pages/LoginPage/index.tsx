@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { getStorage, clearStorage } from '@/apis/index';
+import { getStorage } from '@/apis/index';
 import {
   View,
   Image,
@@ -19,9 +19,8 @@ export default function LoginPage({navigation}: LoginScreenProps) {
 
   // 이미 로그인한 상태일 경우, 바로 메인페이지로 이동하는 함수 생성
   const isLoginState = async () => {
-    // await clearStorage();
     const token = await getStorage("AccessToken");
-    // console.log("token :", token);
+
     if (token !== null) {
       navigation.navigate('Main');
     } else {
