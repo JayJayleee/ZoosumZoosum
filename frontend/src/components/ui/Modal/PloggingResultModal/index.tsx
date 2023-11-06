@@ -31,38 +31,15 @@ const PloggingResultModal = ({
   navigation,
   activityData,
 }: PloggingResultModalProps) => {
-  // console.log('activityData 없음', activityData);
-  // const [imageSource, setImageSource] = useState<string | null>(null);
-
-  //임시로 촬영된 이미지 가져옴
-  // useEffect(() => {
-  //   const loadImage = async () => {
-  //     try {
-  //       const imagePath = await AsyncStorage.getItem('@photo_path');
-  //       console.log(imagePath, 'imagePath');
-  //       setImageSource(imagePath);
-  //     } catch (e) {
-  //       console.error('Failed to load the photo path.', e);
-  //     }
-  //   };
-
-  //   if (isVisible) {
-  //     loadImage();
-  //   }
-  // }, [isVisible]);
-
-  // useEffect(() => {
-  //   console.log(imageSource, 'result 모달에서 업데이트 된 쓰레기 이미지');
-  // }, [imageSource]);
-
   // useMutation을 사용하여 서버 요청을 관리합니다.
   const mutation = useMutation(
     (activityData: ActivityDataType) => PloggingResultFtn(activityData),
     {
       onSuccess: (responseData: any) => {
         // 결과 데이터를 NewData 타입으로 단언합니다.
-        const newData = JSON.parse(responseData.data) as NewData;
-        navigation(newData);
+        // const newData = JSON.parse(responseData.data);
+        // console.log('짜잔', newData, responseData);
+        navigation(responseData);
       },
       onError: error => {
         // 요청 실패 시 처리할 작업

@@ -80,13 +80,14 @@
 // };
 
 // export async function PloggingResultFtn(activityData: ActivityDataType) {
-//   console.log('지금 요청하고 있걸랑요?:', activityData);
+//   console.log('받은 직후:', activityData);
 
 //   // 사용자 토큰 가져오기
 //   const token = await getStoredToken();
 //   const headers = {
+//     Accept: '*/*',
 //     Authorization: `Bearer ${token}`,
-//     // 'Content-Type': 'multipart/form-data',
+//     'Content-Type': 'multipart/form-data',
 //     // 'Content-Type': 'multipart/form-data'는 RNFetchBlob에서 자동으로 설정하므로 여기서는 설정하지 않습니다.
 //   };
 
@@ -99,13 +100,11 @@
 //     },
 //   ];
 
-//   const filePath = await AsyncStorage.getItem('@photo_path');
-
-//   // "file://" 접두사를 제거합니다.
+//   const filePath = activityData.activityImg;
 //   let cleanFilePath = filePath;
-//   // if (cleanFilePath && cleanFilePath.startsWith('file://')) {
-//   //   cleanFilePath = cleanFilePath.replace('file://', '');
-//   // }
+//   if (cleanFilePath && cleanFilePath.startsWith('file://')) {
+//     cleanFilePath = `file://${cleanFilePath.substring(8)};`; // "file://" 는 7글자입니다.
+//   }
 
 //   if (cleanFilePath) {
 //     data.push({
@@ -131,53 +130,124 @@
 //   }
 // }
 
-import {api, Header} from './index';
-import {ActivityDataType} from '@/types/plogging';
-import RNFetchBlob from 'rn-fetch-blob';
-import {FetchBlobResponse} from 'rn-fetch-blob';
+// import {api, Header} from './index';
+// import {ActivityDataType} from '@/types/plogging';
+// import RNFetchBlob from 'rn-fetch-blob';
+// import {FetchBlobResponse} from 'rn-fetch-blob';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// // storage에 저장된 token 가져오기(get)
+// const getStorage = async (key: string) => {
+//   return await AsyncStorage.getItem(key);
+// };
+
+// export async function PloggingResultFtn(activityData: ActivityDataType) {
+//   console.log('지금 요청하고 있걸랑요?:', activityData);
+//   const formData = new FormData();
+
+//   const filePath = activityData.activityImg;
+//   let cleanFilePath = filePath;
+//   if (cleanFilePath && cleanFilePath.startsWith('file://')) {
+//     cleanFilePath = cleanFilePath.substring(8); // "file://" 는 7글자입니다.
+//   }
+
+//   formData.append('activityImg', {
+//     uri: cleanFilePath,
+//     name: '20220912.jpg', // 실제 파일 이름이나 업로드시 사용할 이름
+//     type: 'image/jpg',
+//   });
+
+//   const objectInfo = JSON.stringify(activityData.activityRequestDto);
+//   const objectblob = new Blob([objectInfo], {
+//     // JSON을 Blob 타입으로 변환
+//     type: 'application/json',
+//     lastModified: Date.now(),
+//   });
+
+//   formData.append('activityRequestDto', objectblob);
+//   console.log('요청을 이렇게 하고 있거등요?', formData);
+//   try {
+//     const response = await fetch('https://zoosum.co.kr/api/activity', {
+//       method: 'POST',
+//       headers: {
+//         Accept: '*/*',
+//         Authorization: `Bearer ${await getStorage('AccessToken')}`,
+//         'Access-Control-Allow-Origin': '*',
+//         'Access-Control-Allow-Credentials': 'true',
+//         'Content-Type': 'multipart/form-data',
+//       },
+//       body: formData,
+//     });
+
+//     let result = await response.json();
+//     console.log('요청 결과:', result);
+//   } catch (e) {
+//     // 업로드 에러 처리
+//     console.error('Failed to upload activity and photo.', e);
+//   }
+// }
+
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ActivityDataType} from '@/types/plogging';
 
 // storage에 저장된 token 가져오기(get)
-const getStorage = async (key: string) => {
-  return await AsyncStorage.getItem(key);
+const getStoredToken = async () => {
+  const token = await AsyncStorage.getItem('AccessToken');
+  if (!token) {
+    throw new Error('Token is not available');
+  }
+  return token;
 };
 
 export async function PloggingResultFtn(activityData: ActivityDataType) {
-  console.log('지금 요청하고 있걸랑요?:', activityData);
+  console.log('받은 직후:', activityData);
+
+  // 사용자 토큰 가져오기
+  const token = await getStoredToken();
+
+  // FormData 생성
   const formData = new FormData();
 
-  formData.append('activityImg', {
-    uri: activityData.activityImg,
-    name: '20220912.jpg', // 실제 파일 이름이나 업로드시 사용할 이름
-    type: 'image/jpeg',
-  });
+  // activityRequestDto를 문자열로 변환하여 추가
+  formData.append(
+    'activityRequestDto',
+    JSON.stringify(activityData.activityRequestDto),
+  );
 
-  const objectInfo = JSON.stringify(activityData.activityRequestDto);
-  const objectblob = new Blob([objectInfo], {
-    // JSON을 Blob 타입으로 변환
-    type: 'application/json',
-    lastModified: Date.now(),
-  });
+  // 파일 경로에서 "file://" 접두어 제거
+  // let cleanFilePath = activityData.activityImg.replace('file://', '');
 
-  formData.append('activityRequestDto', objectblob);
-  console.log('요청을 이렇게 하고 있거등요?', formData);
-  try {
-    const response = await fetch('https://zoosum.co.kr/api/activity', {
-      method: 'POST',
-      headers: {
-        Accept: 'multipart/form-data',
-        Authorization: `Bearer ${await getStorage('AccessToken')}`,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'Content-Type': 'multipart/form-data',
-      },
-      body: formData,
+  const now = new Date();
+  const fileName = `${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()}-${now.getHours()}`;
+
+  // 이미지가 있을 경우 formData에 추가
+  if (activityData.activityImg) {
+    formData.append('activityImg', {
+      uri: activityData.activityImg,
+      name: `${fileName}.jpg`,
+      type: 'image/jpeg',
     });
+  }
 
-    let result = await response.json();
-    console.log('요청 결과:', result);
+  try {
+    // Axios로 POST 요청 보내기
+    const response = await axios.post(
+      'https://zoosum.co.kr/api/activity',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type': 'multipart/form-data'는 axios에서 자동으로 설정됩니다.
+        },
+      },
+    );
+
+    console.log('요청 결과:', response.data);
+    return response.data;
   } catch (e) {
-    // 업로드 에러 처리
-    console.error('Failed to upload activity and photo.', e);
+    console.error('활동과 사진 업로드에 실패했습니다.', e);
   }
 }

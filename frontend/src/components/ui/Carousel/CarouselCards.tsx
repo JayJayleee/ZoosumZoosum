@@ -14,7 +14,7 @@ import phonedata from '@/pages/PloggingResultPage/data';
 import AppText from '../Text';
 interface CarouselCardsProps {
   onNavigate: () => void;
-  data: NewData;
+  data?: NewData;
 }
 
 export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
@@ -37,7 +37,9 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
     ...(resultDataList.islandList ? resultDataList.islandList : []),
     ...(resultDataList.treeList ? resultDataList.treeList : []),
     ...(resultDataList.animalList ? resultDataList.animalList : []),
-    ...(resultDataList.seedList ? resultDataList.seedList : []),
+    ...(resultDataList.seedList && resultDataList.seedList.addSeed == 0
+      ? resultDataList.seedList
+      : []),
     // ...(resultDataList.scoreList ? resultDataList.scoreList : []),
     ...(resultDataList.userBadgeList ? resultDataList.userBadgeList : []),
   ];
@@ -48,7 +50,7 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
       console.log('컴바인', combinedData.length);
       return <ProgressCarouselCardItem item={item} index={itemIndex} />;
     }
-    if (item.addSeed) {
+    if (item.addSeed && item.addSeed != 0) {
       return <SeedCarouselCardItem item={item} index={itemIndex} />;
     }
     if (item.badgeId) {

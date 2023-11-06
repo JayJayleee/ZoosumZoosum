@@ -104,6 +104,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
   useEffect(() => {
     console.log(trashImage, '플로깅 페이지에서 업데이트 된 쓰레기 이미지');
+    console.log('타이머가 왜 안될까🖤', activityData);
   }, [trashImage]);
 
   // 시간 포맷 맞추기 위한 상수. 추후 옮길 것
@@ -193,7 +194,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-    setTimer(0);
+
     await onCapture(); // 스크린샷 찍기
     await loadImage();
   };
@@ -210,7 +211,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   };
   useEffect(() => {
     const newActivityData = {
-      activityImg: trashImage, // This will use the updated trashImage.
+      activityImg: trashImage,
       activityRequestDto: {
         length: ploggingDistance,
         time: timer,
@@ -235,8 +236,13 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
     // Only set the activity data if trashImage is not empty.
     if (trashImage) {
+      console.log('타이머 값', timer);
       setResultData(newResultData);
+      console.log('타이머 값', timer);
       setActivityData(newActivityData);
+      setTimer(0);
+      setTrashCount(0);
+      setPloggingDistance(0);
       setIsEndModalVisible(true);
     }
   }, [trashImage]);

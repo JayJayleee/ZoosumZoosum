@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {PloggingResultscreenProps} from '../../types/path';
 import CarouselCards from '../../components/ui/Carousel/CarouselCards';
 
@@ -7,17 +7,19 @@ export default function PloggingResultPage({
   navigation,
   route,
 }: PloggingResultscreenProps) {
-  const newData = route.params?.newData;
+  const parsedData = route.params.newData;
 
   // newData에서 JSON 문자열을 추출하고 파싱
   // newData가 문자열인지 확인하고 문자열일 경우만 파싱
-  const parsedData =
-    typeof newData === 'string' ? JSON.parse(newData) : newData;
+  // const parsedData =
+  //   typeof newData === 'string' ? JSON.parse(newData) : newData;
 
   useEffect(() => {
     // parsedData가 유효할 때만 로그를 찍음
     if (parsedData) {
-      console.log('ploggingRstPage안녕', parsedData);
+      console.log('💥ploggingRstPage안녕💥', parsedData);
+    } else {
+      console.log('💔parsedData is undefined💔');
     }
   }, [parsedData]);
 
@@ -27,7 +29,11 @@ export default function PloggingResultPage({
 
   return (
     <View style={styles.container}>
-      <CarouselCards data={parsedData} onNavigate={handleNavigation} />
+      {parsedData && parsedData.missionList ? (
+        <CarouselCards data={parsedData} onNavigate={handleNavigation} />
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </View>
   );
 }
