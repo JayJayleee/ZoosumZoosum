@@ -54,13 +54,13 @@ public class RankingServiceImpl implements RankingService {
         // 영어 지역과 pageable 변수를 사용해 UserPlogInfo 조회. 이때 User 정보도 일단 다 가져온다.
         Page<UserPlogInfo> rankingPages = rankingRepository.selectAllUserPlogInfo(region, pageable);
         // Page 데이터 중, content 데이터만 따로 가져온다.
-        List<UserPlogInfo> RankingList = rankingPages.getContent();
+        List<UserPlogInfo> rankingList = rankingPages.getContent();
         // content의 데이터들을 Dto로 변환하여 저장할 새로운 List 생성
         List<RankingResponseDto> rankingResponseList = new ArrayList<>();
 
         log.info("RankingService rankingPages: {}", rankingPages);
 
-        for (UserPlogInfo userPlogInfo : RankingList) {
+        for (UserPlogInfo userPlogInfo : rankingList) {
             // UserPlogInfo에서 만들어 둔 Builder 메소드를 활용하여 빠르게 변환
             RankingResponseDto rankingResponseDto = userPlogInfo.toResponse();
 

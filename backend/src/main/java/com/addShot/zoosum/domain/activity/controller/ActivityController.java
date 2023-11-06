@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,24 +47,24 @@ public class ActivityController {
 
     @Operation(summary = "활동내역(플로깅, 인증서) 목록 조회",
         description = "사용자가 활동한 플로깅 내역과 인증서를 한 화면에서 목록 조회")
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> activityList(@PathVariable(name = "userId") String userId,
+    @GetMapping("/{nickname}")
+    public ResponseEntity<?> activityList(@PathVariable(name = "nickname") String nickname,
         Pageable pageable) {
-        log.info("ActivityController userId : {}", userId);
+        log.info("ActivityController nickname : {}", nickname);
         // PageNumber: PageSize를 기준으로 잘랐을 때 몇 번째 페이지인지
         // PageSize: 페이지를 나누는 기준이 되는 수
         // Offset: 어디서 시작할 것인지. 시작지점
         log.info("ActivityController PageNumber : {}, PageSize : {}, Offset : {}",
             pageable.getPageNumber(), pageable.getPageSize(), pageable.getOffset());
 
-        if (userId == null || pageable == null) {
+        if (nickname == null || pageable == null) {
             return badRequest400();
         }
 
         // 다른 사람의 활동 기록도 볼 수 있으므로, 추가적인 인가처리를 하지 않는다.
         
         // 목록 조회
-        ActivityResponseDtoAndSize result = activityServicel.activityList(userId, pageable);
+        ActivityResponseDtoAndSize result = activityServicel.activityList(nickname, pageable);
         if (result == null) {
             return serverError500();
         }
@@ -91,7 +92,7 @@ public class ActivityController {
 
     @Operation(summary = "플로깅 기록과 리워드 반환",
         description = "플로깅 정보를 입력하는 동시에, 리워드를 제공")
-    @PostMapping()
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> writeActivity(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestPart(name = "activityImg", required = false) MultipartFile activityImg,
         @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto){
