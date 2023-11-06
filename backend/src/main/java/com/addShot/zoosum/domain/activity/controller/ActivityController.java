@@ -102,6 +102,7 @@ public class ActivityController {
             return badRequest400();
         }
         log.info("ActivityController userId: {}, activityImg: {}, animalId: {}", userId, activityImg, animalId);
+        log.info("##### activityImg의 Content-Type: {} #####", activityImg.getContentType());
 
         // 입력
         ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto, animalId);

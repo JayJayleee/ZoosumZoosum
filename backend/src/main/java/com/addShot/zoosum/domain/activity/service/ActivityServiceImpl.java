@@ -118,6 +118,10 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional
     public ActivityRewardResponseDto writeActivityAndReward(String userId, MultipartFile activityImg,
         ActivityRequestDto activityRequestDto, Long animalId) {
+        if(userId == null) {
+            return null;
+        }
+
         // User Entity 구하기
         log.info("User Entity 구하기");
         User user = userRepository.findUser(userId);
