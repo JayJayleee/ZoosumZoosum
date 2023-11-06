@@ -74,9 +74,9 @@ public class ActivityServiceImpl implements ActivityService {
     private final S3Service s3Service;
 
     @Override
-    public ActivityResponseDtoAndSize activityList(String userId, Pageable pageable) {
+    public ActivityResponseDtoAndSize activityList(String nickname, Pageable pageable) {
 
-        Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserId(userId, pageable);
+        Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserId(nickname, pageable);
         List<ActivityHistory> getList = activityHistoryList.getContent();
         List<ActivityResponseDto> resultList = new ArrayList<>();
 

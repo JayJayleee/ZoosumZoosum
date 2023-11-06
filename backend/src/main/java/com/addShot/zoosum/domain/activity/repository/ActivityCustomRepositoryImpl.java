@@ -23,9 +23,9 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     }
 
     @Override
-    public Page<ActivityHistory> findAllByUserId(String userId, Pageable pageable) {
+    public Page<ActivityHistory> findAllByUserId(String nickname, Pageable pageable) {
         QueryResults<ActivityHistory> result = queryFactory.selectFrom(activityHistory)
-            .where(activityHistory.user.userId.eq(userId))
+            .where(activityHistory.user.nickname.eq(nickname))
             .orderBy(activityHistory.activityId.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
