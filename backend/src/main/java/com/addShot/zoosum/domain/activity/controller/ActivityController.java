@@ -92,7 +92,7 @@ public class ActivityController {
 
     @Operation(summary = "플로깅 기록과 리워드 반환",
         description = "플로깅 정보를 입력하는 동시에, 리워드를 제공")
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping()
     public ResponseEntity<?> writeActivity(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestPart(name = "activityImg", required = false) MultipartFile activityImg,
         @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto,
@@ -103,6 +103,8 @@ public class ActivityController {
         }
         log.info("ActivityController userId: {}, activityImg: {}, animalId: {}", userId, activityImg, animalId);
         log.info("##### activityImg의 Content-Type: {} #####", activityImg.getContentType());
+        log.info("##### activityImg의 Resource: {} #####", activityImg.getResource());
+        log.info("##### activityImg의 OriginalFilename: {} #####", activityImg.getOriginalFilename());
 
         // 입력
         ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto, animalId);

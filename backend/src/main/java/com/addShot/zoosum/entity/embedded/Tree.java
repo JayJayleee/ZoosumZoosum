@@ -25,14 +25,14 @@ public class Tree {
     private String userPhone;
 
     // 나무 심는 사람의 이메일
-    @Column(name = "user_email", length = 100)
-    private String userEmail;
+    @Column(name = "user_birth", length = 100)
+    private String userBirth;
 
-    public Tree(String treeName, String userName, String userPhone, String userEmail) {
+    public Tree(String treeName, String userName, String userPhone, String userBirth) {
         this.treeName = treeName;
         this.userName = userName;
         this.userPhone = userPhone;
-        this.userEmail = userEmail;
+        this.userBirth = userBirth;
     }
 
     public static TreeResponseDto toResponseDto(Tree tree) {
@@ -40,7 +40,7 @@ public class Tree {
             .treeName(tree.getTreeName())
             .userName(tree.getUserName())
             .userPhone(tree.getUserPhone())
-            .userEmail(tree.getUserEmail())
+            .userEmail(tree.getUserBirth())
             .build();
     }
 }
