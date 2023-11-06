@@ -103,6 +103,8 @@ public class ActivityController {
         }
         log.info("ActivityController userId: {}, activityImg: {}, animalId: {}", userId, activityImg, animalId);
         log.info("##### activityImg의 Content-Type: {} #####", activityImg.getContentType());
+        log.info("##### activityImg의 Resource: {} #####", activityImg.getResource());
+        log.info("##### activityImg의 OriginalFilename: {} #####", activityImg.getOriginalFilename());
 
         // 입력
         ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto, animalId);
