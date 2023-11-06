@@ -103,11 +103,16 @@ android {
     }
 }
 
+// repositories {
+//     maven { url 'https://devrepo.kakao.com/nexus/repository/kakaomap-releases/' }
+// }
+
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation project(':lottie-react-native')
     implementation("com.facebook.react:react-android")
     implementation('com.facebook.fresco:animated-gif:2.5.0')
+    implementation("com.google.android.gms:play-services-location:21.0.1")
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
@@ -119,6 +124,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    // google map
+    implementation project(':react-native-maps')
+    // kakao map
+    // implementation('com.kakao.maps.open:android:2.6.0')
     
 }
 

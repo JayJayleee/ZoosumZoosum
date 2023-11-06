@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   AppState,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import {PloggingScreenProps} from 'typePath';
 import {TrashList} from '@/types/plogging';
@@ -13,6 +15,9 @@ import TrashModal from '@/components/ui/Modal/TrashModal';
 import {styles} from './styles';
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
+import GoogleMap from '@/components/ui/Map/GoogleMap';
+import ViewShot from 'react-native-view-shot';
+// import CameraRoll from '@react-native-community/cameraroll';
 import {DATA} from './TrashImageList';
 import PloggingResultModal from '@/components/ui/Modal/PloggingResultModal';
 // import {StyleSheet} from 'react-native';
@@ -21,6 +26,9 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 모달 관리 값
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+
+  // 종료 여부
+  let endPlog: boolean = false;
 
   // 모달 여는 부분. params로 함수 받아와서 그 값에 따라 모달 연다.
   useEffect(() => {
@@ -97,6 +105,9 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   //플로깅 완료 시 작동될 로직.
 
   const stopAndResetTimer = () => {
+    // 플로깅 종료 신호 넘겨주기
+    endPlog = false;
+
     // 타이머 멈추기
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -119,6 +130,9 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     // 타이머 리셋
     setTimer(0);
 
+    // 스크린샷 찍기
+    onCapture();
+
     // resultList를 PloggingResult 페이지로 전달하며 네비게이트
     // navigation.navigate('PloggingResult');
     //, { resultList: currentResultList }
@@ -127,6 +141,68 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const resultNav = () => {
     navigation.navigate('PloggingResult', {resultList: resultData});
   };
+
+  // --------------------------------------------  스크린샷 기능을 위한 변수  --------------------------------------------
+
+  const captureRef = useRef<ViewShot | null>(null);
+  const now = new Date();
+  const fileName = `${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()}-${now.getHours()}`;
+
+  const getPhotoUri = async (): Promise<string> => {
+    if (!captureRef.current) {
+      console.log('captureRef is null or undefined');
+      return '';
+    } else if (!captureRef.current.capture) {
+      console.log('captureRef is null or undefined');
+      return '';
+    } else {
+      const uri = await captureRef.current.capture();
+      console.log('👂👂 Image saved to', uri);
+      return uri;
+    }
+  };
+
+  // 스크린샷 찍기
+  const onCapture = async () => {
+    try {
+      const uri = await getPhotoUri();
+      const options = {
+        title: 'Share Title',
+        message: 'Share Message',
+        url: uri,
+        type: 'image/jpeg',
+      };
+    } catch (e) {
+      console.log('😻😻😻 snapshot failed', e);
+    }
+  };
+
+  /* 
+  // Android 저장 요청
+  const hasAndroidPermission = async () => {
+    const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+    const hasPermission = await PermissionsAndroid.check(permission);
+    if (hasPermission) {
+      return true;
+    }
+    const status = await PermissionsAndroid.request(permission);
+    return status === 'granted';
+  };
+
+  // 갤러리 저장
+  const onSave = async () => {
+    if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
+      console.log('갤러리 접근 권한이 없어요');
+      return;
+    }
+
+    const uri = await getPhotoUri();
+    const result = await CameraRoll.save(uri);
+    console.log('갤러리 result', result);
+  };
+  */
 
   return (
     <View style={{flex: 1}}>
@@ -165,6 +241,13 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
             />
           </TouchableOpacity>
         </ImageBackground>
+        {/* 지도 import */}
+        <ViewShot
+          style={styles.mapContainer}
+          ref={captureRef}
+          options={{fileName: fileName, format: 'jpg', quality: 0.9}}>
+          <GoogleMap endPlog={endPlog}></GoogleMap>
+        </ViewShot>
       </View>
     </View>
   );
