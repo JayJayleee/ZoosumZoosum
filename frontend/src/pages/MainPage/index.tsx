@@ -17,7 +17,7 @@ import { fetchMyIslandInfo, fetchMyStatusInfo } from '@/apis/Island';
 import {statusInfo, islandInfo, timeObj, animalForm } from '@/types/island';
 import AppText from '@/components/ui/Text';
 import { useQuery } from '@tanstack/react-query';
-import { getStorage } from '@/apis';
+import { getStorage, setStorage } from '@/apis';
 
 
 export default function MainPage({navigation}: MainScreenProps) {
@@ -154,7 +154,8 @@ export default function MainPage({navigation}: MainScreenProps) {
 
   // 프로필 클릭 시, 이동하는 함수
   const goToProfile = async () => {
-    const nickname = await getStorage('Nickname');
+    const nickname = await getStorage("Nickname");
+
     if (nickname !== null) {
       navigation.navigate({
         name: 'Profile',
@@ -192,7 +193,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   // 열린 상태의 토글 버튼
   const openedButton = (
     <TouchableOpacity onPress={() => setToggle(!toggle)}>
-      <Image
+      <FastImage
         source={require('@/assets/mainpage_image/right_arrow.png')}
         style={{width: 70, height: 70}}
       />
@@ -206,7 +207,7 @@ export default function MainPage({navigation}: MainScreenProps) {
       {isModalVisible && appCloseModal}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/trash_icon.png')}
             style={{width: 25, height: 25}}
           />
@@ -220,7 +221,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           </AppText>
         </View>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/sand_clock_icon.png')}
             style={{width: 25, height: 25}}
           />
@@ -230,12 +231,13 @@ export default function MainPage({navigation}: MainScreenProps) {
               alignContent: 'center',
               color: 'white',
             }}>
+            {getTime.hour}:
             {getTime.minute < 10 ? `0${getTime.minute}` : getTime.minute}:
             {getTime.second < 10 ? `0${getTime.second}` : getTime.second}
           </AppText>
         </View>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/shoe_icon.png')}
             style={{width: 25, height: 25}}
           />
@@ -249,7 +251,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           </AppText>
         </View>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/seed_icon.png')}
             style={{width: 25, height: 25}}
           />
@@ -265,7 +267,7 @@ export default function MainPage({navigation}: MainScreenProps) {
       </View>
       <View style={styles.banner}>
         <View style={styles.bannerBox}>
-          <Image
+          <FastImage
             source={require('@/assets/mainpage_image/single_tree_img.png')}
             style={{width: 70, height: 70}}
           />
@@ -280,7 +282,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           </View>
         </View>
         <View style={styles.bannerBox}>
-          <Image
+          <FastImage
             source={require('@/assets/mainpage_image/multiple_tree_img.png')}
             style={{width: 70, height: 80}}
           />
@@ -322,7 +324,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/animal_earth_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -355,7 +357,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/profile_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -388,7 +390,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/island_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -421,7 +423,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/animal_house_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -433,12 +435,12 @@ export default function MainPage({navigation}: MainScreenProps) {
         </View>
       </View>
       <View style={styles.centerImage}>
-        <Image
+        <FastImage
           style={styles.island}
           source={{uri: islandUri}}
           resizeMode="stretch"
         />
-        <Image
+        <FastImage
           style={styles.tree}
           source={{uri: treeUri}}
           resizeMode="stretch"

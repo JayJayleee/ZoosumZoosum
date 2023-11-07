@@ -11,6 +11,8 @@ import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {CamerascreenProps} from '../../types/path';
 import {AppState, AppStateStatus} from 'react-native';
 import styles from './style';
+import {storeImage} from './savePhoto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Photo {
   path: string;
@@ -23,7 +25,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   const device = devices[0];
 
   const [showCamera, setShowCamera] = useState<boolean>(true);
-  const [imageSource, setImageSource] = useState<string>('');
+  const [imageSource, setImageSource] = useState<any>('');
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(
     null,
   );
@@ -105,7 +107,11 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
     }
     checkPermission();
   }, []);
-
+  useEffect(() => {
+    if (imageSource !== '') {
+      console.log('업데이트된 소스:', `{uri:${imageSource}}`);
+    }
+  }, [imageSource]);
   // 아예 permission이 생기지 않은 경우를 상정. 최초 denied
   if (!device || cameraPermission === false) {
     Linking.openSettings();
@@ -114,13 +120,14 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   const capturePhoto = async () => {
     if (camera.current) {
       const photoOptions = {
-        enableShutterSound: false, // 셔터 소리 끄기
+        enableShutterSound: false,
       };
       const photo: Photo = await camera.current.takePhoto(photoOptions);
-      setImageSource(photo.path);
+
       setShowCamera(false);
+      setImageSource(photo.path);
+      // await storeImage(photo.path); // 이미지 경로 저장
       navigation.navigate('Plogging', {shouldOpenModal: true});
-      // console.log(photo.path);
     }
   };
 

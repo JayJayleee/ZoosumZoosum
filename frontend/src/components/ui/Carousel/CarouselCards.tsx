@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {FlatListProps, View} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
@@ -6,18 +6,27 @@ import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
 import {AnimalCarouselCardItem} from '../Carousel/AnimalCarouselCardItem';
 import {ProgressCarouselCardItem} from './ProgressCarouselCardItem';
 import {SeedCarouselCardItem} from './SeedCarouselCardItem';
-import data from '../../../pages/PloggingResultPage/data';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
 import AppButton from '../Button';
 import styles from './styles';
 import {CarouselProps, NewData} from '@/types/plogging';
+import phonedata from '@/pages/PloggingResultPage/data';
+import AppText from '../Text';
+interface CarouselCardsProps {
+  onNavigate: () => void;
+  data?: NewData;
+}
 
-export default function CarouselCards() {
-  const [resultDataList, setResultDataList] = useState<NewData>(data);
+export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
+  const [resultDataList, setResultDataList] = useState<any>(data);
 
   const isCarousel = React.useRef<
     Carousel<any> & Component<FlatListProps<any>, {}, any>
   >(null);
+
+  useEffect(() => {
+    setResultDataList(data);
+  }, [data]);
 
   const [index, setIndex] = React.useState(0);
 
@@ -28,16 +37,20 @@ export default function CarouselCards() {
     ...(resultDataList.islandList ? resultDataList.islandList : []),
     ...(resultDataList.treeList ? resultDataList.treeList : []),
     ...(resultDataList.animalList ? resultDataList.animalList : []),
-    ...(resultDataList.seedList ? resultDataList.seedList : []),
+    ...(resultDataList.seedList && resultDataList.seedList.addSeed == 0
+      ? resultDataList.seedList
+      : []),
     // ...(resultDataList.scoreList ? resultDataList.scoreList : []),
     ...(resultDataList.userBadgeList ? resultDataList.userBadgeList : []),
   ];
 
   const renderItem = ({item, index: itemIndex}: CarouselProps) => {
-    if (item.missionLength) {
+    if (item.missionLength !== undefined) {
+      console.log('들어오는거', combinedData);
+      console.log('컴바인', combinedData.length);
       return <ProgressCarouselCardItem item={item} index={itemIndex} />;
     }
-    if (item.addSeed) {
+    if (item.addSeed && item.addSeed != 0) {
       return <SeedCarouselCardItem item={item} index={itemIndex} />;
     }
     if (item.badgeId) {
@@ -49,6 +62,7 @@ export default function CarouselCards() {
           item={item}
           index={itemIndex}
           activeIndex={index}
+          itemType={item.itemType}
         />
       );
     }
@@ -99,11 +113,7 @@ export default function CarouselCards() {
       )}
       {index === combinedData.length - 1 ? (
         // 마지막 페이지인 경우
-        <AppButton
-          variant="carouselBtn"
-          children="끝!"
-          onPress={() => console.log(combinedData)}
-        />
+        <AppButton variant="carouselBtn" children="끝!" onPress={onNavigate} />
       ) : (
         //마지막 페이지가 아닌 경우
         <AppButton
@@ -115,6 +125,9 @@ export default function CarouselCards() {
           }}
         />
       )}
+      {/* {combinedData.map((item, index) => (
+        <AppText key={index}>{JSON.stringify(item)}</AppText>
+      ))} */}
     </View>
   );
 }

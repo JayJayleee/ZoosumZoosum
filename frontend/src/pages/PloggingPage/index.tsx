@@ -10,7 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import {PloggingScreenProps} from 'typePath';
-import {TrashList} from '@/types/plogging';
+import {NewData, TrashList} from '@/types/plogging';
 import TrashModal from '@/components/ui/Modal/TrashModal';
 import {styles} from './styles';
 import AppText from '@/components/ui/Text';
@@ -21,6 +21,16 @@ import ViewShot from 'react-native-view-shot';
 import {DATA} from './TrashImageList';
 import PloggingResultModal from '@/components/ui/Modal/PloggingResultModal';
 // import {StyleSheet} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {storeImage} from '../CameraPage/savePhoto';
+interface ActivityDataType {
+  activityImg: string; // 이미지에 대한 타입을 가정
+  activityRequestDto: {
+    length: number;
+    time: number;
+    trash: number;
+  };
+}
 
 export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 모달 관리 값
@@ -37,9 +47,11 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     }
   }, [route.params]);
   const [resultData, setResultData] = useState<TrashList[]>();
-  const [ploggingDistance, setPloggingDistance] = useState(0);
-  const [trashCount, setTrashCount] = useState(0);
+  const [ploggingDistance, setPloggingDistance] = useState(2.4);
+  const [trashCount, setTrashCount] = useState(23);
+  const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);
+  const [activityData, setActivityData] = useState<ActivityDataType>();
 
   // --------------------------------------------  타이머 기능을 위한 변수  --------------------------------------------
 
@@ -90,6 +102,11 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     };
   }, [appState]);
 
+  useEffect(() => {
+    console.log(trashImage, '플로깅 페이지에서 업데이트 된 쓰레기 이미지');
+    console.log('타이머가 왜 안될까🖤', activityData);
+  }, [trashImage]);
+
   // 시간 포맷 맞추기 위한 상수. 추후 옮길 것
   const formatTime = (time: number) => {
     const hours = Math.floor(time / 3600);
@@ -103,44 +120,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   };
 
   //플로깅 완료 시 작동될 로직.
-
-  const stopAndResetTimer = () => {
-    // 플로깅 종료 신호 넘겨주기
-    endPlog = false;
-
-    // 타이머 멈추기
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    // 현재 상태로 resultList 생성
-    setResultData([
-      {
-        img: require('@/assets/img_icon/sand_clock_icon.png'),
-        title: formatTime(timer),
-      },
-      {img: require('@/assets/img_icon/trash_icon.png'), title: trashCount},
-      {
-        img: require('@/assets/img_icon/shoe_icon.png'),
-        title: ploggingDistance,
-      },
-    ]);
-
-    console.log('총 플로깅 시간', formatTime(timer));
-    setIsEndModalVisible(true);
-    // 타이머 리셋
-    setTimer(0);
-
-    // 스크린샷 찍기
-    onCapture();
-
-    // resultList를 PloggingResult 페이지로 전달하며 네비게이트
-    // navigation.navigate('PloggingResult');
-    //, { resultList: currentResultList }
-  };
-
-  const resultNav = () => {
-    navigation.navigate('PloggingResult', {resultList: resultData});
-  };
 
   // --------------------------------------------  스크린샷 기능을 위한 변수  --------------------------------------------
 
@@ -168,12 +147,15 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const onCapture = async () => {
     try {
       const uri = await getPhotoUri();
-      const options = {
-        title: 'Share Title',
-        message: 'Share Message',
-        url: uri,
-        type: 'image/jpeg',
-      };
+      if (uri) {
+        const storedImagePath = await storeImage(uri);
+        if (storedImagePath) {
+          setTrashImage(storedImagePath); // 새 경로로 상태 업데이트
+          console.log(`Image stored at: ${storedImagePath}`);
+        } else {
+          console.log('Failed to obtain stored image path');
+        }
+      }
     } catch (e) {
       console.log('😻😻😻 snapshot failed', e);
     }
@@ -204,6 +186,75 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   };
   */
 
+  const stopAndResetTimer = async () => {
+    // 플로깅 종료 신호 넘겨주기
+    endPlog = false;
+
+    // 타이머 멈추기
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    await onCapture(); // 스크린샷 찍기
+    await loadImage();
+  };
+  const loadImage = async () => {
+    try {
+      const imagePath = await AsyncStorage.getItem('@photo_path');
+      if (imagePath !== null) {
+        setTrashImage(imagePath);
+      }
+    } catch (e) {
+      // 로딩 에러 처리
+      console.error('Failed to load the photo path.', e);
+    }
+  };
+  useEffect(() => {
+    const newActivityData = {
+      activityImg: trashImage,
+      activityRequestDto: {
+        length: ploggingDistance,
+        time: timer,
+        trash: trashCount,
+      },
+    };
+
+    const newResultData = [
+      {
+        img: require('@/assets/img_icon/sand_clock_icon.png'),
+        title: formatTime(timer),
+      },
+      {
+        img: require('@/assets/img_icon/trash_icon.png'),
+        title: `${trashCount} 개`,
+      },
+      {
+        img: require('@/assets/img_icon/shoe_icon.png'),
+        title: `${ploggingDistance} km`,
+      },
+    ];
+
+    // Only set the activity data if trashImage is not empty.
+    if (trashImage) {
+      console.log('타이머 값', timer);
+      setResultData(newResultData);
+      console.log('타이머 값', timer);
+      setActivityData(newActivityData);
+      setTimer(0);
+      setTrashCount(0);
+      setPloggingDistance(0);
+      setIsEndModalVisible(true);
+    }
+  }, [trashImage]);
+
+  const resultNav = (newData: NewData) => {
+    navigation.navigate('PloggingResult', {
+      resultList: resultData,
+      activityData: activityData,
+      newData: newData, // the new data received from the mutation onSuccess
+    });
+  };
+
   return (
     <View style={{flex: 1}}>
       <TrashModal
@@ -216,6 +267,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         isVisible={isEndModalVisible}
         onClose={() => setIsEndModalVisible(false)}
         data={resultData}
+        activityData={activityData}
         navigation={resultNav}
       />
 
