@@ -15,6 +15,8 @@ interface ModalComponentProps
   modalStyle?: 'top' | 'default';
   noButton?: boolean;
   TopChildren?: ReactNode;
+  ViewStyle?: 'default' | 'userInfo';
+  btnVariant?: 'default' | 'button';
 }
 
 //  isVisible={isModalVisible(해당 페이지에서 모달 보여줄 지 결정할 요소)},onClose={() => setModalVisible(false)}, onRequestClose={() => setModalVisible(false)}
@@ -32,8 +34,12 @@ export default function ModalComponent({
   buttonInnerText,
   noButton = false,
   modalStyle = 'default',
+  ViewStyle = 'default',
+  btnVariant = 'default',
 }: ModalComponentProps) {
+
   let variantStyle;
+  let viewVariantStyle;
 
   switch (modalStyle) {
     case 'default':
@@ -43,6 +49,17 @@ export default function ModalComponent({
       variantStyle = styles.topView;
       break;
   }
+
+  switch (ViewStyle) {
+    case 'default':
+      viewVariantStyle = styles.modalView;
+      break;
+    case 'userInfo':
+      viewVariantStyle = styles.userInfo;
+      break;
+  }
+
+
   return (
     <Modal
       key={modalStyle}
@@ -53,13 +70,13 @@ export default function ModalComponent({
       >
       <View style={variantStyle}>
         {TopChildren}
-        <View style={styles.modalView}>
+        <View style={viewVariantStyle}>
           {children}
           {!noButton && (
             // <TouchableOpacity style={styles.button} onPress={onClose}>
             //   <Text style={styles.textStyle}>{buttonInnerText}</Text>
             // </TouchableOpacity>
-            <AppButton children={buttonInnerText} onPress={onClose} variant='button'/>
+            <AppButton children={buttonInnerText} onPress={onClose} variant={btnVariant}/>
           )}
         </View>
       </View>
