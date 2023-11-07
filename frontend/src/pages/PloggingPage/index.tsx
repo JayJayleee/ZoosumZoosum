@@ -343,7 +343,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           source={require('@/assets/plogingpage_image/Background.png')}
           resizeMode="contain">
           <View style={styles.textContainer}>
-            <AppText style={styles.text}>3 km</AppText>
+            <AppText style={styles.text}>{ploggingDistance}km</AppText>
             <AppText style={styles.text}>{formatTime(timer)}</AppText>
             <AppText style={styles.text}>{trashCount}개</AppText>
           </View>
@@ -361,7 +361,9 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           style={styles.mapContainer}
           ref={captureRef}
           options={{fileName: fileName, format: 'jpg', quality: 0.9}}>
-          <GoogleMap endPlog={endPlog}></GoogleMap>
+          <GoogleMap
+            endPlog={endPlog}
+            setPloggingDistance={setPloggingDistance}></GoogleMap>
         </ViewShot>
       </View>
     </View>
