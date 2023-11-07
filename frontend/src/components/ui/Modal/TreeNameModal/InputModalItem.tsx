@@ -4,25 +4,81 @@ import AppText from '../../Text';
 import {TreeCarouselCardItemProps} from '@/types/plogging';
 
 export function InputModalItem({item, index}: TreeCarouselCardItemProps) {
-  console.log(index);
   return (
-    <View key={index} style={{flex: 1}}>
+    <View
+      key={index}
+      style={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '70%',
+      }}>
       {item?.image && (
         <Image
           source={item.image}
-          style={{width: 50, height: 1000, borderRadius: 10}}
+          style={{height: '30%', aspectRatio: 1, borderRadius: 10}}
         />
       )}
-      <AppText style={{marginLeft: 10, height: 40}}>이름</AppText>
-      <TextInput style={{width: 50, height: 50, borderRadius: 10}}></TextInput>
-      <AppText style={{marginLeft: 10}}>전화번호</AppText>
-      <TextInput style={{width: 50, height: 50, borderRadius: 10}}></TextInput>
-      <AppText style={{marginLeft: 10}}>나무이름</AppText>
-      <TextInput style={{width: 50, height: 50, borderRadius: 10}}></TextInput>
-      <AppText style={{marginLeft: 10}}>나무이름</AppText>
-      <TextInput style={{width: 50, height: 50, borderRadius: 10}}></TextInput>
+      <View
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          height: '70%',
+          width: '70%',
+          marginTop: '10%',
+        }}>
+        <View>
+          <AppText style={{marginLeft: 10, marginBottom: 5}}>나의 이름</AppText>
+          <TextInput
+            style={{
+              width: '100%',
+              height: '35%',
+              borderRadius: 10,
+              backgroundColor: '#E3E5E5',
+              textAlign: 'center',
+            }}
+            placeholder={'이름을 입력해주세요'}></TextInput>
+        </View>
 
-      <AppText style={{marginLeft: 10}}>{item?.description}</AppText>
+        <View>
+          <AppText style={{marginLeft: 10, marginBottom: 5}}>나의 이름</AppText>
+          <TextInput
+            style={{
+              width: '100%',
+              height: '35%',
+              borderRadius: 10,
+              backgroundColor: '#E3E5E5',
+              textAlign: 'center',
+            }}
+            placeholder={'이름을 입력해주세요'}></TextInput>
+        </View>
+
+        <View>
+          <AppText style={{marginLeft: 10, marginBottom: 5}}>나의 이름</AppText>
+          <TextInput
+            style={{
+              width: '100%',
+              height: '35%',
+              borderRadius: 10,
+              backgroundColor: '#E3E5E5',
+              textAlign: 'center',
+            }}
+            placeholder={'이름을 입력해주세요'}></TextInput>
+        </View>
+
+        <View>
+          <AppText style={{marginLeft: 10, marginBottom: 5}}>나의 이름</AppText>
+          <TextInput
+            style={{
+              width: '100%',
+              height: '35%',
+              borderRadius: 10,
+              backgroundColor: '#E3E5E5',
+              textAlign: 'center',
+            }}
+            placeholder={'이름을 입력해주세요'}></TextInput>
+        </View>
+      </View>
     </View>
   );
 }
