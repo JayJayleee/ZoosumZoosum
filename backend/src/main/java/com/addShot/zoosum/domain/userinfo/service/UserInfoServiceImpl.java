@@ -47,6 +47,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -55,6 +56,9 @@ import java.util.Optional;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +77,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private final ActivityRepository activityRepository;
 	private final UserRepository userRepository;
 	private final S3Service s3Service;
+
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	@Override
 	public MainResponse getUserMain(String userId) {
@@ -258,11 +265,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 			Graphics2D g2d = image.createGraphics();
 
 			//폰트 파일을 로드합니다.
-			String fontFilePath = "C:\\Users\\SSAFY\\free_project\\S09P31B102\\backend\\src\\main\\resources\\SKYBORI.ttf";
-			Font customFont =  Font.createFont(Font.TRUETYPE_FONT, new File(fontFilePath)).deriveFont(55f);
+			Resource resource = resourceLoader.getResource("classpath:SKYBORI.ttf");
+			InputStream fontStream = resource.getInputStream();
+			Font customFont =  Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(55f);
 
-			String fontFilePath2 = "C:\\Users\\SSAFY\\free_project\\S09P31B102\\backend\\src\\main\\resources\\SOYO Maple Bold.ttf";
-			Font customFont2 =  Font.createFont(Font.TRUETYPE_FONT, new File(fontFilePath2)).deriveFont(60f);
+			Resource resource2 = resourceLoader.getResource("classpath:SOYO Maple Bold.ttf");
+			InputStream fontStream2 = resource2.getInputStream();
+			Font customFont2 =  Font.createFont(Font.TRUETYPE_FONT, fontStream2).deriveFont(60f);
 
 			//로드한 폰트를 시스템 폰트로 등록
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
