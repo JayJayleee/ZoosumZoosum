@@ -98,4 +98,20 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize : 22,
   },
+  region: {
+    width: '60%',
+    backgroundColor: '#F472B6',
+    borderRadius: 20,
+    height: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nickname: {
+    
+  },
+  userInfoText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize : 22,
+  },
 });
