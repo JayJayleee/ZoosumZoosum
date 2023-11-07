@@ -14,14 +14,14 @@ export default function PloggingResultPage({
   // const parsedData =
   //   typeof newData === 'string' ? JSON.parse(newData) : newData;
 
-  useEffect(() => {
-    // parsedData가 유효할 때만 로그를 찍음
-    if (parsedData) {
-      console.log('💥ploggingRstPage안녕💥', parsedData);
-    } else {
-      console.log('💔parsedData is undefined💔');
-    }
-  }, [parsedData]);
+  // useEffect(() => {
+  //   // parsedData가 유효할 때만 로그를 찍음
+  //   if (parsedData) {
+  //     console.log('💥ploggingRstPage안녕💥', parsedData);
+  //   } else {
+  //     console.log('💔parsedData is undefined💔');
+  //   }
+  // }, [parsedData]);
 
   const handleNavigation = () => {
     navigation.navigate('Main');

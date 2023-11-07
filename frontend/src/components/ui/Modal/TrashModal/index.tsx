@@ -2,14 +2,14 @@ import React from 'react';
 import {View, Image, FlatList, Button} from 'react-native';
 import ModalComponent from '@/components/ui/Modal';
 import AppText from '@/components/ui/Text';
-import {TrashList} from '@/types/plogging';
+import {TrashList, TrashDataReturnList} from '@/types/plogging';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '@/types/path';
 
 interface TrashModalProps {
   isVisible: boolean;
   onClose: () => void;
-  data: TrashList[];
+  data: TrashDataReturnList[];
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }
 
@@ -19,7 +19,7 @@ const TrashModal = ({
   data,
   navigation,
 }: TrashModalProps) => {
-  const Item = ({title, img}: TrashList) => (
+  const Item = ({title, img, description}: TrashDataReturnList) => (
     <View style={{width: 120, justifyContent: 'center', alignItems: 'center'}}>
       <Image
         style={{height: 100, aspectRatio: 1, resizeMode: 'contain'}}
@@ -27,6 +27,9 @@ const TrashModal = ({
       />
       <AppText style={{color: 'black', fontSize: 14, marginTop: 5}}>
         {title}
+      </AppText>
+      <AppText style={{color: 'black', fontSize: 14, marginTop: 5}}>
+        {description}
       </AppText>
     </View>
   );
@@ -51,13 +54,19 @@ const TrashModal = ({
         columnWrapperStyle={{
           justifyContent: 'space-between',
         }}
-        renderItem={({item}) => <Item title={item.title} img={item.img} />}
+        renderItem={({item}) => (
+          <Item
+            title={item.title}
+            img={item.img}
+            description={item.description}
+          />
+        )}
         keyExtractor={(_, index) => index.toString()}
         numColumns={2}
       />
       <Button
-        title="dd"
-        onPress={() => navigation.navigate('Profile', {userId: 'ss'})}
+        title="다시 찍을래!"
+        onPress={() => navigation.navigate('Camera')}
       />
     </ModalComponent>
   );

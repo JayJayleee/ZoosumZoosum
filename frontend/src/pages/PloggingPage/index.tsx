@@ -6,11 +6,9 @@ import {
   TouchableOpacity,
   ImageBackground,
   AppState,
-  PermissionsAndroid,
-  Platform,
 } from 'react-native';
 import {PloggingScreenProps} from 'typePath';
-import {NewData, TrashList} from '@/types/plogging';
+import {NewData, TrashList, TrashDaTaList} from '@/types/plogging';
 import TrashModal from '@/components/ui/Modal/TrashModal';
 import {styles} from './styles';
 import AppText from '@/components/ui/Text';
@@ -18,7 +16,7 @@ import AppButton from '@/components/ui/Button';
 import GoogleMap from '@/components/ui/Map/GoogleMap';
 import ViewShot from 'react-native-view-shot';
 // import CameraRoll from '@react-native-community/cameraroll';
-import {DATA} from './TrashImageList';
+// import {DATA} from './TrashImageList';
 import PloggingResultModal from '@/components/ui/Modal/PloggingResultModal';
 // import {StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -36,19 +34,43 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 모달 관리 값
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [trashData, setTrashData] = useState<TrashDaTaList>();
 
   // 종료 여부
   let endPlog: boolean = false;
-
   // 모달 여는 부분. params로 함수 받아와서 그 값에 따라 모달 연다.
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      // 페이지에서 벗어날 때(다른 페이지로 이동할 때) 모달 상태를 false로 설정
+      setModalVisible(false);
+    });
+
+    // 리스너 정리
+    return unsubscribe;
+  }, [navigation]);
+
   useEffect(() => {
     if (route.params?.shouldOpenModal === true) {
       setModalVisible(true);
     }
+
+    if (route.params.TrashData) {
+      setTrashData(route.params.TrashData);
+      console.log('플로깅에서 쓰레기를 받음', route.params.TrashData);
+      // console.log('그걸 새로 저장함', trashData);
+    }
   }, [route.params]);
+
+  useEffect(() => {
+    if (trashData) {
+      console.log('trashData가 업데이트됨:', trashData);
+    }
+  }, [trashData]);
+
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(2.4);
-  const [trashCount, setTrashCount] = useState(23);
+  const [trashCount, setTrashCount] = useState(0);
   const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityDataType>();
@@ -102,10 +124,10 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     };
   }, [appState]);
 
-  useEffect(() => {
-    console.log(trashImage, '플로깅 페이지에서 업데이트 된 쓰레기 이미지');
-    console.log('타이머가 왜 안될까🖤', activityData);
-  }, [trashImage]);
+  // useEffect(() => {
+  //   console.log(trashImage, '플로깅 페이지에서 업데이트 된 쓰레기 이미지');
+  //   // console.log('타이머가 왜 안될까🖤', activityData);
+  // }, [trashImage]);
 
   // 시간 포맷 맞추기 위한 상수. 추후 옮길 것
   const formatTime = (time: number) => {
@@ -234,11 +256,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       },
     ];
 
-    // Only set the activity data if trashImage is not empty.
     if (trashImage) {
-      console.log('타이머 값', timer);
       setResultData(newResultData);
-      console.log('타이머 값', timer);
       setActivityData(newActivityData);
       setTimer(0);
       setTrashCount(0);
@@ -255,11 +274,55 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     });
   };
 
+  const closeModalAndUpdateCount = () => {
+    // Modal 닫기
+    setModalVisible(false);
+
+    // trashData.total 값을 trashCount에 추가
+    if (trashData && trashData.total) {
+      setTrashCount(prevCount => prevCount + trashData.total);
+    }
+  };
+
+  const DATA = [
+    {
+      title: '일반 쓰레기',
+      img: require('@/assets/img_icon/normal_trash.png'),
+      description: trashData?.general_trash || 0,
+    },
+    {
+      title: '플라스틱',
+      img: require('@/assets/img_icon/plastic_trash.png'),
+      description: trashData?.plastic || 0,
+    },
+    {
+      title: '캔',
+      img: require('@/assets/img_icon/can_trash.png'),
+      description: trashData?.metal || 0,
+    },
+    {
+      title: '종이',
+      img: require('@/assets/img_icon/paper_trash.png'),
+      description: trashData?.paper || 0,
+    },
+    {
+      title: '유리',
+      img: require('@/assets/img_icon/glass_bottle_trash.png'),
+      description: trashData?.glass || 0,
+    },
+    {
+      title: '비닐 봉투',
+      img: require('@/assets/img_icon/plastic_bag_trash.png'),
+      description: trashData?.plastic_bag || 0,
+    },
+  ];
+  // console.log('이걸 주고 있거든여', DATA);
+
   return (
     <View style={{flex: 1}}>
       <TrashModal
         isVisible={isModalVisible}
-        onClose={() => setModalVisible(false)}
+        onClose={closeModalAndUpdateCount}
         data={DATA}
         navigation={navigation}
       />
@@ -282,7 +345,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           <View style={styles.textContainer}>
             <AppText style={styles.text}>3 km</AppText>
             <AppText style={styles.text}>{formatTime(timer)}</AppText>
-            <AppText style={styles.text}>10개</AppText>
+            <AppText style={styles.text}>{trashCount}개</AppText>
           </View>
 
           <TouchableOpacity
