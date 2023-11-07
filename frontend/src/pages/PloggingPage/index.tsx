@@ -69,7 +69,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   }, [trashData]);
 
   const [resultData, setResultData] = useState<TrashList[]>();
-  const [ploggingDistance, setPloggingDistance] = useState(2.4);
+  const [ploggingDistance, setPloggingDistance] = useState(0);
   const [trashCount, setTrashCount] = useState(0);
   const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);

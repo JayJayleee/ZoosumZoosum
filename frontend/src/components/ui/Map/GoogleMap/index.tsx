@@ -50,7 +50,7 @@ async function requestPermission() {
 // ########## 구글맵 컴포넌트 ##########
 const GoogleMap = (props: GoogleMapProps) => {
   // region
-  const [region, setRegion] = useState({
+  const region = useRef({
     latitude: 0,
     longitude: 0,
     latitudeDelta: 0.001,
@@ -58,13 +58,13 @@ const GoogleMap = (props: GoogleMapProps) => {
   });
   // 이전위치
   const prevLatLng = useRef<latLng>({
-    latitude: LATITUDE,
-    longitude: LONGITUDE,
+    latitude: 0,
+    longitude: 0,
   });
   // 현재위치
   const curLatLng = useRef<latLng>({
-    latitude: LATITUDE,
-    longitude: LONGITUDE,
+    latitude: 0,
+    longitude: 0,
   });
   // 위치 이동 파악
   let watchId: number = 0;
@@ -76,6 +76,7 @@ const GoogleMap = (props: GoogleMapProps) => {
   const [errorMsg, setErrorMsg] = useState<string>('');
 
   useEffect(() => {
+    // console.log('1 init useEffect');
     // console.log('endPlog', props.endPlog);
     // 플로깅 끝나면 위치 이동 중지
     if (props.endPlog && watchId) {
@@ -85,6 +86,7 @@ const GoogleMap = (props: GoogleMapProps) => {
     }
     // 권한 확인 후, 위치 설정
     requestPermission().then(result => {
+      // console.log('2 permission');
       // console.log({result});
       // 허가받지 못한 경우 에러메세지
       if (result !== 'granted') {
@@ -97,16 +99,19 @@ const GoogleMap = (props: GoogleMapProps) => {
       Geolocation.getCurrentPosition(
         // 성공
         pos => {
+          // console.log('3 get current position');
           // console.log(pos);
           const {latitude, longitude} = pos.coords;
+          // 과거위치 변경
           prevLatLng.current = {latitude: latitude, longitude: longitude};
+          // 현재위치 갱신
           curLatLng.current = {latitude: latitude, longitude: longitude};
-          setRegion({
+          region.current = {
             latitude: latitude,
             longitude: longitude,
             latitudeDelta: 0.001,
             longitudeDelta: 0.001,
-          });
+          };
         },
         // 실패
         error => {
@@ -119,85 +124,98 @@ const GoogleMap = (props: GoogleMapProps) => {
           maximumAge: 10000,
         },
       );
-    });
 
-    // 이동 위치 지켜보기
-    watchId = Geolocation.watchPosition(
-      // 성공
-      pos => {
-        const {latitude, longitude} = pos.coords;
-        const newCoordinate: latLng = {
-          latitude: latitude,
-          longitude: longitude,
-        };
-        // 현재위치 갱신
-        setRegion({
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.001,
-        });
-        curLatLng.current = {latitude: latitude, longitude: longitude};
-        // 거리 더하기
-        calcDistance(newCoordinate)
-          .then(distance => {
-            distanceTravelled.current += distance;
-          })
-          .catch(err => console.log(err));
-        // 상위 컴포넌트에 전달
-        props.setPloggingDistance(
-          Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) /
-            100,
-        );
-        // 위치배열갱신 -> 이동경로 그려줌
-        posirouteCoordinates.current = [
-          ...posirouteCoordinates.current,
-          newCoordinate,
-        ];
-        // 과거위치 변경
-        prevLatLng.current = newCoordinate;
-      },
-      // 실패
-      error => {
-        console.log(error);
-      },
-      // 옵션
-      {
-        enableHighAccuracy: true,
-        distanceFilter: 0,
-        interval: 50000,
-        fastestInterval: 20000,
-      },
-    );
+      // 이동 위치 지켜보기
+      watchId = Geolocation.watchPosition(
+        // 성공
+        pos => {
+          // console.log('4 watch position');
+          const {latitude, longitude} = pos.coords;
+          // 현재위치 갱신
+          curLatLng.current = {latitude: latitude, longitude: longitude};
+          region.current = {
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001,
+          };
+        },
+        // 실패
+        error => {
+          console.log(error);
+        },
+        // 옵션
+        {
+          enableHighAccuracy: true,
+          distanceFilter: 1,
+          interval: 5000,
+          // fastestInterval: 2000,
+        },
+      );
+    });
   }, []);
 
+  useEffect(() => {
+    if (region.current.latitude === 0) return;
+    // console.log('5 renew region');
+    // console.log('region', region);
+    const newCoordinate: latLng = {
+      latitude: region.current.latitude,
+      longitude: region.current.longitude,
+    };
+    // 거리 더하기
+    calcDistance(newCoordinate)
+      .then(distance => {
+        // console.log('10 add distance');
+        distanceTravelled.current += distance;
+      })
+      .catch(err => console.log(err));
+    // 상위 컴포넌트에 전달
+    // console.log('7 set plogging distance to up');
+    props.setPloggingDistance(
+      Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) / 100,
+    );
+    // 위치배열갱신 -> 이동경로 그려줌
+    // console.log('8 renew position array. this is use to polyline');
+    posirouteCoordinates.current = [
+      ...posirouteCoordinates.current,
+      newCoordinate,
+    ];
+    // 과거위치 변경
+    // console.log('9 past position change');
+    prevLatLng.current = newCoordinate;
+  }, [region.current]);
+
+  // 거리 계산 함수
   const calcDistance = async (newLatLng: latLng) => {
-    // console.log('prevLatLng', prevLatLng.current);
-    // console.log('newLatLng', newLatLng);
+    // console.log('6 calculate distance');
     return (
       (await haversine(prevLatLng.current, newLatLng, {unit: 'meter'})) || 0
     );
   };
 
-  if (region.latitude === 0) {
-    return (
-      <View>
-        <AppText>잠시만 기다려주세요...</AppText>
-      </View>
-    );
-  }
+  // console.log('11 ordinary space');
+
+  // // 페이지 로딩
+  // if (curLatLng.current.latitude === 0) {
+  //   return (
+  //     <View>
+  //       <AppText>잠시만 기다려주세요...</AppText>
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.mapContent}
-        region={region}
+        region={region.current}
         showsUserLocation={true}
         showsMyLocationButton={true}
         initialRegion={{
-          latitude: curLatLng.current.latitude,
-          longitude: curLatLng.current.longitude,
+          latitude: region.current.latitude,
+          longitude: region.current.longitude,
           latitudeDelta: 0.001,
           longitudeDelta: 0.001,
         }}
