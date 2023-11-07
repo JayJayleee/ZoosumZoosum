@@ -12,7 +12,8 @@ import {CamerascreenProps} from '../../types/path';
 import {AppState, AppStateStatus} from 'react-native';
 import styles from './style';
 import {storeImage} from './savePhoto';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useMutation} from '@tanstack/react-query';
+import {TrashImgResultFtn} from '@/apis/plogging';
 
 interface Photo {
   path: string;
@@ -117,6 +118,25 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
     Linking.openSettings();
   }
 
+  const mutation = useMutation(
+    (imageSource: string) => TrashImgResultFtn(imageSource),
+    {
+      onSuccess: async (responseData: any) => {
+        console.log('쓰레기 이미지가 보내지긴 했어요...일단', responseData);
+        // 상태 업데이트 후 화면 전환
+        await new Promise(resolve => setTimeout(resolve, 0)); // 이벤트 루프를 기다리게 함
+        navigation.navigate('Plogging', {
+          shouldOpenModal: true,
+          TrashData: responseData,
+        });
+      },
+      onError: error => {
+        // 요청 실패 시 처리할 작업
+        console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
+      },
+    },
+  );
+
   const capturePhoto = async () => {
     if (camera.current) {
       const photoOptions = {
@@ -124,81 +144,47 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       };
       const photo: Photo = await camera.current.takePhoto(photoOptions);
 
+      setImageSource(`file://${photo.path}`);
+
       setShowCamera(false);
-      setImageSource(photo.path);
       // await storeImage(photo.path); // 이미지 경로 저장
-      navigation.navigate('Plogging', {shouldOpenModal: true});
     }
   };
 
+  // 서버 요청을 실행하는 함수
+  useEffect(() => {
+    if (imageSource) {
+      mutation.mutate(imageSource);
+    } else {
+      console.log('TrashImg 없음', imageSource);
+    }
+  }, [imageSource]);
+
   return (
     <View style={styles.container}>
-      {showCamera ? (
-        <>
-          <Camera
-            ref={camera}
-            style={StyleSheet.absoluteFill}
-            device={device}
-            isActive={showCamera}
-            photo={true}
-          />
-          <View style={styles.overlayContainer}>
-            {/* 왼쪽 이미지 */}
-            <Image
-              source={{uri: 'https://i.imgur.com/Rr9HDQw.png'}}
-              style={styles.overlayImage}
-            />
+      <Camera
+        ref={camera}
+        style={StyleSheet.absoluteFill}
+        device={device}
+        isActive={showCamera}
+        photo={true}
+      />
+      <View style={styles.overlayContainer}>
+        {/* 왼쪽 이미지 */}
+        <Image
+          source={{uri: 'https://i.imgur.com/Rr9HDQw.png'}}
+          style={styles.overlayImage}
+        />
 
-            <Image
-              source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
-              style={styles.overlayRightImage}
-            />
-            <Text style={styles.overlayText}> 인생 씁다...씁...후...</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />
-          </View>
-        </>
-      ) : (
-        // 사진 찍히는지 확인을 위해 넣어둔 코드. 추후 로딩 스피너 혹은 삭제 할 것
-        <>
-          {imageSource !== '' ? (
-            <Image
-              style={styles.image}
-              source={{
-                uri: `file://${imageSource}`,
-              }}
-            />
-          ) : null}
-
-          <View style={styles.backButton}>
-            <TouchableOpacity
-              style={styles.backButtonStyle}
-              onPress={() => setShowCamera(true)}>
-              <Text style={{color: 'white', fontWeight: '500'}}>Back</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.retakeButton}
-                onPress={() => setShowCamera(true)}>
-                <Text style={{color: '#77c3ec', fontWeight: '500'}}>
-                  Retake
-                </Text>
-              </TouchableOpacity>
-              {/*  촬영후 로직 추가할 것. 현재는 촬영으로 다시 돌아감 */}
-              <TouchableOpacity
-                style={styles.usePhotoButton}
-                onPress={() => setShowCamera(true)}>
-                <Text style={{color: 'white', fontWeight: '500'}}>
-                  Use Photo
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </>
-      )}
+        <Image
+          source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
+          style={styles.overlayRightImage}
+        />
+        <Text style={styles.overlayText}> 인생 씁다...씁...후...</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />
+      </View>
     </View>
   );
 }

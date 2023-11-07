@@ -59,6 +59,15 @@ export interface SeedCarouselCardItemProps {
   activeIndex?: number;
 }
 
+export interface TreeCarouselCardItemProps {
+  item?: {
+    image: ImageSourcePropType;
+    description: string;
+    btn: string;
+  };
+  index: number;
+}
+
 export interface EffectProps {
   style?: object;
 }
@@ -104,6 +113,12 @@ export interface TrashList {
   title: string | number;
 }
 
+export interface TrashDataReturnList {
+  img: ImageSourcePropType;
+  title: string | number;
+  description: number;
+}
+
 export interface ploggingResultTrash {
   timerValue: number;
   trashCountValue: number;
@@ -117,4 +132,14 @@ export interface ActivityDataType {
     time: number;
     trash: number;
   };
+}
+
+export interface TrashDaTaList {
+  general_trash: number;
+  glass: number;
+  metal: number;
+  paper: number;
+  plastic: number;
+  plastic_bag: number;
+  total: number;
 }
