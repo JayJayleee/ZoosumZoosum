@@ -29,8 +29,7 @@ export default function AnimalCardlist({navigation}: AnimalCardListProps) {
   useQuery(['animalList'], fetchMyAnimalListInfo, {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
-      console.log(data);
-      // console.log(data);
+
       const totalCards = data.length;
       const calculatedNumColumns = Math.min(
         targetNumColumns,

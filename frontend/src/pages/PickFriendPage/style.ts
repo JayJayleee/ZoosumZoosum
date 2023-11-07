@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems : 'center',
   },
   body1 : {
-    height : '80%',
+    height : '100%',
     width : '100%',
     alignItems : 'center',
     marginBottom : 30,
@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
     width: 115,
     height: 130,
   },
+  pickAnimalCardList : {
+    justifyContent : 'center',
+    alignItems : 'center',
+    width : "100%",
+    height : "100%"
+  }
 });
 
 export default styles;
