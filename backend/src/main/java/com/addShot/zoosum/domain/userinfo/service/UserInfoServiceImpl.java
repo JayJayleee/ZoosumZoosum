@@ -5,7 +5,6 @@ import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.common.repository.BadgeRepository;
 import com.addShot.zoosum.domain.common.repository.UserBadgeRepository;
-import com.addShot.zoosum.domain.item.repository.ItemRepository;
 import com.addShot.zoosum.domain.item.repository.UserItemRepository;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
 import com.addShot.zoosum.domain.userinfo.dto.request.TreeCampaignRequest;
@@ -16,7 +15,6 @@ import com.addShot.zoosum.domain.userinfo.dto.response.PlogRecordResponse;
 import com.addShot.zoosum.domain.userinfo.dto.response.SelectedAnimalResponse;
 import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
 import com.addShot.zoosum.entity.ActivityHistory;
-import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.Badge;
 import com.addShot.zoosum.entity.User;
@@ -36,16 +34,26 @@ import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.DistanceUtil;
 import com.addShot.zoosum.util.RandomUtil;
 import com.addShot.zoosum.util.TimeUtil;
+import com.addShot.zoosum.util.TreeImageTest;
 import com.addShot.zoosum.util.exception.NotEnoughInputException;
 import com.addShot.zoosum.util.exception.NotEnoughSeedException;
 import com.addShot.zoosum.util.exception.NotExistAnimalException;
 import com.addShot.zoosum.util.exception.NotExistIslandException;
 import com.addShot.zoosum.util.exception.NotExistTreeException;
 import com.addShot.zoosum.util.exception.UserNotFoundException;
+import com.addShot.zoosum.util.s3.S3Service;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -65,6 +73,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private final UserItemRepository userItemRepository;
 	private final ActivityRepository activityRepository;
 	private final UserRepository userRepository;
+	private final S3Service s3Service;
 
 	@Override
 	public MainResponse getUserMain(String userId) {
@@ -219,12 +228,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
 		}
 
-		String treeName = request.getTreeName();
 		String userName = request.getUserName();
+		String treeName = request.getTreeName();
 		String userPhone = request.getUserPhone();
 		String userBirth = request.getUserBirth();
 
-		if(treeName == null || userName == null || userPhone == null || userBirth == null) { //작성 안한 항목이 있다면
+		if(userName == null || treeName == null || userPhone == null || userBirth == null) { //작성 안한 항목이 있다면
 			throw new NotEnoughInputException(CustomErrorType.UNSATISFIED_ALL_INPUT.getMessage());
 		}
 
@@ -232,19 +241,94 @@ public class UserInfoServiceImpl implements UserInfoService {
 		User user = userRepository.findById(userId).get();
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(user.getUserId())).get();
 
-		if(userPlogInfo.getSeed() < 100) { //씨앗 갯수가 100개 미만이라면
+		if(userPlogInfo.getSeed() < 100) { //씨앗 갯수가 100개 미만이라면 예외 발생
 			throw new NotEnoughSeedException(CustomErrorType.UNSATISFIED_SEED_COUNT.getMessage());
 		}
 
 		userPlogInfo.setSeed(userPlogInfo.getSeed()-100);
 		userPlogInfoRepository.save(userPlogInfo);
 
+		String fileUrl = "";
+		//이미지 생성
+		try {
+			File originalImageFile = new File(
+				TreeImageTest.class.getResource("/certificate.png").toURI());
+			BufferedImage image = ImageIO.read(originalImageFile);
+
+			//이미지 위에 그릴 Graphics2D 객체 가져오기
+			Graphics2D g2d = image.createGraphics();
+
+			//폰트 파일을 로드합니다.
+			String fontFilePath = "C:\\Users\\SSAFY\\free_project\\S09P31B102\\backend\\src\\main\\resources\\SKYBORI.ttf";
+			Font customFont =  Font.createFont(Font.TRUETYPE_FONT, new File(fontFilePath)).deriveFont(55f);
+
+			String fontFilePath2 = "C:\\Users\\SSAFY\\free_project\\S09P31B102\\backend\\src\\main\\resources\\SOYO Maple Bold.ttf";
+			Font customFont2 =  Font.createFont(Font.TRUETYPE_FONT, new File(fontFilePath2)).deriveFont(60f);
+
+			//로드한 폰트를 시스템 폰트로 등록
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(customFont);
+
+			g2d.setFont(customFont);
+			g2d.setColor(Color.BLACK);
+
+			//받은 데이터로 텍스트 그리기
+			//1) 이름
+			g2d.drawString(userName, 650, 895); //위치 지정
+			//2) 나무이름
+			g2d.drawString(treeName, 650, 1045);
+			//3) 전화번호
+			String tmpPhone = "";
+			tmpPhone = userPhone.replace(userPhone.substring(9, userPhone.length()), "****");
+			g2d.drawString(tmpPhone, 650, 1200);
+			//4) 생년월일
+			g2d.drawString(userBirth, 650, 1375);
+
+			//날짜용 폰트로 다시 지정
+			g2d.setFont(customFont2);
+			g2d.setColor(Color.BLACK);
+
+			//5) 오늘날짜
+			LocalDate today = LocalDate.now();
+			int year = today.getYear();
+			int month = today.getMonth().getValue();
+			int day = today.getDayOfMonth();
+			String todayDate = year + "년 "  + month + "월 " + day + "일";
+			g2d.drawString(todayDate, 440, 1550);
+
+			//Graphics2D 리소스 해제
+			g2d.dispose();
+
+			//s3에 업로드
+			fileUrl = s3Service.uploadBufferedImageToAWS(image, "Activity/", userId);
+
+			//새 이미지 파일로 저장
+//			File newImageFile = new File("C:\\Users\\SSAFY\\free_project\\S09P31B102\\backend\\src\\main\\resources\\result.png");
+//			ImageIO.write(image, "png", newImageFile);
+
+			//MultiPartFile로 변환하기 위한 과정
+//         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//         ImageIO.write(image, "png", baos);
+//         byte[] imageBytes = baos.toByteArray();
+
+//         MultipartFile multipartFile = new MockMultipartFile(
+//            "file",
+//            "tree.png",
+//            "image/png",
+//            imageBytes
+//         );
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		//나무 등록
 		ActivityHistory activity = ActivityHistory.builder()
 			.user(user)
 			.tree(new Tree(treeName, userName, userPhone, userBirth))
 			.activityType(ActivityType.TREE)
-			.fileUrl("추가 예정")
+			.fileUrl(fileUrl)
 			.time(new Time(LocalDateTime.now(), LocalDateTime.now()))
 			.build();
 
