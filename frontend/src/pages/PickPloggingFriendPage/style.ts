@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     marginTop : '20%',
     justifyContent : 'center',
     alignItems : 'center',
-    backgroundColor : 'blue',
+    // backgroundColor : 'blue',
   },
   FriendDetail_Image : {
     width : '90%',
