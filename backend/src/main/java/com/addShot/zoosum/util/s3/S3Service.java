@@ -3,12 +3,16 @@ package com.addShot.zoosum.util.s3;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
@@ -61,4 +65,39 @@ public class S3Service {
         }
         return URL + path;
     }
+
+    //나무인증서 이미지 저장
+    public String uploadBufferedImageToAWS(BufferedImage image, String dirName, String userId) {
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedNow = now.format(formatter);
+        String date = formattedNow.substring(0, 10);
+        String time = formattedNow.substring(11, 19);
+
+        String originalName = "tree-" + date + "-" + time;
+        String path = dirName + userId + "/" + originalName;
+        log.info("path: {}", path);
+
+        try {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", os);
+            byte[] buffer = os.toByteArray();
+            InputStream is = new ByteArrayInputStream(buffer);
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("image/png");
+            metadata.setContentLength(buffer.length);
+
+            amazonS3.putObject(new PutObjectRequest(bucket, path, is, metadata));
+            return amazonS3.getUrl(bucket, path).toString();
+
+        }
+        catch (Exception e) {
+			e.printStackTrace();
+            log.error("Error uploading image: {}", e.getMessage());
+            return null;
+		}
+    }
+
 }
