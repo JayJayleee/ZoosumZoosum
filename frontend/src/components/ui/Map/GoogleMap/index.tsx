@@ -202,7 +202,7 @@ const GoogleMap = (props: GoogleMapProps) => {
           longitudeDelta: 0.001,
         }}
         onRegionChangeComplete={newRegion => {
-          console.log('이동거리:', distanceTravelled.current);
+          // console.log('이동거리:', distanceTravelled.current);
           // console.log('새로운 지도 영역:', newRegion);
         }}>
         <Polyline
