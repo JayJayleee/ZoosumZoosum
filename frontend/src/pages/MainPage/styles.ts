@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
   },
   toggleMoveButton: {
     position: 'absolute',
-    left: '500%',
     bottom: '220%',
     justifyContent: 'center',
     alignItems: 'center'
