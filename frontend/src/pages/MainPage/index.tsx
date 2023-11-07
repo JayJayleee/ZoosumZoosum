@@ -212,34 +212,25 @@ export default function MainPage({navigation}: MainScreenProps) {
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
       />
-
       {isModalVisible && appCloseModal}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/trash_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getTrash}
           </AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/sand_clock_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getTime.hour}:
             {getTime.minute < 10 ? `0${getTime.minute}` : getTime.minute}:
             {getTime.second < 10 ? `0${getTime.second}` : getTime.second}
@@ -248,28 +239,20 @@ export default function MainPage({navigation}: MainScreenProps) {
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/shoe_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getDistance}km
           </AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/seed_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getSeed}
           </AppText>
         </View>
@@ -448,47 +431,48 @@ export default function MainPage({navigation}: MainScreenProps) {
           style={styles.island}
           source={{uri: islandUri}}
           resizeMode="stretch"
-        />
-        <FastImage
-          style={styles.tree}
-          source={{uri: treeUri}}
-          resizeMode="stretch"
-        />
-        {numberAnimal > 0 && (
+        >
           <FastImage
-            style={styles.firstAnimal}
-            source={{uri: animalUri[0].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
+            style={styles.tree}
+            source={{uri: treeUri}}
+            resizeMode="stretch"
           />
-        )}
-        {numberAnimal > 1 && (
-          <FastImage
-            style={styles.secondAnimal}
-            source={{uri: animalUri[1].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
-        {numberAnimal > 2 && (
-          <FastImage
-            style={styles.thirdAnimal}
-            source={{uri: animalUri[2].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
-        {numberAnimal > 3 && (
-          <FastImage
-            style={styles.fourthAnimal}
-            source={{uri: animalUri[3].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
-        {numberAnimal > 4 && (
-          <FastImage
-            style={styles.fifthAnimal}
-            source={{uri: animalUri[4].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
+          {numberAnimal > 0 && (
+            <FastImage
+              style={styles.firstAnimal}
+              source={{uri: animalUri[0].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 1 && (
+            <FastImage
+              style={styles.secondAnimal}
+              source={{uri: animalUri[1].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 2 && (
+            <FastImage
+              style={styles.thirdAnimal}
+              source={{uri: animalUri[2].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 3 && (
+            <FastImage
+              style={styles.fourthAnimal}
+              source={{uri: animalUri[3].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 4 && (
+            <FastImage
+              style={styles.fifthAnimal}
+              source={{uri: animalUri[4].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+        </FastImage>
       </View>
       <View style={styles.ploggingButton}>
         <AppButton
