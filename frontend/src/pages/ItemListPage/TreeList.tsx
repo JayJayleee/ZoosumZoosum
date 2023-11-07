@@ -8,7 +8,7 @@ import {fetchMyItemListInfo} from '@/apis/Item';
 import {useQuery} from '@tanstack/react-query';
 
 interface IslandListProps {
-  goToSelectTree : () => void;
+  goToSelectTree : (data: number) => void;
 }
 
 type ApiResponse = {
@@ -33,39 +33,36 @@ export default function TreeList({goToSelectTree} : IslandListProps) {
   const itemType = "TREE"
   const [selectedTreeImgURI, setSelectedTreeImgURI] = useState('');
   const [selectedTreeTitle, setSelectedTreeTitle] = useState('');
+  const [selectedTreeItemId, setselectedTreeItemId] = useState(0);
 
   useQuery(['ItemList'], 
   () => fetchMyItemListInfo(itemType), {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
-      console.log(data)
-      const selectedTree = data.find(item => item.selected);
 
-      if (selectedTree) {
-        setSelectedTreeImgURI(selectedTree.fileUrl); 
-        setSelectedTreeTitle(selectedTree.itemName);
+      const selectedIsland = data.find(item => item.selected);
+      if (selectedIsland) {
+        setSelectedTreeImgURI(selectedIsland.fileUrl)
+        setSelectedTreeTitle(selectedIsland.itemName)
+        setselectedTreeItemId(selectedIsland.itemId)
       }
-      const totalCards = data.length;
-
-      const calculatedNumColumns = Math.min(
-        targetNumColumns,
-        Math.ceil(totalCards / targetNumColumns),
-      );
-      setNumColumns(calculatedNumColumns);
-
-      const missingCards =
-        calculatedNumColumns - (totalCards % calculatedNumColumns);
-
+      
       if (!Array.isArray(data)) {
         console.error('Data는 배열이 아닙니다:', data);
         return;
       }
+
       let processedData = [...data];
 
-      if (missingCards !== targetNumColumns) {
-        for (let i = 0; i < missingCards; i++) {
+
+      const numColumns = 3;
+
+      const remainingCards = numColumns - (processedData.length % numColumns);
+
+      if (remainingCards > 0) {
+        for (let i = 0; i < remainingCards; i++) {
           processedData.push({
-            itemId: i,
+            itemId: i + processedData.length,
             itemName: '',
             itemType: '',
             fileUrl: '',
@@ -98,12 +95,12 @@ export default function TreeList({goToSelectTree} : IslandListProps) {
         <AppButton
         children='나무 선택하기'
         variant='pickfriend'
-        onPress={goToSelectTree}/>
+        onPress={() => goToSelectTree(selectedTreeItemId)}/>
       </View>
       <View style={styles.body2Item}>
         <FlatList
           horizontal={false} // 수직으로 정렬
-          numColumns={numColumns} // 한 줄에 표시할 카드 수 설정
+          numColumns={3} // 한 줄에 표시할 카드 수 설정
           data={ItemArray}
           keyExtractor={item => item.itemId.toString()}
           renderItem={({ item }) => {

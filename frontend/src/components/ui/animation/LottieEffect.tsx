@@ -24,3 +24,15 @@ export const Egg = () => {
     />
   );
 };
+
+export const Wave = () => {
+  return (
+    <LottieView
+      style={{width: 400, top: -50, aspectRatio: 1}}
+      source={require('@/assets/animation/loading_wave.json')}
+      autoPlay
+      loop={true}
+      onAnimationFinish={() => {}}
+    />
+  )
+}

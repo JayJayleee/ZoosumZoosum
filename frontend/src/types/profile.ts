@@ -1,7 +1,9 @@
 export type statisticInfo = {
   plogCount: number;
   sumLength: number;
-  sumTime: number;
+  hour: number;
+  minute: number;
+  second: number;
   sumTrash: number;
 }
 
@@ -18,6 +20,10 @@ export type treeObj = {
   userName: string;
   userPhone: string; 
   userEmail: string;
+}
+
+export type badgeList = {
+  data: badgeInfo[];
 }
 
 export type plogObj = {
@@ -37,7 +43,6 @@ export type contentList = {
 }
 
 export type activityHistory = {
-  content: contentList;
-  last: boolean;
-  empty: boolean;
+  content: contentList[];
+  size: number;
 }
