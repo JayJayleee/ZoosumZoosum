@@ -1,8 +1,10 @@
 package com.addShot.zoosum.domain.user.controller;
 
 import com.addShot.zoosum.domain.jwt.service.JwtTokenService;
+import com.addShot.zoosum.domain.user.dto.request.NicknameDuplicatedRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
+import com.addShot.zoosum.domain.user.dto.response.NicknameDuplicatedResponseDto;
 import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
 import com.addShot.zoosum.domain.user.service.UserService;
 import com.addShot.zoosum.util.exception.UserException;
@@ -69,6 +71,13 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 로그아웃되었습니다.");
     }
+
+    @PostMapping("/duplicate")
+    public ResponseEntity<NicknameDuplicatedResponseDto> checkDuplicateNickname(@RequestBody NicknameDuplicatedRequestDto request) {
+        NicknameDuplicatedResponseDto nicknameDuplicatedResponseDto = userService.findDuplicateNickname(request.getNickname());
+        return ResponseEntity.status(HttpStatus.OK).body(nicknameDuplicatedResponseDto);
+    }
+    //닉네임 중복 검사 - 유저 6번
 
     @PutMapping("/info")
     public ResponseEntity<UserInfoUpdateResponseDto> UserInfoUpdate(@RequestBody UserInfoUpdateRequestDto updateRequest, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
