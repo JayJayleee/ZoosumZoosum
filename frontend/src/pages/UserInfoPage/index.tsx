@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { View, ImageBackground, Image, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, ImageBackground,  TextInput, Text } from 'react-native';
 import { SingleSelect } from '@/components/ui/SelectList';
 import ModalComponent from '@/components/ui/Modal';
 import { UserInfoscreenProps } from '@/types/path';
 import { setStorage } from '@/apis/index';
 import { setUserInfoFtn, nicknameDuplicate } from '@/apis/login';
 import { regionObj } from '@/types/login';
+import AppText from '@/components/ui/Text';
+import FastImage from 'react-native-fast-image';
+import AppButton from '@/components/ui/Button';
+import { style } from './styles';
+import { ErrorModal } from '@/components/ui/Modal/UserInfoErrorModal';
 
 
 export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
   // 에러 메세지를 표시한 모달창 on/off 상태 표시 변수 생성
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   // 첫번째 입력창이 끝나고 다음 입력창으로 넘어가기 위한 변수 생성
   const [isRegionOk, setRegionOk] = useState(false);
@@ -45,9 +51,11 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
         await LastLoginFtn();
       } else {
+        setErrorMessage("중복된 닉네임입니다")
         setModalVisible(true);
       }
     } else {
+      setErrorMessage("닉네임을 입력해주세요")
       setModalVisible(true);
     }
   };
@@ -72,55 +80,53 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       setModalVisible(false);
       setRegionOk(true);
     } else {
+      setErrorMessage("지역을 선택해주세요")
       setModalVisible(true);
     }
   };
 
+  // 지역 창
+  const RegionInputModal = <>
+    <AppText style={style.inputTitleText}>사는 지역을 선택해주세요</AppText>
+    <SingleSelect
+     dataList={regionList}
+     setSelected={setUserRegion} 
+     maxHeight={150}
+     placeholder='지역을 선택해주세요' />
+    <AppButton children='닉네임 정하러 가기' onPress={RegionButton} variant='region' />
+  </>
+
+  
   // 닉네임 창
-  const NicknameInputModal = <View>
-    <Text>닉네임을 정해주세요</Text>
+  const NicknameInputModal = <>
+    <AppText style={style.inputTitleText}>닉네임을 정해주세요</AppText>
     <TextInput
      value={userNickname}
      onChangeText={(text) => {setUserNickname(text)}}
-     placeholder='닉네임을 입력해주세요' />
-     <TouchableOpacity onPress={NicknameButton}>
-      <Text>내 섬으로 가기</Text>
-     </TouchableOpacity>
-  </View>
-
-  // 지역 창
-  const RegionInputModal = <View>
-    <Text>사는 지역을 선택해주세요</Text>
-    <SingleSelect
-     dataList={regionList}
-     setSelected={setUserRegion} />
-      <TouchableOpacity onPress={RegionButton}>
-        <Text>닉네임 정하러 가기</Text>
-     </TouchableOpacity>
-  </View>
+     placeholder='닉네임을 입력해주세요'
+     style={style.inputNickname}/>
+    <AppButton children='내 섬으로 가기' onPress={NicknameButton} variant='nickname'/>
+  </>
 
   // 에러 문구를 띄울 모달 창 생성
-  const ErrorModal = <ModalComponent
-    isVisible={isModalVisible}
+  const isErrorModal = <ErrorModal
+    isModalVisible={isModalVisible}
     onClose={() => setModalVisible(false)}
     onRequestClose={() => setModalVisible(false)}
-    buttonInnerText={"닫기"}>
-      <View>
-        <Text>입력해주세요</Text>
-      </View>
-    </ModalComponent>
+    innerText={errorMessage}
+    textStyle={style.errorModal}  />
+
 
 
   return (
   <ImageBackground 
-  style={StyleSheet.absoluteFill}
-  source={require('@/assets/loginpage_image/login_background.png')}
-  resizeMode='cover'>
-    {ErrorModal}
-    <Image source={require("@/assets/loginpage_image/zooisland_logo.png")}/>
-    <ImageBackground source={require("@/assets/loginpage_image/login_inputbox.png")}>
+  style={style.container}
+  source={require('@/assets/loginpage_image/login_background.png')}>
+    {isErrorModal}
+    <FastImage source={require("@/assets/loginpage_image/zooisland_logo.png")} style={style.logo} />
+    <FastImage source={require("@/assets/loginpage_image/login_inputbox.png")} style={style.inputBox}>
       {!isRegionOk? RegionInputModal : NicknameInputModal}
-    </ImageBackground>
+    </FastImage>
   </ImageBackground>
   );
 }
