@@ -34,7 +34,6 @@ import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.util.DistanceUtil;
 import com.addShot.zoosum.util.RandomUtil;
 import com.addShot.zoosum.util.TimeUtil;
-import com.addShot.zoosum.util.TreeImageTest;
 import com.addShot.zoosum.util.exception.NotEnoughInputException;
 import com.addShot.zoosum.util.exception.NotEnoughSeedException;
 import com.addShot.zoosum.util.exception.NotExistAnimalException;
@@ -252,7 +251,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		//이미지 생성
 		try {
 			File originalImageFile = new File(
-				TreeImageTest.class.getResource("/certificate.png").toURI());
+				UserInfoServiceImpl.class.getResource("/certificate.png").toURI());
 			BufferedImage image = ImageIO.read(originalImageFile);
 
 			//이미지 위에 그릴 Graphics2D 객체 가져오기
@@ -301,22 +300,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 			//s3에 업로드
 			fileUrl = s3Service.uploadBufferedImageToAWS(image, "Activity/", userId);
-
-			//새 이미지 파일로 저장
-//			File newImageFile = new File("C:\\Users\\SSAFY\\free_project\\S09P31B102\\backend\\src\\main\\resources\\result.png");
-//			ImageIO.write(image, "png", newImageFile);
-
-			//MultiPartFile로 변환하기 위한 과정
-//         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//         ImageIO.write(image, "png", baos);
-//         byte[] imageBytes = baos.toByteArray();
-
-//         MultipartFile multipartFile = new MockMultipartFile(
-//            "file",
-//            "tree.png",
-//            "image/png",
-//            imageBytes
-//         );
 
 		}
 		catch (Exception e) {
