@@ -9,7 +9,7 @@ export type RootStackParamList = {
   Login: undefined;
   Plogging: {
     shouldOpenModal?: boolean;
-    TrashData: TrashDaTaList;
+    TrashData?: TrashDaTaList;
   };
   Camera: undefined;
   PloggingResult: {
