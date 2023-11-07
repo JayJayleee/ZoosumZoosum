@@ -1,7 +1,7 @@
 // navigation 사용 시 필요한 타입을 모아둔 페이지
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TrashList} from './plogging';
+import {TrashList, ActivityDataType, NewData, TrashDaTaList} from './plogging';
 
 // 해당 리스트는 각 페이지 네임에 해당하는 route 받을 때 그 route를 통해 전달하는 params의 타입을 의미함. 아무것도 안 줄 거면 일단 UNDEFINED
 export type RootStackParamList = {
@@ -9,10 +9,13 @@ export type RootStackParamList = {
   Login: undefined;
   Plogging: {
     shouldOpenModal?: boolean;
+    TrashData: TrashDaTaList;
   };
   Camera: undefined;
   PloggingResult: {
     resultList?: TrashList[];
+    activityData?: ActivityDataType;
+    newData?: NewData;
   };
   FriendList: undefined;
   UserInfo: undefined;
@@ -23,11 +26,16 @@ export type RootStackParamList = {
     nickname: string;
   };
   Ranking: undefined;
-  PickIsland : undefined;
-  PickTree : undefined;
-  FriendDetail : {
-    animalId : number;
-  }
+
+  PickIsland: {
+    itemId: number;
+  };
+  PickTree: {
+    itemId: number;
+  };
+  FriendDetail: {
+    animalId: number;
+  };
 };
 
 export type LoginScreenProps = NativeStackScreenProps<

@@ -11,7 +11,7 @@ import styles from './styles';
 export function BadgeCarouselCardItem({item, index}: CarouselCardItemProps) {
   return (
     <View style={styles.container} key={index}>
-      <AppText style={styles.header}>뱃지를 얻었어요!</AppText>
+      <AppText style={styles.header}>업적을 달성했어요!</AppText>
       <Image source={{uri: item.fileUrl}} style={styles.badgeimage} />
       <ShiningEffect />
       <AppText style={styles.body}>{item.badgeName}</AppText>

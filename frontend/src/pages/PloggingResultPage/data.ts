@@ -1,4 +1,4 @@
-const data = {
+const phonedata = {
   missionList: [
     {
       missionLength: 13.4,
@@ -79,4 +79,4 @@ const data = {
     },
   ],
 };
-export default data;
+export default phonedata;

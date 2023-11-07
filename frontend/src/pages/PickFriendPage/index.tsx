@@ -14,6 +14,10 @@ import AppButton from '@/components/ui/Button';
 import PickAnimalCardlist from './PickAnimalCardlist';
 
 export default function PickFriendPage({navigation}: PickFriendscreenProps) {
+  const propsFtn = () => {
+    navigation.navigate('FriendList')
+  }
+
   return (
     <ImageBackground
       style={StyleSheet.absoluteFill}
@@ -34,13 +38,10 @@ export default function PickFriendPage({navigation}: PickFriendscreenProps) {
         </View>
         <View style={styles.body1}>
           <View style={styles.having_cardlist}>
-            <PickAnimalCardlist />
+            <PickAnimalCardlist navigation={propsFtn} />
           </View>
         </View>
-        <AppButton
-        variant='gotoisland'
-        children='선택완료'
-        onPress={() => navigation.navigate('Main')}/>
+        
       </View>  
     </ImageBackground>
   )

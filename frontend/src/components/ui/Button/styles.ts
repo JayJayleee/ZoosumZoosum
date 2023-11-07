@@ -66,10 +66,20 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: '85%',
   },
+  ploggingRST: {
+    width: '50%',
+    backgroundColor: '#34D399',
+    borderRadius: 8,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '5%',
+    marginTop: '8%',
+  },
   gotoislandText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
-    fontSize : 20,
+    fontSize: 20,
   },
 
   selectItem: {
@@ -79,7 +89,7 @@ export const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal : 10,
+    marginHorizontal: 10,
   },
   selectItemText: {
     color: 'white',
@@ -96,6 +106,42 @@ export const styles = StyleSheet.create({
   picnicText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
+    fontSize: 22,
+  },
+  region: {
+    width: '60%',
+    backgroundColor: '#F472B6',
+    borderRadius: 10,
+    height: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nickname: {
+    backgroundColor: '#5D9BFF',
+    width: '60%',
+    borderRadius: 10,
+    height: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userInfoText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
     fontSize : 22,
+  },
+  button: {
+    borderRadius: 10,
+    elevation: 2,
+    marginTop: '20%',
+    width: '50%',
+    height: '25%',
+    justifyContent: 'center',
+    backgroundColor: '#2196F3',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: 'center',
   },
 });

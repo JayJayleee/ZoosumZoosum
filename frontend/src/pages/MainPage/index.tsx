@@ -13,14 +13,16 @@ import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import AppButton from '@/components/ui/Button';
-import { fetchMyIslandInfo, fetchMyStatusInfo } from '@/apis/Island';
-import {statusInfo, islandInfo, timeObj, animalForm } from '@/types/island';
+import {fetchMyIslandInfo, fetchMyStatusInfo} from '@/apis/Island';
+import {statusInfo, islandInfo, timeObj, animalForm} from '@/types/island';
 import AppText from '@/components/ui/Text';
-import { useQuery } from '@tanstack/react-query';
-import { getStorage } from '@/apis';
-
+import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
+import {useQuery} from '@tanstack/react-query';
+import {getStorage, setStorage} from '@/apis';
 
 export default function MainPage({navigation}: MainScreenProps) {
+  // 나무 심기 모달 창
+  const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
 
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);
@@ -44,11 +46,11 @@ export default function MainPage({navigation}: MainScreenProps) {
 
   // 섬 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 섬 링크
   const [islandUri, setIslandUri] = useState<string>(
-    "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png"
+    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png',
   );
   // 나무 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 나무 링크
   const [treeUri, setTreeUri] = useState<string>(
-    "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Trees/Tree_01.png"
+    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Trees/Tree_01.png',
   );
   // 동물 gif 링크를 저장할 변수 생성
   const [animalUri, setAnimalUri] = useState<animalForm[]>([]);
@@ -109,52 +111,56 @@ export default function MainPage({navigation}: MainScreenProps) {
   );
 
   // 상단 스탯 api 호출 및 상태 저장하는 코드 생성
-  const { isLoading: isStatusLoading, isError: isStatusError, error: StatusError} = useQuery<statusInfo>(
-    ['mainStatus'],
-    fetchMyStatusInfo,
-    {
-      onSuccess: (statusContent) => {
-        setTrash(statusContent.missionTrash)
-        setSeed(statusContent.seed)
-        setTreeCount(statusContent.treeCount)
-        setAllTreeCount(statusContent.treeAllCount)
-        setTime({hour: statusContent.hour, minute: statusContent.minute, second: statusContent.second})
-        setDistance(statusContent.missionLength)
-      },
-    }
-  );
+  const {
+    isLoading: isStatusLoading,
+    isError: isStatusError,
+    error: StatusError,
+  } = useQuery<statusInfo>(['mainStatus'], fetchMyStatusInfo, {
+    onSuccess: statusContent => {
+      setTrash(statusContent.missionTrash);
+      setSeed(statusContent.seed);
+      setTreeCount(statusContent.treeCount);
+      setAllTreeCount(statusContent.treeAllCount);
+      setTime({
+        hour: statusContent.hour,
+        minute: statusContent.minute,
+        second: statusContent.second,
+      });
+      setDistance(statusContent.missionLength);
+    },
+  });
   // 에러 발생 시, 콘솔 창에 해당 에러 찍는 코드
   if (isStatusError && StatusError) {
-    console.log("에러 발생 :", StatusError)
+    console.log('에러 발생 :', StatusError);
   }
 
   // 섬과 나무, 동물 링크 api 호출 및 상태 저장하는 코드 생성
-  const {isLoading: isIslandLoading, isError: isIslandError, error: IslandError } = useQuery<islandInfo>(
-    ['mainIsland'],
-    fetchMyIslandInfo,
-    {
-      onSuccess: (data) => {
-        setIslandUri(data.islandUrl)
-        setTreeUri(data.treeUrl)
-        setAnimalUri(data.animalList)
-        setNumberAnimal(data.animalList.length);
-      },
-    }
-  );
+  const {
+    isLoading: isIslandLoading,
+    isError: isIslandError,
+    error: IslandError,
+  } = useQuery<islandInfo>(['mainIsland'], fetchMyIslandInfo, {
+    onSuccess: data => {
+      setIslandUri(data.islandUrl);
+      setTreeUri(data.treeUrl);
+      setAnimalUri(data.animalList);
+      setNumberAnimal(data.animalList.length);
+    },
+  });
 
   // 에러 발생 시, 콘솔 창에 해당 에러 찍는 코드
   if (isIslandError && IslandError) {
-    console.log("에러 발생 :", IslandError)
+    console.log('에러 발생 :', IslandError);
   }
   // 로딩 중일 때, 로딩 페이지를 띄우는 코드
-  if (isIslandLoading || isStatusLoading){
-    return <View>
-    </View>
+  if (isIslandLoading || isStatusLoading) {
+    return <View></View>;
   }
 
   // 프로필 클릭 시, 이동하는 함수
   const goToProfile = async () => {
     const nickname = await getStorage('Nickname');
+
     if (nickname !== null) {
       navigation.navigate({
         name: 'Profile',
@@ -178,7 +184,6 @@ export default function MainPage({navigation}: MainScreenProps) {
     navigation.navigate('ItemList');
   };
 
-
   // 닫힌 상태의 토글 버튼
   const closedButton = (
     <TouchableOpacity onPress={() => setToggle(!toggle)}>
@@ -192,7 +197,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   // 열린 상태의 토글 버튼
   const openedButton = (
     <TouchableOpacity onPress={() => setToggle(!toggle)}>
-      <Image
+      <FastImage
         source={require('@/assets/mainpage_image/right_arrow.png')}
         style={{width: 70, height: 70}}
       />
@@ -203,69 +208,58 @@ export default function MainPage({navigation}: MainScreenProps) {
     <ImageBackground
       source={require('@/assets/mainpage_image/Background.png')}
       style={StyleSheet.absoluteFill}>
+      <TreeNameModal
+        isTreeModalVisible={isTreeModalVisible}
+        onTreeModalClose={() => setIsTreeModalVisible(false)}
+      />
       {isModalVisible && appCloseModal}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/trash_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getTrash}
           </AppText>
         </View>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/sand_clock_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
+            {getTime.hour}:
             {getTime.minute < 10 ? `0${getTime.minute}` : getTime.minute}:
             {getTime.second < 10 ? `0${getTime.second}` : getTime.second}
           </AppText>
         </View>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/shoe_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getDistance}km
           </AppText>
         </View>
         <View style={styles.statusBox}>
-          <Image
+          <FastImage
             source={require('@/assets/img_icon/seed_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getSeed}
           </AppText>
         </View>
       </View>
       <View style={styles.banner}>
         <View style={styles.bannerBox}>
-          <Image
+          <FastImage
             source={require('@/assets/mainpage_image/single_tree_img.png')}
             style={{width: 70, height: 70}}
           />
@@ -280,7 +274,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           </View>
         </View>
         <View style={styles.bannerBox}>
-          <Image
+          <FastImage
             source={require('@/assets/mainpage_image/multiple_tree_img.png')}
             style={{width: 70, height: 80}}
           />
@@ -322,7 +316,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/animal_earth_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -355,7 +349,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/profile_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -388,7 +382,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/island_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -421,7 +415,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 : undefined
             }
             style={styles.toggleMoveButton}>
-            <Image
+            <FastImage
               source={require('@/assets/img_icon/animal_house_icon.png')}
               style={styles.toggleBtnImage}
             />
@@ -433,41 +427,52 @@ export default function MainPage({navigation}: MainScreenProps) {
         </View>
       </View>
       <View style={styles.centerImage}>
-        <Image
+        <FastImage
           style={styles.island}
           source={{uri: islandUri}}
           resizeMode="stretch"
-        />
-        <Image
-          style={styles.tree}
-          source={{uri: treeUri}}
-          resizeMode="stretch"
-        />
-        {numberAnimal > 0 && <FastImage
-          style={styles.firstAnimal}
-          source={{uri: animalUri[0].fileUrl}}
-          resizeMode={FastImage.resizeMode.contain}
-        />}
-        {numberAnimal > 1 && <FastImage
-          style={styles.secondAnimal}
-          source={{uri: animalUri[1].fileUrl}}
-          resizeMode={FastImage.resizeMode.contain}
-        />}
-        {numberAnimal > 2 && <FastImage
-          style={styles.thirdAnimal}
-          source={{uri: animalUri[2].fileUrl}}
-          resizeMode={FastImage.resizeMode.contain}
-        />}
-        {numberAnimal > 3 && <FastImage
-          style={styles.fourthAnimal}
-          source={{uri: animalUri[3].fileUrl}}
-          resizeMode={FastImage.resizeMode.contain}
-        />}
-        {numberAnimal > 4 && <FastImage
-          style={styles.fifthAnimal}
-          source={{uri: animalUri[4].fileUrl}}
-          resizeMode={FastImage.resizeMode.contain}
-        />}
+        >
+          <FastImage
+            style={styles.tree}
+            source={{uri: treeUri}}
+            resizeMode="stretch"
+          />
+          {numberAnimal > 0 && (
+            <FastImage
+              style={styles.firstAnimal}
+              source={{uri: animalUri[0].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 1 && (
+            <FastImage
+              style={styles.secondAnimal}
+              source={{uri: animalUri[1].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 2 && (
+            <FastImage
+              style={styles.thirdAnimal}
+              source={{uri: animalUri[2].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 3 && (
+            <FastImage
+              style={styles.fourthAnimal}
+              source={{uri: animalUri[3].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 4 && (
+            <FastImage
+              style={styles.fifthAnimal}
+              source={{uri: animalUri[4].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+        </FastImage>
       </View>
       <View style={styles.ploggingButton}>
         <AppButton

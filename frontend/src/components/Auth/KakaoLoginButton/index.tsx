@@ -33,6 +33,7 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkS
     await setStorage("AccessToken", result.accessToken)
 
     if (result.isFirst === "N") {
+      await setStorage("Nickname", result.nickname)
       moveMainPage();
     } else {
       moveUserInfoPage();
@@ -43,7 +44,7 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkS
   const getProfile = () => {
     KakaoLogin.getProfile().then((profile) => {
       console.log("GetProfile Success", JSON.stringify(profile));
-      const data: ProfileType = {id: profile.id, email: profile.email, socialType: "KAKAO"}
+      const data: ProfileType = {id: Number(profile.id), email: profile.email, socialType: "KAKAO"}
       isFirstLogin(data);
     }).catch((error) => {
       console.log(`GetProfile Fail(code:${error.code})`, error.message);

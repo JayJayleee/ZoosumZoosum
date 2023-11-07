@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   badgeimage: {
-    width: ITEM_WIDTH,
+    width: 400,
     aspectRatio: 1,
     zIndex: 1,
     position: 'relative',
@@ -55,18 +55,27 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   animalimage: {
-    width: ITEM_WIDTH,
+    width: '90%',
     aspectRatio: 1,
     zIndex: 1,
     position: 'relative',
-    top: 60,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
+    marginTop: 80,
   },
   boxImage: {
     // width: 10,
-    height: 180,
+    height: 350,
     aspectRatio: 1,
     position: 'absolute',
+    top: 130,
+    resizeMode: 'contain',
+  },
+  treeImage: {
+    // width: 10,
+    height: 650,
+    aspectRatio: 1,
+    position: 'absolute',
+    top: 20,
     resizeMode: 'contain',
   },
   progressHeader: {
@@ -84,15 +93,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
   },
+
   body: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 20,
     paddingLeft: 20,
     paddingRight: 20,
     position: 'relative',
   },
   input: {
     padding: 10,
+    marginTop: 40,
     marginBottom: 10,
     width: ITEM_WIDTH / 2,
     color: 'white',
@@ -133,6 +144,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     bottom: 40,
+  },
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: ITEM_WIDTH,
+    height: '100%', // 화면의 너비를 기준으로 설정
   },
 });
 
