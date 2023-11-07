@@ -27,9 +27,6 @@ public class ActivityResponseDto {
     // 플로깅
     private PloggingResponseDto plogging;
 
-    // 나무
-    private TreeResponseDto tree;
-
     // 시간
     private LocalDateTime createTime;
 }
