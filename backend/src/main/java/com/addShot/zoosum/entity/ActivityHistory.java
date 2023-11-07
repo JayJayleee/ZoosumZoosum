@@ -89,7 +89,6 @@ public class ActivityHistory {
             .userId(ah.user.getUserId())
             .activityType(ah.activityType.toString())
             .fileUrl(ah.fileUrl)
-            .tree(Tree.toResponseDto(ah.tree))
             .createTime(ah.time.getCreateTime())
             .build();
     }
