@@ -36,14 +36,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bannerBox: {
-    width: 200,
-    height: 70,
+    width: '48%',
+    height: '70%',
     paddingRight: 10,
     backgroundColor: 'rgba(33, 148, 93, 0.3)',
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  bannerImage:{
+    width: '40%',
+    height: '100%'
+  },
+  bannerText: {
+    color: 'white',
+    textAlign: 'right',
+    fontSize: 12
   },
   buttonToggle :{
     position: 'relative',
@@ -56,7 +65,7 @@ const styles = StyleSheet.create({
   toggleButton: {
     position: 'absolute',
     top: 0,
-    right: '3%',
+    right: 0
   },
   toggleBtnImage:{
     width: '120%',
@@ -68,8 +77,7 @@ const styles = StyleSheet.create({
   },
   toggleMoveButton: {
     position: 'absolute',
-    top: -50,
-    left: 115,
+    bottom: '220%',
     justifyContent: 'center',
     alignItems: 'center'
   },
