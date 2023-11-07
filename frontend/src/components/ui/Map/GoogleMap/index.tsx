@@ -15,14 +15,6 @@ type latLng = {
   latitude: number;
   longitude: number;
 };
-type position = {
-  latitude: number;
-  longitude: number;
-  routeCoordinates: latLng[];
-  distanceTravelled: number;
-  prevLatLng: {};
-  coordinate: latLng;
-};
 type GoogleMapProps = {
   endPlog: boolean;
   setPloggingDistance: Function;
@@ -80,15 +72,6 @@ const GoogleMap = (props: GoogleMapProps) => {
   const posirouteCoordinates = useRef<latLng[]>([]);
   // 이동거리
   const distanceTravelled = useRef<number>(0);
-  // 위치 이동 경로
-  const position = useRef<position>({
-    latitude: LATITUDE,
-    longitude: LONGITUDE,
-    routeCoordinates: posirouteCoordinates.current,
-    distanceTravelled: distanceTravelled.current,
-    prevLatLng: prevLatLng.current,
-    coordinate: prevLatLng.current,
-  });
   // 에러메세지
   const [errorMsg, setErrorMsg] = useState<string>('');
 
@@ -116,8 +99,14 @@ const GoogleMap = (props: GoogleMapProps) => {
         pos => {
           // console.log(pos);
           const {latitude, longitude} = pos.coords;
-          prevLatLng.current = {latitude, longitude};
-          curLatLng.current = {latitude, longitude};
+          prevLatLng.current = {latitude: latitude, longitude: longitude};
+          curLatLng.current = {latitude: latitude, longitude: longitude};
+          setRegion({
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001,
+          });
         },
         // 실패
         error => {
@@ -138,17 +127,17 @@ const GoogleMap = (props: GoogleMapProps) => {
       pos => {
         const {latitude, longitude} = pos.coords;
         const newCoordinate: latLng = {
-          latitude,
-          longitude,
+          latitude: latitude,
+          longitude: longitude,
         };
         // 현재위치 갱신
         setRegion({
-          latitude,
-          longitude,
+          latitude: latitude,
+          longitude: longitude,
           latitudeDelta: 0.001,
           longitudeDelta: 0.001,
         });
-        curLatLng.current = {latitude, longitude};
+        curLatLng.current = {latitude: latitude, longitude: longitude};
         // 거리 더하기
         calcDistance(newCoordinate)
           .then(distance => {
@@ -160,17 +149,13 @@ const GoogleMap = (props: GoogleMapProps) => {
           Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) /
             100,
         );
-        position.current = {
-          latitude,
-          longitude,
-          routeCoordinates: (posirouteCoordinates.current = [
-            ...posirouteCoordinates.current,
-            newCoordinate,
-          ]),
-          distanceTravelled: distanceTravelled.current,
-          prevLatLng: (prevLatLng.current = newCoordinate),
-          coordinate: newCoordinate,
-        };
+        // 위치배열갱신 -> 이동경로 그려줌
+        posirouteCoordinates.current = [
+          ...posirouteCoordinates.current,
+          newCoordinate,
+        ];
+        // 과거위치 변경
+        prevLatLng.current = newCoordinate;
       },
       // 실패
       error => {
