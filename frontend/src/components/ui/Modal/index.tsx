@@ -2,6 +2,7 @@ import React, {ReactNode} from 'react';
 import {ModalProps as RNModalProps} from 'react-native';
 import {Modal, TouchableOpacity, View, Text, Image} from 'react-native';
 import styles from './styles';
+import AppButton from '../Button';
 
 interface ModalComponentProps
   extends Partial<
@@ -10,10 +11,12 @@ interface ModalComponentProps
   isVisible: boolean;
   onClose: () => void;
   children: ReactNode;
-  buttonInnerText: String;
+  buttonInnerText: string;
   modalStyle?: 'top' | 'default';
   noButton?: boolean;
   TopChildren?: ReactNode;
+  ViewStyle?: 'default' | 'userInfo';
+  btnVariant?: 'default' | 'button';
 }
 
 //  isVisible={isModalVisible(해당 페이지에서 모달 보여줄 지 결정할 요소)},onClose={() => setModalVisible(false)}, onRequestClose={() => setModalVisible(false)}
@@ -31,8 +34,12 @@ export default function ModalComponent({
   buttonInnerText,
   noButton = false,
   modalStyle = 'default',
+  ViewStyle = 'default',
+  btnVariant = 'default',
 }: ModalComponentProps) {
+
   let variantStyle;
+  let viewVariantStyle;
 
   switch (modalStyle) {
     case 'default':
@@ -42,21 +49,34 @@ export default function ModalComponent({
       variantStyle = styles.topView;
       break;
   }
+
+  switch (ViewStyle) {
+    case 'default':
+      viewVariantStyle = styles.modalView;
+      break;
+    case 'userInfo':
+      viewVariantStyle = styles.userInfo;
+      break;
+  }
+
+
   return (
     <Modal
       key={modalStyle}
       transparent={transparent}
       animationType={animationType}
       visible={isVisible}
-      onRequestClose={onRequestClose}>
+      onRequestClose={onRequestClose}
+      >
       <View style={variantStyle}>
         {TopChildren}
-        <View style={styles.modalView}>
+        <View style={viewVariantStyle}>
           {children}
           {!noButton && (
-            <TouchableOpacity style={styles.button} onPress={onClose}>
-              <Text style={styles.textStyle}>{buttonInnerText}</Text>
-            </TouchableOpacity>
+            // <TouchableOpacity style={styles.button} onPress={onClose}>
+            //   <Text style={styles.textStyle}>{buttonInnerText}</Text>
+            // </TouchableOpacity>
+            <AppButton children={buttonInnerText} onPress={onClose} variant={btnVariant}/>
           )}
         </View>
       </View>

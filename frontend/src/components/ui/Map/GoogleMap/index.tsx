@@ -1,30 +1,31 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Platform, PermissionsAndroid} from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE, Polyline} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import styles from './styles';
-
-// 1. 시작위치 제대로 받아오기
+import haversine from 'haversine';
+import AppText from '../../Text';
 
 // default LATITUDE & LONGITUDE
 const LATITUDE: number = 36.35535459523802;
 const LONGITUDE: number = 127.29854862890039;
 
 // type defined
-type latLong = {
+type latLng = {
   latitude: number;
   longitude: number;
 };
 type position = {
   latitude: number;
   longitude: number;
-  routeCoordinates: [];
+  routeCoordinates: latLng[];
   distanceTravelled: number;
   prevLatLng: {};
-  coordinate: latLong;
+  coordinate: latLng;
 };
 type GoogleMapProps = {
   endPlog: boolean;
+  setPloggingDistance: Function;
 };
 
 // 위치 정보 수집 권한 요청
@@ -54,49 +55,54 @@ async function requestPermission() {
   }
 }
 
-// 스크린샷 찍기
-// captureScreenshot = () => {
-//   this.refs.viewShot.capture().then(uri => {
-//     RNFS.readFile(uri, 'base64').then(res => {
-//       let urlString = 'data:image/jpeg;base64,' + res;
-//       let options = {
-//         title: 'Share Title',
-//         message: 'Share Message',
-//         url: urlString,
-//         type: 'image/jpeg',
-//       };
-//       Share.open(options)
-//         .then(res => {
-//           console.log(res);
-//         })
-//         .catch(err => {
-//           err && console.log(err);
-//         });
-//     });
-//   });
-// };
-
+// ########## 구글맵 컴포넌트 ##########
 const GoogleMap = (props: GoogleMapProps) => {
-  const [location, setLocation] = useState<latLong>({
+  // region
+  const [region, setRegion] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.001,
+    longitudeDelta: 0.001,
+  });
+  // 이전위치
+  const prevLatLng = useRef<latLng>({
     latitude: LATITUDE,
     longitude: LONGITUDE,
   });
+  // 현재위치
+  const curLatLng = useRef<latLng>({
+    latitude: LATITUDE,
+    longitude: LONGITUDE,
+  });
+  // 위치 이동 파악
+  let watchId: number = 0;
+  // 위치 이동 경로 저장
+  const posirouteCoordinates = useRef<latLng[]>([]);
+  // 이동거리
+  const distanceTravelled = useRef<number>(0);
+  // 위치 이동 경로
+  const position = useRef<position>({
+    latitude: LATITUDE,
+    longitude: LONGITUDE,
+    routeCoordinates: posirouteCoordinates.current,
+    distanceTravelled: distanceTravelled.current,
+    prevLatLng: prevLatLng.current,
+    coordinate: prevLatLng.current,
+  });
+  // 에러메세지
   const [errorMsg, setErrorMsg] = useState<string>('');
-  // const [position, setPosition] = useState<position>();
-
-  let watchId: any;
 
   useEffect(() => {
-    console.log('endPlog', props.endPlog);
-    if (props.endPlog) {
+    // console.log('endPlog', props.endPlog);
+    // 플로깅 끝나면 위치 이동 중지
+    if (props.endPlog && watchId) {
       return () => {
-        if (watchId) {
-          Geolocation.clearWatch(watchId);
-        }
+        Geolocation.clearWatch(watchId);
       };
     }
+    // 권한 확인 후, 위치 설정
     requestPermission().then(result => {
-      console.log({result});
+      // console.log({result});
       // 허가받지 못한 경우 에러메세지
       if (result !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -108,9 +114,10 @@ const GoogleMap = (props: GoogleMapProps) => {
       Geolocation.getCurrentPosition(
         // 성공
         pos => {
-          console.log(pos);
+          // console.log(pos);
           const {latitude, longitude} = pos.coords;
-          setLocation({latitude, longitude});
+          prevLatLng.current = {latitude, longitude};
+          curLatLng.current = {latitude, longitude};
         },
         // 실패
         error => {
@@ -128,9 +135,42 @@ const GoogleMap = (props: GoogleMapProps) => {
     // 이동 위치 지켜보기
     watchId = Geolocation.watchPosition(
       // 성공
-      position => {
-        const {latitude, longitude} = position.coords;
-        setLocation({latitude, longitude});
+      pos => {
+        const {latitude, longitude} = pos.coords;
+        const newCoordinate: latLng = {
+          latitude,
+          longitude,
+        };
+        // 현재위치 갱신
+        setRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.001,
+        });
+        curLatLng.current = {latitude, longitude};
+        // 거리 더하기
+        calcDistance(newCoordinate)
+          .then(distance => {
+            distanceTravelled.current += distance;
+          })
+          .catch(err => console.log(err));
+        // 상위 컴포넌트에 전달
+        props.setPloggingDistance(
+          Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) /
+            100,
+        );
+        position.current = {
+          latitude,
+          longitude,
+          routeCoordinates: (posirouteCoordinates.current = [
+            ...posirouteCoordinates.current,
+            newCoordinate,
+          ]),
+          distanceTravelled: distanceTravelled.current,
+          prevLatLng: (prevLatLng.current = newCoordinate),
+          coordinate: newCoordinate,
+        };
       },
       // 실패
       error => {
@@ -140,42 +180,52 @@ const GoogleMap = (props: GoogleMapProps) => {
       {
         enableHighAccuracy: true,
         distanceFilter: 0,
-        interval: 5000,
-        fastestInterval: 2000,
+        interval: 50000,
+        fastestInterval: 20000,
       },
     );
   }, []);
 
-  // if (!location) {
-  //   return (
-  //     <View>
-  //       <AppText>Splash Screen</AppText>
-  //     </View>
-  //   );
-  // }
+  const calcDistance = async (newLatLng: latLng) => {
+    // console.log('prevLatLng', prevLatLng.current);
+    // console.log('newLatLng', newLatLng);
+    return (
+      (await haversine(prevLatLng.current, newLatLng, {unit: 'meter'})) || 0
+    );
+  };
+
+  if (region.latitude === 0) {
+    return (
+      <View>
+        <AppText>잠시만 기다려주세요...</AppText>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.mapContent}
+        region={region}
         showsUserLocation={true}
         showsMyLocationButton={true}
         initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
+          latitude: curLatLng.current.latitude,
+          longitude: curLatLng.current.longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.001,
+        }}
+        onRegionChangeComplete={newRegion => {
+          console.log('이동거리:', distanceTravelled.current);
+          // console.log('새로운 지도 영역:', newRegion);
         }}>
-        {/* <Marker
-          style={{borderColor: 'black'}}
-          coordinate={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
-          title="Marker Title"
-          description="Marker Description"
-        /> */}
+        <Polyline
+          coordinates={posirouteCoordinates.current}
+          strokeColor="#2C9261"
+          strokeColors={['#7F0000']}
+          strokeWidth={10}
+        />
       </MapView>
     </View>
   );

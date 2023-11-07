@@ -22,7 +22,7 @@ export default function PickIslandCard({itemName,fileUrl,itemId,navigation}: Pic
     onSuccess: () => {
       // 성공 시 할 작업을 여기에 추가합니다.
       console.log('변경 성공');
-      queryClient.invalidateQueries(["ItemList", apiId])
+       queryClient.invalidateQueries(["ItemList", apiId])
       navigation();
     },
     // PUT 요청이 실패한 경우의 로직

@@ -19,6 +19,7 @@ import AppText from '@/components/ui/Text';
 import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
 import {getStorage, setStorage} from '@/apis';
+import Spinner from '@/components/ui/Spinner';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -78,6 +79,14 @@ export default function MainPage({navigation}: MainScreenProps) {
     };
   }, []);
 
+  // 메인 페이지에 다시 들어왔을 때 api를 다시 호출하도록 하는 코드
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      IslandRefetch();
+      StatusRefetch();
+    })
+  }, [])
+
   // 버튼 토글 애니메이션을 위한 값 생성
   const animation = useRef(new Animated.Value(0)).current;
   // 버튼 클릭 시, 애니메이션 실행
@@ -115,6 +124,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     isLoading: isStatusLoading,
     isError: isStatusError,
     error: StatusError,
+    refetch: StatusRefetch,
   } = useQuery<statusInfo>(['mainStatus'], fetchMyStatusInfo, {
     onSuccess: statusContent => {
       setTrash(statusContent.missionTrash);
@@ -139,6 +149,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     isLoading: isIslandLoading,
     isError: isIslandError,
     error: IslandError,
+    refetch: IslandRefetch,
   } = useQuery<islandInfo>(['mainIsland'], fetchMyIslandInfo, {
     onSuccess: data => {
       setIslandUri(data.islandUrl);
@@ -154,7 +165,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   }
   // 로딩 중일 때, 로딩 페이지를 띄우는 코드
   if (isIslandLoading || isStatusLoading) {
-    return <View></View>;
+    return <Spinner />;
   }
 
   // 프로필 클릭 시, 이동하는 함수
@@ -212,34 +223,25 @@ export default function MainPage({navigation}: MainScreenProps) {
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
       />
-
       {isModalVisible && appCloseModal}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/trash_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getTrash}
           </AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/sand_clock_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getTime.hour}:
             {getTime.minute < 10 ? `0${getTime.minute}` : getTime.minute}:
             {getTime.second < 10 ? `0${getTime.second}` : getTime.second}
@@ -248,28 +250,20 @@ export default function MainPage({navigation}: MainScreenProps) {
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/shoe_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getDistance}km
           </AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/seed_icon.png')}
-            style={{width: 25, height: 25}}
+            style={styles.statusImage}
           />
           <AppText
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              color: 'white',
-            }}>
+            style={styles.statusText}>
             {getSeed}
           </AppText>
         </View>
@@ -278,14 +272,14 @@ export default function MainPage({navigation}: MainScreenProps) {
         <View style={styles.bannerBox}>
           <FastImage
             source={require('@/assets/mainpage_image/single_tree_img.png')}
-            style={{width: 70, height: 70}}
+            style={styles.bannerImage}
           />
           <View>
             <AppText
               children="내가 심은 나무 수"
-              style={{color: 'white', textAlign: 'right', fontSize: 12}}
+              style={styles.bannerText}
             />
-            <AppText style={{color: 'white', textAlign: 'right', fontSize: 12}}>
+            <AppText style={styles.bannerText}>
               {treeCount} 그루
             </AppText>
           </View>
@@ -293,14 +287,14 @@ export default function MainPage({navigation}: MainScreenProps) {
         <View style={styles.bannerBox}>
           <FastImage
             source={require('@/assets/mainpage_image/multiple_tree_img.png')}
-            style={{width: 70, height: 80}}
+            style={styles.bannerImage}
           />
           <View>
             <AppText
               children="현재까지 심어진 나무 수"
-              style={{color: 'white', textAlign: 'right', fontSize: 12}}
+              style={styles.bannerText}
             />
-            <AppText style={{color: 'white', textAlign: 'right', fontSize: 12}}>
+            <AppText style={styles.bannerText}>
               {allTreeCount} 그루
             </AppText>
           </View>
@@ -314,7 +308,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, -260],
+                    outputRange: [120, -40],
                   }),
                 },
               ],
@@ -347,7 +341,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, -190],
+                    outputRange: [120, 0],
                   }),
                 },
               ],
@@ -380,7 +374,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, -120],
+                    outputRange: [120, 40],
                   }),
                 },
               ],
@@ -413,7 +407,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, -50],
+                    outputRange: [120, 80],
                   }),
                 },
               ],
@@ -448,47 +442,48 @@ export default function MainPage({navigation}: MainScreenProps) {
           style={styles.island}
           source={{uri: islandUri}}
           resizeMode="stretch"
-        />
-        <FastImage
-          style={styles.tree}
-          source={{uri: treeUri}}
-          resizeMode="stretch"
-        />
-        {numberAnimal > 0 && (
+        >
           <FastImage
-            style={styles.firstAnimal}
-            source={{uri: animalUri[0].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
+            style={styles.tree}
+            source={{uri: treeUri}}
+            resizeMode="stretch"
           />
-        )}
-        {numberAnimal > 1 && (
-          <FastImage
-            style={styles.secondAnimal}
-            source={{uri: animalUri[1].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
-        {numberAnimal > 2 && (
-          <FastImage
-            style={styles.thirdAnimal}
-            source={{uri: animalUri[2].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
-        {numberAnimal > 3 && (
-          <FastImage
-            style={styles.fourthAnimal}
-            source={{uri: animalUri[3].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
-        {numberAnimal > 4 && (
-          <FastImage
-            style={styles.fifthAnimal}
-            source={{uri: animalUri[4].fileUrl}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        )}
+          {numberAnimal > 0 && (
+            <FastImage
+              style={styles.firstAnimal}
+              source={{uri: animalUri[0].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 1 && (
+            <FastImage
+              style={styles.secondAnimal}
+              source={{uri: animalUri[1].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 2 && (
+            <FastImage
+              style={styles.thirdAnimal}
+              source={{uri: animalUri[2].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 3 && (
+            <FastImage
+              style={styles.fourthAnimal}
+              source={{uri: animalUri[3].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+          {numberAnimal > 4 && (
+            <FastImage
+              style={styles.fifthAnimal}
+              source={{uri: animalUri[4].fileUrl}}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
+        </FastImage>
       </View>
       <View style={styles.ploggingButton}>
         <AppButton
