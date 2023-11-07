@@ -5,7 +5,7 @@ import AppText from '../Text';
 
 type ButtonProps = {
   children?: string;
-  variant?: 'default' | 'animalName' | 'primary' | 'pickfriend'| 'gotoisland' | "selectItem" | 'carouselBtn' | 'picnic' | 'region' | 'nickname' ;
+  variant?: 'default' | 'animalName' | 'primary' | 'pickfriend'| 'gotoisland' | "selectItem" | 'carouselBtn' | 'picnic' | 'ploggingRST' | 'region' | 'nickname' ;
   onPress: () => void;
 };
 
@@ -55,6 +55,10 @@ export default function AppButton({
     case 'picnic':
       variantStyle = styles.picnic;
       textStyle = styles.picnicText;
+      break;
+    case 'ploggingRST':
+      textStyle = styles.gotoislandText;
+      variantStyle = styles.ploggingRST;
       break;
     case 'region':
       variantStyle = styles.region;
