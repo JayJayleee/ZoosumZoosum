@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { View, FlatList, Text, Alert } from 'react-native';
 import PickAnimalCard from './PickAnimalCard';
 import styles from './style';
-import { fetchMyAnimalListInfo } from '@/apis/animal';
+import { fetchMyAnimalListInfo, fetchSelectMyFriend } from '@/apis/animal';
 import { useQuery } from '@tanstack/react-query';
 import AppButton from '@/components/ui/Button';
+import { useMutation, useQueryClient} from '@tanstack/react-query';
 
 type ApiResponse = {
   data: Animal[];
@@ -72,6 +73,27 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
     });
   };
 
+  const queryClient = useQueryClient();
+  const updateMutation = useMutation(fetchSelectMyFriend, {
+    // PUT 요청이 성공한 경우의 로직
+    onSuccess: () => {
+      // 성공 시 할 작업을 여기에 추가합니다.
+      console.log('변경 성공');
+      queryClient.invalidateQueries(["selectAnimal"])
+      navigation();
+    },
+    // PUT 요청이 실패한 경우의 로직
+    onError: (error) => {
+      // 실패 시 할 작업을 여기에 추가합니다.
+      console.error('변경 실패 ㅠ', error);
+    },
+  });
+
+  const handleCompleteSelection = () => {
+    // updateMutation 함수를 호출하여 PUT 요청 실행
+    updateMutation.mutate(selectedIds);
+  };
+
   if (!animalArray?.length) return <Text>로딩...</Text>;
   return (
     <View style={styles.pickAnimalCardList}>
@@ -109,6 +131,7 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
           } else {
             console.log('선택된 아이디들:', selectedIds);
             // 다른 처리를 여기에 추가할 수 있습니다.
+            handleCompleteSelection()
           }
         }}
         />

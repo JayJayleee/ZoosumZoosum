@@ -15,7 +15,7 @@ import PickAnimalCardlist from './PickAnimalCardlist';
 
 export default function PickFriendPage({navigation}: PickFriendscreenProps) {
   const propsFtn = () => {
-    navigation.navigate('Main')
+    navigation.navigate('FriendList')
   }
 
   return (
