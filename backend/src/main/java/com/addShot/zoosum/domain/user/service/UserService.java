@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.user.service;
 
 import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
+import com.addShot.zoosum.domain.user.dto.response.NicknameDuplicatedResponseDto;
 import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,11 +24,18 @@ public interface UserService {
     void logoutUser(String accessToken);
 
     /**
-     * 닉네임으로 userId 찾기
+     * 닉네임 중복 검사
      * @param nickname
      * @return
      */
-    String findUserIdByNickname(String nickname);
+    NicknameDuplicatedResponseDto findDuplicateNickname(String nickname);
+
+//    /**
+//     * 닉네임으로 userId 찾기
+//     * @param nickname
+//     * @return
+//     */
+//    String findUserIdByNickname(String nickname);
 
     /**
      * 회원 정보 수정 후 access 토큰 재발급

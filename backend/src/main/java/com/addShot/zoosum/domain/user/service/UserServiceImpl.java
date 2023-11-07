@@ -9,6 +9,7 @@ import com.addShot.zoosum.domain.item.service.ItemService;
 import com.addShot.zoosum.domain.jwt.service.JwtTokenService;
 import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
+import com.addShot.zoosum.domain.user.dto.response.NicknameDuplicatedResponseDto;
 import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
 import com.addShot.zoosum.domain.user.dto.response.UserLoginResponseDto;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
@@ -121,17 +122,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String findUserIdByNickname(String nickname){
+    public NicknameDuplicatedResponseDto findDuplicateNickname(String nickname){
         User findUser = userRepository.findUserByNickname(nickname);
 
+
         if(findUser == null){
-            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+            return new NicknameDuplicatedResponseDto(false);
         }
 
-        return findUser.getUserId();
-
-
+        return new NicknameDuplicatedResponseDto(true);
     }
+
+
+
+//    @Override
+//    public String findUserIdByNickname(String nickname){
+//        User findUser = userRepository.findUserByNickname(nickname);
+//
+//        if(findUser == null){
+//            throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+//        }
+//
+//        return findUser.getUserId();
+//
+//
+//    }
 
     @Override
     @Transactional
