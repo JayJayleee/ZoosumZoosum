@@ -111,17 +111,37 @@ export const styles = StyleSheet.create({
   region: {
     width: '60%',
     backgroundColor: '#F472B6',
-    borderRadius: 20,
+    borderRadius: 10,
     height: '20%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   nickname: {
-    
+    backgroundColor: '#5D9BFF',
+    width: '60%',
+    borderRadius: 10,
+    height: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   userInfoText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
     fontSize : 22,
+  },
+  button: {
+    borderRadius: 10,
+    elevation: 2,
+    marginTop: '20%',
+    width: '50%',
+    height: '25%',
+    justifyContent: 'center',
+    backgroundColor: '#2196F3',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: 'center',
   },
 });
