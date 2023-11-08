@@ -3,6 +3,7 @@ import {ModalProps as RNModalProps} from 'react-native';
 import {Modal, TouchableOpacity, View, Text, Image} from 'react-native';
 import styles from './styles';
 import AppButton from '../Button';
+import Toast from 'react-native-toast-message';
 
 interface ModalComponentProps
   extends Partial<
@@ -15,7 +16,7 @@ interface ModalComponentProps
   modalStyle?: 'top' | 'default';
   noButton?: boolean;
   TopChildren?: ReactNode;
-  ViewStyle?: 'default' | 'userInfo';
+  ViewStyle?: 'default' | 'userInfo' | 'treeInfo';
   btnVariant?: 'default' | 'button';
 }
 
@@ -37,7 +38,6 @@ export default function ModalComponent({
   ViewStyle = 'default',
   btnVariant = 'default',
 }: ModalComponentProps) {
-
   let variantStyle;
   let viewVariantStyle;
 
@@ -57,8 +57,10 @@ export default function ModalComponent({
     case 'userInfo':
       viewVariantStyle = styles.userInfo;
       break;
+    case 'treeInfo':
+      viewVariantStyle = styles.treeinfo;
+      break;
   }
-
 
   return (
     <Modal
@@ -66,9 +68,9 @@ export default function ModalComponent({
       transparent={transparent}
       animationType={animationType}
       visible={isVisible}
-      onRequestClose={onRequestClose}
-      >
+      onRequestClose={onRequestClose}>
       <View style={variantStyle}>
+        <Toast />
         {TopChildren}
         <View style={viewVariantStyle}>
           {children}
@@ -76,7 +78,11 @@ export default function ModalComponent({
             // <TouchableOpacity style={styles.button} onPress={onClose}>
             //   <Text style={styles.textStyle}>{buttonInnerText}</Text>
             // </TouchableOpacity>
-            <AppButton children={buttonInnerText} onPress={onClose} variant={btnVariant}/>
+            <AppButton
+              children={buttonInnerText}
+              onPress={onClose}
+              variant={btnVariant}
+            />
           )}
         </View>
       </View>

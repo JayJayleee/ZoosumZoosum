@@ -84,8 +84,8 @@ export default function MainPage({navigation}: MainScreenProps) {
     navigation.addListener('focus', () => {
       IslandRefetch();
       StatusRefetch();
-    })
-  }, [])
+    });
+  }, []);
 
   // 버튼 토글 애니메이션을 위한 값 생성
   const animation = useRef(new Animated.Value(0)).current;
@@ -230,18 +230,14 @@ export default function MainPage({navigation}: MainScreenProps) {
             source={require('@/assets/img_icon/trash_icon.png')}
             style={styles.statusImage}
           />
-          <AppText
-            style={styles.statusText}>
-            {getTrash}
-          </AppText>
+          <AppText style={styles.statusText}>{getTrash}</AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/sand_clock_icon.png')}
             style={styles.statusImage}
           />
-          <AppText
-            style={styles.statusText}>
+          <AppText style={styles.statusText}>
             {getTime.hour}:
             {getTime.minute < 10 ? `0${getTime.minute}` : getTime.minute}:
             {getTime.second < 10 ? `0${getTime.second}` : getTime.second}
@@ -252,20 +248,14 @@ export default function MainPage({navigation}: MainScreenProps) {
             source={require('@/assets/img_icon/shoe_icon.png')}
             style={styles.statusImage}
           />
-          <AppText
-            style={styles.statusText}>
-            {getDistance}km
-          </AppText>
+          <AppText style={styles.statusText}>{getDistance}km</AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage
             source={require('@/assets/img_icon/seed_icon.png')}
             style={styles.statusImage}
           />
-          <AppText
-            style={styles.statusText}>
-            {getSeed}
-          </AppText>
+          <AppText style={styles.statusText}>{getSeed}</AppText>
         </View>
       </View>
       <View style={styles.banner}>
@@ -275,13 +265,8 @@ export default function MainPage({navigation}: MainScreenProps) {
             style={styles.bannerImage}
           />
           <View>
-            <AppText
-              children="내가 심은 나무 수"
-              style={styles.bannerText}
-            />
-            <AppText style={styles.bannerText}>
-              {treeCount} 그루
-            </AppText>
+            <AppText children="내가 심은 나무 수" style={styles.bannerText} />
+            <AppText style={styles.bannerText}>{treeCount} 그루</AppText>
           </View>
         </View>
         <View style={styles.bannerBox}>
@@ -294,9 +279,7 @@ export default function MainPage({navigation}: MainScreenProps) {
               children="현재까지 심어진 나무 수"
               style={styles.bannerText}
             />
-            <AppText style={styles.bannerText}>
-              {allTreeCount} 그루
-            </AppText>
+            <AppText style={styles.bannerText}>{allTreeCount} 그루</AppText>
           </View>
         </View>
       </View>
@@ -441,8 +424,7 @@ export default function MainPage({navigation}: MainScreenProps) {
         <FastImage
           style={styles.island}
           source={{uri: islandUri}}
-          resizeMode="stretch"
-        >
+          resizeMode="stretch">
           <FastImage
             style={styles.tree}
             source={{uri: treeUri}}

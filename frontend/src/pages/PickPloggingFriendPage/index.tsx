@@ -1,11 +1,20 @@
 import React, {useState} from 'react';
-import {View,Text,Button,ImageBackground,StyleSheet,} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import styles from './style';
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
 import FastImage from 'react-native-fast-image';
+import {fetchMySelectAnimalInfo} from '@/apis/selectAnimal';
+import {useQuery} from '@tanstack/react-query';
 
-import { PickPloggingFriendscreenProps } from '@/types/path';
+import {PickPloggingFriendscreenProps} from '@/types/path';
 
 type ApiResponse = {
   data: Animal[];
@@ -14,88 +23,135 @@ type ApiResponse = {
 type Animal = {
   animalId: number;
   userAnimalName: string;
-  description :string;
-  createTime : string;
-  trashTogether : number;
-  hour : number;
-  minute : number;
-  second : number;
-  lengthTogether : number;
+  description: string;
+  createTime: string;
+  trashTogether: number;
+  hour: number;
+  minute: number;
+  second: number;
+  lengthTogether: number;
   fileUrl: string;
 };
 
+export default function PickPloggingFriendPage({
+  navigation,
+}: PickPloggingFriendscreenProps) {
+  const [selectAnimalsArray, setSelectAnimalsArray] = useState<Animal[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-export default function PickPloggingFriendPage({navigation}: PickPloggingFriendscreenProps) {
-  const [animal, setAnimal] = useState<Animal>();
+  useQuery(['selectAnimal'], fetchMySelectAnimalInfo, {
+    onSuccess: (response: ApiResponse) => {
+      const data = response.data;
+      setSelectAnimalsArray(data);
+    },
 
-  const Animal = {
-    "animalId": 6,
-        "userAnimalName": "코코족제비",
-        "description": "코코는 새하얀 몸을 가진 장난 치는 것을 좋아하는 족제비 정령입니다",
-        "createTime": "2023-10-31",
-        "trashTogether": 33,
-        "lengthTogether": 18.12,
-        "hour": 0,
-        "minute": 0,
-        "second": 56,
-        "fileUrl": "https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Animal/SnowWeasel/SnowWeasel_0.png"
-  }
+    onError: error => {
+      console.error('돌발돌발', error);
+    },
+  });
 
+  // 인덱스를 증가시키는 함수입니다.
+  const goNext = () => {
+    setCurrentIndex(prevIndex => (prevIndex + 1) % selectAnimalsArray.length);
+  };
+
+  // 인덱스를 감소시키는 함수입니다.
+  const goPrev = () => {
+    setCurrentIndex(
+      prevIndex =>
+        (prevIndex - 1 + selectAnimalsArray.length) % selectAnimalsArray.length,
+    );
+  };
+
+  // 현재 보여줄 동물 객체입니다.
+  const currentAnimal = selectAnimalsArray[currentIndex];
 
   return (
     <ImageBackground
       style={StyleSheet.absoluteFill}
       source={require('@/assets/pickPloggingFriend_image.png')}
       resizeMode="cover">
-      { Animal !== undefined &&
-      <View style={styles.container}>
-        <View style={styles.body1}>
-          <FastImage style={styles.FriendDetail_Image} source={{uri: Animal.fileUrl}}/>
-          <AppText style={styles.animalName}>{Animal.userAnimalName}</AppText>
-          <View style={styles.viewAnimalDescription}>
-            <Text style={styles.animalDescription}>{Animal.description}</Text>
+      {currentAnimal !== undefined && (
+        <View style={styles.container}>
+          <View style={styles.body1}>
+            <FastImage
+              style={styles.FriendDetail_Image}
+              source={{uri: currentAnimal.fileUrl}}
+            />
+            <AppText style={styles.animalName}>
+              {currentAnimal.userAnimalName}
+            </AppText>
+            <View style={styles.viewAnimalDescription}>
+              <Text style={styles.animalDescription}>
+                {currentAnimal.description}
+              </Text>
+            </View>
           </View>
+          <View style={styles.body2}>
+            <View style={styles.bodyContainer1}>
+              <View style={styles.active}>
+                <AppText style={styles.title}>처음만난날</AppText>
+                <View style={styles.Together}>
+                  <AppText style={styles.title2}>
+                    {currentAnimal.createTime}
+                  </AppText>
+                </View>
+              </View>
+              <View style={styles.active}>
+                <AppText style={styles.title}>같이 주운 쓰레기</AppText>
+                <View style={styles.Together}>
+                  <AppText style={styles.title2}>
+                    {currentAnimal.trashTogether}개
+                  </AppText>
+                </View>
+              </View>
+            </View>
+            <View style={styles.bodyContainer1}>
+              <View style={styles.active}>
+                <AppText style={styles.title}>함께 산책한 시간</AppText>
+                <View style={styles.Together}>
+                  <AppText style={styles.title2}>
+                    {currentAnimal.hour}시 {currentAnimal.minute}분
+                    {currentAnimal.second}초
+                  </AppText>
+                </View>
+              </View>
+              <View style={styles.active}>
+                <AppText style={styles.title}>함께 걸은 거리</AppText>
+                <View style={styles.Together}>
+                  <AppText style={styles.title2}>
+                    {currentAnimal.lengthTogether}
+                  </AppText>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View>
+            {/* <View style={styles.switchButtons}> */}
+            <TouchableOpacity onPress={goPrev}>
+              <Text>이전</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goNext}>
+              <Text>다음</Text>
+            </TouchableOpacity>
+          </View>
+          <AppButton
+            children="산책하러가자GO"
+            variant="gotoisland"
+            // onPress={() => console.log(currentAnimal.animalId, currentAnimal.fileUrl, "얘가 지원이한테 전달할 값")}
+            onPress={() =>
+              navigation.navigate({
+                name: 'Plogging',
+                params: {
+                  shouldOpenModal: false,
+                  selectedAnimalID: currentAnimal.animalId,
+                  selectedAnimalIMG: currentAnimal.fileUrl,
+                },
+              })
+            }
+          />
         </View>
-        <View style={styles.body2}>
-          <View style={styles.bodyContainer1}>
-            <View style={styles.active}>
-              <AppText style={styles.title}>처음만난날</AppText>
-              <View style={styles.Together}>
-                <AppText style={styles.title2} >{Animal.createTime}</AppText>
-              </View>
-            </View>
-            <View style={styles.active}>
-              <AppText style={styles.title} >같이 주운 쓰레기</AppText>
-              <View style={styles.Together}>
-                <AppText style={styles.title2}>{Animal.trashTogether}개</AppText>
-              </View>
-            </View>
-          </View>
-          <View style={styles.bodyContainer1}>
-            <View style={styles.active}>
-              <AppText style={styles.title} >함께 산책한 시간</AppText>
-              <View style={styles.Together}>
-                <AppText style={styles.title2} >{Animal.hour}시 {Animal.minute}분{Animal.second}초</AppText>
-              </View>
-            </View>
-            <View style={styles.active}>
-              <AppText style={styles.title} >함께 걸은 거리</AppText>
-              <View style={styles.Together}>
-                <AppText style={styles.title2}>{Animal.lengthTogether}</AppText>
-              </View>
-            </View>
-          </View>
-        </View>
-        <AppButton
-        children='산책하러가자GO'
-        variant='gotoisland'
-        onPress={() =>navigation.navigate({
-            name: 'Plogging',
-            params: {shouldOpenModal: false},
-          })
-        }/>
-      </View>
-      }
+      )}
     </ImageBackground>
-  )
+  );
 }

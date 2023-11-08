@@ -33,6 +33,12 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 3,
   },
+  animal: {
+    marginTop: 30,
+    width: 130,
+    height: 130,
+    zIndex: 1,
+  },
 });
 
 export default styles;

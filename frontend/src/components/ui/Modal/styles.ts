@@ -30,6 +30,23 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  treeinfo: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
+    maxHeight: '60%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   userInfo: {
     width: '80%',
     height: '40%',
