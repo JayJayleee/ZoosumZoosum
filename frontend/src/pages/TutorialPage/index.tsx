@@ -1,6 +1,17 @@
-import React from 'react';
-import {View} from 'react-native';
-
+import React, {useState} from 'react';
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 export default function TutorialPage() {
-  return <View>index</View>;
+  return (
+    <ImageBackground
+      style={StyleSheet.absoluteFill}
+      source={require('@/assets/friendlist_background.png')}
+      resizeMode="cover"
+      blurRadius={1}></ImageBackground>
+  );
 }
