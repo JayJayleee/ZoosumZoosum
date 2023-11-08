@@ -36,6 +36,8 @@ import FriendDetailPage from '@/pages/FriendDetailPage';
 import {useEffect} from 'react';
 import {PermissionsAndroid} from 'react-native';
 
+import Toast from 'react-native-toast-message';
+
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
 // QueryClient 선언
@@ -77,6 +79,7 @@ function App() {
           <Stack.Screen name="FriendDetail" component={FriendDetailPage} />
         </Stack.Navigator>
       </NavigationContainer>
+      {/* <Toast /> */}
     </QueryClientProvider>
   );
 }

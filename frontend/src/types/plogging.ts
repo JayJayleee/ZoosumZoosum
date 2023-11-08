@@ -67,6 +67,7 @@ export interface TreeCarouselCardItemProps {
   };
   index: number;
   onUserData?: (data: tree) => void;
+  errorAlert?: () => void;
 }
 
 export interface EffectProps {

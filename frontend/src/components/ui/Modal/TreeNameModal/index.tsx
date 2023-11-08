@@ -12,6 +12,7 @@ import {TextModalItem} from './TextModalItem';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {treeApi} from '@/apis/tree';
 import {tree} from '@/types/tree';
+import Toast from 'react-native-toast-message';
 
 interface TreeNameModalProps {
   isTreeModalVisible: boolean;
@@ -57,12 +58,16 @@ export default function TreeNameModal({
   }, []);
 
   const plantTree = useMutation(treeApi, {
-    onSuccess: () => {
-      console.log('나무 심기 성공');
-      console.log('나무 심기 성공 데이터', userData);
-      handleNextPress();
-      // 메인 정보 다시 가져오게 하기. 키 값 오류인지 수혁이한테 확인 요청하기.
-      queryClient.invalidateQueries(['mainStatus']);
+    onSuccess: data => {
+      console.log(data.status);
+      if (data.status == 500) {
+        InputToast();
+      } else {
+        console.log('나무 심기 성공 데이터', userData);
+        handleNextPress();
+        // 메인 정보 다시 가져오게 하기. 키 값 오류인지 수혁이한테 확인 요청하기.
+        queryClient.invalidateQueries(['mainStatus']);
+      }
     },
     onError: () => {
       console.log('나무 심기 실패');
@@ -70,20 +75,57 @@ export default function TreeNameModal({
     },
   });
 
+  const InputToast = () => {
+    (Toast as any).show({
+      type: 'success',
+      text1: '유효한 생년월일과 전화번호를 입력해주세요!',
+      text1Style: {
+        fontSize: 200,
+      },
+    });
+  };
+
+  const showToast = () => {
+    (Toast as any).show({
+      type: 'success',
+      text1: '모든 필드를 입력해주세요!',
+      text1Style: {
+        fontSize: 200,
+      },
+    });
+  };
+
   const handleButtonClick = () => {
     switch (index) {
       case 0:
         handleNextPress();
+
         break;
       case 1:
         handleNextPress();
         break;
       case 2:
-        plantTree.mutate(userData);
+        if (validateUserDataBeforeMutation()) {
+          plantTree.mutate(userData);
+        } else {
+          showToast();
+        }
         break;
       case 3:
         onTreeModalClose();
         break;
+    }
+  };
+  const validateUserDataBeforeMutation = () => {
+    if (
+      userData.userName &&
+      userData.treeName &&
+      userData.userPhone &&
+      userData.userBirth
+    ) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -94,7 +136,7 @@ export default function TreeNameModal({
     },
     {
       image: require('@/assets/mainpage_image/single_tree_img.png'),
-      description: '1000개를 모아서\n나무로 변했어요!',
+      description: '100개를 모아서\n나무로 변했어요!',
     },
     {
       image: require('@/assets/mainpage_image/single_tree_img.png'),
@@ -140,6 +182,7 @@ export default function TreeNameModal({
             item={item}
             index={index}
             onUserData={handleUserData}
+            errorAlert={showToast}
           />
         );
       default:
@@ -158,7 +201,7 @@ export default function TreeNameModal({
         ViewStyle="treeInfo">
         <View
           style={{
-            backgroundColor: 'red',
+            // backgroundColor: 'red',
             height: '100%',
             justifyContent: 'center',
             alignItems: 'center',
@@ -177,6 +220,7 @@ export default function TreeNameModal({
             inactiveSlideOpacity={0}
             style={{backgroundColor: 'red'}}
           />
+
           <AppButton variant="animalName" onPress={handleButtonClick}>
             {buttonText}
           </AppButton>
