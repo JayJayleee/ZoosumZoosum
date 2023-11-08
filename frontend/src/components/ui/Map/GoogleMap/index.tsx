@@ -5,10 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import styles from './styles';
 import haversine from 'haversine';
 import AppText from '../../Text';
-
-// default LATITUDE & LONGITUDE
-const LATITUDE: number = 36.35535459523802;
-const LONGITUDE: number = 127.29854862890039;
+import FastImage from 'react-native-fast-image';
 
 // type defined
 type latLng = {
@@ -16,8 +13,14 @@ type latLng = {
   longitude: number;
 };
 type GoogleMapProps = {
-  endPlog: boolean;
-  setPloggingDistance: Function;
+  endPlog: boolean; // 플로깅 종료여부
+  animalImg: string; // 동물 이미지
+  trashCount: number; // 주운 쓰레기 개수 변화 감지
+  setPloggingDistance: Function; // 거리 변동 감지
+};
+type marker = {
+  id: number;
+  coordinate: latLng;
 };
 
 // 위치 정보 수집 권한 요청
@@ -83,6 +86,14 @@ const GoogleMap = (props: GoogleMapProps) => {
   const [errorMsg, setErrorMsg] = useState<string>('');
   // 준비여부
   const imReady = useRef<boolean>(false);
+  // 주운 쓰레기 개수
+  const captureTrashCount = useRef<number>(0);
+  // 마커 정보를 배열로 정의
+  const markers = useRef<marker[]>([]);
+  // 마커 이미지 소스 정의
+  const markerImage = require('@/assets/img_icon/trash_marker_icon.png');
+  // 동물 이미지 소스 정의
+  const animalImage = {uri: props.animalImg};
 
   useEffect(() => {
     // console.log('1 init useEffect');
@@ -192,6 +203,20 @@ const GoogleMap = (props: GoogleMapProps) => {
     doEffect();
   }, [region.current]);
 
+  // 사진을 찍었을 때, 현재 위치에 쓰레기 이미지 마커를 찍는다.
+  useEffect(() => {
+    if (captureTrashCount.current === props.trashCount) return;
+    captureTrashCount.current = props.trashCount;
+    const newMarker: marker = {
+      id: markers.current.length + 1,
+      coordinate: {
+        latitude: region.current.latitude,
+        longitude: region.current.longitude,
+      },
+    };
+    markers.current = [...markers.current, newMarker];
+  }, [props.trashCount]);
+
   // 거리 계산 함수
   const calcDistance = async (newLatLng: latLng) => {
     // console.log('6 calculate distance');
@@ -229,6 +254,24 @@ const GoogleMap = (props: GoogleMapProps) => {
           // console.log('이동거리:', distanceTravelled.current);
           // console.log('새로운 지도 영역:', newRegion);
         }}>
+        {/* 주운 쓰레기 목록 마커 */}
+        {markers.current.map(marker => (
+          <Marker
+            key={marker.id}
+            coordinate={marker.coordinate}
+            image={markerImage}
+            zIndex={-1}
+          />
+        ))}
+        {/* 내가 고른 동물 마커 */}
+        <Marker
+          key={0}
+          coordinate={{
+            latitude: region.current.latitude,
+            longitude: region.current.longitude,
+          }}>
+          <FastImage source={animalImage} style={styles.animal} />
+        </Marker>
         <Polyline
           coordinates={posirouteCoordinates.current}
           strokeColor="#2C9261"

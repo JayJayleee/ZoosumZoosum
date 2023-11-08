@@ -164,9 +164,9 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
   const captureRef = useRef<ViewShot | null>(null);
   const now = new Date();
-  const fileName = `${now.getFullYear()}-${
+  const fileName = `plog-${now.getFullYear()}-${
     now.getMonth() + 1
-  }-${now.getDate()}-${now.getHours()}`;
+  }-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
 
   const getPhotoUri = async (): Promise<string> => {
     if (!captureRef.current) {
@@ -335,6 +335,13 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   ];
   // console.log('이걸 주고 있거든여', DATA);
 
+  // 쓰레기 사진 찍었을 때, 카메라로 이동하고, 찍었다는 신호를 지도에 전달
+  const captureTrashCount = useRef<number>(0);
+  const captureTrash = () => {
+    captureTrashCount.current += 1;
+    navigation.navigate('Camera');
+  };
+
   return (
     <View style={{flex: 1}}>
       <TrashModal
@@ -365,9 +372,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
             <AppText style={styles.text}>{trashCount}개</AppText>
           </View>
 
-          <TouchableOpacity
-            style={styles.cameraBtn}
-            onPress={() => navigation.navigate('Camera')}>
+          <TouchableOpacity style={styles.cameraBtn} onPress={captureTrash}>
             <Image
               source={require('@/assets/plogingpage_image/cameraBtn.png')}
             />
@@ -380,6 +385,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           options={{fileName: fileName, format: 'jpg', quality: 0.9}}>
           <GoogleMap
             endPlog={endPlog}
+            animalImg={getAnimalIMG}
+            trashCount={trashCount}
             setPloggingDistance={setPloggingDistance}></GoogleMap>
         </ViewShot>
       </View>
