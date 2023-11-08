@@ -8,12 +8,12 @@ import {
 } from 'react-native';
 import AppText from '../../Text';
 import {TreeCarouselCardItemProps} from '@/types/plogging';
-import {treeApi} from '@/apis/tree';
 
 export function InputModalItem({
   item,
   index,
   onUserData,
+  errorAlert,
 }: TreeCarouselCardItemProps) {
   const [userName, setUserName] = useState('');
   const [treeName, setTreeName] = useState('');
@@ -23,11 +23,15 @@ export function InputModalItem({
   const treeNameInputRef = useRef<TextInput>(null);
   const userBirthInputRef = useRef<TextInput>(null);
   const userPhoneInputRef = useRef<TextInput>(null);
-  // useEffect(() => {
-  //   console.log(userName, treeName, userPhone, userBirth);
-  // }, [userName, treeName, userPhone, userBirth]);
+
   useEffect(() => {
-    if (userName && treeName && userPhone && userBirth && onUserData) {
+    if (
+      userName &&
+      treeName &&
+      userPhone !== null &&
+      userBirth !== null &&
+      onUserData
+    ) {
       onUserData({
         userName,
         treeName,
@@ -35,30 +39,21 @@ export function InputModalItem({
         userBirth,
       });
     }
-    console.log('입력된 데이터', onUserData);
   }, [userName, treeName, userBirth, userPhone, onUserData]);
 
-  useEffect(() => {
-    // 특정 조건에 따라 자동으로 포커스를 할당하려면 이 부분을 수정하세요.
-    // 예를 들어, userBirth가 null이면 포커스를 주는 등의 조건을 추가할 수 있습니다.
-    console.log('유저 생일');
-    if (userBirthInputRef.current) {
-      userBirthInputRef.current.focus();
-    }
-  }, []);
+  const handleBirthInputChange = (input: string) => {
+    const numbers = input.replace(/[^0-9]/g, '');
 
-  // 숫자만 입력받는 함수
-  // const handleNumberInput = (
-  //   input: string,
-  //   setInput: React.Dispatch<React.SetStateAction<number | null>>,
-  // ) => {
-  //   if (input === '') {
-  //     setInput(null);
-  //   } else {
-  //     const numbers = input.replace(/[^0-9]/g, '');
-  //     setInput(parseInt(numbers, 10));
-  //   }
-  // };
+    let formatted = '';
+    for (let i = 0; i < numbers.length && i < 8; i++) {
+      if (i === 4 || i === 6) {
+        formatted += '-';
+      }
+      formatted += numbers[i];
+    }
+
+    setUserBirth(formatted);
+  };
 
   const handleInputChange = (
     input: string,
@@ -88,12 +83,6 @@ export function InputModalItem({
             width: '100%',
             flex: 1,
           }}>
-          {/* {item?.image && (
-        <Image
-          source={item.image}
-          style={{borderRadius: 10, height: '40%', aspectRatio: 1}}
-        />
-      )} */}
           <AppText
             style={{
               fontFamily: 'NPSfont_extrabold',
@@ -101,6 +90,7 @@ export function InputModalItem({
               padding: 10,
               textAlign: 'center',
               lineHeight: 40,
+              color: 'black',
             }}>
             🌱 나무에게 🌱{'\n'}이름을 지어주세요
           </AppText>
@@ -123,6 +113,7 @@ export function InputModalItem({
               value={userName}
               onChangeText={setUserName}
               returnKeyType="next"
+              placeholderTextColor="#777"
               onSubmitEditing={() => treeNameInputRef.current?.focus()}
             />
           </View>
@@ -166,11 +157,11 @@ export function InputModalItem({
                 color: 'black',
               }}
               ref={userBirthInputRef}
-              placeholder={'숫자만 입력해주세요'}
+              placeholder={'8자리 생년월일을 입력해주세요'}
               placeholderTextColor="#777"
               keyboardType="phone-pad"
-              value={userBirth !== null ? userBirth.toString() : ''}
-              onChangeText={text => handleInputChange(text, setUserBirth)}
+              value={userBirth || ''}
+              onChangeText={handleBirthInputChange}
               returnKeyType="next"
               onSubmitEditing={() => userPhoneInputRef.current?.focus()}
             />

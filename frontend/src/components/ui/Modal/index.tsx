@@ -3,6 +3,7 @@ import {ModalProps as RNModalProps} from 'react-native';
 import {Modal, TouchableOpacity, View, Text, Image} from 'react-native';
 import styles from './styles';
 import AppButton from '../Button';
+import Toast from 'react-native-toast-message';
 
 interface ModalComponentProps
   extends Partial<
@@ -69,6 +70,7 @@ export default function ModalComponent({
       visible={isVisible}
       onRequestClose={onRequestClose}>
       <View style={variantStyle}>
+        <Toast />
         {TopChildren}
         <View style={viewVariantStyle}>
           {children}
