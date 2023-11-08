@@ -28,6 +28,7 @@ interface ActivityDataType {
     time: number;
     trash: number;
   };
+  animalId: number;
 }
 
 export default function PloggingPage({navigation, route}: PloggingScreenProps) {
@@ -87,7 +88,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(0);
-  const [trashCount, setTrashCount] = useState(100);
+  const [trashCount, setTrashCount] = useState(0);
   const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityDataType>();
@@ -256,6 +257,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         time: timer,
         trash: trashCount,
       },
+      animalId: getAnimalID,
     };
 
     const newResultData = [
@@ -278,6 +280,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       setActivityData(newActivityData);
       setTimer(0);
       setTrashCount(0);
+      setGetAnimalID(0);
+      setGetAnimalIMG('');
       setPloggingDistance(0);
       setIsEndModalVisible(true);
     }

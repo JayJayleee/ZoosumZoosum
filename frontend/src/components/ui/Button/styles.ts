@@ -156,7 +156,7 @@ export const styles = StyleSheet.create({
   rankingText: {
     color: 'black',
     fontFamily: 'NPSfont_bold',
-    fontSize : 20,
+    fontSize: 20,
   },
   ranking_unselect: {
     width: '40%',
@@ -170,7 +170,8 @@ export const styles = StyleSheet.create({
   rankingText_unselect: {
     color: 'black',
     fontFamily: 'NPSfont_bold',
-    fontSize : 20,
+    fontSize: 20,
+  },
   tutorial: {
     width: '45%',
     backgroundColor: '#34D399',

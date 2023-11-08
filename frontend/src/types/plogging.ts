@@ -136,6 +136,7 @@ export interface ActivityDataType {
     time: number;
     trash: number;
   };
+  animalId?: number;
 }
 
 export interface TrashDaTaList {
