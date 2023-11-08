@@ -8,11 +8,12 @@ export function TextModalItem({item, index}: TreeCarouselCardItemProps) {
     <View
       key={index}
       style={{
-        // flexDirection: 'column',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        // height: '70%',
-        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        width: '100%',
+        // flex: 1,
       }}>
       {item?.image && (
         <Image
@@ -20,7 +21,14 @@ export function TextModalItem({item, index}: TreeCarouselCardItemProps) {
           style={{height: '60%', aspectRatio: 1, borderRadius: 10}}
         />
       )}
-      <AppText style={{marginLeft: 10, fontSize: 20}}>
+      <AppText
+        style={{
+          marginTop: 30,
+          marginLeft: 10,
+          fontSize: 30,
+          fontFamily: 'NPSfont_bold',
+          textAlign: 'center',
+        }}>
         {item?.description}
       </AppText>
     </View>

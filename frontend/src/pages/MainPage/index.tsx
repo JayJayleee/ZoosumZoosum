@@ -23,7 +23,7 @@ import Spinner from '@/components/ui/Spinner';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
-  const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
+  const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(true);
 
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);

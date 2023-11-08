@@ -35,6 +35,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [trashData, setTrashData] = useState<TrashDaTaList>();
+  const [getAnimalIMG, setGetAnimalIMG] = useState<string>('');
+  const [getAnimalID, setGetAnimalID] = useState<number>(0);
 
   // 종료 여부
   let endPlog: boolean = false;
@@ -60,6 +62,16 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       console.log('플로깅에서 쓰레기를 받음', route.params.TrashData);
       // console.log('그걸 새로 저장함', trashData);
     }
+
+    if (route.params.selectedAnimalIMG) {
+      setGetAnimalIMG(route.params.selectedAnimalIMG);
+      // console.log('이미지를 받음', getAnimalIMG);
+    }
+
+    if (route.params.selectedAnimalID) {
+      setGetAnimalID(route.params.selectedAnimalID);
+      // console.log('정령 ID 받음', getAnimalID);
+    }
   }, [route.params]);
 
   useEffect(() => {
@@ -67,6 +79,11 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       console.log('trashData가 업데이트됨:', trashData);
     }
   }, [trashData]);
+
+  // useEffect(() => {
+  //   console.log('이미지를 받음', getAnimalIMG);
+  //   console.log('아이디도', getAnimalID);
+  // }, [getAnimalIMG]);
 
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(0);

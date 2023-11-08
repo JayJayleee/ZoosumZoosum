@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import AppButton from '../../Button';
 import {View, Image, FlatList} from 'react-native';
 import ModalComponent from '@/components/ui/Modal';
@@ -9,6 +9,9 @@ import {getStorage} from '@/apis';
 import {CarouselProps} from '@/types/plogging';
 import {InputModalItem} from './InputModalItem';
 import {TextModalItem} from './TextModalItem';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {treeApi} from '@/apis/tree';
+import {tree} from '@/types/tree';
 
 interface TreeNameModalProps {
   isTreeModalVisible: boolean;
@@ -19,12 +22,14 @@ export default function TreeNameModal({
   isTreeModalVisible,
   onTreeModalClose,
 }: TreeNameModalProps) {
+  const queryClient = useQueryClient();
   const [index, setIndex] = React.useState(0);
   const carouselRef = useRef<any>(null);
 
   const [Nickname, setNickname] = useState<string | null>();
 
   useEffect(() => {
+    console.log('닉네임');
     const getnickname = async () => {
       const nick = await getStorage('Nickname');
       setNickname(nick);
@@ -35,7 +40,50 @@ export default function TreeNameModal({
 
   const handleNextPress = () => {
     if (carouselRef.current) {
-      carouselRef.current.snapToNext(false); // 다음 아이템으로 슬라이드
+      carouselRef.current.snapToNext(true); // 다음 아이템으로 슬라이드
+    }
+  };
+
+  const [userData, setUserData] = useState<tree>({
+    userName: '',
+    treeName: '',
+    userPhone: null,
+    userBirth: null,
+  });
+
+  // userName, treeName, userPhone, userBirth 각각에 대한 올바른 타입을 지정해주세요.
+  const handleUserData = useCallback((data: tree) => {
+    setUserData(data);
+  }, []);
+
+  const plantTree = useMutation(treeApi, {
+    onSuccess: () => {
+      console.log('나무 심기 성공');
+      console.log('나무 심기 성공 데이터', userData);
+      handleNextPress();
+      // 메인 정보 다시 가져오게 하기. 키 값 오류인지 수혁이한테 확인 요청하기.
+      queryClient.invalidateQueries(['mainStatus']);
+    },
+    onError: () => {
+      console.log('나무 심기 실패');
+      console.log('나무 심기 에러', userData);
+    },
+  });
+
+  const handleButtonClick = () => {
+    switch (index) {
+      case 0:
+        handleNextPress();
+        break;
+      case 1:
+        handleNextPress();
+        break;
+      case 2:
+        plantTree.mutate(userData);
+        break;
+      case 3:
+        onTreeModalClose();
+        break;
     }
   };
 
@@ -46,7 +94,7 @@ export default function TreeNameModal({
     },
     {
       image: require('@/assets/mainpage_image/single_tree_img.png'),
-      description: '1000개를 모아서 \n 나무로 변했어요!',
+      description: '1000개를 모아서\n나무로 변했어요!',
     },
     {
       image: require('@/assets/mainpage_image/single_tree_img.png'),
@@ -54,12 +102,13 @@ export default function TreeNameModal({
     },
     {
       image: require('@/assets/mainpage_image/single_tree_img.png'),
-      description: `${Nickname}님 덕분에 지구가 더 건강해졌어요!`,
+      description: `${Nickname}님 덕분에\n지구가 더 건강해졌어요!`,
     },
   ];
-  const [buttonText, setButtonText] = useState('다음 으로');
+  const [buttonText, setButtonText] = useState('');
 
   useEffect(() => {
+    console.log('버튼 텍스트 useEffect가 실행됨');
     switch (index) {
       case 0:
         setButtonText('두근두근');
@@ -86,9 +135,15 @@ export default function TreeNameModal({
       case 3:
         return <TextModalItem item={item} index={index} />;
       case 2:
-        return <InputModalItem item={item} index={index} />;
+        return (
+          <InputModalItem
+            item={item}
+            index={index}
+            onUserData={handleUserData}
+          />
+        );
       default:
-        return null; // 혹은 배열 범위를 벗어난 경우를 처리하는 로직
+        return null;
     }
   };
 
@@ -99,25 +154,33 @@ export default function TreeNameModal({
         onClose={onTreeModalClose}
         onRequestClose={onTreeModalClose}
         noButton={true}
-        buttonInnerText={'닫기'}>
-        <Carousel
-          vertical={false}
-          layout={'default'}
-          layoutCardOffset={18}
-          ref={carouselRef}
-          data={combinedData}
-          renderItem={renderItem}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          onSnapToItem={index => setIndex(index)}
-          inactiveSlideShift={0}
-          inactiveSlideOpacity={0}
-        />
-        <AppButton
-          onPress={handleNextPress} // 버튼 클릭 시 다음 아이템으로 이동
-        >
-          {buttonText}
-        </AppButton>
+        buttonInnerText={'닫기'}
+        ViewStyle="treeInfo">
+        <View
+          style={{
+            backgroundColor: 'red',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Carousel
+            vertical={false}
+            layout={'default'}
+            layoutCardOffset={18}
+            ref={carouselRef}
+            data={combinedData}
+            renderItem={renderItem}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            onSnapToItem={index => setIndex(index)}
+            inactiveSlideShift={0}
+            inactiveSlideOpacity={0}
+            style={{backgroundColor: 'red'}}
+          />
+          <AppButton variant="animalName" onPress={handleButtonClick}>
+            {buttonText}
+          </AppButton>
+        </View>
       </ModalComponent>
     </>
   );

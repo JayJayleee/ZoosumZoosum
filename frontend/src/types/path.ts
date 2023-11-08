@@ -10,6 +10,8 @@ export type RootStackParamList = {
   Plogging: {
     shouldOpenModal?: boolean;
     TrashData?: TrashDaTaList;
+    selectedAnimalIMG?: string;
+    selectedAnimalID?: number;
   };
   Camera: undefined;
   PloggingResult: {
