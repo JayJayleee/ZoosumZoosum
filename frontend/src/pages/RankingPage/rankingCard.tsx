@@ -7,9 +7,10 @@ interface RankingCardProps {
   region : string,
   score : number,
   index : number,
+  goToprofile : (data : string) => void;
 }
 
-export default function RankingCard({nickname, region, score, index} : RankingCardProps) {
+export default function RankingCard({nickname, region, score, index, goToprofile} : RankingCardProps) {
   let displayRegion = region;
   if (region === "SEOUL") {
     displayRegion = "서울";
@@ -46,7 +47,7 @@ export default function RankingCard({nickname, region, score, index} : RankingCa
   return (
     <View>
       {nickname !== undefined &&
-      <TouchableOpacity style={styles.title_container}>
+      <TouchableOpacity style={styles.title_container} onPress={() => goToprofile(nickname)}>
         <Text style={styles.title_grid1}>{rank}</Text>
         <Text style={styles.title_grid2}>{nickname}</Text>
         <Text style={styles.title_grid3}>{displayRegion}</Text>

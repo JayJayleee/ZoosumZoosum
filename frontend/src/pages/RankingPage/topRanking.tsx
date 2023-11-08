@@ -20,8 +20,11 @@ type Rank = {
   region: string;
   score: number;
 };
+interface RankingProps {
+  goToprofile : (data: string) => void;
+}
 
-export default function TopRanking() {
+export default function TopRanking({goToprofile} : RankingProps) {
   const [RankingArray, setRankingArray] = useState<Rank[]>([]);
 
   useQuery(['TopRankingList'],
@@ -66,6 +69,7 @@ export default function TopRanking() {
                 nickname={item.nickname}
                 region={item.region}
                 score={item.score}
+                goToprofile={goToprofile}
               />
             );
           }}
