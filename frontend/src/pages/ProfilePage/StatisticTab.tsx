@@ -13,7 +13,7 @@ type statisticProps = {
 export default function StatisticTab({nickname, isMyProfile, statisticList}: statisticProps) {
   return (
   <>
-    <AppText style={styles.staTitle} >
+    <AppText style={styles.upperTitle} >
       {isMyProfile? "나의 산책 기록" :`${nickname}님의 산책 기록`}
     </AppText>
     <ImageBackground source={require("@/assets/profile_image/profile_recipe.png")} style={styles.staNoteImg}>
