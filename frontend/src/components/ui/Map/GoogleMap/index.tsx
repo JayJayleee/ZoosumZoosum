@@ -56,6 +56,13 @@ const GoogleMap = (props: GoogleMapProps) => {
     latitudeDelta: 0.001,
     longitudeDelta: 0.001,
   });
+  // new region
+  const newRegion = useRef({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.001,
+    longitudeDelta: 0.001,
+  });
   // 이전위치
   const prevLatLng = useRef<latLng>({
     latitude: 0,
@@ -74,12 +81,14 @@ const GoogleMap = (props: GoogleMapProps) => {
   const distanceTravelled = useRef<number>(0);
   // 에러메세지
   const [errorMsg, setErrorMsg] = useState<string>('');
+  // 준비여부
+  const imReady = useRef<boolean>(false);
 
   useEffect(() => {
     // console.log('1 init useEffect');
     // console.log('endPlog', props.endPlog);
     // 플로깅 끝나면 위치 이동 중지
-    if (props.endPlog && watchId) {
+    if (props.endPlog) {
       return () => {
         Geolocation.clearWatch(watchId);
       };
@@ -104,14 +113,6 @@ const GoogleMap = (props: GoogleMapProps) => {
           const {latitude, longitude} = pos.coords;
           // 과거위치 변경
           prevLatLng.current = {latitude: latitude, longitude: longitude};
-          // 현재위치 갱신
-          curLatLng.current = {latitude: latitude, longitude: longitude};
-          region.current = {
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.001,
-            longitudeDelta: 0.001,
-          };
         },
         // 실패
         error => {
@@ -149,7 +150,7 @@ const GoogleMap = (props: GoogleMapProps) => {
           enableHighAccuracy: true,
           distanceFilter: 1,
           interval: 5000,
-          // fastestInterval: 2000,
+          fastestInterval: 2000,
         },
       );
     });
@@ -157,60 +158,64 @@ const GoogleMap = (props: GoogleMapProps) => {
 
   useEffect(() => {
     if (region.current.latitude === 0) return;
-    // console.log('5 renew region');
-    // console.log('region', region);
-    const newCoordinate: latLng = {
-      latitude: region.current.latitude,
-      longitude: region.current.longitude,
-    };
-    // 거리 더하기
-    calcDistance(newCoordinate)
-      .then(distance => {
-        // console.log('10 add distance');
-        distanceTravelled.current += distance;
-      })
-      .catch(err => console.log(err));
-    // 상위 컴포넌트에 전달
-    // console.log('7 set plogging distance to up');
-    props.setPloggingDistance(
-      Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) / 100,
-    );
-    // 위치배열갱신 -> 이동경로 그려줌
-    // console.log('8 renew position array. this is use to polyline');
-    posirouteCoordinates.current = [
-      ...posirouteCoordinates.current,
-      newCoordinate,
-    ];
-    // 과거위치 변경
-    // console.log('9 past position change');
-    prevLatLng.current = newCoordinate;
+    async function doEffect() {
+      imReady.current = true;
+      // console.log('5 renew region');
+      // console.log('region', region);
+      const newCoordinate: latLng = {
+        latitude: region.current.latitude,
+        longitude: region.current.longitude,
+      };
+      // 거리 더하기
+      await calcDistance(newCoordinate)
+        .then(distance => {
+          // console.log('7 add distance');
+          distanceTravelled.current += distance;
+        })
+        .catch(err => console.log(err));
+      // 상위 컴포넌트에 전달
+      // console.log('8 set plogging distance to up');
+      props.setPloggingDistance(
+        Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) / 100,
+      );
+      // 위치배열갱신 -> 이동경로 그려줌
+      // console.log('9 renew position array. this is use to polyline');
+      posirouteCoordinates.current = [
+        ...posirouteCoordinates.current,
+        newCoordinate,
+      ];
+      // 과거위치 변경
+      // console.log('10 past position change');
+      prevLatLng.current = newCoordinate;
+    }
+
+    doEffect();
   }, [region.current]);
 
   // 거리 계산 함수
   const calcDistance = async (newLatLng: latLng) => {
     // console.log('6 calculate distance');
-    return (
-      (await haversine(prevLatLng.current, newLatLng, {unit: 'meter'})) || 0
-    );
+    return haversine(prevLatLng.current, newLatLng, {unit: 'meter'}) || 0;
   };
 
   // console.log('11 ordinary space');
+  // console.log('####### imReady ########', imReady.current);
 
-  // // 페이지 로딩
-  // if (curLatLng.current.latitude === 0) {
-  //   return (
-  //     <View>
-  //       <AppText>잠시만 기다려주세요...</AppText>
-  //     </View>
-  //   );
-  // }
+  // 페이지 로딩
+  if (!imReady.current) {
+    return (
+      <View>
+        <AppText>잠시만 기다려주세요...</AppText>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.mapContent}
-        region={region.current}
+        region={watchId === 0 ? region.current : newRegion.current}
         showsUserLocation={true}
         showsMyLocationButton={true}
         initialRegion={{
@@ -219,7 +224,8 @@ const GoogleMap = (props: GoogleMapProps) => {
           latitudeDelta: 0.001,
           longitudeDelta: 0.001,
         }}
-        onRegionChangeComplete={newRegion => {
+        onRegionChangeComplete={region => {
+          newRegion.current = region;
           // console.log('이동거리:', distanceTravelled.current);
           // console.log('새로운 지도 영역:', newRegion);
         }}>
