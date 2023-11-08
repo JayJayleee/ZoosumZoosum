@@ -157,7 +157,7 @@ const GoogleMap = (props: GoogleMapProps) => {
     // 권한 확인 후, 위치 설정
     requestPermission().then(result => {
       // console.log('2 permission');
-      console.log({result});
+      // console.log({result});
       // 허가받지 못한 경우 에러메세지
       if (result !== 'granted') {
         setErrorMsg('Permission to access location was denied');
