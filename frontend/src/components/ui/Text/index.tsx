@@ -8,7 +8,9 @@ interface AppTextProps {
 
 const AppText = ({style, children}: AppTextProps) => {
   return (
-    <Text style={[{fontFamily: 'NPSfont_regular'}, style]}>{children}</Text>
+    <Text style={[{fontFamily: 'NPSfont_regular', color: 'black'}, style]}>
+      {children}
+    </Text>
   );
 };
 
