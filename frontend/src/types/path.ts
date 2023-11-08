@@ -39,6 +39,7 @@ export type RootStackParamList = {
   FriendDetail: {
     animalId: number;
   };
+  FirstEgg: undefined;
 };
 
 export type LoginScreenProps = NativeStackScreenProps<
@@ -118,4 +119,9 @@ export type FriendDetailScreenProps = NativeStackScreenProps<
 export type TutorialScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'Tutorial'
+>;
+
+export type FirstEggScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'FirstEgg'
 >;

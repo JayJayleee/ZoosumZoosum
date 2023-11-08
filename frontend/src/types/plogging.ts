@@ -4,11 +4,13 @@ export interface AnimalCarouselCardItemProps {
   item?: {
     fileUrl: string;
     animalName: string;
-    description: string;
-    animalId: string;
+    description?: string;
+    animalId: number;
   };
-  index: number;
+  index?: number;
   activeIndex?: number;
+  onNamingComplete?: (name: string) => void;
+  gotomain?: () => void;
 }
 
 export interface CarouselCardItemProps {
