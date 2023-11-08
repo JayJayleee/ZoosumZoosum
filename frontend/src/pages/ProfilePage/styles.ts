@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { windowHeight } from "@/constants/styles";
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 export const styles = StyleSheet.create({
   center: {
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white', 
     flexDirection: 'row', 
     borderRadius: 20,
-    marginBottom: windowHeight * 0.03,
+    marginBottom: windowHeight * 0.02,
     paddingLeft: '5%',
     paddingRight: '20%',
     justifyContent:'space-evenly', 
@@ -100,7 +100,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#B4B4B4', 
     flexDirection: 'row', 
     borderRadius: 20,
-    marginBottom: windowHeight * 0.03,
+    marginBottom: windowHeight * 0.02,
     paddingLeft: '5%',
     justifyContent:'flex-start', 
     alignItems: 'center',
@@ -139,6 +139,92 @@ export const styles = StyleSheet.create({
   },
   badgeBoxContent: {
     fontSize: 15
+  },
+  historyBox: {
+    position: 'relative',
+    width: '100%', 
+    height: '90%', 
+    top: '10%',
+    paddingTop: '15%',
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  historyInner: {
+    position: 'relative',
+    justifyContent: 'center', 
+    width: '100%',
+    height: '80%',
+    bottom: '9%',
+  },
+  historyEmpty :{
+    textAlign: 'center', 
+    color: 'white', 
+    fontSize: 30
+  },
+  historyBoxSection : {
+    flexDirection: 'row', 
+    width: windowWidth * 0.88, 
+    height: windowHeight * 0.25, 
+    marginBottom: windowHeight * 0.02,
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
+    backgroundColor: 'white',
+    borderRadius: 15
+  },
+  historyBoxImg: {
+    width: '45%', 
+    height: '100%',
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15
+  },
+  historyBoxRight: {
+    width: '55%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  historyBoxDetail: {
+    width: '100%', 
+    height: '30%', 
+    flexDirection:'row',
+    justifyContent:'center', 
+    alignItems: 'center'
+  },
+  historyBoxDetailText: {
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  historyBoxIcon : {
+    backgroundColor: '#38FFB6', 
+    width: windowHeight * 0.05, 
+    height: windowHeight * 0.05,
+    borderRadius: 50
+  },
+  historyBoxTitle: {
+    fontFamily: 'NPSfont_bold',
+    fontSize: 18, 
+    color: 'black'
+  },
+  historyBoxContent: {
+    marginTop: '5%',
+    textAlign: 'center',
+    fontFamily: 'NPSfont_regular',
+    fontSize: 15, 
+    color: 'black'
+  },
+  historyBoxLine: {
+    borderBottomWidth: 0.5, 
+    borderBottomColor: 'black',
+    justifyContent: 'center',
+    width: '80%',
+  },
+  historyBoxMedal: {
+    backgroundColor: '#38FFB6', 
+    width: windowHeight * 0.12, 
+    height: windowHeight * 0.12,
+    borderRadius: windowHeight * 0.5,
+    top: windowHeight * 0.01
   },
   tabSection: {
     position: 'relative',
