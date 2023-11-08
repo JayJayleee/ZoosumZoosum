@@ -1,7 +1,12 @@
 import { StyleSheet } from "react-native";
+import { windowHeight } from "@/constants/styles";
 
 export const styles = StyleSheet.create({
-  staTitle: {
+  center: {
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  upperTitle: {
     position: 'relative',
     fontFamily: 'NPSfont_bold',
     fontSize: 40, 
@@ -53,6 +58,87 @@ export const styles = StyleSheet.create({
     borderBottomColor: 'black', 
     width: '70%',
     bottom: '3%', 
+  },
+  badgeBox: {
+    position: 'relative',
+    width: '100%', 
+    height: '90%', 
+    top: '10%',
+    paddingTop: '15%',
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  badgeInner: {
+    position: 'relative',
+    width: '100%',
+    height: '80%',
+    bottom: '9%',
+  },
+  badgeBoxSectionTrue: {
+    width:'85%',  
+    height: windowHeight * 0.12, 
+    backgroundColor: 'white', 
+    flexDirection: 'row', 
+    borderRadius: 20,
+    marginBottom: windowHeight * 0.03,
+    paddingLeft: '5%',
+    paddingRight: '20%',
+    justifyContent:'space-evenly', 
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  badgeBoxSectionFalse: {
+    width:'85%',  
+    height: windowHeight * 0.12, 
+    backgroundColor: '#B4B4B4', 
+    flexDirection: 'row', 
+    borderRadius: 20,
+    marginBottom: windowHeight * 0.03,
+    paddingLeft: '5%',
+    justifyContent:'flex-start', 
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  badgeBoxTextSection: {
+    paddingLeft: '10%'
+  },
+  badgeBoxIconTrue: {
+    backgroundColor: '#38FFB6',
+    borderRadius: 50,
+    width: 100, 
+    height: 100,
+  },
+  badgeBoxIconFalse: {
+    backgroundColor: '#249F71',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
+    width: windowHeight * 0.08, 
+    height: windowHeight * 0.08,
+  },
+  badgeLockImg: {
+    width: windowHeight * 0.06, 
+    height: windowHeight * 0.06,
+  },
+  badgeBoxTitle: {
+    fontSize: 25
+  },
+  badgeBoxContent: {
+    fontSize: 15
   },
   tabSection: {
     position: 'relative',
