@@ -10,4 +10,4 @@ RUN pip install uvicorn
 
 
 # ENTRYPOINT: 컨테이너를 실행할 때 실행할 명령어 강제 지정
-ENTRYPOINT ["uvicorn", " fastapiserver:app --host 0.0.0.0 --port 8000 --workers 4"]
+ENTRYPOINT ["uvicorn", "fastapiserver:app --host 0.0.0.0 --port 8000 --workers 4"]
