@@ -4,90 +4,83 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    },
+    justifyContent : 'center'
+  },
+  rankingsheet : {
+    width : "90%",
+    height : "90%"
+  },
+  rankingpage : {
+    width : "100%",
+    height : "100%",
+    backgroundColor: 'red',
+    justifyContent : 'center',
+    alignItems : 'center',
+    paddingTop : '35%'
+  },
   button_container :{
     flexDirection: 'row',
     alignItems: 'center',
-    margin : 10,
+    margin : '5%',
   },
   list_container : {
     width : '100%',
-    height : '100%'
+    height : '100%',
+    justifyContent : 'flex-start',
+    alignItems : 'center',
   },
-  title_head : {
-    color : 'white',
-    fontSize : 35,
-    fontFamily : 'NPSfont_extrabold'
+  ranking_container : {
+    width : '90%',
+    height : '90%',
+    backgroundColor : 'white',
+    justifyContent : 'center',
+    alignItems : 'center',
+    borderRadius : 15,
+    opacity : 0.8,
+    paddingHorizontal : "5%",
+    paddingVertical : "10%"
   },
-  head : {
-    height : '10%',
-    marginTop : '10%',
-    marginBottom : '5%',
-    alignItems: 'center',
-  },
-
-  hiddenCard: {
-    width: 115,
-    height: 130,
-  },
-  itemList : {
-    flex: 1,
-    alignItems: 'center',
-    // width : '100%',
-  },
-  headItem : {
+  select_container : {
     width : '100%',
-    height : '5%',
+    height : '10%',
+    backgroundColor : 'red',
+  },
+  title_container : {
+    width : '100%',
+    height : '10%',
+    flexDirection : 'row',
     justifyContent : 'center',
     alignItems : 'center',
   },
-  headItemTitle : {
-    color : 'white',
+  body_container : {
+    width : '100%',
+    height : '80%',
+  },
+  title_grid1 : {
+    width : '15%',
+    textAlign : 'center',
+    fontFamily : 'NPSfont_extrabold',
     fontSize : 20,
   },
-  bodyItem: {
-    backgroundColor : '#646567',
-    borderRadius : 10,
-    width : '100%',
-    height : '40%',
-    justifyContent : 'flex-start',
-    alignItems : 'center',
-    paddingTop : 20,
+  title_grid2 : {
+    width : '40%',
+    textAlign : 'center',
+    fontSize : 20,
+    fontFamily : 'NPSfont_extrabold',
   },
-  body2Item : {
-    paddingTop : 20,
-    width : '90%',
-    height : '30%',
+  title_grid3 : {
+    width : '15%',
+    textAlign : 'center',
+    fontSize : 20,
+    fontFamily : 'NPSfont_extrabold',
   },
-  ItemCardSelect : {
-    backgroundColor: "white",
-    borderRadius : 10,
-    width : '90%',
-    height : '80%',
-    marginBottom : 10,
-    justifyContent : 'flex-start',
-    alignItems : 'center'
+  title_grid4 : {
+    width : '30%',
+    textAlign : 'center',
+    fontSize : 20,
+    fontFamily : 'NPSfont_extrabold',
   },
-  ItemCardSelectImgage : {
-    height: "80%",
-    width : "80%"
-  },
-  islandCard_image : {
-    height : '100%',
-    width : '100%',
-    resizeMode: 'contain',
-  },
-  islandCard_title : {
-    fontSize: 25,
-  },
-  treeCard_image : {
-    height : '130%',
-    width : '100%',
-    // resizeMode: 'contain',
-  },
-  treeCard_title : {
-    fontSize: 25,
-  },
-});
+
+})
 
 export default styles;
