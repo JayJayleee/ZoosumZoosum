@@ -28,12 +28,11 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
     second: 0,
     sumTrash: 0,
   })
-  const [activityList, setActivityList] = useState<activityHistory>({
-    content: [],
-    size: 0,
-  })
-  // 활동내역의 무한 스크롤을 위한 페이지 번호 변수 생성
-  const [activityPageNumber, setPageNumber] = useState<number>(0);
+  // 로딩중임을 확인하는 변수 생성
+  const [loadingStatus, setLoadingStatus] = useState<boolean>(false)
+
+    // 탭 이동을 위한 변수 생성
+    const [activityPageNumber, setPageNumber] = useState<number>(0);
 
   // 들어온 프로필 페이지가 자신인지 타인인지 판단하는 코드
   useEffect(() => {
@@ -76,29 +75,15 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
       },
     }
   );
-  // 활동 변수에 받아온 결과를 저장하는 코드 
-  const { isLoading: activityLoading, isError: isActivityError, error: ActivityError } = useQuery<activityHistory>(
-    ["activityList"],
-    () => getActivityInfo(route.params.nickname, activityPageNumber, 25),
-    {
-      onSuccess: (data) => {
-        setActivityList({
-          content: data.content,
-          size: data.size,
-        })
-      },
-    }
-  );
 
-  if (badgeLoading || statisticLoading || activityLoading) {
-    return <Spinner />;
-  }
 
   return (
+  <>
+  {loadingStatus? <Spinner /> : 
   <ImageBackground source={require("@/assets/profile_image/profile_background.png")} style={[StyleSheet.absoluteFill, {justifyContent: 'center', alignItems: 'center'}]}>
     {activityPageNumber == 0? <StatisticTab nickname={route.params.nickname} isMyProfile={isMyProfile} statisticList={statisticList}/>  : 
     (activityPageNumber == 1 ? <BadgeTab nickname={route.params.nickname} isMyProfile={isMyProfile} badgeList={badgeList} /> : 
-    <HistoryTab nickname={route.params.nickname} isMyProfile={isMyProfile} activityList={activityList}/>)}
+    <HistoryTab nickname={route.params.nickname} isMyProfile={isMyProfile}/>)}
     <View style={styles.tabSection}>
       <TouchableOpacity onPress={() => {setPageNumber(0)}} style={styles.tabClickSection}>
         <FastImage source={require("@/assets/img_icon/statistic_icon.png")} style={styles.tabImage}/> 
@@ -113,6 +98,7 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
         <AppText children="활동 내역" style={styles.tabText}/>         
       </TouchableOpacity>
     </View>
-  </ImageBackground>
+  </ImageBackground>}
+  </>
   );
 }
