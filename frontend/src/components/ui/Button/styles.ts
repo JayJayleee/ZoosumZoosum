@@ -144,6 +144,33 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  ranking: {
+    width: '40%',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  rankingText: {
+    color: 'black',
+    fontFamily: 'NPSfont_bold',
+    fontSize : 20,
+  },
+  ranking_unselect: {
+    width: '40%',
+    backgroundColor: '#92D050',
+    borderRadius: 8,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  rankingText_unselect: {
+    color: 'black',
+    fontFamily: 'NPSfont_bold',
+    fontSize : 20,
   tutorial: {
     width: '45%',
     backgroundColor: '#34D399',

@@ -46,7 +46,7 @@ const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {
-    PermissionsAndroid.requestMultiple([
+    PermissionsAndroid.requestMultiple([ 
       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       PermissionsAndroid.PERMISSIONS.CAMERA,
