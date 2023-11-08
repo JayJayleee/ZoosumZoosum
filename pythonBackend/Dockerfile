@@ -10,8 +10,5 @@ RUN pip install uvicorn
 RUN pip install python-multipart
 
 
-
 # ENTRYPOINT: 컨테이너를 실행할 때 실행할 명령어 강제 지정
-# RUN pwd \
-#     ls -al
 # ENTRYPOINT ["uvicorn", "fastapiserver:app --host 0.0.0.0 --port 8000 --workers 4"]
