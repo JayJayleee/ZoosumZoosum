@@ -1,6 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityDataType} from '@/types/plogging';
+import {Platform} from 'react-native';
 
 // storage에 저장된 token 가져오기(get)
 const getStoredToken = async () => {
@@ -63,13 +64,50 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
   }
 }
 
-export async function TrashImgResultFtn(Img: string) {
-  console.log('받은 직후:', Img);
+// export async function TrashImgResultFtn(Img: string) {
+//   console.log('받은 직후:', Img);
 
-  // 사용자 토큰 가져오기
-  const token = await getStoredToken();
+//   // 사용자 토큰 가져오기
+//   const token = await getStoredToken();
 
-  // FormData 생성
+//   // FormData 생성
+//   const formData = new FormData();
+
+//   const now = new Date();
+//   const TrashfileName = `trash-${now.getFullYear()}-${
+//     now.getMonth() + 1
+//   }-${now.getDate()}-${now.getHours()}`;
+
+//   // 이미지가 있을 경우 formData에 추가
+//   if (Img) {
+//     formData.append('file', {
+//       uri: Img,
+//       name: `${TrashfileName}.jpg`,
+//       type: 'image/jpeg',
+//     });
+//   }
+
+//   try {
+//     // Axios로 POST 요청 보내기
+//     const response = await axios.post('http://zoosum.co.kr:8000/ai', formData, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         // 'Content-Type': 'multipart/form-data'는 axios에서 자동으로 설정됩니다.
+//       },
+//     });
+
+//     console.log('요청 결과:', response.data);
+//     return response.data;
+//   } catch (e) {
+//     console.error('활동과 사진 업로드에 실패했습니다.', e);
+//   }
+// }
+
+export async function TrashImgResultFtn(
+  Img: string,
+  retries = 3,
+  interval = 2000,
+) {
   const formData = new FormData();
 
   const now = new Date();
@@ -77,27 +115,32 @@ export async function TrashImgResultFtn(Img: string) {
     now.getMonth() + 1
   }-${now.getDate()}-${now.getHours()}`;
 
-  // 이미지가 있을 경우 formData에 추가
-  if (Img) {
-    formData.append('file', {
-      uri: Img,
-      name: `${TrashfileName}.jpg`,
-      type: 'image/jpeg',
-    });
-  }
+  formData.append('file', {
+    uri: Img,
+    name: `${TrashfileName}.jpg`,
+    type: 'image/jpeg',
+  });
+
+  const token = await getStoredToken();
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'multipart/form-data',
+    // Add your headers here
+  };
 
   try {
-    // Axios로 POST 요청 보내기
     const response = await axios.post('http://zoosum.co.kr:8000/ai', formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // 'Content-Type': 'multipart/form-data'는 axios에서 자동으로 설정됩니다.
-      },
+      headers,
     });
-
-    console.log('요청 결과:', response.data);
     return response.data;
-  } catch (e) {
-    console.error('활동과 사진 업로드에 실패했습니다.', e);
+  } catch (error) {
+    if (retries > 0) {
+      console.warn(`Upload failed, retrying in ${interval}ms...`, error);
+      await new Promise(resolve => setTimeout(resolve, interval));
+      return TrashImgResultFtn(Img, retries - 1, interval);
+    } else {
+      throw error;
+    }
   }
 }
