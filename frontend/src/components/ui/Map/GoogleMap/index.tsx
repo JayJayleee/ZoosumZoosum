@@ -5,10 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import styles from './styles';
 import haversine from 'haversine';
 import AppText from '../../Text';
-
-// default LATITUDE & LONGITUDE
-const LATITUDE: number = 36.35535459523802;
-const LONGITUDE: number = 127.29854862890039;
+import FastImage from 'react-native-fast-image';
 
 // type defined
 type latLng = {
@@ -16,8 +13,14 @@ type latLng = {
   longitude: number;
 };
 type GoogleMapProps = {
-  endPlog: boolean;
-  setPloggingDistance: Function;
+  endPlog: boolean; // 플로깅 종료여부
+  animalImg: string; // 동물 이미지
+  trashCount: number; // 주운 쓰레기 개수 변화 감지
+  setPloggingDistance: Function; // 거리 변동 감지
+};
+type marker = {
+  id: number;
+  coordinate: latLng;
 };
 
 // 위치 정보 수집 권한 요청
@@ -28,11 +31,11 @@ async function requestPermission() {
       return await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Geolocation Permission',
-          message: 'Can we access your location?',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
+          title: '위치 권한 요청',
+          message: '위치 권한 사용을 허가해주세요.',
+          buttonNeutral: '나중에',
+          buttonNegative: '취소',
+          buttonPositive: '수락',
         },
       );
     }
@@ -50,26 +53,14 @@ async function requestPermission() {
 // ########## 구글맵 컴포넌트 ##########
 const GoogleMap = (props: GoogleMapProps) => {
   // region
-  const region = useRef({
+  const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
-    latitudeDelta: 0.001,
-    longitudeDelta: 0.001,
-  });
-  // new region
-  const newRegion = useRef({
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 0.001,
-    longitudeDelta: 0.001,
+    latitudeDelta: 0.002,
+    longitudeDelta: 0.002,
   });
   // 이전위치
   const prevLatLng = useRef<latLng>({
-    latitude: 0,
-    longitude: 0,
-  });
-  // 현재위치
-  const curLatLng = useRef<latLng>({
     latitude: 0,
     longitude: 0,
   });
@@ -83,16 +74,86 @@ const GoogleMap = (props: GoogleMapProps) => {
   const [errorMsg, setErrorMsg] = useState<string>('');
   // 준비여부
   const imReady = useRef<boolean>(false);
+  // 주운 쓰레기 개수
+  const captureTrashCount = useRef<number>(0);
+  // 마커 정보를 배열로 정의
+  const markers = useRef<marker[]>([]);
+  // 마커 이미지 소스 정의
+  const markerImage = require('@/assets/img_icon/trash_marker_icon.png');
+  // 동물 이미지 소스 정의
+  const animalImage = {uri: props.animalImg};
 
+  // 거리 계산 함수
+  const calcDistance = async (newLatLng: latLng) => {
+    // console.log('6 calculate distance');
+    return haversine(prevLatLng.current, newLatLng, {unit: 'meter'}) || 0;
+  };
+
+  const getPosition = async () => {
+    await myCurrnetPosition();
+    await myWatchPosition();
+  };
+
+  // 현재 위치 가져오기
+  const myCurrnetPosition = async () => {
+    // 현재 위치 받아오기
+    Geolocation.getCurrentPosition(
+      // 성공
+      pos => {
+        // console.log('3 get current position');
+        // console.log(pos);
+        const {latitude, longitude} = pos.coords;
+        // 과거위치 변경
+        prevLatLng.current = {latitude: latitude, longitude: longitude};
+      },
+      // 실패
+      error => {
+        console.log(error, error.message);
+      },
+      // 옵션
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+      },
+    );
+  };
+
+  // 위치 지켜보기
+  const myWatchPosition = async () => {
+    watchId = Geolocation.watchPosition(
+      // 성공
+      pos => {
+        // console.log('4 watch position');
+        const {latitude, longitude} = pos.coords;
+        setRegion({
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
+        });
+      },
+      // 실패
+      error => {
+        console.log(error);
+      },
+      // 옵션
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 1,
+        interval: 5000,
+        fastestInterval: 2000,
+      },
+    );
+  };
+
+  // 최초 1회 현재위치 설정
   useEffect(() => {
     // console.log('1 init useEffect');
     // console.log('endPlog', props.endPlog);
     // 플로깅 끝나면 위치 이동 중지
-    if (props.endPlog) {
-      return () => {
-        Geolocation.clearWatch(watchId);
-      };
-    }
+    Geolocation.clearWatch(watchId);
+
     // 권한 확인 후, 위치 설정
     requestPermission().then(result => {
       // console.log('2 permission');
@@ -103,132 +164,104 @@ const GoogleMap = (props: GoogleMapProps) => {
         console.log(errorMsg);
         return;
       }
-
-      // 현재 위치 받아오기
-      Geolocation.getCurrentPosition(
-        // 성공
-        pos => {
-          // console.log('3 get current position');
-          // console.log(pos);
-          const {latitude, longitude} = pos.coords;
-          // 과거위치 변경
-          prevLatLng.current = {latitude: latitude, longitude: longitude};
-        },
-        // 실패
-        error => {
-          console.log(error, error.message);
-        },
-        // 옵션
-        {
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 10000,
-        },
-      );
-
-      // 이동 위치 지켜보기
-      watchId = Geolocation.watchPosition(
-        // 성공
-        pos => {
-          // console.log('4 watch position');
-          const {latitude, longitude} = pos.coords;
-          // 현재위치 갱신
-          curLatLng.current = {latitude: latitude, longitude: longitude};
-          region.current = {
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.001,
-            longitudeDelta: 0.001,
-          };
-        },
-        // 실패
-        error => {
-          console.log(error);
-        },
-        // 옵션
-        {
-          enableHighAccuracy: true,
-          distanceFilter: 1,
-          interval: 5000,
-          fastestInterval: 2000,
-        },
-      );
+      getPosition();
     });
   }, []);
 
+  // region이 변경되었을 때 나머지 데이터들도 갱신
   useEffect(() => {
-    if (region.current.latitude === 0) return;
-    async function doEffect() {
-      imReady.current = true;
-      // console.log('5 renew region');
-      // console.log('region', region);
-      const newCoordinate: latLng = {
-        latitude: region.current.latitude,
-        longitude: region.current.longitude,
-      };
-      // 거리 더하기
-      await calcDistance(newCoordinate)
-        .then(distance => {
-          // console.log('7 add distance');
-          distanceTravelled.current += distance;
-        })
-        .catch(err => console.log(err));
-      // 상위 컴포넌트에 전달
-      // console.log('8 set plogging distance to up');
-      props.setPloggingDistance(
-        Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) / 100,
-      );
-      // 위치배열갱신 -> 이동경로 그려줌
-      // console.log('9 renew position array. this is use to polyline');
-      posirouteCoordinates.current = [
-        ...posirouteCoordinates.current,
-        newCoordinate,
-      ];
-      // 과거위치 변경
-      // console.log('10 past position change');
-      prevLatLng.current = newCoordinate;
-    }
+    if (region.latitude === 0) return;
+    imReady.current = true;
+    // console.log('5 renew region');
+    // console.log('region', region);
+    const newCoordinate: latLng = {
+      latitude: region.latitude,
+      longitude: region.longitude,
+    };
+    // 거리 더하기
+    calcDistance(newCoordinate)
+      .then(distance => {
+        // console.log('7 add distance');
+        distanceTravelled.current += distance;
+      })
+      .catch(err => console.log(err));
+    // 상위 컴포넌트에 전달
+    // console.log('8 set plogging distance to up');
+    props.setPloggingDistance(
+      Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) / 100,
+    );
+    // 위치배열갱신 -> 이동경로 그려줌
+    // console.log('9 renew position array. this is use to polyline');
+    posirouteCoordinates.current = [
+      ...posirouteCoordinates.current,
+      newCoordinate,
+    ];
+    // 과거위치 변경
+    // console.log('10 past position change');
+    prevLatLng.current = newCoordinate;
+  }, [region]);
 
-    doEffect();
-  }, [region.current]);
+  // 사진을 찍었을 때, 현재 위치에 쓰레기 이미지 마커를 찍는다.
+  useEffect(() => {
+    // console.log('12 capture trash');
+    if (captureTrashCount.current === props.trashCount) return;
+    captureTrashCount.current = props.trashCount;
+    // console.log('12 capture trash do do do');
+    const newMarker: marker = {
+      id: markers.current.length + 1,
+      coordinate: {
+        latitude: region.latitude,
+        longitude: region.longitude,
+      },
+    };
+    markers.current = [...markers.current, newMarker];
+  }, [props.trashCount]);
 
-  // 거리 계산 함수
-  const calcDistance = async (newLatLng: latLng) => {
-    // console.log('6 calculate distance');
-    return haversine(prevLatLng.current, newLatLng, {unit: 'meter'}) || 0;
-  };
+  // 페이지 로딩
+  // if (!imReady.current) {
+  //   return (
+  //     <View>
+  //       <AppText>잠시만 기다려주세요...</AppText>
+  //     </View>
+  //   );
+  // }
 
   // console.log('11 ordinary space');
   // console.log('####### imReady ########', imReady.current);
-
-  // 페이지 로딩
-  if (!imReady.current) {
-    return (
-      <View>
-        <AppText>잠시만 기다려주세요...</AppText>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.mapContent}
-        region={watchId === 0 ? region.current : newRegion.current}
+        region={region}
         showsUserLocation={true}
         showsMyLocationButton={true}
         initialRegion={{
-          latitude: region.current.latitude,
-          longitude: region.current.longitude,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.001,
+          latitude: region.latitude,
+          longitude: region.longitude,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
         }}
-        onRegionChangeComplete={region => {
-          newRegion.current = region;
-          // console.log('이동거리:', distanceTravelled.current);
-          // console.log('새로운 지도 영역:', newRegion);
-        }}>
+        onRegionChangeComplete={region => {}}>
+        {/* 주운 쓰레기 목록 마커 */}
+        {markers.current.map(marker => (
+          <Marker
+            key={marker.id}
+            coordinate={marker.coordinate}
+            image={markerImage}
+            zIndex={-1}
+          />
+        ))}
+        {/* 내가 고른 동물 마커 */}
+        <Marker
+          key={0}
+          coordinate={{
+            latitude: region.latitude,
+            longitude: region.longitude,
+          }}>
+          <FastImage source={animalImage} style={styles.animal} />
+        </Marker>
         <Polyline
           coordinates={posirouteCoordinates.current}
           strokeColor="#2C9261"
