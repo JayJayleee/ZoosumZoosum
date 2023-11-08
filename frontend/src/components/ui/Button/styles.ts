@@ -127,7 +127,7 @@ export const styles = StyleSheet.create({
   userInfoText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
-    fontSize : 22,
+    fontSize: 22,
   },
   button: {
     borderRadius: 10,
@@ -143,5 +143,19 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
+  },
+  tutorial: {
+    width: '45%',
+    backgroundColor: '#34D399',
+    borderRadius: 12,
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '8%',
+  },
+  tutorialText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
   },
 });

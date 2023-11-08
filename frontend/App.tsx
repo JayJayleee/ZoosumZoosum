@@ -36,7 +36,7 @@ import FriendDetailPage from '@/pages/FriendDetailPage';
 import {useEffect} from 'react';
 import {PermissionsAndroid} from 'react-native';
 
-import Toast from 'react-native-toast-message';
+import TutorialPage from '@/pages/TutorialPage';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -61,6 +61,7 @@ function App() {
           // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="Login" component={LoginPage} />
+          <Stack.Screen name="Tutorial" component={TutorialPage} />
           <Stack.Screen name="Main" component={MainPage} />
           <Stack.Screen name="Plogging" component={PloggingPage} />
           <Stack.Screen name="PloggingResult" component={PloggingResultPage} />
