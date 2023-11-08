@@ -5,20 +5,7 @@ import AppText from '../Text';
 
 type ButtonProps = {
   children?: string;
-  variant?:
-    | 'default'
-    | 'button'
-    | 'animalName'
-    | 'primary'
-    | 'pickfriend'
-    | 'gotoisland'
-    | 'selectItem'
-    | 'carouselBtn'
-    | 'picnic'
-    | 'ploggingRST'
-    | 'region'
-    | 'nickname'
-    | 'tutorial';
+  variant?: 'default' | 'button' | 'animalName' | 'primary' | 'pickfriend'| 'gotoisland' | "selectItem" | 'carouselBtn' | 'picnic' | 'ploggingRST' | 'region' | 'nickname' | 'ranking' | 'rankingUnselect' | 'tutorial';
   onPress: () => void;
 };
 
@@ -85,6 +72,13 @@ export default function AppButton({
       variantStyle = styles.button;
       textStyle = styles.buttonText;
       break;
+    case 'ranking':
+      variantStyle = styles.ranking;
+      textStyle = styles.rankingText;
+      break;
+    case 'rankingUnselect':
+      variantStyle = styles.ranking_unselect;
+      textStyle = styles.rankingText_unselect;
     case 'tutorial':
       variantStyle = styles.tutorial;
       textStyle = styles.tutorialText;
