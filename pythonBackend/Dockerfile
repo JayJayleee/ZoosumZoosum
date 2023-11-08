@@ -7,6 +7,8 @@ COPY yolov8s_custom.pt yolov8s_custom.pt
 
 RUN pip install fastapi
 RUN pip install uvicorn
+RUN pip install python-multipart
+
 
 
 # ENTRYPOINT: 컨테이너를 실행할 때 실행할 명령어 강제 지정
