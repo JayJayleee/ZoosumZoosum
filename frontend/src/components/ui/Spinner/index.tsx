@@ -2,8 +2,14 @@ import { Wave } from "@/components/ui/animation/LottieEffect";
 import { View, Text } from 'react-native';
 import FastImage from "react-native-fast-image";
 import AppText from "../Text";
+import { styles } from "./styles";
+import { useEffect, useState } from "react";
+
 
 export default function Spinner() {
+
+  const [num, setNum] = useState(0);
+
   const textExample = [
     "섬에 들어갈 배 기다리는 중...",
     "포근한 바람이 편지를 배달하는 중...",
@@ -17,14 +23,16 @@ export default function Spinner() {
     "당신의 도착 소식을 전달하는 중...",
   ]
 
-  let tmp = Math.floor(Math.random() * 10); 
+  useEffect(() => {
+    setNum(Math.floor(Math.random() * 10))
+  }, [])
 
   return (
-    <View style={{backgroundColor: '#8BCCCB', flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} style={{ width: 300, height: 300 }} />
+    <View style={styles.container}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} style={styles.image} />
       <Wave />
-      <AppText style={{color: 'white', fontSize: 25, top: -50}}>
-        {textExample[tmp]}
+      <AppText style={styles.text}> 
+        {textExample[num]}
       </AppText>
     </View>
   )
