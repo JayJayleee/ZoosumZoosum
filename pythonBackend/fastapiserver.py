@@ -22,7 +22,7 @@ print("model load 완료")
 
 @app.get("/")
 def root():
-    return "Ggyumo's fastapi server is running"
+    return "Ggyumo's fastapi server is running!"
 
 
 # image upload 후 예측 결과 반환
