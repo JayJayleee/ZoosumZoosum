@@ -218,13 +218,13 @@ const GoogleMap = (props: GoogleMapProps) => {
   }, [props.trashCount]);
 
   // 페이지 로딩
-  if (!imReady.current) {
-    return (
-      <View>
-        <AppText>잠시만 기다려주세요...</AppText>
-      </View>
-    );
-  }
+  // if (!imReady.current) {
+  //   return (
+  //     <View>
+  //       <AppText>잠시만 기다려주세요...</AppText>
+  //     </View>
+  //   );
+  // }
 
   // console.log('11 ordinary space');
   // console.log('####### imReady ########', imReady.current);
