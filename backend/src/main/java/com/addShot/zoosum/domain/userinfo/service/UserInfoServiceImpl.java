@@ -48,6 +48,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -257,9 +259,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 		String fileUrl = "";
 		//이미지 생성
 		try {
-			File originalImageFile = new File(
-				UserInfoServiceImpl.class.getResource("/certificate.png").toURI());
-			BufferedImage image = ImageIO.read(originalImageFile);
+			InputStream inputStream = UserInfoServiceImpl.class.getResourceAsStream("/certificate.png");
+			BufferedImage image = ImageIO.read(inputStream);
 
 			//이미지 위에 그릴 Graphics2D 객체 가져오기
 			Graphics2D g2d = image.createGraphics();
