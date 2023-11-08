@@ -1,5 +1,5 @@
 import {ImageSourcePropType} from 'react-native';
-
+import {tree} from './tree';
 export interface AnimalCarouselCardItemProps {
   item?: {
     fileUrl: string;
@@ -66,6 +66,8 @@ export interface TreeCarouselCardItemProps {
     btn: string;
   };
   index: number;
+  onUserData?: (data: tree) => void;
+  errorAlert?: () => void;
 }
 
 export interface EffectProps {

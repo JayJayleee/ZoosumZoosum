@@ -11,7 +11,7 @@ import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {CamerascreenProps} from '../../types/path';
 import {AppState, AppStateStatus} from 'react-native';
 import styles from './style';
-import {storeImage} from './savePhoto';
+import AppText from '@/components/ui/Text';
 import {useMutation} from '@tanstack/react-query';
 import {TrashImgResultFtn} from '@/apis/plogging';
 
@@ -162,6 +162,17 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('@/assets/plogingpage_image/filter.png')}
+        style={{
+          ...StyleSheet.absoluteFillObject,
+          width: '100%',
+          height: '100%',
+          aspectRatio: 1,
+          // resizeMode: 'stretch',
+          zIndex: 1,
+        }}
+      />
       <Camera
         ref={camera}
         style={StyleSheet.absoluteFill}
@@ -180,7 +191,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
           source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
           style={styles.overlayRightImage}
         />
-        <Text style={styles.overlayText}> 인생 씁다...씁...후...</Text>
+        <AppText style={styles.overlayText}> 인생 씁다...씁...후...</AppText>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />
