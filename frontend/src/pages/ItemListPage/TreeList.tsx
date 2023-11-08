@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text, FlatList, TouchableOpacity,Image } from 'react-native';
 import styles from './style';
 import AppText from '@/components/ui/Text';
@@ -6,6 +6,7 @@ import AppButton from '@/components/ui/Button';
 import ItemCard from './ItemCard';
 import {fetchMyItemListInfo} from '@/apis/Item';
 import {useQuery} from '@tanstack/react-query';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface IslandListProps {
   goToSelectTree : (data: number) => void;
@@ -34,8 +35,8 @@ export default function TreeList({goToSelectTree} : IslandListProps) {
   const [selectedTreeImgURI, setSelectedTreeImgURI] = useState('');
   const [selectedTreeTitle, setSelectedTreeTitle] = useState('');
   const [selectedTreeItemId, setselectedTreeItemId] = useState(0);
-
-  useQuery(['ItemList'], 
+  // 화면 focus 시 다시 query 실행을 위해 refetch 추가
+  const {refetch} = useQuery(['ItemList'], 
   () => fetchMyItemListInfo(itemType), {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
@@ -77,6 +78,8 @@ export default function TreeList({goToSelectTree} : IslandListProps) {
       console.error('돌발돌발', error);
     },
   });
+
+  useFocusEffect(useCallback(() => {refetch()}, []))
 
   if (!ItemArray.length) return <Text>로딩...</Text>;
 
