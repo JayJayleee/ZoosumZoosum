@@ -4,11 +4,16 @@ import { ProfilescreenProps } from '@/types/path';
 import { ImageBackground } from 'react-native';
 import AppText from '@/components/ui/Text';
 import { getStorage } from '@/apis';
-// import styles from './styles';
+import { styles } from './styles';
 import { getActivityInfo, getBadgeInfo, getStatisticInfo } from '@/apis/profile';
 import { statisticInfo, badgeInfo, badgeList, activityHistory } from '@/types/profile'
 import { useQuery } from '@tanstack/react-query';
 import FastImage from 'react-native-fast-image';
+
+import Spinner from '@/components/ui/Spinner';
+import HistoryTab from './HistoryTab';
+import BadgeTab from './BadgeTab';
+import StatisticTab from './StatisticTab';
 
 
 export default function ProfilePage({navigation, route}: ProfilescreenProps) {
@@ -41,34 +46,10 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
       }
       return true
     }
-    
+
     compareNickname();
   }, [])
 
-  // 뱃지 변수에 받아온 결과를 저장하는 코드
-  const { isLoading: badgeLoading, isError: isBadgeError, error: BadgeError } = useQuery<badgeList>(
-    ["badgeList"],
-    () => getBadgeInfo(route.params.nickname),
-    {
-      onSuccess: (data) => {
-        setBadgeList(data.data)
-      },
-    }
-  );
-
-  // 활동 변수에 받아온 결과를 저장하는 코드 
-  const { isLoading: activityLoading, isError: isActivityError, error: ActivityError } = useQuery<activityHistory>(
-    ["activityList"],
-    () => getActivityInfo(route.params.nickname, activityPageNumber, 25),
-    {
-      onSuccess: (data) => {
-        setActivityList({
-          content: data.content,
-          size: data.size,
-        })
-      },
-    }
-  );
   // 산책 변수에 받아온 결과를 저장하는 코드
   const { isLoading: statisticLoading, isError: isStatisticError, error: StatisticError } = useQuery<statisticInfo>(
     ["statisticInfo"],
@@ -85,146 +66,51 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
       },
     }
   );
+  // 뱃지 변수에 받아온 결과를 저장하는 코드
+  const { isLoading: badgeLoading, isError: isBadgeError, error: BadgeError } = useQuery<badgeList>(
+    ["badgeList"],
+    () => getBadgeInfo(route.params.nickname),
+    {
+      onSuccess: (data) => {
+        setBadgeList(data.data)
+      },
+    }
+  );
+  // 활동 변수에 받아온 결과를 저장하는 코드 
+  const { isLoading: activityLoading, isError: isActivityError, error: ActivityError } = useQuery<activityHistory>(
+    ["activityList"],
+    () => getActivityInfo(route.params.nickname, activityPageNumber, 25),
+    {
+      onSuccess: (data) => {
+        setActivityList({
+          content: data.content,
+          size: data.size,
+        })
+      },
+    }
+  );
 
-  // 산책 통계 페이지
-  const statisticPage = <>
-    <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 40, top:30, color: 'white', justifyContent:'center', textAlign: 'center'}} >
-      {isMyProfile? "나의 산책 기록" :`${route.params.nickname}님의 산책 기록`}
-    </AppText>
-    <ImageBackground source={require("@/assets/profile_image/profile_recipe.png")} style={{width: 400, height: 650, top:30, justifyContent: 'center', alignItems: 'center'}}>
-      <View style={{width: 300, height: 130, top: 25, flexDirection:'row',justifyContent:'space-evenly', alignItems: 'center'}}>
-        <View>
-          <FastImage source={require("@/assets/img_icon/foot_icon.png")} style={{width:80, height:80}}/>
-        </View>
-        <View>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 30, color: 'black'}}>
-            이동한 거리
-          </AppText>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 20, color: 'black'}}>
-            {statisticList.sumLength}km
-          </AppText>
-        </View>
-      </View>
-      <View style={{borderBottomWidth: 0.5, borderBottomColor: 'black', width: 280, top: 25}}/>
-      <View style={{width: 300, height: 130, top: 25, flexDirection:'row',justifyContent:'space-evenly', alignItems: 'center'}}>
-        <View style={{backgroundColor: '#FFE99C', width: 80, height: 80, borderRadius: 50}}>
-          <FastImage source={require("@/assets/img_icon/shoe_icon.png")} style={{width:80, height:80}}/>
-        </View>
-        <View>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 30, color: 'black'}}>
-            이동한 거리
-          </AppText>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 20, color: 'black'}}>
-            {statisticList.sumLength}km
-          </AppText>
-        </View>
-      </View>
-      <View style={{borderBottomWidth: 0.5, borderBottomColor: 'black', width: 280, top: 25}}/>
-      <View style={{width: 300, height: 130, top: 25, flexDirection:'row',justifyContent:'space-evenly', alignItems: 'center'}}>
-        <View style={{backgroundColor: '#FFE99C', width: 80, height: 80, borderRadius: 50}}>
-          <FastImage source={require("@/assets/img_icon/sand_clock_icon.png")} style={{width:80, height:80}}/>
-        </View>
-        <View>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 30, color: 'black'}}>
-            이동한 시간
-          </AppText>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 20, color: 'black'}}>
-            {statisticList.hour}시간 {statisticList.minute}분 {statisticList.second}초
-          </AppText>
-        </View>
-      </View>
-      <View style={{borderBottomWidth: 0.5, borderBottomColor: 'black', width: 280, top: 25}}/>
-      <View style={{width: 300, height: 130, top: 25, flexDirection:'row',justifyContent:'space-evenly', alignItems: 'center'}}>
-        <View style={{backgroundColor: '#FFE99C', width: 80, height: 80, borderRadius: 50}}>
-          <FastImage source={require("@/assets/img_icon/trash_icon.png")} style={{width:80, height:80}}/>
-        </View>
-        <View>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 30, color: 'black'}}>
-            쓰레기 개수
-          </AppText>
-          <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 20, color: 'black'}}>
-            {statisticList.sumTrash}개
-          </AppText>
-        </View>
-      </View>
-    </ImageBackground>
-  </>
-
-  // 뱃지 페이지
-  const badgePage = <>
-    <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 40, top:30, color: 'white', justifyContent:'center', textAlign: 'center'}} >
-      {isMyProfile? "내가 모은 뱃지" :`${route.params.nickname}님이 모은 뱃지`}
-    </AppText>
-    <View style={{width: 400, height: 500, top:50, justifyContent: 'center', alignItems: 'center'}}>
-      <ScrollView>
-        {badgeList.map((badge, index) => {
-          return (
-            <View style={{width:370, height:90, backgroundColor: 'white', flexDirection: 'row', borderRadius: 10, marginTop: 10, marginBottom: 10, justifyContent:'space-evenly', alignItems: 'center'}} key={index}>
-              <FastImage source={{uri: badge.fileUrl}} style={{width: 100, height: 100,}}/>
-              <View>
-                <AppText children={badge.badgeName} style={{fontSize: 20}}/>
-                <AppText children={badge.badgeCondition} style={{fontSize: 12}}/>
-                <AppText children={badge.isHave ? "보유" : "미보유"} style={{fontSize: 12}}/>
-              </View>
-            </View>
-          )
-        })}
-      </ScrollView>
-    </View>
-  </>
-
-  // 활동 내역 페이지
-  const historyPage = <>
-    <AppText style={{fontFamily: 'NPSfont_bold',fontSize: 40, top:30, color: 'white', justifyContent:'center', textAlign: 'center'}} >
-      {isMyProfile? "나의 활동 기록" :`${route.params.nickname}님의 활동 기록`}
-    </AppText>
-    <View style={{width: 400, height: 650, top:30, justifyContent: 'center', alignItems: 'center'}}>
-      {activityList.content.length === 0? <AppText children="아직 활동 기록이 없습니다." style={{justifyContent: 'center', textAlign: 'center', color: 'white', fontSize: 40}} />
-       : <FlatList style={{}} data={activityList.content} renderItem={({item}) => {
-        const { activityId, userId, activityType, fileUrl, plogging, tree, createTime } = item;
-        if (tree === null) {
-          return (
-            <View style={{flexDirection: 'row', width:370, height: 200, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
-              <Image source={{uri: fileUrl}} style={{width: 200, height: 200,}}/>
-              <View>
-                <Text>이동한 거리 {plogging?.ploggingLength}</Text>
-                <Text>이동한 시간{plogging?.ploggingTime}</Text>
-                <Text>쓰레기 개수{plogging?.ploggingTrash}</Text>
-              </View>
-            </View>
-          )
-        } else {
-          return (
-            <View style={{flexDirection: 'row', width:370, height: 200, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
-              <FastImage source={{uri: fileUrl}} style={{width: 200, height: 200,}}/>
-              <View>
-                <Text>나무 이름 {tree.treeName}</Text>
-                <Text>내 이름 {tree.userName}</Text>
-                <Text>등록한 이메일 {tree.userEmail}</Text>
-                <Text>등록한 전화번호 {tree.userPhone}</Text>
-              </View>
-            </View>
-          )
-        }
-       }}/> }
-    </View>
-  </>
+  if (badgeLoading || statisticLoading || activityLoading) {
+    return <Spinner />;
+  }
 
   return (
   <ImageBackground source={require("@/assets/profile_image/profile_background.png")} style={[StyleSheet.absoluteFill, {justifyContent: 'center', alignItems: 'center'}]}>
-    {activityPageNumber == 0? statisticPage : (activityPageNumber == 1 ? badgePage : historyPage)}
-    <View style={{flexDirection: 'row', backgroundColor: '#A5DCA0', borderRadius: 15, width: 390, height: 80, justifyContent: 'space-evenly', alignItems: 'center'}}>
-      <TouchableOpacity onPress={() => {setPageNumber(0)}} style={{alignItems: 'center'}}>
-        <FastImage source={require("@/assets/img_icon/statistic_icon.png")} style={{width: 50, height: 50}}/> 
-        <AppText children="통계 보기" style={{fontSize: 14}}/>         
+    {activityPageNumber == 0? <StatisticTab nickname={route.params.nickname} isMyProfile={isMyProfile} statisticList={statisticList}/>  : 
+    (activityPageNumber == 1 ? <BadgeTab nickname={route.params.nickname} isMyProfile={isMyProfile} badgeList={badgeList} /> : 
+    <HistoryTab nickname={route.params.nickname} isMyProfile={isMyProfile} activityList={activityList}/>)}
+    <View style={styles.tabSection}>
+      <TouchableOpacity onPress={() => {setPageNumber(0)}} style={styles.tabClickSection}>
+        <FastImage source={require("@/assets/img_icon/statistic_icon.png")} style={styles.tabImage}/> 
+        <AppText children="통계 보기" style={styles.tabText}/>         
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {setPageNumber(1)}} style={{alignItems: 'center'}}>
-        <FastImage source={require("@/assets/img_icon/badge_icon.png")} style={{width: 50, height: 50}}/>
-        <AppText children="나의 뱃지" style={{fontSize: 14}}/>         
+      <TouchableOpacity onPress={() => {setPageNumber(1)}} style={styles.tabClickSection}>
+        <FastImage source={require("@/assets/img_icon/badge_icon.png")} style={styles.tabImage}/>
+        <AppText children="나의 뱃지" style={styles.tabText}/>         
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {setPageNumber(2)}} style={{alignItems: 'center'}}>
-        <FastImage source={require("@/assets/img_icon/history_icon.png")} style={{width: 50, height: 50}}/>
-        <AppText children="활동 내역" style={{fontSize: 14}}/>         
+      <TouchableOpacity onPress={() => {setPageNumber(2)}} style={styles.tabClickSection}>
+        <FastImage source={require("@/assets/img_icon/history_icon.png")} style={styles.tabImage}/>
+        <AppText children="활동 내역" style={styles.tabText}/>         
       </TouchableOpacity>
     </View>
   </ImageBackground>
