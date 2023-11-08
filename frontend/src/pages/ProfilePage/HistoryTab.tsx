@@ -38,9 +38,9 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
     }
   );
 
-  if (activityLoading) {
-    return <Spinner />
-  }
+  // if (activityLoading) {
+  //   return <Spinner />
+  // }
 
   return (
   <>
