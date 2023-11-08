@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
   },
   animal: {
-    marginTop: '20%',
+    marginTop: 30,
     width: 130,
     height: 130,
     zIndex: 1,
