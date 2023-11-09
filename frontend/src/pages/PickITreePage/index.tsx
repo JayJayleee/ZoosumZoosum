@@ -14,7 +14,7 @@ import PickTreeCardList from './PickTreeCardList';
 
 export default function PickTreePage({navigation}: PickTreeScreenProps) {
   const propsFtn = () => {
-    navigation.navigate('Main')
+    navigation.navigate('ItemList')
   }
   
   return (

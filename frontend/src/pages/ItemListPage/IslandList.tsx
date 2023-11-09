@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, FlatList, TouchableOpacity,Image } from 'react-native';
 import styles from './style';
 import AppText from '@/components/ui/Text';
@@ -6,6 +6,7 @@ import AppButton from '@/components/ui/Button';
 import ItemCard from './ItemCard';
 import {fetchMyItemListInfo} from '@/apis/Item';
 import {useQuery} from '@tanstack/react-query';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface IslandListProps {
   goToSelectIsland : (data: number) => void;
@@ -35,7 +36,7 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
   const [selectedIslandTitle, setSelectedIslandTitle] = useState('');
   const [selectedIslandItemId, setselectedIslandItemId] = useState(0);
 
-  useQuery(['ItemList'], 
+  const {refetch} = useQuery(['ItemList'], 
   () => fetchMyItemListInfo(itemType), {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
@@ -77,6 +78,8 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
       console.error('돌발돌발', error);
     },
   });
+
+  useFocusEffect(useCallback(() => {refetch()}, []))
 
   if (!ItemArray.length) return <Text>로딩...</Text>;
 

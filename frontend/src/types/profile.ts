@@ -15,13 +15,6 @@ export type badgeInfo = {
   isHave: boolean;
 }
 
-export type treeObj = {
-  treeName: string;
-  userName: string;
-  userPhone: string; 
-  userEmail: string;
-}
-
 export type badgeList = {
   data: badgeInfo[];
 }
@@ -38,7 +31,6 @@ export type contentList = {
   activityType: string;
   fileUrl: string;
   plogging: null | plogObj;
-  tree: null | treeObj;
   createTime: string;
 }
 
