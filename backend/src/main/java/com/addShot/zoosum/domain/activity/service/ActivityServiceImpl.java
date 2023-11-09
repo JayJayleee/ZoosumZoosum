@@ -77,7 +77,7 @@ public class ActivityServiceImpl implements ActivityService {
     public ActivityResponseDtoAndSize activityList(String nickname, Pageable pageable) {
 
         Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserNickname(nickname, pageable);
-        if (activityHistoryList == null) {
+        if (activityHistoryList == null || activityHistoryList.getContent().isEmpty()) {
             return null;
         }
         List<ActivityHistory> getList = activityHistoryList.getContent();
@@ -395,15 +395,32 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     @Transactional
     public void saveUserAnimal(User user, AnimalMotion animal) {
+        Optional<UserAnimal> optionalAnimal = userAnimalRepository.findByUserIdAndAnimalId(user.getUserId(), animal.getAnimal().getAnimalId());
         log.info("USER_ANIMAL 테이블에 리워드 저장");
-        UserAnimal userAnimal = UserAnimal.builder()
-            .id(new UserAnimalId(user.getUserId(), animal.getAnimal().getAnimalId()))
-            .user(user)
-            .animal(animal.getAnimal())
-            .selected(false)
-            .userAnimalName(animal.getAnimal().getAnimalName())
-            .time(new Time(LocalDateTime.now(), LocalDateTime.now()))
-            .build();
+        UserAnimal userAnimal;
+        if (optionalAnimal.isPresent()) { // 이미 데이터가 있는 경우엔 초기화하지 않는다.
+            UserAnimal findAnimal = optionalAnimal.get();
+            userAnimal = UserAnimal.builder()
+                .id(findAnimal.getId())
+                .user(user)
+                .animal(animal.getAnimal())
+                .selected(true)
+                .userAnimalName(animal.getAnimal().getAnimalName())
+                .timeTogether(findAnimal.getTimeTogether())
+                .lengthTogether(findAnimal.getLengthTogether())
+                .trashTogether(findAnimal.getTrashTogether())
+                .time(new Time(findAnimal.getTime().getCreateTime(), LocalDateTime.now()))
+                .build();
+        } else {
+            userAnimal = UserAnimal.builder()
+                .id(new UserAnimalId(user.getUserId(), animal.getAnimal().getAnimalId()))
+                .user(user)
+                .animal(animal.getAnimal())
+                .selected(false)
+                .userAnimalName(animal.getAnimal().getAnimalName())
+                .time(new Time(LocalDateTime.now(), LocalDateTime.now()))
+                .build();
+        }
         UserAnimal save = userAnimalRepository.save(userAnimal);
         log.info("USER_ANIMAL 테이블에 리워드 저장 save : {}", save);
     }

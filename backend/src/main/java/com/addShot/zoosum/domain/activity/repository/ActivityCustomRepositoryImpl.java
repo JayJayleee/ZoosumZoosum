@@ -3,10 +3,8 @@ package com.addShot.zoosum.domain.activity.repository;
 import static com.addShot.zoosum.entity.QActivityHistory.activityHistory;
 import static com.addShot.zoosum.entity.QUser.user;
 
-import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.entity.ActivityHistory;
 import com.addShot.zoosum.entity.User;
-import com.addShot.zoosum.entity.enums.ActivityType;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
