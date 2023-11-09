@@ -8,7 +8,7 @@ type Egg = {
 
 type EggName = {
   animalId: number;
-  animalName: string;
+  userAnimalName: string;
 };
 export const fetchFirstEgg = async () => {
   try {
@@ -24,7 +24,7 @@ export const fetchFirstEgg = async () => {
 export const FirstEggName = async (data: EggName) => {
   try {
     const response = await api.post('/animal', data, await Header());
-    console.log(response, '응답');
+    // console.log(response, '응답');
     return response;
   } catch (error: any) {
     if (error.response) {

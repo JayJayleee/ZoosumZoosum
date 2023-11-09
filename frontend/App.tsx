@@ -46,7 +46,7 @@ const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {
-    PermissionsAndroid.requestMultiple([ 
+    PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -58,7 +58,7 @@ function App() {
       <NavigationContainer>
         {/* initialRouteName 는 가장 처음 나타나는 화면을 의미한다 */}
         <Stack.Navigator
-          initialRouteName="Login"
+          initialRouteName="FirstEgg"
           // 아래 코드 넣으면 뒤로가기 바가 있는 헤더가 사라짐
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="Login" component={LoginPage} />

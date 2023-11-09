@@ -38,7 +38,7 @@ export function AnimalCarouselCardItem({
   const createMutation = useMutation(FirstEggName, {
     onSuccess: data => {
       // 이름 저장 성공 시 수행할 작업
-      console.log('이름 바꾸기 성공', data);
+      // console.log('이름 바꾸기 성공', data);
       const nameToSave =
         animalName?.trim() !== '' ? animalName : item?.animalName;
       setHeaderText(`${nameToSave}가 태어났어요!`);
@@ -60,7 +60,7 @@ export function AnimalCarouselCardItem({
         animalName?.trim() !== '' ? animalName : item?.animalName;
       createMutation.mutate({
         animalId: animalId,
-        animalName: nameToSave,
+        userAnimalName: nameToSave,
       });
     }
   };
