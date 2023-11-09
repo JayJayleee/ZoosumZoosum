@@ -188,4 +188,28 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
   },
+  close : {
+    borderRadius: 10,
+    elevation: 2,
+    marginTop: '20%',
+    width: '40%',
+    height: '40%',
+    justifyContent: 'center',
+    backgroundColor: '#D94040',
+  },
+  notclose : {
+    borderRadius: 10,
+    elevation: 2,
+    marginTop: '20%',
+    width: '40%',
+    height: '40%',
+    justifyContent: 'center',
+    backgroundColor: '#2196F3',
+  },
+  closeText : {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: 'center',
+  },
 });

@@ -5,7 +5,7 @@ import AppText from '../Text';
 
 type ButtonProps = {
   children?: string;
-  variant?: 'default' | 'button' | 'animalName' | 'primary' | 'pickfriend'| 'gotoisland' | "selectItem" | 'carouselBtn' | 'picnic' | 'ploggingRST' | 'region' | 'nickname' | 'ranking' | 'rankingUnselect' | 'tutorial';
+  variant?: 'default' | 'button' | 'animalName' | 'primary' | 'pickfriend'| 'gotoisland' | "selectItem" | 'carouselBtn' | 'picnic' | 'ploggingRST' | 'region' | 'nickname' | 'ranking' | 'rankingUnselect' | 'tutorial' | 'close' | 'notclose';
   onPress: () => void;
 };
 
@@ -83,6 +83,14 @@ export default function AppButton({
     case 'tutorial':
       variantStyle = styles.tutorial;
       textStyle = styles.tutorialText;
+      break;
+    case 'close':
+      variantStyle = styles.close;
+      textStyle = styles.closeText;
+      break;
+    case 'notclose':
+      variantStyle = styles.notclose;
+      textStyle = styles.closeText;
       break;
   }
 
