@@ -96,15 +96,15 @@ public class ActivityController {
     public ResponseEntity<?> writeActivity(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
         @RequestPart(name = "activityImg", required = false) MultipartFile activityImg,
         @RequestPart(name = "activityRequestDto") ActivityRequestDto activityRequestDto,
-        @RequestPart(name = "animalId", required = false) Long animalId) {
+        @RequestPart(name = "animalId") Long animalId) {
         String userId = headerUtils.getUserId(authorizationHeader);
-        if (userId == null || activityRequestDto == null) {
+        if (userId == null || activityRequestDto == null || animalId == null) {
             return badRequest400();
         }
         log.info("ActivityController userId: {}, activityImg: {}, animalId: {}", userId, activityImg, animalId);
-        log.info("##### activityImg의 Content-Type: {} #####", activityImg.getContentType());
-        log.info("##### activityImg의 Resource: {} #####", activityImg.getResource());
-        log.info("##### activityImg의 OriginalFilename: {} #####", activityImg.getOriginalFilename());
+//        log.info("##### activityImg의 Content-Type: {} #####", activityImg.getContentType());
+//        log.info("##### activityImg의 Resource: {} #####", activityImg.getResource());
+//        log.info("##### activityImg의 OriginalFilename: {} #####", activityImg.getOriginalFilename());
 
         // 입력
         ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto, animalId);
