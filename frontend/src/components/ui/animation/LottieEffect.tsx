@@ -1,5 +1,6 @@
 import React from 'react';
 import LottieView from 'lottie-react-native';
+import { styles } from './styles';
 
 export const Gift = () => {
   return (
@@ -28,7 +29,7 @@ export const Egg = () => {
 export const Wave = () => {
   return (
     <LottieView
-      style={{width: 400, top: -50, aspectRatio: 1}}
+      style={styles.wave}
       source={require('@/assets/animation/loading_wave.json')}
       autoPlay
       loop={true}

@@ -200,7 +200,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     <TouchableOpacity onPress={() => setToggle(!toggle)}>
       <Image
         source={require('@/assets/mainpage_image/left_arrow.png')}
-        style={{width: 70, height: 70}}
+        style={styles.toggleArrowBtn}
       />
     </TouchableOpacity>
   );
@@ -210,7 +210,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     <TouchableOpacity onPress={() => setToggle(!toggle)}>
       <FastImage
         source={require('@/assets/mainpage_image/right_arrow.png')}
-        style={{width: 70, height: 70}}
+        style={styles.toggleArrowBtn}
       />
     </TouchableOpacity>
   );
@@ -291,7 +291,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, -40],
+                    outputRange: [120, -150],
                   }),
                 },
               ],
@@ -324,7 +324,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, 0],
+                    outputRange: [120, -75],
                   }),
                 },
               ],
@@ -357,7 +357,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, 40],
+                    outputRange: [120, 5],
                   }),
                 },
               ],
@@ -390,7 +390,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, 80],
+                    outputRange: [120, 85],
                   }),
                 },
               ],

@@ -67,6 +67,10 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0
   },
+  toggleArrowBtn: {
+    width: 70,
+    height: 70,
+  },
   toggleBtnImage:{
     width: '120%',
     height: '500%',
@@ -111,14 +115,14 @@ const styles = StyleSheet.create({
     position: 'relative',
     transform: 'scaleX(-1)',
     right: '6%',
-    bottom: '70%',
+    bottom: '75%',
     height: '40%',
     zIndex: 8,
   },
   thirdAnimal: {
     position: 'relative',
     left: '20%',
-    bottom: '110%',
+    bottom: '115%',
     height: '40%',
     zIndex: 8,
   },
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
   fifthAnimal: {
     position: 'relative',
     left: '30%',
-    bottom: '200%',
+    bottom: '205%',
     height: '40%',
     zIndex: 6,
   },

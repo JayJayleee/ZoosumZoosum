@@ -16,7 +16,7 @@ import PickIslandCardList from './PickIslandCardList';
 export default function PickIslandPage({ navigation }: PickIslandScreenProps) {
   
   const propsFtn = () => {
-    navigation.navigate('Main')
+    navigation.navigate('ItemList')
   }
   return (
     <ImageBackground
