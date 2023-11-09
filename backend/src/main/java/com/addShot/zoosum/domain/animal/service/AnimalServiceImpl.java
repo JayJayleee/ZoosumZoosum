@@ -188,7 +188,7 @@ public class AnimalServiceImpl implements AnimalService {
 		//사용자에게 해당 동물이 있는지 판단
 		Long animalId = request.getAnimalId();
 
-		userAnimalRepository.findByUserIdAndAnimalId(userId, request.getAnimalId())
+		userAnimalRepository.findByUserIdAndAnimalId(userId, animalId)
 			.ifPresentOrElse(userAnimal -> { //이미 존재하는 경우
 					UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId, animalId).get(); //기존꺼 꺼내와서
 					ua.setUserAnimalName(request.getUserAnimalName());
@@ -200,11 +200,29 @@ public class AnimalServiceImpl implements AnimalService {
 					Animal animal = animalRepository.findById(animalId).get();
 					String userAnimalName = request.getUserAnimalName();
 					Time time = new Time(LocalDateTime.now(), LocalDateTime.now());
-					UserAnimal ua = UserAnimal.toEntity(uaId, user, animal, userAnimalName, time);
+					UserAnimal ua = UserAnimal.toEntity(uaId, user, animal, userAnimalName, time, false);
 
 					userAnimalRepository.save(ua);
 				}
 			);
+	}
+
+	@Override
+	public void registUserAnimalFirst(MyAnimalRequest request, String userId) {
+
+		if(userId == null) {
+			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+		}
+
+		Long animalId = request.getAnimalId();
+		UserAnimalId uaId = new UserAnimalId(userId, animalId);
+		User user = userRepository.findById(userId).get();
+		Animal animal = animalRepository.findById(animalId).get();
+		String userAnimalName = request.getUserAnimalName();
+		Time time = new Time(LocalDateTime.now(), LocalDateTime.now());
+		UserAnimal ua = UserAnimal.toEntity(uaId, user, animal, userAnimalName, time, true);
+
+		userAnimalRepository.save(ua);
 	}
 
 	@Override
