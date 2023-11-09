@@ -37,6 +37,7 @@ import {useEffect} from 'react';
 import {PermissionsAndroid} from 'react-native';
 
 import TutorialPage from '@/pages/TutorialPage';
+import FirstEggPage from '@/pages/FirstEggPage';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -45,7 +46,7 @@ const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {
-    PermissionsAndroid.requestMultiple([ 
+    PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -79,6 +80,7 @@ function App() {
           <Stack.Screen name="PickIsland" component={PickIslandPage} />
           <Stack.Screen name="PickTree" component={PickTreePage} />
           <Stack.Screen name="FriendDetail" component={FriendDetailPage} />
+          <Stack.Screen name="FirstEgg" component={FirstEggPage} />
         </Stack.Navigator>
       </NavigationContainer>
       {/* <Toast /> */}

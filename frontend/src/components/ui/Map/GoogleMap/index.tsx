@@ -16,6 +16,7 @@ type GoogleMapProps = {
   endPlog: boolean; // 플로깅 종료여부
   animalImg: string; // 동물 이미지
   trashCount: number; // 주운 쓰레기 개수 변화 감지
+  setMapLoading: Function;
   setPloggingDistance: Function; // 거리 변동 감지
 };
 type marker = {
@@ -90,12 +91,14 @@ const GoogleMap = (props: GoogleMapProps) => {
   };
 
   const getPosition = async () => {
+    // console.log('getPosition');
     await myCurrnetPosition();
     await myWatchPosition();
   };
 
   // 현재 위치 가져오기
   const myCurrnetPosition = async () => {
+    // console.log('myCurrnetPosition');
     // 현재 위치 받아오기
     Geolocation.getCurrentPosition(
       // 성공
@@ -112,7 +115,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         timeout: 15000,
         maximumAge: 10000,
       },
@@ -139,7 +142,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         distanceFilter: 1,
         interval: 5000,
         fastestInterval: 2000,
@@ -172,6 +175,7 @@ const GoogleMap = (props: GoogleMapProps) => {
   useEffect(() => {
     if (region.latitude === 0) return;
     imReady.current = true;
+    props.setMapLoading(true);
     // console.log('5 renew region');
     // console.log('region', region);
     const newCoordinate: latLng = {
@@ -218,13 +222,13 @@ const GoogleMap = (props: GoogleMapProps) => {
   }, [props.trashCount]);
 
   // 페이지 로딩
-  // if (!imReady.current) {
-  //   return (
-  //     <View>
-  //       <AppText>잠시만 기다려주세요...</AppText>
-  //     </View>
-  //   );
-  // }
+  if (!imReady.current) {
+    return (
+      <View>
+        <AppText>잠시만 기다려주세요...</AppText>
+      </View>
+    );
+  }
 
   // console.log('11 ordinary space');
   // console.log('####### imReady ########', imReady.current);

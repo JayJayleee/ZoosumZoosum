@@ -18,6 +18,10 @@ export const SLIDER_WIDTH = Dimensions.get('window').width + 80;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 export default function TutorialPage({navigation}: TutorialScreenProps) {
+  const goIsland = () => {
+    navigation.navigate('FirstEgg');
+  };
+
   const goToPrev = () => {
     carouselRef.current?.snapToPrev();
   };
@@ -31,7 +35,8 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
         {...item}
         index={index}
         onPrev={index > 0 ? goToPrev : undefined}
-        onNext={index < data.length - 1 ? goToNext : undefined}
+        onNext={index < data.length - 1 ? goToNext : goIsland}
+        gotoIsland={goIsland}
       />
     );
   };

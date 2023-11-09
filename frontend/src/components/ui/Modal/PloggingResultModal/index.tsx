@@ -22,6 +22,7 @@ interface PloggingResultModalProps {
       time: number;
       trash: number;
     };
+    animalId: number;
   };
 }
 const PloggingResultModal = ({
@@ -32,13 +33,15 @@ const PloggingResultModal = ({
   activityData,
 }: PloggingResultModalProps) => {
   // useMutation을 사용하여 서버 요청을 관리합니다.
+
+  // console.log(activityData, '애니멀 아이디 들어옴?');
   const mutation = useMutation(
     (activityData: ActivityDataType) => PloggingResultFtn(activityData),
     {
       onSuccess: (responseData: any) => {
         // 결과 데이터를 NewData 타입으로 단언합니다.
         // const newData = JSON.parse(responseData.data);
-        // console.log('짜잔', newData, responseData);
+        console.log('짜잔', responseData);
         navigation(responseData);
       },
       onError: error => {

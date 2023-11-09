@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
-import {FlatListProps, View} from 'react-native';
+import {FlatListProps, View, Keyboard} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
 import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
@@ -19,6 +19,7 @@ interface CarouselCardsProps {
 
 export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
   const [resultDataList, setResultDataList] = useState<any>(data);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const isCarousel = React.useRef<
     Carousel<any> & Component<FlatListProps<any>, {}, any>
@@ -77,6 +78,26 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
     }
   };
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <Carousel
@@ -94,7 +115,7 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
         inactiveSlideOpacity={0}
       />
 
-      {isCarousel.current && (
+      {!isKeyboardVisible && isCarousel.current && (
         <Pagination
           dotsLength={combinedData.length}
           activeDotIndex={index}
@@ -111,19 +132,22 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
           tappableDots={true}
         />
       )}
-      {index === combinedData.length - 1 ? (
+
+      {!isKeyboardVisible && index === combinedData.length - 1 ? (
         // 마지막 페이지인 경우
         <AppButton variant="carouselBtn" children="끝!" onPress={onNavigate} />
       ) : (
-        //마지막 페이지가 아닌 경우
-        <AppButton
-          variant="carouselBtn"
-          children="다음으로"
-          onPress={() => {
-            // console.log(combinedData[index]);
-            isCarousel.current?.snapToNext();
-          }}
-        />
+        !isKeyboardVisible && (
+          //마지막 페이지가 아닌 경우
+          <AppButton
+            variant="carouselBtn"
+            children="다음으로"
+            onPress={() => {
+              // console.log(combinedData[index]);
+              isCarousel.current?.snapToNext();
+            }}
+          />
+        )
       )}
       {/* {combinedData.map((item, index) => (
         <AppText key={index}>{JSON.stringify(item)}</AppText>
