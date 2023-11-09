@@ -25,6 +25,8 @@ import ModalComponent from '@/components/ui/Modal';
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
   const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
+  // 소리 on/off 상태를 나타내는 변수 생성
+  const [isSoundOn, setSound] = useState<boolean>(true);
 
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);
@@ -105,11 +107,11 @@ export default function MainPage({navigation}: MainScreenProps) {
     }).start();
   }, [animation, toggle]);
 
+  // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
     BackHandler.exitApp();
     navigation.navigate('Login');
   };
-
 
   // 상단 스탯 api 호출 및 상태 저장하는 코드 생성
   const {
@@ -406,6 +408,45 @@ export default function MainPage({navigation}: MainScreenProps) {
               style={styles.toggleBtnImage}
             />
             <AppText children="내 동물 보기" style={styles.toggleBtnText} />
+          </TouchableOpacity>
+        </Animated.View>
+        <Animated.View
+          style={[
+            {
+              transform: [
+                {
+                  translateX: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [120, -200],
+                  }),
+                },
+              ],
+              opacity: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+              }),
+            },
+          ]}>
+          <TouchableOpacity
+            onPress={
+              toggle
+                ? () => {
+                    setSound(!isSoundOn)
+                  }
+                : undefined
+            }
+            style={styles.toggleMoveButton}>
+            {isSoundOn? <><FastImage
+              source={require('@/assets/img_icon/sound_on_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 끄기" style={styles.toggleBtnText} /></> :
+            <><FastImage
+              source={require('@/assets/img_icon/sound_off_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 켜기" style={styles.toggleBtnText} /></>
+            }
           </TouchableOpacity>
         </Animated.View>
         <View style={styles.toggleButton}>
