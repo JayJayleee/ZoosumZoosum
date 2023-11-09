@@ -9,9 +9,7 @@ import AppText from '@/components/ui/Text';
 import FastImage from 'react-native-fast-image';
 import AppButton from '@/components/ui/Button';
 import { style } from './styles';
-import { ErrorModal } from '@/components/ui/Modal/UserInfoErrorModal';
 import Toast from 'react-native-toast-message';
-import { ToastConfig } from 'react-native-toast-message';
 import { toastConfig } from '@/components/ui/Toast';
 
 
@@ -41,7 +39,7 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       const res = await nicknameDuplicate({nickname: userNickname});
       const nickDu = await res.json();
 
-      if (nickDu.isDuplicate !== false) {
+      if (nickDu.isDuplicate === false) {
         setNickDuplicated(true);
 
         await setStorage("Nickname", userNickname)
@@ -100,8 +98,8 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       onChangeText={(text) => {setUserNickname(text)}}
       placeholder='닉네임을 입력해주세요'
       style={style.inputNickname}/>
+      <AppButton children='내 섬으로 가기' onPress={NicknameButton} variant='nickname'/>
     </FastImage>
-    <AppButton children='내 섬으로 가기' onPress={NicknameButton} variant='nickname'/>
   </>
 
   // toast로 에러 메세지 출력

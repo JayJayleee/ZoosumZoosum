@@ -39,12 +39,15 @@ export const style = StyleSheet.create({
     marginBottom: '5%'
   },
   inputNickname : {
+    marginTop: '20%',
     borderColor:"#6B4EFF",
     width: '90%',
     borderWidth: 2,
     borderRadius: 10,
     textAlign: 'center',
-    color: 'black'
+    color: 'black',
+    fontSize: 20,
+    fontFamily: 'NPSfont_bold',
   },
   errorModal: {
     height: '30%',
