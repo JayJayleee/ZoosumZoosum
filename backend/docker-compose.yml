@@ -6,7 +6,7 @@ services:
         # ---
         container_name: nginx-container
         networks:
-            - zoosumnetwork
+            - backend_zoosumnetwork
         environment:
             - TZ=Asia/Seoul
         depends_on:
@@ -24,7 +24,7 @@ services:
         image: certbot/certbot
         container_name: cerbot-container
         networks:
-            - zoosumnetwork
+            - backend_zoosumnetwork
         restart: unless-stopped
         volumes:
             - /data/certbot/conf:/etc/letsencrypt
@@ -35,7 +35,7 @@ services:
         image: zoosum-spring:latest
         container_name: spring-container
         networks:
-            - zoosumnetwork
+            - backend_zoosumnetwork
         environment:
             TZ: "Asia/Seoul"
         restart: always
@@ -44,7 +44,7 @@ services:
 #        volumes:
 #            - ~/config/spring:/backend/src/main/resources:ro
 networks:
-    zoosumnetwork:
+    backend_zoosumnetwork:
         external: true
 
 
