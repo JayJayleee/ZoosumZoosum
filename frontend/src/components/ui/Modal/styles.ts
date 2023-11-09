@@ -30,14 +30,22 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  treeinfo: {
+  closeModal: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeView: {
     width: '80%',
+    height: '40%',
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 15,
-    maxHeight: '60%',
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    padding: '2%',
+    paddingTop: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -47,15 +55,14 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  userInfo: {
+  treeinfo: {
     width: '80%',
-    height: '40%',
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: '2%',
-    paddingTop: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 15,
+    maxHeight: '60%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
