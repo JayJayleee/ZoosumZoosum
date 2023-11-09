@@ -15,7 +15,6 @@ import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
 import GoogleMap from '@/components/ui/Map/GoogleMap';
 import ViewShot from 'react-native-view-shot';
-// import CameraRoll from '@react-native-community/cameraroll';
 // import {DATA} from './TrashImageList';
 import PloggingResultModal from '@/components/ui/Modal/PloggingResultModal';
 // import {StyleSheet} from 'react-native';
@@ -88,7 +87,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(0);
-  const [trashCount, setTrashCount] = useState(100);
+  const [trashCount, setTrashCount] = useState(0);
   const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityDataType>();
@@ -98,6 +97,8 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 타이머 기능을 위한 값
   const [appState, setAppState] = useState(AppState.currentState);
   const [backgroundTime, setBackgroundTime] = useState<number | null>(null);
+  // 지도 로딩 후에 타이머 시작하기
+  const [mapLoading, setMapLoading] = useState<boolean>(false);
 
   //컴포넌트의 전체 라이프 사이클에 영향없는 시간 값 만들기
   let intervalRef = useRef<number | null>(null);
@@ -122,7 +123,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 사용자의 앱 사용 상태에 따른 타이머 기능 함수
   useEffect(() => {
     // 앱이 포그라운드 상태일 때 타이머 시작
-    if (appState === 'active') {
+    if (appState === 'active' && mapLoading) {
       intervalRef.current = setInterval(() => {
         setTimer(prevTimer => prevTimer + 1);
       }, 1000) as unknown as number;
@@ -140,7 +141,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       }
       appStateSubscription.remove();
     };
-  }, [appState]);
+  }, [appState, mapLoading]);
 
   // useEffect(() => {
   //   console.log(trashImage, '플로깅 페이지에서 업데이트 된 쓰레기 이미지');
@@ -200,31 +201,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       console.log('😻😻😻 snapshot failed', e);
     }
   };
-
-  /* 
-  // Android 저장 요청
-  const hasAndroidPermission = async () => {
-    const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
-    const hasPermission = await PermissionsAndroid.check(permission);
-    if (hasPermission) {
-      return true;
-    }
-    const status = await PermissionsAndroid.request(permission);
-    return status === 'granted';
-  };
-
-  // 갤러리 저장
-  const onSave = async () => {
-    if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
-      console.log('갤러리 접근 권한이 없어요');
-      return;
-    }
-
-    const uri = await getPhotoUri();
-    const result = await CameraRoll.save(uri);
-    console.log('갤러리 result', result);
-  };
-  */
 
   const stopAndResetTimer = async () => {
     // 플로깅 종료 신호 넘겨주기
@@ -391,6 +367,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
             endPlog={endPlog}
             animalImg={getAnimalIMG}
             trashCount={trashCount}
+            setMapLoading={setMapLoading}
             setPloggingDistance={setPloggingDistance}></GoogleMap>
         </ViewShot>
       </View>

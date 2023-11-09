@@ -12,6 +12,7 @@ type TutorialData = {
   index?: number;
   onPrev?: () => void;
   onNext?: () => void;
+  gotoIsland: () => void;
 };
 
 export const TutorialImageCard = (item: TutorialData, index?: number) => {
