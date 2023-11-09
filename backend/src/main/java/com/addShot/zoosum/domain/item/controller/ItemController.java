@@ -1,5 +1,7 @@
 package com.addShot.zoosum.domain.item.controller;
 
+import static com.addShot.zoosum.util.httpstatus.ReturnResponseEntity.*;
+
 import com.addShot.zoosum.domain.item.dto.request.ItemRequestDto;
 import com.addShot.zoosum.domain.item.dto.response.ItemResponseDto;
 import com.addShot.zoosum.domain.item.service.ItemService;
@@ -17,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -51,7 +52,7 @@ public class ItemController {
         log.info("ItemController userId, itemType : {}, {}", userId, itemType);
         if (userId == null || itemType == null) {
             message = "잘못된 요청입니다.";
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+            return badRequest400(message);
         }
 
         // userId와 JWT의 userId가 일치하는지 인가 여부 확인해야 한다. 403 반환
@@ -61,9 +62,9 @@ public class ItemController {
         List<ItemResponseDto> itemList = itemService.itemList(userId, itemType);
         if (itemList == null) {
             message = "서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다.";
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+            return serverError500(message);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new Response(itemList));
+        return ok200(new Response(itemList));
     }
 
     @Operation(summary = "사용자 아이템 변경",
@@ -78,7 +79,7 @@ public class ItemController {
         log.info("ItemController userId, itemType, itemId : {}, {}, {}", userId, itemType, item.getItemId());
         if (userId == null || itemType == null || item == null || item.getItemId() == null) {
             message = "잘못된 요청입니다.";
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+            return badRequest400(message);
         }
 
         // userId와 JWT의 userId가 일치하는지 인가 여부 확인해야 한다. 403 반환
@@ -88,10 +89,10 @@ public class ItemController {
         Long result = itemService.itemUpdate(userId, ItemType.valueOf(itemType), item.getItemId());
         if (result == null || result == 0L) { // 데이터 수정이 안 되었을 때
             message = "서버에서 문제가 발생하였습니다. 서버 담당자에게 문의 바랍니다.";
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+            return serverError500(message);
         }
 
         message = "설정 완료되었습니다."; // 데이터 수정이 잘 되었을 때
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+        return ok200(message);
     }
 }
