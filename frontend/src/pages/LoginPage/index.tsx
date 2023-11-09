@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { getStorage } from '@/apis/index';
+import { getStorage, setStorage } from '@/apis/index';
 import {
   View,
-  Image,
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
@@ -11,6 +10,8 @@ import {LoginScreenProps} from 'typePath';
 import styles from './style';
 
 import KakaoLoginButton from '@/components/Auth/KakaoLoginButton';
+import FastImage from 'react-native-fast-image';
+import AppText from '@/components/ui/Text';
 // import NaverLoginButton from '@/components/Auth/NaverLoginButton';
 
 export default function LoginPage({navigation}: LoginScreenProps) {
@@ -56,12 +57,13 @@ export default function LoginPage({navigation}: LoginScreenProps) {
       activeOpacity={0.7} 
       onPress={isLoginState}
     >
-      <View>
-        <Image
-          style={styles.logo} 
-          source={require('@/assets/loginpage_image/zooisland_logo.png')}
-        />
-        {LoginButton}
+      <FastImage
+        style={styles.logo} 
+        source={require('@/assets/loginpage_image/zooisland_logo.png')}
+      />
+      {LoginButton}
+      <View style={styles.textArea}>
+        {!isClicked? <AppText children={"화면을 터치해주세요"} style={styles.loginText}/> : null}
       </View>
     </TouchableOpacity>
   </ImageBackground>

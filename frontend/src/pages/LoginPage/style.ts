@@ -1,20 +1,18 @@
 import {StyleSheet} from 'react-native';
+import { windowWidth, windowHeight } from '@/constants/styles';
 
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    top: '3%',
-    left: 0,
-    right: 0,
-    height: '100%',
+    width: windowWidth,
+    height: windowHeight,
     justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.3,
     top: 0,
-  },
-  logoImage: {
-    marginBottom: '5%',
   },
   hiddenLoginButton: {
     opacity: 0,
@@ -24,7 +22,15 @@ const styles = StyleSheet.create({
   showLoginButton: {
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  loginText: {
+    color: 'white',
+    fontSize: 23,
+  },
+  textArea: {
+    position: 'absolute',
+    bottom: windowHeight * 0.1,
+  },
 });
 
 export default styles;
