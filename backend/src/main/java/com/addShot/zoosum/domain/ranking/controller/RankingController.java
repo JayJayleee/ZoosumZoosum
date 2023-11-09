@@ -63,7 +63,7 @@ public class RankingController {
         List<RankingResponseDto> rankingResponseDto = rankingService.ploggingRankingList(region, pageable);
 
         // 데이터가 저장되어 있지 않으면, 500 Error 반환
-        if (rankingResponseDto == null || rankingResponseDto.isEmpty() == true) {
+        if (rankingResponseDto == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
