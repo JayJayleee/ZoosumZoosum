@@ -13,7 +13,7 @@ const getStoredToken = async () => {
 };
 
 export async function PloggingResultFtn(activityData: ActivityDataType) {
-  // console.log('받은 직후:', activityData);
+  console.log('받은 직후:', activityData);
 
   // 사용자 토큰 가져오기
   const token = await getStoredToken();
@@ -26,6 +26,8 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
     'activityRequestDto',
     JSON.stringify(activityData.activityRequestDto),
   );
+
+  formData.append('animalId', JSON.stringify(activityData.animalId));
 
   // 파일 경로에서 "file://" 접두어 제거
   // let cleanFilePath = activityData.activityImg.replace('file://', '');
@@ -57,7 +59,7 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
       },
     );
 
-    // console.log('요청 결과:', response.data);
+    console.log('요청 결과:', response.data);
     return response.data;
   } catch (e) {
     console.error('활동과 사진 업로드에 실패했습니다.', e);

@@ -1,5 +1,6 @@
 import {ImageSourcePropType} from 'react-native';
 import {tree} from './tree';
+import {Source} from 'react-native-fast-image';
 export interface AnimalCarouselCardItemProps {
   item?: {
     fileUrl: string;
@@ -118,7 +119,7 @@ export interface TrashList {
 }
 
 export interface TrashDataReturnList {
-  img: ImageSourcePropType;
+  img: Source;
   title: string | number;
   description: number;
 }

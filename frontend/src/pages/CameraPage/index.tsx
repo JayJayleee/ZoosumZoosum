@@ -14,12 +14,15 @@ import styles from './style';
 import AppText from '@/components/ui/Text';
 import {useMutation} from '@tanstack/react-query';
 import {TrashImgResultFtn} from '@/apis/plogging';
+import {Wave} from '@/components/ui/animation/LottieEffect';
 
 interface Photo {
   path: string;
 }
 
 export default function CameraPage({navigation, route}: CamerascreenProps) {
+  const AnimalImage = route.params.getAnimalIMG;
+  // console.log('가젤', AnimalImage);
   const camera = useRef<Camera | null>(null);
   const devices = useCameraDevices();
   // device.back으로 작성이 안됨... 확인해보기
@@ -30,6 +33,8 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(
     null,
   );
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // 만약 설정 중 사용자가 앱을 껐거나, 백그라운드로 넘어갔을 때
   // 이 부분 설정 더 알아보기
@@ -121,9 +126,12 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   const mutation = useMutation(
     (imageSource: string) => TrashImgResultFtn(imageSource),
     {
+      onMutate: () => {
+        setIsLoading(true); // 요청 시작 시 로딩 시작
+      },
       onSuccess: async (responseData: any) => {
         console.log('쓰레기 이미지가 보내지긴 했어요...일단', responseData);
-        // 상태 업데이트 후 화면 전환
+
         await new Promise(resolve => setTimeout(resolve, 0)); // 이벤트 루프를 기다리게 함
         navigation.navigate('Plogging', {
           shouldOpenModal: true,
@@ -133,6 +141,9 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       onError: error => {
         // 요청 실패 시 처리할 작업
         console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
+      },
+      onSettled: () => {
+        setIsLoading(false);
       },
     },
   );
@@ -162,17 +173,19 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('@/assets/plogingpage_image/filter.png')}
-        style={{
-          ...StyleSheet.absoluteFillObject,
-          width: '100%',
-          height: '100%',
-          aspectRatio: 1,
-          // resizeMode: 'stretch',
-          zIndex: 1,
-        }}
-      />
+      {!isLoading && (
+        <Image
+          source={require('@/assets/plogingpage_image/filter.png')}
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            width: '100%',
+            height: '100%',
+            aspectRatio: 1,
+            // resizeMode: 'stretch',
+            zIndex: 1,
+          }}
+        />
+      )}
       <Camera
         ref={camera}
         style={StyleSheet.absoluteFill}
@@ -180,22 +193,39 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
         isActive={showCamera}
         photo={true}
       />
-      <View style={styles.overlayContainer}>
-        {/* 왼쪽 이미지 */}
-        <Image
-          source={{uri: 'https://i.imgur.com/Rr9HDQw.png'}}
-          style={styles.overlayImage}
-        />
+      {isLoading && (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Wave />
+          <AppText style={{color: 'white', fontSize: 20}}>
+            쓰레기 속 정령들을 찾는 중...
+          </AppText>
+        </View>
+      )}
+      {!isLoading && (
+        <View style={styles.overlayContainer}>
+          {/* 왼쪽 이미지 */}
+          <Image source={{uri: AnimalImage}} style={styles.overlayImage} />
 
-        <Image
-          source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
-          style={styles.overlayRightImage}
-        />
-        <AppText style={styles.overlayText}> 인생 씁다...씁...후...</AppText>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />
-      </View>
+          <Image
+            source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
+            style={styles.overlayRightImage}
+          />
+          <AppText style={styles.overlayText}>
+            오늘도 주섬주섬 힘내자구!
+          </AppText>
+        </View>
+      )}
+      {!isLoading && (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />
+        </View>
+      )}
     </View>
   );
 }

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   AppState,
+  BackHandler,
 } from 'react-native';
 import {PloggingScreenProps} from 'typePath';
 import {NewData, TrashList, TrashDaTaList} from '@/types/plogging';
@@ -80,11 +81,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     }
   }, [trashData]);
 
-  // useEffect(() => {
-  //   console.log('이미지를 받음', getAnimalIMG);
-  //   console.log('아이디도', getAnimalID);
-  // }, [getAnimalIMG]);
-
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(0);
   const [trashCount, setTrashCount] = useState(0);
@@ -99,6 +95,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [backgroundTime, setBackgroundTime] = useState<number | null>(null);
   // 지도 로딩 후에 타이머 시작하기
   const [mapLoading, setMapLoading] = useState<boolean>(false);
+  const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
 
   //컴포넌트의 전체 라이프 사이클에 영향없는 시간 값 만들기
   let intervalRef = useRef<number | null>(null);
@@ -142,11 +139,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       appStateSubscription.remove();
     };
   }, [appState, mapLoading]);
-
-  // useEffect(() => {
-  //   console.log(trashImage, '플로깅 페이지에서 업데이트 된 쓰레기 이미지');
-  //   // console.log('타이머가 왜 안될까🖤', activityData);
-  // }, [trashImage]);
 
   // 시간 포맷 맞추기 위한 상수. 추후 옮길 것
   const formatTime = (time: number) => {
@@ -257,11 +249,31 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       setTimer(0);
       setTrashCount(0);
       setGetAnimalID(0);
-      setGetAnimalIMG('');
+      // setGetAnimalIMG('');
       setPloggingDistance(0);
       setIsEndModalVisible(true);
     }
   }, [trashImage]);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (navigation.isFocused()) {
+        setCloseModalVisible(true);
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
 
   const resultNav = (newData: NewData) => {
     navigation.navigate('PloggingResult', {
@@ -319,14 +331,16 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const captureTrashCount = useRef<number>(0);
   const captureTrash = () => {
     captureTrashCount.current += 1;
-    navigation.navigate('Camera');
+    navigation.navigate('Camera', {getAnimalIMG: getAnimalIMG});
   };
 
+  // console.log('동물', getAnimalIMG);
   return (
     <View style={{flex: 1}}>
       <TrashModal
         isVisible={isModalVisible}
         onClose={closeModalAndUpdateCount}
+        animalImg={getAnimalIMG}
         data={DATA}
         navigation={navigation}
       />
@@ -334,30 +348,35 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         isVisible={isEndModalVisible}
         onClose={() => setIsEndModalVisible(false)}
         data={resultData}
+        animalImg={getAnimalIMG}
         activityData={activityData}
         navigation={resultNav}
       />
 
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <AppButton children="플로깅 완료하기" onPress={stopAndResetTimer} />
+          {appState === 'active' && mapLoading ? (
+            <AppButton children="플로깅 완료하기" onPress={stopAndResetTimer} />
+          ) : null}
         </View>
-        <ImageBackground
-          style={styles.bottomContainer}
-          source={require('@/assets/plogingpage_image/Background.png')}
-          resizeMode="contain">
-          <View style={styles.textContainer}>
-            <AppText style={styles.text}>{ploggingDistance}km</AppText>
-            <AppText style={styles.text}>{formatTime(timer)}</AppText>
-            <AppText style={styles.text}>{trashCount}개</AppText>
-          </View>
+        {appState === 'active' && mapLoading ? (
+          <ImageBackground
+            style={styles.bottomContainer}
+            source={require('@/assets/plogingpage_image/Background.png')}
+            resizeMode="contain">
+            <View style={styles.textContainer}>
+              <AppText style={styles.text}>{ploggingDistance}km</AppText>
+              <AppText style={styles.text}>{formatTime(timer)}</AppText>
+              <AppText style={styles.text}>{trashCount}개</AppText>
+            </View>
 
-          <TouchableOpacity style={styles.cameraBtn} onPress={captureTrash}>
-            <Image
-              source={require('@/assets/plogingpage_image/cameraBtn.png')}
-            />
-          </TouchableOpacity>
-        </ImageBackground>
+            <TouchableOpacity style={styles.cameraBtn} onPress={captureTrash}>
+              <Image
+                source={require('@/assets/plogingpage_image/cameraBtn.png')}
+              />
+            </TouchableOpacity>
+          </ImageBackground>
+        ) : null}
         {/* 지도 import */}
         <ViewShot
           style={styles.mapContainer}

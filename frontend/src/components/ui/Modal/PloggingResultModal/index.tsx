@@ -15,6 +15,7 @@ interface PloggingResultModalProps {
   onClose: () => void;
   data?: TrashList[];
   navigation: (newData: NewData) => void;
+  animalImg: string;
   activityData?: {
     activityImg: any;
     activityRequestDto: {
@@ -31,10 +32,13 @@ const PloggingResultModal = ({
   data,
   navigation,
   activityData,
+  animalImg,
 }: PloggingResultModalProps) => {
   // useMutation을 사용하여 서버 요청을 관리합니다.
 
-  // console.log(activityData, '애니멀 아이디 들어옴?');
+  useEffect(() => {
+    console.log(activityData, '애니멀 아이디 들어옴?');
+  }, []);
   const mutation = useMutation(
     (activityData: ActivityDataType) => PloggingResultFtn(activityData),
     {
@@ -67,10 +71,7 @@ const PloggingResultModal = ({
   const topContent = activityData ? (
     <View style={styles.overlayContainer}>
       <AppText style={styles.overlayText}>오늘도 주섬주섬 성공!</AppText>
-      <Image
-        source={{uri: `file://${activityData.activityImg}`}}
-        style={styles.overlayImage}
-      />
+      <Image source={{uri: animalImg}} style={styles.overlayImage} />
     </View>
   ) : null;
 

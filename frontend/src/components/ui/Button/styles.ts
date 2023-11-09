@@ -186,4 +186,20 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
   },
+  trash_red: {
+    width: '48%',
+    backgroundColor: '#d4655f',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  trash_green: {
+    width: '48%',
+    backgroundColor: '#2dcf8b',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
