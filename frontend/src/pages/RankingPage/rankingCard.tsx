@@ -63,7 +63,9 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     justifyContent : 'center',
     alignItems : 'center',
-    marginVertical : '5%'
+    marginVertical : '5%',
+    borderBottomWidth : 1,
+    borderStyle: 'solid',
   },
   title_grid1 : {
     width : '15%',

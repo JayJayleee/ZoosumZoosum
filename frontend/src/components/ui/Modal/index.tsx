@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {ModalProps as RNModalProps} from 'react-native';
+import {Pressable, ModalProps as RNModalProps} from 'react-native';
 import {Modal, TouchableOpacity, View, Text, Image} from 'react-native';
 import styles from './styles';
 import AppButton from '../Button';
@@ -13,10 +13,10 @@ interface ModalComponentProps
   onClose: () => void;
   children: ReactNode;
   buttonInnerText: string;
-  modalStyle?: 'top' | 'default';
+  modalStyle?: 'top' | 'default' | 'close';
   noButton?: boolean;
   TopChildren?: ReactNode;
-  ViewStyle?: 'default' | 'userInfo' | 'treeInfo';
+  ViewStyle?: 'default' | 'treeInfo' | 'close';
   btnVariant?: 'default' | 'button';
 }
 
@@ -48,17 +48,20 @@ export default function ModalComponent({
     case 'top':
       variantStyle = styles.topView;
       break;
+    case 'close':
+      variantStyle = styles.closeModal;
+      break;
   }
 
   switch (ViewStyle) {
     case 'default':
       viewVariantStyle = styles.modalView;
       break;
-    case 'userInfo':
-      viewVariantStyle = styles.userInfo;
-      break;
     case 'treeInfo':
       viewVariantStyle = styles.treeinfo;
+      break;
+    case 'close':
+      viewVariantStyle = styles.closeView;
       break;
   }
 
@@ -68,16 +71,14 @@ export default function ModalComponent({
       transparent={transparent}
       animationType={animationType}
       visible={isVisible}
-      onRequestClose={onRequestClose}>
+      onRequestClose={onRequestClose}
+      >
       <View style={variantStyle}>
         <Toast />
         {TopChildren}
         <View style={viewVariantStyle}>
           {children}
           {!noButton && (
-            // <TouchableOpacity style={styles.button} onPress={onClose}>
-            //   <Text style={styles.textStyle}>{buttonInnerText}</Text>
-            // </TouchableOpacity>
             <AppButton
               children={buttonInnerText}
               onPress={onClose}

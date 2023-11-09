@@ -30,7 +30,6 @@ export default function TreeNameModal({
   const [Nickname, setNickname] = useState<string | null>();
 
   useEffect(() => {
-    console.log('닉네임');
     const getnickname = async () => {
       const nick = await getStorage('Nickname');
       setNickname(nick);
@@ -150,7 +149,6 @@ export default function TreeNameModal({
   const [buttonText, setButtonText] = useState('');
 
   useEffect(() => {
-    console.log('버튼 텍스트 useEffect가 실행됨');
     switch (index) {
       case 0:
         setButtonText('두근두근');

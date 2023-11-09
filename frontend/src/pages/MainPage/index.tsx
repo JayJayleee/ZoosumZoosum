@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Animated,
   TouchableOpacity,
-  Modal,
   BackHandler,
 } from 'react-native';
 import {MainScreenProps} from 'typePath';
@@ -20,11 +19,15 @@ import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
 import {getStorage, setStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
+import ModalComponent from '@/components/ui/Modal';
+import { windowWidth } from '@/constants/styles';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
   const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
+  // 소리 on/off 상태를 나타내는 변수 생성
+  const [isSoundOn, setSound] = useState<boolean>(true);
 
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);
@@ -105,27 +108,11 @@ export default function MainPage({navigation}: MainScreenProps) {
     }).start();
   }, [animation, toggle]);
 
+  // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
     BackHandler.exitApp();
     navigation.navigate('Login');
-    return true;
   };
-
-  // 종료 모달 창
-  const appCloseModal = (
-    <Modal
-      animationType="slide"
-      visible={isModalVisible}
-      onRequestClose={() => setModalVisible(false)}>
-      <View>
-        <AppText children="앱을 종료하시겠습니까?" />
-        <View>
-          <AppButton children="확인" onPress={exitFtn} />
-          <AppButton children="취소" onPress={() => setModalVisible(false)} />
-        </View>
-      </View>
-    </Modal>
-  );
 
   // 상단 스탯 api 호출 및 상태 저장하는 코드 생성
   const {
@@ -231,7 +218,7 @@ export default function MainPage({navigation}: MainScreenProps) {
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
       />
-      {isModalVisible && appCloseModal}
+      {isModalVisible && <AppCloseModal isModalVisible={isModalVisible} RequestClose={() => setModalVisible(false)} exitFtn={exitFtn} />}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
           <FastImage
@@ -299,7 +286,46 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, -150],
+                    outputRange: [windowWidth*0.5, -(windowWidth*0.48)],
+                  }),
+                },
+              ],
+              opacity: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+              }),
+            },
+          ]}>
+          <TouchableOpacity
+            onPress={
+              toggle
+                ? () => {
+                    setSound(!isSoundOn)
+                  }
+                : undefined
+            }
+            style={styles.toggleMoveButton}>
+            {isSoundOn? <><FastImage
+              source={require('@/assets/img_icon/sound_on_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 끄기" style={styles.toggleBtnText} /></> :
+            <><FastImage
+              source={require('@/assets/img_icon/sound_off_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 켜기" style={styles.toggleBtnText} /></>
+            }
+          </TouchableOpacity>
+        </Animated.View>
+        <Animated.View
+          style={[
+            {
+              transform: [
+                {
+                  translateX: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [windowWidth*0.5, -(windowWidth*0.31)],
                   }),
                 },
               ],
@@ -332,7 +358,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, -75],
+                    outputRange: [windowWidth*0.5, -(windowWidth*0.14)],
                   }),
                 },
               ],
@@ -365,7 +391,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, 5],
+                    outputRange: [windowWidth*0.5, windowWidth*0.03],
                   }),
                 },
               ],
@@ -398,7 +424,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, 85],
+                    outputRange: [windowWidth*0.5, windowWidth*0.2],
                   }),
                 },
               ],

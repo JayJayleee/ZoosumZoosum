@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ImageBackground, StyleSheet, FlatList} from 'react-native';
-
+import { SelectList, MultipleSelectList }from 'react-native-dropdown-select-list'
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
 
@@ -10,6 +10,7 @@ import RankingCard from './rankingCard';
 
 import { fetchMyRegionRankingListInfo } from '@/apis/ranking';
 import { useQuery } from '@tanstack/react-query';
+import { windowHeight } from '@/constants/styles';
 
 type ApiResponse = {
   data: Rank[];
@@ -25,34 +26,60 @@ interface RankingProps {
   goToprofile : (data: string) => void;
 }
 
-const region = "서울"
-
 export default function RegionRanking({goToprofile} : RankingProps) {
   const [RankingArray, setRankingArray] = useState<Rank[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<string>(''); // 기본 선택된 지역
+  
+  const regions = [
+    { key: '1', value: '서울' },
+    { key: '2', value: '대전' },
+    { key: '3', value: '세종' },
+    { key: '4', value: '광주' },
+    { key: '5', value: '인천' },
+    { key: '6', value: '대구' },
+    { key: '7', value: '부산' },
+    { key: '8', value: '울산' },
+    { key: '9', value: '제주' },
+    { key: '10', value: '경기' },
+    { key: '11', value: '강원' },
+    { key: '12', value: '충청' },
+    { key: '13', value: '전라' },
+    { key: '14', value: '경상' },
+  ]; // key-value 형식의 지역 배열
 
-  useQuery(['TopRankingList'],
-    () => fetchMyRegionRankingListInfo(region), {
-    onSuccess: (response: ApiResponse) => {
-      const data = response.data;
-      if (!Array.isArray(data)) {
-        console.error('Data는 배열이 아닙니다:', data);
-        return;
-      }
-
-      setRankingArray(data)
+  const { refetch } = useQuery(['TopRankingList', selectedRegion], () => fetchMyRegionRankingListInfo(selectedRegion), {
+    onSuccess: (data) => {
+      setRankingArray(data.data);
     },
-
-    onError: error => {
-      console.error('돌발돌발', error);
+    onError: (error) => {
+      console.error('Error fetching rankings', error);
     },
+    enabled: !!selectedRegion,
   });
 
-  if (!RankingArray.length) return <Text>로딩...</Text>;
+  useEffect(() => {
+    refetch();
+  }, [selectedRegion, refetch]);
 
+
+  if (!RankingArray.length) return <Text>로딩...</Text>;
+  
   return (
     <View style={styles.ranking_container}>
       <View style={styles.select_container}>
-        {/* <Text>전체</Text> */}
+        <SelectList
+          setSelected={(val:string) => setSelectedRegion(val) }
+          maxHeight={1000}
+          data={regions}
+          search={false}
+          boxStyles={{width: '100%', borderColor:"#d4bb51", borderWidth: 2}} 
+          inputStyles={{width: '100%', fontSize: 15}}
+          dropdownStyles={{height: windowHeight*0.7, borderColor:"#d4bb51", borderWidth: 1, width: 'auto', backgroundColor: 'white', opacity: 10,}}
+          dropdownTextStyles={{fontSize: 15, width:'80%'}}
+          fontFamily='NPSfont_regular'
+          placeholder={"지역을 선택해주세요"}
+          save="value"
+        />
       </View>
       <View style={styles.title_container}>
         <Text style={styles.title_grid1}>순위</Text>
@@ -61,12 +88,14 @@ export default function RegionRanking({goToprofile} : RankingProps) {
         <Text style={styles.title_grid4}>점수</Text>
       </View>
       <View style={styles.body_container}>
-        <FlatList
-          horizontal={false}
-          data={RankingArray}
-          keyExtractor={item => item.nickname}
-          renderItem={({ item, index }) => {
-            return (
+        {RankingArray.length === 0 ? (
+          <Text >데이터가 없습니다.</Text>
+        ) : (
+          <FlatList
+            horizontal={false}
+            data={RankingArray}
+            keyExtractor={item => item.nickname}
+            renderItem={({ item, index }) => (
               <RankingCard
                 index={index}
                 nickname={item.nickname}
@@ -74,9 +103,9 @@ export default function RegionRanking({goToprofile} : RankingProps) {
                 score={item.score}
                 goToprofile={goToprofile}
               />
-            );
-          }}
-        />
+            )}
+          />
+        )}
       </View>
     </View>
   );

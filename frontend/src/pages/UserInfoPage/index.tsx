@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, ImageBackground,  TextInput, Text } from 'react-native';
+import { ImageBackground,  TextInput } from 'react-native';
 import { SingleSelect } from '@/components/ui/SelectList';
-import ModalComponent from '@/components/ui/Modal';
 import { UserInfoscreenProps } from '@/types/path';
 import { setStorage } from '@/apis/index';
 import { setUserInfoFtn, nicknameDuplicate } from '@/apis/login';
@@ -10,14 +9,11 @@ import AppText from '@/components/ui/Text';
 import FastImage from 'react-native-fast-image';
 import AppButton from '@/components/ui/Button';
 import { style } from './styles';
-import { ErrorModal } from '@/components/ui/Modal/UserInfoErrorModal';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '@/components/ui/Toast';
 
 
 export default function UserInfoPage({navigation}: UserInfoscreenProps) {
-
-  // 에러 메세지를 표시한 모달창 on/off 상태 표시 변수 생성
-  const [isModalVisible, setModalVisible] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
 
   // 첫번째 입력창이 끝나고 다음 입력창으로 넘어가기 위한 변수 생성
   const [isRegionOk, setRegionOk] = useState(false);
@@ -43,20 +39,17 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       const res = await nicknameDuplicate({nickname: userNickname});
       const nickDu = await res.json();
 
-      if (nickDu.isDuplicate !== false) {
-        setModalVisible(false);
+      if (nickDu.isDuplicate === false) {
         setNickDuplicated(true);
 
         await setStorage("Nickname", userNickname)
 
         await LastLoginFtn();
       } else {
-        setErrorMessage("중복된 닉네임입니다")
-        setModalVisible(true);
+        showToast("중복된 닉네임입니다")
       }
     } else {
-      setErrorMessage("닉네임을 입력해주세요")
-      setModalVisible(true);
+      showToast("닉네임을 입력해주세요")
     }
   };
 
@@ -70,63 +63,60 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
       navigation.navigate('Tutorial');
     } else {
-      setModalVisible(true);
+      showToast("토큰을 발급받지 못했어요");
     }
   }
 
   // 지역 창에서 버튼 클릭 시 발생할 이벤트
   const RegionButton = async () => {
     if(userRegion !== "") {
-      setModalVisible(false);
       setRegionOk(true);
     } else {
-      setErrorMessage("지역을 선택해주세요")
-      setModalVisible(true);
+      showToast("지역을 선택해주세요")
     }
   };
 
   // 지역 창
   const RegionInputModal = <>
     <AppText style={style.inputTitleText}>사는 지역을 선택해주세요</AppText>
-    <SingleSelect
-     dataList={regionList}
-     setSelected={setUserRegion} 
-     maxHeight={150}
-     placeholder='지역을 선택해주세요' />
-    <AppButton children='닉네임 정하러 가기' onPress={RegionButton} variant='region' />
+    <FastImage source={require("@/assets/loginpage_image/login_inputbox.png")} style={style.inputBox}>
+      <SingleSelect
+      dataList={regionList}
+      setSelected={setUserRegion} 
+      maxHeight={180}
+      placeholder='지역을 선택해주세요' />
+      <AppButton children='닉네임 정하러 가기' onPress={RegionButton} variant='region' />
+    </FastImage>
   </>
 
-  
   // 닉네임 창
   const NicknameInputModal = <>
     <AppText style={style.inputTitleText}>닉네임을 정해주세요</AppText>
-    <TextInput
-     value={userNickname}
-     onChangeText={(text) => {setUserNickname(text)}}
-     placeholder='닉네임을 입력해주세요'
-     style={style.inputNickname}/>
-    <AppButton children='내 섬으로 가기' onPress={NicknameButton} variant='nickname'/>
+    <FastImage source={require("@/assets/loginpage_image/login_inputbox.png")} style={style.inputBox}>
+      <TextInput
+      value={userNickname}
+      onChangeText={(text) => {setUserNickname(text)}}
+      placeholder='닉네임을 입력해주세요'
+      style={style.inputNickname}/>
+      <AppButton children='내 섬으로 가기' onPress={NicknameButton} variant='nickname'/>
+    </FastImage>
   </>
 
-  // 에러 문구를 띄울 모달 창 생성
-  const isErrorModal = <ErrorModal
-    isModalVisible={isModalVisible}
-    onClose={() => setModalVisible(false)}
-    onRequestClose={() => setModalVisible(false)}
-    innerText={errorMessage}
-    textStyle={style.errorModal}  />
-
-
+  // toast로 에러 메세지 출력
+  const showToast = (text: string) => {
+    Toast.show({
+      type: 'error',
+      text1: `${text}`
+    });
+  }
 
   return (
   <ImageBackground 
   style={style.container}
   source={require('@/assets/loginpage_image/login_background.png')}>
-    {isErrorModal}
     <FastImage source={require("@/assets/loginpage_image/zooisland_logo.png")} style={style.logo} />
-    <FastImage source={require("@/assets/loginpage_image/login_inputbox.png")} style={style.inputBox}>
-      {!isRegionOk? RegionInputModal : NicknameInputModal}
-    </FastImage>
+    {!isRegionOk? RegionInputModal : NicknameInputModal}
+    <Toast config={toastConfig}/>
   </ImageBackground>
   );
 }

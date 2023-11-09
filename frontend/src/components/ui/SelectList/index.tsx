@@ -33,9 +33,9 @@ export const SingleSelect = ({dataList, setSelected, maxHeight, placeholder}: si
      maxHeight={maxHeight} 
      search={false}
      boxStyles={{width: '80%', borderColor:"#6B4EFF", borderWidth: 2}} 
-     inputStyles={{width: '100%', fontSize: 15}}
+     inputStyles={{width: '100%', fontSize: 18}}
      dropdownStyles={{borderColor:"#6B4EFF", borderWidth: 2, width: 'auto'}}
-     dropdownTextStyles={{fontSize: 15, width:'80%'}}
+     dropdownTextStyles={{fontSize: 18, width:'80%'}}
      fontFamily='NPSfont_regular'
      placeholder={placeholder}
      />
