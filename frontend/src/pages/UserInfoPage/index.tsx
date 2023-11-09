@@ -68,7 +68,7 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
       await setStorage("AccessToken", result.token);
 
-      navigation.navigate('Main');
+      navigation.navigate('Tutorial');
     } else {
       setModalVisible(true);
     }
