@@ -208,6 +208,7 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	@Override
+	@Transactional
 	public void registUserAnimalFirst(MyAnimalRequest request, String userId) {
 
 		if(userId == null) {
