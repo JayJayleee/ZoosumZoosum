@@ -69,9 +69,8 @@ export default function AnimalCardlist({navigation}: AnimalCardListProps) {
   return (
     <View>
       <FlatList
-        key={numColumns}
         horizontal={false}
-        numColumns={numColumns}
+        numColumns={3}
         data={animalsArray}
         keyExtractor={item => item.animalId.toString()}
         renderItem={({item}) => {

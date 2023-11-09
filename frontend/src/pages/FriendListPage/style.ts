@@ -1,11 +1,12 @@
 import { StyleSheet, Button } from 'react-native';
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 const styles = StyleSheet.create({
   backgroungcolor : {
     backgroundColor: 'black',
     position: 'absolute',
-    width : '100%',
-    height : '100%',
+    width : windowWidth,
+    height : windowHeight,
     opacity : 0.2,
   },
   container: {
@@ -22,25 +23,25 @@ const styles = StyleSheet.create({
     fontSize : 20,
   },
   head : {
-    height : '10%',
-    marginTop : '10%'
+    height : windowHeight*0.1,
+    marginTop : windowWidth*0.1
   },
   body1 : {
-    height : '20%',
-    width : '100%',
+    height : windowHeight*0.2,
+    width : windowWidth,
     alignItems : 'center',
-    marginBottom : 10,
+    marginBottom : windowHeight*0.01,
   },
   body2 : {
-    height : '50%',
-    width : '100%',
+    height : windowHeight*0.5,
+    width : windowWidth,
     alignItems : 'center',
-    marginBottom : 30,
+    marginBottom : windowHeight*0.05,
   },
   select_cardlist : {
-    width : '100%',
-    height : '80%',
-    marginTop : 10,
+    width : windowWidth*0.9,
+    height : windowHeight*0.2,
+    marginTop : windowHeight*0.01, // 10px
     backgroundColor : '#646567',
     borderRadius : 10,
     justifyContent : 'center'
@@ -48,11 +49,11 @@ const styles = StyleSheet.create({
   having_cardlist : {
     width : '85%',
     height : '100%',
-    marginTop : 10,
+    marginTop : windowHeight*0.01,
   },
   hiddenCard: {
-    width: 115,
-    height: 130,
+    width : windowWidth*0.28,
+    // height : windowHeight*0.15,
   },
 });
 

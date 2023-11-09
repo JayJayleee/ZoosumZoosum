@@ -91,7 +91,7 @@ export default function FriendDetailPage({navigation, route }: FriendDetailScree
             <View style={styles.active}>
               <AppText style={styles.title} >함께 걸은 거리</AppText>
               <View style={styles.Together}>
-                <AppText style={styles.title2}>{animal.lengthTogether}</AppText>
+                <AppText style={styles.title2}>{animal.lengthTogether}km</AppText>
               </View>
             </View>
           </View>

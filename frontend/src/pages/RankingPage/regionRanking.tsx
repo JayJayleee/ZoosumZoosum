@@ -62,14 +62,14 @@ export default function RegionRanking({goToprofile} : RankingProps) {
   }, [selectedRegion, refetch]);
 
 
-  if (!RankingArray.length) return <Text>로딩...</Text>;
+  // if (!RankingArray.length) return <Text>로딩...</Text>;
   
   return (
     <View style={styles.ranking_container}>
       <View style={styles.select_container}>
         <SelectList
           setSelected={(val:string) => setSelectedRegion(val) }
-          maxHeight={1000}
+          maxHeight={100}
           data={regions}
           search={false}
           boxStyles={{width: '100%', borderColor:"#d4bb51", borderWidth: 2}} 
@@ -81,6 +81,7 @@ export default function RegionRanking({goToprofile} : RankingProps) {
           save="value"
         />
       </View>
+      <View style={styles.select_container2}></View>
       <View style={styles.title_container}>
         <Text style={styles.title_grid1}>순위</Text>
         <Text style={styles.title_grid2}>닉네임</Text>
@@ -89,7 +90,7 @@ export default function RegionRanking({goToprofile} : RankingProps) {
       </View>
       <View style={styles.body_container}>
         {RankingArray.length === 0 ? (
-          <Text >데이터가 없습니다.</Text>
+          <Text style={styles.error_text} >데이터가 없습니다.</Text>
         ) : (
           <FlatList
             horizontal={false}

@@ -44,10 +44,17 @@ const styles = StyleSheet.create({
   },
   select_container : {
     width : '100%',
-    height : '8%',
-    justifyContent : 'center',
+    height : '100%',
+    position : 'absolute',
+    justifyContent : 'flex-start',
     alignItems : 'center',
-    zIndex : 3
+    zIndex : 99
+  },
+  select_container2 : {
+    width : '100%',
+    height : '10%',
+    justifyContent : 'flex-start',
+    alignItems : 'center',
   },
   title_container : {
     width : '100%',
@@ -86,6 +93,9 @@ const styles = StyleSheet.create({
     fontSize : 20,
     fontFamily : 'NPSfont_extrabold',
   },
+  error_text : {
+    textAlign : 'center',
+  }
 })
 
 export default styles;

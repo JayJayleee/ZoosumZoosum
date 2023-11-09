@@ -48,7 +48,7 @@ export default function TopRanking({goToprofile} : RankingProps) {
 
   return (
     <View style={styles.ranking_container}>
-      <View style={styles.select_container}>
+      <View style={styles.select_container2}>
         <Text style={styles.title_head}>전체 랭킹</Text>
       </View>
       <View style={styles.title_container}>
