@@ -22,18 +22,32 @@ export const style = StyleSheet.create({
     width: "80%",
     height: "40%",
     borderRadius: 20,
+    marginBottom: '5%',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   inputTitleText: {
-    fontSize: 25,
+    fontSize: 30,
     fontFamily: 'NPSfont_bold',
-    color: 'black'
+    color: 'black',
+    marginBottom: '5%'
   },
   inputNickname : {
+    marginTop: '20%',
     borderColor:"#6B4EFF",
     width: '90%',
     borderWidth: 2,
     borderRadius: 10,
     textAlign: 'center',
+    color: 'black',
+    fontSize: 20,
+    fontFamily: 'NPSfont_bold',
   },
   errorModal: {
     height: '30%',
