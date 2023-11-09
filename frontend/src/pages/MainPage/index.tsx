@@ -21,6 +21,7 @@ import {getStorage, setStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
 import ModalComponent from '@/components/ui/Modal';
+import { windowWidth } from '@/constants/styles';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -285,7 +286,46 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, -150],
+                    outputRange: [windowWidth*0.5, -(windowWidth*0.48)],
+                  }),
+                },
+              ],
+              opacity: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+              }),
+            },
+          ]}>
+          <TouchableOpacity
+            onPress={
+              toggle
+                ? () => {
+                    setSound(!isSoundOn)
+                  }
+                : undefined
+            }
+            style={styles.toggleMoveButton}>
+            {isSoundOn? <><FastImage
+              source={require('@/assets/img_icon/sound_on_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 끄기" style={styles.toggleBtnText} /></> :
+            <><FastImage
+              source={require('@/assets/img_icon/sound_off_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 켜기" style={styles.toggleBtnText} /></>
+            }
+          </TouchableOpacity>
+        </Animated.View>
+        <Animated.View
+          style={[
+            {
+              transform: [
+                {
+                  translateX: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [windowWidth*0.5, -(windowWidth*0.31)],
                   }),
                 },
               ],
@@ -318,7 +358,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, -75],
+                    outputRange: [windowWidth*0.5, -(windowWidth*0.14)],
                   }),
                 },
               ],
@@ -351,7 +391,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, 5],
+                    outputRange: [windowWidth*0.5, windowWidth*0.03],
                   }),
                 },
               ],
@@ -384,7 +424,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 {
                   translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [120, 85],
+                    outputRange: [windowWidth*0.5, windowWidth*0.2],
                   }),
                 },
               ],
@@ -408,45 +448,6 @@ export default function MainPage({navigation}: MainScreenProps) {
               style={styles.toggleBtnImage}
             />
             <AppText children="내 동물 보기" style={styles.toggleBtnText} />
-          </TouchableOpacity>
-        </Animated.View>
-        <Animated.View
-          style={[
-            {
-              transform: [
-                {
-                  translateX: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [120, -200],
-                  }),
-                },
-              ],
-              opacity: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ]}>
-          <TouchableOpacity
-            onPress={
-              toggle
-                ? () => {
-                    setSound(!isSoundOn)
-                  }
-                : undefined
-            }
-            style={styles.toggleMoveButton}>
-            {isSoundOn? <><FastImage
-              source={require('@/assets/img_icon/sound_on_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="소리 끄기" style={styles.toggleBtnText} /></> :
-            <><FastImage
-              source={require('@/assets/img_icon/sound_off_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="소리 켜기" style={styles.toggleBtnText} /></>
-            }
           </TouchableOpacity>
         </Animated.View>
         <View style={styles.toggleButton}>

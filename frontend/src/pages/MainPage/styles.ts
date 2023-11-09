@@ -1,3 +1,4 @@
+import { windowHeight, windowWidth } from '@/constants/styles';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   buttonToggle :{
     position: 'relative',
     height: '10%',
-    paddingTop: '17%',
+    paddingTop: windowHeight * 0.09,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -68,12 +69,12 @@ const styles = StyleSheet.create({
     right: 0
   },
   toggleArrowBtn: {
-    width: 70,
-    height: 70,
+    width: windowHeight * 0.08,
+    height: windowHeight * 0.08,
   },
   toggleBtnImage:{
-    width: '120%',
-    height: '500%',
+    width: windowHeight * 0.07,
+    height: windowHeight * 0.07,
   },
   toggleBtnText: {
     color: 'white',
