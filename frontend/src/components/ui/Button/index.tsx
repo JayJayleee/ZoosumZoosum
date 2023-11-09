@@ -79,6 +79,7 @@ export default function AppButton({
     case 'rankingUnselect':
       variantStyle = styles.ranking_unselect;
       textStyle = styles.rankingText_unselect;
+      break;
     case 'tutorial':
       variantStyle = styles.tutorial;
       textStyle = styles.tutorialText;

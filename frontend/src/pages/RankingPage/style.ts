@@ -4,46 +4,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent : 'center'
+    justifyContent : 'flex-end'
   },
   rankingsheet : {
-    width : "90%",
-    height : "90%"
+    width : "100%",
+    height : "98%",
+    justifyContent : 'center',
+    alignItems : 'center',
   },
   rankingpage : {
     width : "100%",
     height : "100%",
-    backgroundColor: 'red',
     justifyContent : 'center',
     alignItems : 'center',
-    paddingTop : '35%'
+    paddingTop : '45%'
   },
   button_container :{
     flexDirection: 'row',
     alignItems: 'center',
-    margin : '5%',
   },
   list_container : {
-    width : '100%',
+    width : '90%',
     height : '100%',
     justifyContent : 'flex-start',
     alignItems : 'center',
   },
+  title_head : {
+    fontSize : 30,
+    fontFamily : 'NPSfont_extrabold',
+  },
   ranking_container : {
-    width : '90%',
-    height : '90%',
-    backgroundColor : 'white',
-    justifyContent : 'center',
+    width : '80%',
+    height : '85%',
+    justifyContent : 'flex-start',
     alignItems : 'center',
     borderRadius : 15,
     opacity : 0.8,
     paddingHorizontal : "5%",
-    paddingVertical : "10%"
   },
   select_container : {
     width : '100%',
-    height : '10%',
-    backgroundColor : 'red',
+    height : '8%',
+    justifyContent : 'center',
+    alignItems : 'center',
+    zIndex : 3
   },
   title_container : {
     width : '100%',
@@ -51,6 +55,8 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     justifyContent : 'center',
     alignItems : 'center',
+    borderBottomWidth : 1,
+    borderStyle: 'solid',
   },
   body_container : {
     width : '100%',
@@ -80,7 +86,6 @@ const styles = StyleSheet.create({
     fontSize : 20,
     fontFamily : 'NPSfont_extrabold',
   },
-
 })
 
 export default styles;
