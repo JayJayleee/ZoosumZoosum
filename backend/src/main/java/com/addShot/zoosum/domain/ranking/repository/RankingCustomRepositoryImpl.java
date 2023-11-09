@@ -38,7 +38,8 @@ public class RankingCustomRepositoryImpl implements RankingCustomRepository {
         builder.and(userPlogInfo.time.deleteTime.isNull())
             .and(userPlogInfo.user.userId.eq(user.userId))
             .and(user.nickname.isNotNull())
-            .and(user.region.isNotNull());
+            .and(user.region.isNotNull())
+            .and(userPlogInfo.score.ne(0));
 
         if (region != null) {
             builder.and(userPlogInfo.user.region.eq(Region.valueOf(region)));
