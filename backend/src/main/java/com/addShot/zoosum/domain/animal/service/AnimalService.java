@@ -44,6 +44,13 @@ public interface AnimalService {
 	void registUserAnimal(MyAnimalRequest request, String userId);
 
 	/**
+	 * animal 5-1 내 동물로 등록 (최초)
+	 * @param request
+	 * @param userId
+	 */
+	void registUserAnimalFirst(MyAnimalRequest request, String userId);
+
+	/**
 	 * animal 6 - 섬에 내보낼 동물 선택
 	 * @param List<Long> 동물 번호 리스트
 	 * @param String userId

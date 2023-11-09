@@ -56,13 +56,14 @@ public class UserAnimal {
 	@Embedded
 	private Time time;
 
-	public static UserAnimal toEntity(UserAnimalId id, User user, Animal animal, String userAnimalName, Time time) {
+	public static UserAnimal toEntity(UserAnimalId id, User user, Animal animal, String userAnimalName, Time time, boolean selected) {
 		UserAnimal ua = UserAnimal.builder()
 			.id(id)
 			.user(user)
 			.animal(animal)
 			.userAnimalName(userAnimalName)
 			.time(time)
+			.selected(selected)
 			.build();
 		return ua;
 	}

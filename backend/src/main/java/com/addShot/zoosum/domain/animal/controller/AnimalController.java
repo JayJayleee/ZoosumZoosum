@@ -82,6 +82,14 @@ public class AnimalController {
 		return ResponseEntity.ok("완료되었습니다.");
 	}
 
+	//animal 5-1번 - 내 동물로 등록 (최초)
+	@PostMapping("/first")
+	public ResponseEntity<?> registUserAnimalFirst(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestBody MyAnimalRequest myAnimalRequest) {
+		String userId = headerUtils.getUserId(authorizationHeader);
+		animalService.registUserAnimalFirst(myAnimalRequest, userId);
+		return ResponseEntity.ok("완료되었습니다.");
+	}
+
 	//animal 6번 - 섬에 내보낼 동물 선택
 	@PutMapping("/island")
 	public ResponseEntity<?> updateUserAnimal(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestBody List<Long> request) {
