@@ -1,5 +1,7 @@
 package com.addShot.zoosum.domain.ranking.controller;
 
+import static com.addShot.zoosum.util.httpstatus.ReturnResponseEntity.*;
+
 import com.addShot.zoosum.domain.ranking.dto.response.RankingResponseDto;
 import com.addShot.zoosum.domain.ranking.service.RankingService;
 import com.addShot.zoosum.util.Response;
@@ -10,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class RankingController {
 
         // 페이지 정보를 넘겨주지 않으면, 400 Error 반환
         if (pageable == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return badRequest400();
         }
 
         // pageable 내부의 값을 확인
@@ -64,9 +65,9 @@ public class RankingController {
 
         // 데이터가 저장되어 있지 않으면, 500 Error 반환
         if (rankingResponseDto == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return serverError500();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new Response(rankingResponseDto));
+        return ok200(new Response(rankingResponseDto));
     }
 }
