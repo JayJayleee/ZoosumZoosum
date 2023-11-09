@@ -45,6 +45,7 @@ services:
 #            - ~/config/spring:/backend/src/main/resources:ro
 networks:
     zoosumnetwork:
+        external: true
 
 
 
