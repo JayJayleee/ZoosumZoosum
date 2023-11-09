@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   fifthAnimal: {
     position: 'relative',
     left: '30%',
-    bottom: '205%',
+    bottom: '210%',
     height: '40%',
     zIndex: 6,
   },
