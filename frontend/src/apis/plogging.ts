@@ -109,7 +109,9 @@ export async function TrashImgResultFtn(
   Img: string,
   retries = 3,
   interval = 2000,
+  setIsLoading: (isLoading: boolean) => void,
 ) {
+  setIsLoading(true);
   const formData = new FormData();
 
   const now = new Date();
@@ -135,14 +137,16 @@ export async function TrashImgResultFtn(
     const response = await axios.post('http://zoosum.co.kr:8000/ai', formData, {
       headers,
     });
+    setIsLoading(false);
     return response.data;
   } catch (error) {
     if (retries > 0) {
-      console.warn(`Upload failed, retrying in ${interval}ms...`, error);
+      console.log(`Upload failed, retrying in ${interval}ms...`, error);
       await new Promise(resolve => setTimeout(resolve, interval));
-      return TrashImgResultFtn(Img, retries - 1, interval);
+      return TrashImgResultFtn(Img, retries - 1, interval, setIsLoading);
     } else {
-      throw error;
+      setIsLoading(false);
+      console.error('Failed to upload image', error);
     }
   }
 }

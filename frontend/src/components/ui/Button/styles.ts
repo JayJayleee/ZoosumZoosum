@@ -228,4 +228,17 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  plog: {
+    width: '30%',
+    backgroundColor: 'rgba(247, 106, 106, 1);',
+    borderRadius: 8,
+    height: '7%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '5%',
+  },
+  plogText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+  },
 });

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-
+import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
 import {
   View,
   Image,
@@ -35,6 +35,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 모달 관리 값
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [trashData, setTrashData] = useState<TrashDaTaList>();
   const [getAnimalIMG, setGetAnimalIMG] = useState<string>('');
   const [getAnimalID, setGetAnimalID] = useState<number>(0);
@@ -42,6 +43,12 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 종료 여부
   let endPlog: boolean = false;
   // 모달 여는 부분. params로 함수 받아와서 그 값에 따라 모달 연다.
+
+  // 앱 종료 시, 실행하는 함수
+  const exitFtn = () => {
+    BackHandler.exitApp();
+    navigation.navigate('Login');
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
@@ -95,7 +102,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [backgroundTime, setBackgroundTime] = useState<number | null>(null);
   // 지도 로딩 후에 타이머 시작하기
   const [mapLoading, setMapLoading] = useState<boolean>(false);
-  const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
 
   //컴포넌트의 전체 라이프 사이클에 영향없는 시간 값 만들기
   let intervalRef = useRef<number | null>(null);
@@ -351,12 +357,25 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         animalImg={getAnimalIMG}
         activityData={activityData}
         navigation={resultNav}
+        nav={navigation}
+        exitFtn={exitFtn}
       />
+      {isCloseModalVisible && (
+        <AppCloseModal
+          isModalVisible={isCloseModalVisible}
+          RequestClose={() => setCloseModalVisible(false)}
+          exitFtn={exitFtn}
+        />
+      )}
 
       <View style={styles.container}>
         <View style={styles.topContainer}>
           {appState === 'active' && mapLoading ? (
-            <AppButton children="플로깅 완료하기" onPress={stopAndResetTimer} />
+            <AppButton
+              variant="plog"
+              children="플로깅 완료하기"
+              onPress={stopAndResetTimer}
+            />
           ) : null}
         </View>
         {appState === 'active' && mapLoading ? (

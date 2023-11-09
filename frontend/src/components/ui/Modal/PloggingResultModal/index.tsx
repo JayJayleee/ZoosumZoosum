@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import AppButton from '../../Button';
-import {View, Image, FlatList} from 'react-native';
+import {View, Image, FlatList, BackHandler} from 'react-native';
 import ModalComponent from '@/components/ui/Modal';
 import AppText from '@/components/ui/Text';
 import {TrashList} from '@/types/plogging';
@@ -8,13 +8,17 @@ import styles from './styles';
 import {PloggingResultFtn} from '@/apis/plogging';
 import {useMutation} from '@tanstack/react-query';
 import {ActivityDataType, NewData} from '@/types/plogging';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AppCloseModal} from '../CloseModal';
+import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '@/types/path';
 
 interface PloggingResultModalProps {
   isVisible: boolean;
   onClose: () => void;
   data?: TrashList[];
   navigation: (newData: NewData) => void;
+  nav?: NavigationProp<RootStackParamList>;
+  exitFtn?: () => void;
   animalImg: string;
   activityData?: {
     activityImg: any;
@@ -33,8 +37,31 @@ const PloggingResultModal = ({
   navigation,
   activityData,
   animalImg,
+  exitFtn,
+  nav,
 }: PloggingResultModalProps) => {
   // useMutation을 사용하여 서버 요청을 관리합니다.
+  useEffect(() => {
+    const backAction = () => {
+      if (nav) {
+        if (nav.isFocused()) {
+          setCloseModalVisible(true);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
 
   useEffect(() => {
     console.log(activityData, '애니멀 아이디 들어옴?');
@@ -59,6 +86,8 @@ const PloggingResultModal = ({
   );
 
   // 서버 요청을 실행하는 함수
+  const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
+
   const handlePloggingResult = () => {
     // activityData 전체를 전송해야 합니다.
     if (activityData) {
@@ -90,11 +119,18 @@ const PloggingResultModal = ({
       <ModalComponent
         isVisible={isVisible}
         onClose={onClose}
-        onRequestClose={onClose}
+        onRequestClose={() => setCloseModalVisible(true)}
         noButton={true}
         buttonInnerText={'닫기'}
         modalStyle="top"
         TopChildren={topContent}>
+        {isCloseModalVisible && exitFtn && (
+          <AppCloseModal
+            isModalVisible={isCloseModalVisible}
+            RequestClose={() => setCloseModalVisible(false)}
+            exitFtn={exitFtn}
+          />
+        )}
         <AppText style={styles.Title}>오늘의 플로깅 결과</AppText>
         <FlatList
           data={data}

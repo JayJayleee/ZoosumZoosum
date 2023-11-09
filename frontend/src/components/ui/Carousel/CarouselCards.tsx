@@ -38,7 +38,7 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
     ...(resultDataList.islandList ? resultDataList.islandList : []),
     ...(resultDataList.treeList ? resultDataList.treeList : []),
     ...(resultDataList.animalList ? resultDataList.animalList : []),
-    ...(resultDataList.seedList && resultDataList.seedList.addSeed !== 0
+    ...(resultDataList.seedList && resultDataList.seedList[0].addSeed !== 0
       ? [resultDataList.seedList]
       : []),
     ...(resultDataList.userBadgeList ? resultDataList.userBadgeList : []),
@@ -46,6 +46,7 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
 
   const renderItem = ({item, index: itemIndex}: CarouselProps) => {
     if (item.missionLength !== undefined) {
+      // console.log(resultDataList);
       console.log('들어오는거', combinedData);
       console.log('컴바인', combinedData.length);
       return <ProgressCarouselCardItem item={item} index={itemIndex} />;

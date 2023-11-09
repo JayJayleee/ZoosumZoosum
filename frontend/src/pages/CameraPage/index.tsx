@@ -124,12 +124,14 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   }
 
   const mutation = useMutation(
-    (imageSource: string) => TrashImgResultFtn(imageSource),
+    (imageSource: string) =>
+      TrashImgResultFtn(imageSource, 3, 2000, setIsLoading),
     {
       onMutate: () => {
         setIsLoading(true); // 요청 시작 시 로딩 시작
       },
       onSuccess: async (responseData: any) => {
+        setIsLoading(false);
         console.log('쓰레기 이미지가 보내지긴 했어요...일단', responseData);
 
         await new Promise(resolve => setTimeout(resolve, 0)); // 이벤트 루프를 기다리게 함
@@ -139,6 +141,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
         });
       },
       onError: error => {
+        setIsLoading(false);
         // 요청 실패 시 처리할 작업
         console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
       },

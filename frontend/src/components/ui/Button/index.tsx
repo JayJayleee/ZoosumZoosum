@@ -20,7 +20,10 @@ type ButtonProps = {
     | 'nickname'
     | 'ranking'
     | 'rankingUnselect'
-    | 'tutorial';
+    | 'tutorial'
+    | 'trash_green'
+    | 'trash_red'
+    | 'plog';
   onPress: () => void;
 };
 
@@ -98,6 +101,18 @@ export default function AppButton({
     case 'tutorial':
       variantStyle = styles.tutorial;
       textStyle = styles.tutorialText;
+      break;
+    case 'trash_red':
+      variantStyle = styles.trash_red;
+      textStyle = styles.defaultText;
+      break;
+    case 'plog':
+      variantStyle = styles.plog;
+      textStyle = styles.plogText;
+      break;
+    case 'trash_green':
+      variantStyle = styles.trash_green;
+      textStyle = styles.defaultText;
       break;
   }
 
