@@ -20,6 +20,7 @@ import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
 import {getStorage, setStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -86,6 +87,13 @@ export default function MainPage({navigation}: MainScreenProps) {
       StatusRefetch();
     });
   }, []);
+
+  // 나무 씨앗이 100개가 넘어가면 나무 모달창을 띄우도록 하는 코드
+  useEffect(() => {
+    if (getSeed >= 100) {
+      setIsTreeModalVisible(true)
+    }
+  }, [getSeed])
 
   // 버튼 토글 애니메이션을 위한 값 생성
   const animation = useRef(new Animated.Value(0)).current;
