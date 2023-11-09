@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, FlatList, Text } from 'react-native'
+import { View, FlatList, Text, Alert } from 'react-native'
 import { useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import AppText from '@/components/ui/Text'
@@ -25,7 +25,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
 
 
   // 활동 변수에 받아온 결과를 저장하는 코드 
-  const { isLoading: activityLoading, isError: isActivityError, error: ActivityError } = useQuery<activityHistory>(
+  const { isLoading: activityLoading, isError: isActivityError, error: ActivityError, refetch } = useQuery<activityHistory>(
     ["activityList"],
     () => getActivityInfo(nickname, activityPageNumber, 25),
     {
@@ -34,13 +34,20 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
           content: data.content,
           size: data.size,
         })
+        setPageNumber(activityPageNumber + 1)
       },
     }
   );
 
-  // if (activityLoading) {
-  //   return <Spinner />
-  // }
+  const OnEndReached = () => {
+    if (activityList.size === 25) {
+      refetch()
+    } else {
+      Alert.alert("더 이상 데이터가 없습니다.")
+    }
+  }
+
+  const EmptySentence = <AppText children="여기가 마지막 페이지입니다." />
 
   return (
   <>
@@ -50,7 +57,11 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
     <View style={styles.historyBox}>
       <View style={styles.historyInner}>
         {activityList.content.length === 0? <AppText children="아직 활동 기록이 없습니다." style={styles.historyEmpty} />
-        : <FlatList contentContainerStyle={{justifyContent: 'center', alignItems: 'center',}} data={activityList.content} renderItem={({item}) => {
+        : <FlatList 
+            contentContainerStyle={{justifyContent: 'center', alignItems: 'center',}}
+            onEndReached={OnEndReached}
+            data={activityList.content} 
+            renderItem={({item}) => {
           const { activityId, userId, activityType, fileUrl, plogging, createTime } = item;
           if (activityType === "PLOG") {
             return (

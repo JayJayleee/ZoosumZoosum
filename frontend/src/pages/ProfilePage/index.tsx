@@ -76,6 +76,10 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
     }
   );
 
+  if (statisticLoading || badgeLoading) {
+    return <Spinner />
+  }
+
 
   return (
   <>

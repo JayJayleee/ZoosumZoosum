@@ -171,6 +171,7 @@ export const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'NPSfont_bold',
     fontSize : 20,
+  },
   tutorial: {
     width: '45%',
     backgroundColor: '#34D399',
