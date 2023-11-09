@@ -109,10 +109,10 @@ export const styles = StyleSheet.create({
     fontSize: 22,
   },
   region: {
-    width: '60%',
+    width: '55%',
     backgroundColor: '#F472B6',
     borderRadius: 10,
-    height: '20%',
+    height: '15%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -127,7 +127,7 @@ export const styles = StyleSheet.create({
   userInfoText: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
-    fontSize: 22,
+    fontSize: 20,
   },
   button: {
     borderRadius: 10,
