@@ -163,17 +163,61 @@ export const styles = StyleSheet.create({
   },
   historyBoxSection : {
     flexDirection: 'row', 
-    width: windowWidth * 0.88, 
-    height: windowHeight * 0.25, 
+    width: windowWidth * 0.9, 
+    height: windowHeight * 0.28, 
     marginBottom: windowHeight * 0.02,
     justifyContent: 'flex-start', 
     alignItems: 'center', 
     backgroundColor: 'white',
-    borderRadius: 15
+    borderRadius: 15,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  historyBoxImg: {
+  historyBoxLeft: {
+    position: 'relative',
     width: '45%', 
     height: '100%',
+    backgroundColor: '#D9EED9',
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    justifyContent:'center',
+    alignItems: 'center'
+  },
+  historyBoxDate: {
+    position: 'absolute',
+    zIndex: 10,
+    top: '5%',
+    left: '5%',
+    width: '55%',
+    height: '10%',
+    backgroundColor: '#005F4E',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  historyBoxDateText : {
+    color: 'white',
+    fontSize: 12
+  },
+  historyBoxImg: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%', 
+    height: '100%',
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15
+  },
+  historyBoxAnimal: {
+    position: 'relative',
+    // bottom: 0,
+    width: '100%', 
+    height: '70%',
     borderTopLeftRadius: 15,
     borderBottomLeftRadius: 15
   },
@@ -251,4 +295,8 @@ export const styles = StyleSheet.create({
   tabText: {
     fontSize: 15
   },
+  imageModal: {
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.5,
+  }
 })
