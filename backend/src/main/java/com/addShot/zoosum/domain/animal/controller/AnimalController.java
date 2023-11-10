@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.animal.controller;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
+import com.addShot.zoosum.domain.animal.dto.response.NewImageResponse;
 import com.addShot.zoosum.domain.animal.dto.response.PlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "[ANIMAL]", description = "동물 관련 API")
@@ -61,8 +63,9 @@ public class AnimalController {
 
 	//animal 3번 - 동물 뽑기
 	@GetMapping("/draw")
-	public ResponseEntity<?> findAnimalDraw() {
-		AnimalDrawResponse response = animalService.getAnimalDraw();
+	public ResponseEntity<?> findAnimalDraw(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+		String userId = headerUtils.getUserId(authorizationHeader);
+		AnimalDrawResponse response = animalService.getAnimalDraw(userId);
 		return ResponseEntity.ok(response);
 	}
 
@@ -96,6 +99,13 @@ public class AnimalController {
 		String userId = headerUtils.getUserId(authorizationHeader);
 		animalService.updateUserAnimal(request, userId);
 		return ResponseEntity.ok("완료되었습니다.");
+	}
+
+	//animal 8번 - 섬에 내보낸 동물 이미지 바꾸기
+	@GetMapping("/new")
+	public ResponseEntity<?> getNewAnimalImage(@RequestParam("animalId") Long animalId, @RequestParam("fileUrl") String fileUrl) {
+		NewImageResponse response = animalService.getNewAnimalImage(animalId, fileUrl);
+		return ResponseEntity.ok(response);
 	}
 
 }

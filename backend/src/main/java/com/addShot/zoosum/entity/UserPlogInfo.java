@@ -97,4 +97,5 @@ public class UserPlogInfo {
     public void setSeed(int i) {
         this.seed = i;
     }
+    public void setEgg(int i) { this.egg = i; }
 }

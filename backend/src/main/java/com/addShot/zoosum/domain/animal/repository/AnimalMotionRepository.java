@@ -20,5 +20,4 @@ public interface AnimalMotionRepository extends JpaRepository<AnimalMotion, Long
 	@Query("select am from AnimalMotion am where am.animal.animalId =:animalId and am.motionCategory !='idle'")
 	Optional<List<AnimalMotion>> findByAnimalId(@Param("animalId") Long animalId);
 
-
 }

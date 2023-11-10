@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.animal.service;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
+import com.addShot.zoosum.domain.animal.dto.response.NewImageResponse;
 import com.addShot.zoosum.domain.animal.dto.response.PlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
@@ -28,7 +29,7 @@ public interface AnimalService {
 	 * animal 3번 - 동물 뽑기
 	 * @return AnimalDrawResponse
 	 */
-	AnimalDrawResponse getAnimalDraw();
+	AnimalDrawResponse getAnimalDraw(String userId);
 
 	/**
 	 * animal 4번 - 산책 나갈 동물 리스트
@@ -56,5 +57,13 @@ public interface AnimalService {
 	 * @param String userId
 	 */
 	void updateUserAnimal(List<Long> request, String userId);
+
+	/**
+	 * animal 8 - 섬에 내보낸 동물 이미지 바꾸기
+	 * @param animalId
+	 * @param fileUrl
+	 * @return
+	 */
+	NewImageResponse getNewAnimalImage(Long animalId, String fileUrl);
 
 }
