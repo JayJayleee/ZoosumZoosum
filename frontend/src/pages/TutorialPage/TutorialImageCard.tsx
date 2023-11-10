@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   header: {
     color: '#222',
-    fontSize: 22,
+    fontSize: 18,
     paddingTop: 20,
     textAlign: 'center',
     fontFamily: 'NPSfont_bold',

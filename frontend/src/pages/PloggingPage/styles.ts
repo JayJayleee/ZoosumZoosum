@@ -17,6 +17,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     // backgroundColor: 'red',
+    paddingBottom: 0,
+    bottom: '-1.5%',
   },
   cameraBtn: {
     width: '20%',
