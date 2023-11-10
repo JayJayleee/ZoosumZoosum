@@ -198,29 +198,23 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public List<BadgeListItemResponse> getUserBadgeList(String nickname) {
 
-		String userId = userRepository.findUserByNickname(nickname).getUserId();
+		User user = userRepository.findUserByNickname(nickname);
 
-		if(userId == null) {
+		if(user == null) {
 			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
 		}
 
-		List<Badge> all = badgeRepository.findAll();
+		List<UserBadge> userBadges = userBadgeRepository.findBadgeByUserId(user);
 		List<BadgeListItemResponse> response = new ArrayList<>();
 
-		for (Badge b : all) {
-			UserBadgeId id = new UserBadgeId(userId, b.getBadgeId());
-			Optional<UserBadge> badge = userBadgeRepository.findById(id);
-			boolean isHave = false;
-			if (badge.isPresent()) { //사용자에게 존재하는 뱃지라면
-				isHave = true;
-			}
+		for (UserBadge ub : userBadges) {
 
 			BadgeListItemResponse badgeListItemResponse = BadgeListItemResponse.builder()
-				.badgeId(b.getBadgeId())
-				.badgeName(b.getBadgeName())
-				.fileUrl(b.getFileUrl())
-				.isHave(isHave)
-				.badgeCondition(b.getBadgeCondition())
+				.badgeId(ub.getBadge().getBadgeId())
+				.badgeName(ub.getBadge().getBadgeName())
+				.fileUrl(ub.getBadge().getFileUrl())
+				.isHave(ub.getBadgeGet())
+				.badgeCondition(ub.getBadge().getBadgeCondition())
 				.build();
 
 			response.add(badgeListItemResponse);

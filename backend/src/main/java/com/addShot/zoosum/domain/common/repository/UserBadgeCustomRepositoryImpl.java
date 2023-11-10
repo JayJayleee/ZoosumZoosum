@@ -26,4 +26,13 @@ public class UserBadgeCustomRepositoryImpl implements UserBadgeCustomRepository 
                 .and(userBadge.badgeGet.eq(false)))
             .fetch();
     }
+
+    @Override
+    public List<UserBadge> findBadgeByUserId(User user) {
+        return queryFactory
+            .selectFrom(userBadge)
+            .join(userBadge.badge, badge).fetchJoin()
+            .where(userBadge.user.eq(user))
+            .fetch();
+    }
 }
