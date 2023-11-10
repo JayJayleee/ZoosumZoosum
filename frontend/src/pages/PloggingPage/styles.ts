@@ -21,9 +21,11 @@ export const styles = StyleSheet.create({
     bottom: '-1.5%',
   },
   cameraBtn: {
-    width: '20%',
+    width: '30%',
     resizeMode: 'contain',
+    // backgroundColor: 'red',
     alignSelf: 'flex-start',
+    // marginRight: 10,
   },
   text: {
     color: 'white',
@@ -34,7 +36,7 @@ export const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    width: '77%',
+    width: '71%',
     paddingLeft: 10,
   },
   mapContainer: {

@@ -90,7 +90,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(0);
-  const [trashCount, setTrashCount] = useState(100);
+  const [trashCount, setTrashCount] = useState(0);
   const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityDataType>();
@@ -391,6 +391,12 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
             <TouchableOpacity style={styles.cameraBtn} onPress={captureTrash}>
               <Image
+                style={{
+                  width: '100%',
+                  resizeMode: 'contain',
+                  paddingRight: '100%',
+                  // backgroundColor: 'green',
+                }}
                 source={require('@/assets/plogingpage_image/cameraBtn.png')}
               />
             </TouchableOpacity>

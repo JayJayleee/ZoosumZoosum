@@ -177,17 +177,30 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   return (
     <View style={styles.container}>
       {!isLoading && (
-        <Image
-          source={require('@/assets/plogingpage_image/filter.png')}
+        //   <Image
+        //     source={require('@/assets/plogingpage_image/filter.png')}
+        //     style={{
+        //       ...StyleSheet.absoluteFillObject,
+        //       width: '100%',
+        //       height: '100%',
+        //       aspectRatio: 1,
+        //       // resizeMode: 'stretch',
+        //       zIndex: 1,
+        //     }}
+        //   />
+
+        <View
           style={{
-            ...StyleSheet.absoluteFillObject,
-            width: '100%',
-            height: '100%',
-            aspectRatio: 1,
-            // resizeMode: 'stretch',
+            alignSelf: 'center',
+            width: '90%',
+            height: '65%',
+            // backgroundColor: 'rgba(0,0,0,0.5)',
+            borderWidth: 3,
+            borderColor: 'white',
+            borderRadius: 10,
             zIndex: 1,
-          }}
-        />
+            borderStyle: 'dashed',
+          }}></View>
       )}
       <Camera
         ref={camera}
@@ -220,7 +233,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
             style={styles.overlayRightImage}
           />
           <AppText style={styles.overlayText}>
-            오늘도 주섬주섬 힘내자구!
+            위의 박스에 쓰레기를 맞춰주세요!
           </AppText>
         </View>
       )}
