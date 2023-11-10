@@ -69,7 +69,7 @@ export default function RegionRanking({goToprofile} : RankingProps) {
       <View style={styles.select_container}>
         <SelectList
           setSelected={(val:string) => setSelectedRegion(val) }
-          maxHeight={100}
+          maxHeight={0}
           data={regions}
           search={false}
           boxStyles={{width: '100%', borderColor:"#d4bb51", borderWidth: 2}} 

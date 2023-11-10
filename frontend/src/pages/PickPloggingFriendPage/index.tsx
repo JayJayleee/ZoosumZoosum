@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,9 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
+  PanResponder,
+  GestureResponderEvent,
+  PanResponderGestureState,
 } from 'react-native';
 import styles from './style';
 import AppText from '@/components/ui/Text';
@@ -39,6 +42,20 @@ export default function PickPloggingFriendPage({
 }: PickPloggingFriendscreenProps) {
   const [selectAnimalsArray, setSelectAnimalsArray] = useState<Animal[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderRelease: (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+        const { dx } = gestureState;
+        if (dx > 0) {
+          goPrev();
+        } else if (dx < 0) {
+          goNext();
+        }
+      },
+    })
+  ).current;
 
   useQuery(['selectAnimal'], fetchMySelectAnimalInfo, {
     onSuccess: (response: ApiResponse) => {
@@ -73,84 +90,84 @@ export default function PickPloggingFriendPage({
       source={require('@/assets/pickPloggingFriend_image.png')}
       resizeMode="cover">
       {currentAnimal !== undefined && (
-        <View style={styles.container}>
-          <View style={styles.body1}>
-            <FastImage
-              style={styles.FriendDetail_Image}
-              source={{uri: currentAnimal.fileUrl}}
+        <View style={styles.container} {...panResponder.panHandlers}>
+            <View style={styles.body1}>
+              <FastImage
+                style={styles.FriendDetail_Image}
+                source={{uri: currentAnimal.fileUrl}}
+              />
+              <AppText style={styles.animalName}>
+                {currentAnimal.userAnimalName}
+              </AppText>
+              <View style={styles.viewAnimalDescription}>
+                <Text style={styles.animalDescription}>
+                  {currentAnimal.description}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.body2}>
+              <View style={styles.bodyContainer1}>
+                <View style={styles.active}>
+                  <AppText style={styles.title}>처음만난날</AppText>
+                  <View style={styles.Together}>
+                    <AppText style={styles.title2}>
+                      {currentAnimal.createTime}
+                    </AppText>
+                  </View>
+                </View>
+                <View style={styles.active}>
+                  <AppText style={styles.title}>같이 주운 쓰레기</AppText>
+                  <View style={styles.Together}>
+                    <AppText style={styles.title2}>
+                      {currentAnimal.trashTogether}개
+                    </AppText>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.bodyContainer1}>
+                <View style={styles.active}>
+                  <AppText style={styles.title}>함께 산책한 시간</AppText>
+                  <View style={styles.Together}>
+                    <AppText style={styles.title2}>
+                      {currentAnimal.hour}시 {currentAnimal.minute}분
+                      {currentAnimal.second}초
+                    </AppText>
+                  </View>
+                </View>
+                <View style={styles.active}>
+                  <AppText style={styles.title}>함께 걸은 거리</AppText>
+                  <View style={styles.Together}>
+                    <AppText style={styles.title2}>
+                      {currentAnimal.lengthTogether}
+                    </AppText>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={styles.switchButtons}>
+              <TouchableOpacity onPress={goPrev}>
+                <Image style={styles.arrow} source={require('@/assets/mainpage_image/left_arrow.png')}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={goNext}>
+              <Image style={styles.arrow} source={require('@/assets/mainpage_image/right_arrow.png')}/>
+              </TouchableOpacity>
+            </View>
+            <AppButton
+              children="산책하러가자GO"
+              variant="gotoisland"
+              // onPress={() => console.log(currentAnimal.animalId, currentAnimal.fileUrl, "얘가 지원이한테 전달할 값")}
+              onPress={() =>
+                navigation.navigate({
+                  name: 'Plogging',
+                  params: {
+                    shouldOpenModal: false,
+                    selectedAnimalID: currentAnimal.animalId,
+                    selectedAnimalIMG: currentAnimal.fileUrl,
+                  },
+                })
+              }
             />
-            <AppText style={styles.animalName}>
-              {currentAnimal.userAnimalName}
-            </AppText>
-            <View style={styles.viewAnimalDescription}>
-              <Text style={styles.animalDescription}>
-                {currentAnimal.description}
-              </Text>
-            </View>
           </View>
-          <View style={styles.body2}>
-            <View style={styles.bodyContainer1}>
-              <View style={styles.active}>
-                <AppText style={styles.title}>처음만난날</AppText>
-                <View style={styles.Together}>
-                  <AppText style={styles.title2}>
-                    {currentAnimal.createTime}
-                  </AppText>
-                </View>
-              </View>
-              <View style={styles.active}>
-                <AppText style={styles.title}>같이 주운 쓰레기</AppText>
-                <View style={styles.Together}>
-                  <AppText style={styles.title2}>
-                    {currentAnimal.trashTogether}개
-                  </AppText>
-                </View>
-              </View>
-            </View>
-            <View style={styles.bodyContainer1}>
-              <View style={styles.active}>
-                <AppText style={styles.title}>함께 산책한 시간</AppText>
-                <View style={styles.Together}>
-                  <AppText style={styles.title2}>
-                    {currentAnimal.hour}시 {currentAnimal.minute}분
-                    {currentAnimal.second}초
-                  </AppText>
-                </View>
-              </View>
-              <View style={styles.active}>
-                <AppText style={styles.title}>함께 걸은 거리</AppText>
-                <View style={styles.Together}>
-                  <AppText style={styles.title2}>
-                    {currentAnimal.lengthTogether}km
-                  </AppText>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.switchButtons}>
-            <TouchableOpacity onPress={goPrev}>
-              <Image style={styles.arrow} source={require('@/assets/mainpage_image/left_arrow.png')}/>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={goNext}>
-            <Image style={styles.arrow} source={require('@/assets/mainpage_image/right_arrow.png')}/>
-            </TouchableOpacity>
-          </View>
-          <AppButton
-            children="산책하러가자GO"
-            variant="gotoisland"
-            // onPress={() => console.log(currentAnimal.animalId, currentAnimal.fileUrl, "얘가 지원이한테 전달할 값")}
-            onPress={() =>
-              navigation.navigate({
-                name: 'Plogging',
-                params: {
-                  shouldOpenModal: false,
-                  selectedAnimalID: currentAnimal.animalId,
-                  selectedAnimalIMG: currentAnimal.fileUrl,
-                },
-              })
-            }
-          />
-        </View>
       )}
     </ImageBackground>
   );
