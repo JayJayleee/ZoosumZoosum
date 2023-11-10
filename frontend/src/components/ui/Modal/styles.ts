@@ -1,3 +1,4 @@
+import { windowHeight, windowWidth } from '@/constants/styles';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -45,6 +46,24 @@ const styles = StyleSheet.create({
     padding: '2%',
     paddingTop: '20%',
     justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  activityView: {
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.8,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: '2%',
+    justifyContent: 'space-between',
+    paddingTop: '4%',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {

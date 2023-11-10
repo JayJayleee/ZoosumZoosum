@@ -241,4 +241,17 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'NPSfont_bold',
   },
+  activity: {
+    width: '50%',
+    backgroundColor: '#2196F3',
+    borderRadius: 10,
+    height: '7%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
+  }
 });

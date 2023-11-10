@@ -13,12 +13,11 @@ import {ImageBackground} from 'react-native';
 import AppText from '@/components/ui/Text';
 import {getStorage} from '@/apis';
 import {styles} from './styles';
-import {getActivityInfo, getBadgeInfo, getStatisticInfo} from '@/apis/profile';
+import {getBadgeInfo, getStatisticInfo} from '@/apis/profile';
 import {
   statisticInfo,
   badgeInfo,
   badgeList,
-  activityHistory,
 } from '@/types/profile';
 import {useQuery} from '@tanstack/react-query';
 import FastImage from 'react-native-fast-image';
@@ -43,7 +42,6 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
   // 로딩중임을 확인하는 변수 생성
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
 
-  console.log(route.params.nickname, '닉네임');
   // 탭 이동을 위한 변수 생성
   const [activityPageNumber, setPageNumber] = useState<number>(0);
 

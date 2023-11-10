@@ -1,10 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
-  Image,
   ImageBackground,
-  StyleSheet,
-  Animated,
   TouchableOpacity,
   BackHandler,
 } from 'react-native';
@@ -12,22 +9,23 @@ import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import AppButton from '@/components/ui/Button';
-import {fetchMyIslandInfo, fetchMyStatusInfo} from '@/apis/Island';
+import {fetchMyIslandInfo, fetchMyStatusInfo, getNewAnimalPose} from '@/apis/Island';
 import {statusInfo, islandInfo, timeObj, animalForm} from '@/types/island';
 import AppText from '@/components/ui/Text';
 import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
-import {getStorage, setStorage} from '@/apis';
+import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
-import ModalComponent from '@/components/ui/Modal';
-import { windowWidth } from '@/constants/styles';
+
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
   const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
   // 소리 on/off 상태를 나타내는 변수 생성
   const [isSoundOn, setSound] = useState<boolean>(true);
+  // 현재 부화하지 않은 알이 있는지를 나타내기 위한 변수 생성
+  const [isHaveEgg, setHaveEgg] = useState<boolean>(false);
 
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);
@@ -46,16 +44,13 @@ export default function MainPage({navigation}: MainScreenProps) {
   // 뒤로가기 클릭 시, 앱 종료 여부를 묻는 모달 생성
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
-  // 버튼 토글 상태를 나타낼 변수
-  const [toggle, setToggle] = useState<boolean>(false);
-
   // 섬 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 섬 링크
   const [islandUri, setIslandUri] = useState<string>(
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Island/island_0.png',
+    '',
   );
   // 나무 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 나무 링크
   const [treeUri, setTreeUri] = useState<string>(
-    'https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com/Trees/Tree_01.png',
+    '',
   );
   // 동물 gif 링크를 저장할 변수 생성
   const [animalUri, setAnimalUri] = useState<animalForm[]>([]);
@@ -98,15 +93,12 @@ export default function MainPage({navigation}: MainScreenProps) {
     }
   }, [getSeed])
 
-  // 버튼 토글 애니메이션을 위한 값 생성
-  const animation = useRef(new Animated.Value(0)).current;
-  // 버튼 클릭 시, 애니메이션 실행
+  // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
   useEffect(() => {
-    Animated.timing(animation, {
-      toValue: toggle ? 1 : 0,
-      useNativeDriver: true,
-    }).start();
-  }, [animation, toggle]);
+    if (isHaveEgg) {
+      console.log("부화하지 않은 알이 있어!\n여기에다가 이제 navigation 넣을거야!")
+    }
+  }, [isHaveEgg])
 
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
@@ -132,6 +124,12 @@ export default function MainPage({navigation}: MainScreenProps) {
         second: statusContent.second,
       });
       setDistance(statusContent.missionLength);
+
+      if (statusContent.egg > 0) {
+        setHaveEgg(true)
+      } else {
+        setHaveEgg(false)
+      }
     },
   });
   // 에러 발생 시, 콘솔 창에 해당 에러 찍는 코드
@@ -163,6 +161,17 @@ export default function MainPage({navigation}: MainScreenProps) {
     return <Spinner />;
   }
 
+  // BGM on/off 함수
+  const changeSoundState = () => {
+    if (isSoundOn) {
+      console.log("소리 끄는 함수가 실행됩니다.")
+      setSound(false)
+    } else {
+      console.log("소리 키는 함수가 실행됩니다.")
+      setSound(true)
+    }
+  };
+
   // 프로필 클릭 시, 이동하는 함수
   const goToProfile = async () => {
     const nickname = await getStorage('Nickname');
@@ -190,30 +199,18 @@ export default function MainPage({navigation}: MainScreenProps) {
     navigation.navigate('ItemList');
   };
 
-  // 닫힌 상태의 토글 버튼
-  const closedButton = (
-    <TouchableOpacity onPress={() => setToggle(!toggle)}>
-      <Image
-        source={require('@/assets/mainpage_image/left_arrow.png')}
-        style={styles.toggleArrowBtn}
-      />
-    </TouchableOpacity>
-  );
-
-  // 열린 상태의 토글 버튼
-  const openedButton = (
-    <TouchableOpacity onPress={() => setToggle(!toggle)}>
-      <FastImage
-        source={require('@/assets/mainpage_image/right_arrow.png')}
-        style={styles.toggleArrowBtn}
-      />
-    </TouchableOpacity>
-  );
+  // 섬에 있는 동물 클릭 시, 다른 이미지를 받아오는 함수
+  const newAnimalAct = async (index:number, animalId:number, fileUri:string ) => {
+    let newPose = await getNewAnimalPose(animalId, fileUri);
+    let copiedItems = [...animalUri];
+    copiedItems[index].fileUrl = newPose.fileUrl;
+    setAnimalUri(copiedItems);
+  }
 
   return (
     <ImageBackground
       source={require('@/assets/mainpage_image/Background.png')}
-      style={StyleSheet.absoluteFill}>
+      style={styles.center}>
       <TreeNameModal
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
@@ -260,8 +257,8 @@ export default function MainPage({navigation}: MainScreenProps) {
             style={styles.bannerImage}
           />
           <View>
-            <AppText children="내가 심은 나무 수" style={styles.bannerText} />
-            <AppText style={styles.bannerText}>{treeCount} 그루</AppText>
+            <AppText children="내가 심은 나무" style={styles.bannerText} />
+            <AppText style={styles.bannerBoldText}>{treeCount} 그루</AppText>
           </View>
         </View>
         <View style={styles.bannerBox}>
@@ -271,187 +268,11 @@ export default function MainPage({navigation}: MainScreenProps) {
           />
           <View>
             <AppText
-              children="현재까지 심어진 나무 수"
+              children="우리가 심은 나무"
               style={styles.bannerText}
             />
-            <AppText style={styles.bannerText}>{allTreeCount} 그루</AppText>
+            <AppText style={styles.bannerBoldText}>{allTreeCount} 그루</AppText>
           </View>
-        </View>
-      </View>
-      <View style={styles.buttonToggle}>
-        <Animated.View
-          style={[
-            {
-              transform: [
-                {
-                  translateX: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [windowWidth*0.5, -(windowWidth*0.48)],
-                  }),
-                },
-              ],
-              opacity: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ]}>
-          <TouchableOpacity
-            onPress={
-              toggle
-                ? () => {
-                    setSound(!isSoundOn)
-                  }
-                : undefined
-            }
-            style={styles.toggleMoveButton}>
-            {isSoundOn? <><FastImage
-              source={require('@/assets/img_icon/sound_on_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="소리 끄기" style={styles.toggleBtnText} /></> :
-            <><FastImage
-              source={require('@/assets/img_icon/sound_off_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="소리 켜기" style={styles.toggleBtnText} /></>
-            }
-          </TouchableOpacity>
-        </Animated.View>
-        <Animated.View
-          style={[
-            {
-              transform: [
-                {
-                  translateX: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [windowWidth*0.5, -(windowWidth*0.31)],
-                  }),
-                },
-              ],
-              opacity: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ]}>
-          <TouchableOpacity
-            onPress={
-              toggle
-                ? () => {
-                    goToRanking();
-                  }
-                : undefined
-            }
-            style={styles.toggleMoveButton}>
-            <FastImage
-              source={require('@/assets/img_icon/animal_earth_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="랭킹 보기" style={styles.toggleBtnText} />
-          </TouchableOpacity>
-        </Animated.View>
-        <Animated.View
-          style={[
-            {
-              transform: [
-                {
-                  translateX: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [windowWidth*0.5, -(windowWidth*0.14)],
-                  }),
-                },
-              ],
-              opacity: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ]}>
-          <TouchableOpacity
-            onPress={
-              toggle
-                ? () => {
-                    goToProfile();
-                  }
-                : undefined
-            }
-            style={styles.toggleMoveButton}>
-            <FastImage
-              source={require('@/assets/img_icon/profile_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="나의 프로필" style={styles.toggleBtnText} />
-          </TouchableOpacity>
-        </Animated.View>
-        <Animated.View
-          style={[
-            {
-              transform: [
-                {
-                  translateX: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [windowWidth*0.5, windowWidth*0.03],
-                  }),
-                },
-              ],
-              opacity: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ]}>
-          <TouchableOpacity
-            onPress={
-              toggle
-                ? () => {
-                    goToItemList();
-                  }
-                : undefined
-            }
-            style={styles.toggleMoveButton}>
-            <FastImage
-              source={require('@/assets/img_icon/island_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="나의 아이템" style={styles.toggleBtnText} />
-          </TouchableOpacity>
-        </Animated.View>
-        <Animated.View
-          style={[
-            {
-              transform: [
-                {
-                  translateX: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [windowWidth*0.5, windowWidth*0.2],
-                  }),
-                },
-              ],
-              opacity: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ]}>
-          <TouchableOpacity
-            onPress={
-              toggle
-                ? () => {
-                    goToAnimalList();
-                  }
-                : undefined
-            }
-            style={styles.toggleMoveButton}>
-            <FastImage
-              source={require('@/assets/img_icon/animal_house_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="내 동물 보기" style={styles.toggleBtnText} />
-          </TouchableOpacity>
-        </Animated.View>
-        <View style={styles.toggleButton}>
-          {toggle ? openedButton : closedButton}
         </View>
       </View>
       <View style={styles.centerImage}>
@@ -465,39 +286,44 @@ export default function MainPage({navigation}: MainScreenProps) {
             resizeMode="stretch"
           />
           {numberAnimal > 0 && (
-            <FastImage
-              style={styles.firstAnimal}
-              source={{uri: animalUri[0].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity onPress={() => newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)} style={styles.firstAnimal}>
+              <FastImage
+                style={styles.Animal}
+                source={{uri: animalUri[0].fileUrl}}
+              />
+            </TouchableOpacity>
           )}
           {numberAnimal > 1 && (
-            <FastImage
-              style={styles.secondAnimal}
-              source={{uri: animalUri[1].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity  onPress={() => newAnimalAct(1, animalUri[1].animalId, animalUri[1].fileUrl)} style={styles.secondAnimal}>
+              <FastImage
+                style={styles.ReverseAnimal}
+                source={{uri: animalUri[1].fileUrl}}
+              />
+            </TouchableOpacity>
           )}
           {numberAnimal > 2 && (
-            <FastImage
-              style={styles.thirdAnimal}
-              source={{uri: animalUri[2].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity onPress={() => newAnimalAct(2, animalUri[2].animalId, animalUri[2].fileUrl)} style={styles.thirdAnimal}>
+              <FastImage
+                style={styles.Animal}
+                source={{uri: animalUri[2].fileUrl}}
+              />
+            </TouchableOpacity>
           )}
           {numberAnimal > 3 && (
-            <FastImage
-              style={styles.fourthAnimal}
-              source={{uri: animalUri[3].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity onPress={() => newAnimalAct(3, animalUri[3].animalId, animalUri[3].fileUrl)} style={styles.fourthAnimal}>
+              <FastImage
+                style={styles.ReverseAnimal}
+                source={{uri: animalUri[3].fileUrl}}
+              />
+            </TouchableOpacity>
           )}
           {numberAnimal > 4 && (
-            <FastImage
-              style={styles.fifthAnimal}
-              source={{uri: animalUri[4].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity onPress={() => newAnimalAct(4, animalUri[4].animalId, animalUri[4].fileUrl)} style={styles.fifthAnimal}>
+              <FastImage
+                style={styles.Animal}
+                source={{uri: animalUri[4].fileUrl}}
+              />
+            </TouchableOpacity>
           )}
         </FastImage>
       </View>
@@ -507,6 +333,64 @@ export default function MainPage({navigation}: MainScreenProps) {
           onPress={() => navigation.navigate('PickPloggingFriend')}
           variant="picnic"
         />
+      </View>
+      <View style={styles.buttonToggle}>
+        <TouchableOpacity 
+          onPress={() => changeSoundState()}
+          style={styles.toggleMoveButton}>
+          {isSoundOn? 
+          <>
+            <FastImage
+              source={require('@/assets/img_icon/sound_on_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 끄기" style={styles.toggleBtnText} />
+          </> :
+          <>
+            <FastImage
+              source={require('@/assets/img_icon/sound_off_icon.png')}
+              style={styles.toggleBtnImage}
+            />
+            <AppText children="소리 켜기" style={styles.toggleBtnText} />
+          </>
+          }
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={goToRanking}
+          style={styles.toggleMoveButton}>
+          <FastImage
+            source={require('@/assets/img_icon/animal_earth_icon.png')}
+            style={styles.toggleBtnImage}
+          />
+          <AppText children="랭킹 보기" style={styles.toggleBtnText} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={goToProfile}
+          style={styles.toggleMoveButton}>
+          <FastImage
+            source={require('@/assets/img_icon/profile_icon.png')}
+            style={styles.toggleBtnImage}
+          />
+          <AppText children="나의 프로필" style={styles.toggleBtnText} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={goToItemList}
+          style={styles.toggleMoveButton}>
+          <FastImage
+            source={require('@/assets/img_icon/island_icon.png')}
+            style={styles.toggleBtnImage}
+          />
+          <AppText children="나의 아이템" style={styles.toggleBtnText} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={goToAnimalList}
+          style={styles.toggleMoveButton}>
+          <FastImage
+            source={require('@/assets/img_icon/animal_house_icon.png')}
+            style={styles.toggleBtnImage}
+          />
+          <AppText children="내 동물 보기" style={styles.toggleBtnText} />
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );

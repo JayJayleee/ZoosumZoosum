@@ -2,8 +2,19 @@ import { windowHeight, windowWidth } from '@/constants/styles';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    alignItems: 'center',
+  },
   upperStatus: {
     position: 'relative',
+    width: windowWidth,
+    top: windowHeight* 0.005,
     height: '5%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -27,11 +38,14 @@ const styles = StyleSheet.create({
   statusText: {
     justifyContent: 'center',
     alignContent: 'center',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'NPSfont_bold'
   },
   banner: {
     position: 'relative',
-    height: '12%',
+    top: windowHeight* 0.005,
+    width: windowWidth,
+    height: '13%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -53,20 +67,26 @@ const styles = StyleSheet.create({
   bannerText: {
     color: 'white',
     textAlign: 'right',
-    fontSize: 12
+    fontSize: 15,
+  },
+  bannerBoldText: {
+    color: 'white',
+    marginTop: '5%',
+    textAlign: 'right',
+    fontSize: 20,
+    fontFamily: 'NPSfont_bold'
   },
   buttonToggle :{
     position: 'relative',
-    height: '10%',
-    paddingTop: windowHeight * 0.09,
+    top: windowHeight* 0.132,
+    width: windowWidth* 0.98,
+    height: windowHeight*0.1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-  },
-  toggleButton: {
-    position: 'absolute',
-    top: 0,
-    right: 0
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderTopRightRadius: 12,
+    borderTopLeftRadius: 12,
   },
   toggleArrowBtn: {
     width: windowHeight * 0.08,
@@ -77,17 +97,18 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.07,
   },
   toggleBtnText: {
-    color: 'white',
-    fontSize : 11,
+    color: 'black',
+    fontSize : 13,
   },
   toggleMoveButton: {
-    position: 'absolute',
-    bottom: '220%',
+    height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centerImage: {
     position: 'relative',
+    width: windowWidth,
+    top: windowHeight* 0.08,
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -107,48 +128,71 @@ const styles = StyleSheet.create({
   },
   firstAnimal: {
     position: 'relative',
-    left: '10%',
-    bottom: '20%',
-    height: '40%',
+    left: '45%',
+    bottom: '22%',
+    width: '20%',
+    height: '35%',
     zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   secondAnimal: {
     position: 'relative',
-    transform: 'scaleX(-1)',
-    right: '6%',
-    bottom: '75%',
-    height: '40%',
+    left: '28%',
+    bottom: '70%',
+    width: '20%',
+    height: '35%',
     zIndex: 8,
-  },
-  thirdAnimal: {
-    position: 'relative',
-    left: '20%',
-    bottom: '115%',
-    height: '40%',
-    zIndex: 8,
-  },
-  fourthAnimal: {
-    position: 'relative',
-    transform: 'scaleX(-1)',
-    right: '25%',
-    bottom: '165%',
-    height: '40%',
-    zIndex: 6,
-  },
-  fifthAnimal: {
-    position: 'relative',
-    left: '30%',
-    bottom: '210%',
-    height: '40%',
-    zIndex: 6,
-  },
-  ploggingButton: {
-    position: 'relative',
-    top: '5%',
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  thirdAnimal: {
+    position: 'relative',
+    left: '60%',
+    bottom: '102%',
+    width: '20%',
+    height: '35%',
+    zIndex: 8,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  fourthAnimal: {
+    position: 'relative',
+    left: '10%',
+    bottom: '150%',
+    width: '20%',
+    height: '35%',
+    zIndex: 6,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  fifthAnimal: {
+    position: 'relative',
+    left: '72%',
+    bottom: '182%',
+    width: '20%',
+    height: '35%',
+    zIndex: 6,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  ploggingButton: {
+    position: 'relative',
+    top: windowHeight* 0.11,
+    width: windowWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  Animal: {
+    position: 'relative',
+    width: '120%',
+    height: '120%',
+  },
+  ReverseAnimal: {
+    transform: 'scaleX(-1)',
+    width: '120%',
+    height: '120%',
+  },
 })
 
 export default styles;
