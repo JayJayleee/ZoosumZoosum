@@ -2,6 +2,7 @@ package com.addShot.zoosum.domain.animal.service;
 
 import com.addShot.zoosum.domain.animal.dto.request.MyAnimalRequest;
 import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
+import com.addShot.zoosum.domain.animal.dto.response.NewImageResponse;
 import com.addShot.zoosum.domain.animal.dto.response.PlogAnimalResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalDetailResponse;
 import com.addShot.zoosum.domain.animal.dto.response.UserAnimalListResponse;
@@ -9,13 +10,16 @@ import com.addShot.zoosum.domain.animal.repository.AnimalMotionRepository;
 import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
+import com.addShot.zoosum.domain.userinfo.repository.UserPlogInfoRepository;
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
 import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserAnimal;
+import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.DivideTime;
 import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.UserAnimalId;
+import com.addShot.zoosum.entity.embedded.UserPlogInfoId;
 import com.addShot.zoosum.entity.enums.CustomErrorType;
 import com.addShot.zoosum.util.DistanceUtil;
 import com.addShot.zoosum.util.RandomUtil;
@@ -43,6 +47,7 @@ public class AnimalServiceImpl implements AnimalService {
 	private final AnimalMotionRepository animalMotionRepository;
 	private final AnimalRepository animalRepository;
 	private final UserRepository userRepository;
+	private final UserPlogInfoRepository userPlogInfoRepository;
 
 	@Override
 	public List<UserAnimalListResponse> getUserAnimalList(String userId) {
@@ -115,9 +120,34 @@ public class AnimalServiceImpl implements AnimalService {
 		return response;
 	}
 
+	@Transactional
 	@Override
-	public AnimalDrawResponse getAnimalDraw() {
+	public AnimalDrawResponse getAnimalDraw(String userId) {
+
+		if(userId == null) {
+			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
+		}
+
+		//해당 유저 알 하나 빼기
+		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
+		userPlogInfo.setEgg(userPlogInfo.getEgg()-1);
+		userPlogInfoRepository.save(userPlogInfo);
+
+		//해당 유저에게 존재하는 동물 리스트
+		List<UserAnimal> userAnimals = userAnimalRepository.findAllByUserId(userId).get();
+		List<Long> userAnimalIds = new ArrayList<>();
+		for(UserAnimal ua: userAnimals) {
+			userAnimalIds.add(ua.getAnimal().getAnimalId());
+		}
+
+		//모든 동물 리스트
 		List<Animal> animalList = animalRepository.findAll();
+
+		//사용자에게 존재하는 동물은 모든 동물 리스트에서 제거
+		for(Long id: userAnimalIds) {
+			animalList.removeIf(animal -> animal.getAnimalId() == id);
+		}
+
 		Animal animal = RandomUtil.getRandomElement(animalList);
 		Long animalId = animal.getAnimalId();
 
@@ -185,26 +215,16 @@ public class AnimalServiceImpl implements AnimalService {
 			throw new UserNotFoundException(CustomErrorType.USER_NOT_FOUND.getMessage());
 		}
 
-		//사용자에게 해당 동물이 있는지 판단
 		Long animalId = request.getAnimalId();
+		UserAnimalId uaId = new UserAnimalId(userId, animalId);
+		User user = userRepository.findById(userId).get();
+		Animal animal = animalRepository.findById(animalId).get();
+		String userAnimalName = request.getUserAnimalName();
+		Time time = new Time(LocalDateTime.now(), LocalDateTime.now());
+		UserAnimal ua = UserAnimal.toEntity(uaId, user, animal, userAnimalName, time, false);
 
-		userAnimalRepository.findByUserIdAndAnimalId(userId, animalId)
-			.ifPresentOrElse(userAnimal -> { //이미 존재하는 경우
-					UserAnimal ua = userAnimalRepository.findByUserIdAndAnimalId(userId, animalId).get(); //기존꺼 꺼내와서
-					ua.setUserAnimalName(request.getUserAnimalName());
-					userAnimalRepository.save(ua);
-				},
-				() -> { //존재하지 않는 경우
-					UserAnimalId uaId = new UserAnimalId(userId, animalId);
-					User user = userRepository.findById(userId).get();
-					Animal animal = animalRepository.findById(animalId).get();
-					String userAnimalName = request.getUserAnimalName();
-					Time time = new Time(LocalDateTime.now(), LocalDateTime.now());
-					UserAnimal ua = UserAnimal.toEntity(uaId, user, animal, userAnimalName, time, false);
+		userAnimalRepository.save(ua);
 
-					userAnimalRepository.save(ua);
-				}
-			);
 	}
 
 	@Override
@@ -240,6 +260,27 @@ public class AnimalServiceImpl implements AnimalService {
 
 		userAnimalRepository.updateUserAnimalToOut(userId); //이미 선택되어 있는 애들 false로
 		userAnimalRepository.updateUserAnimalToIn(userId, request); //새로운 애들 true로
+	}
+
+	@Override
+	public NewImageResponse getNewAnimalImage(Long animalId, String fileUrl) {
+
+		List<AnimalMotion> animalMotions = animalMotionRepository.findByAnimalId(animalId).get();
+		List<AnimalMotion> forRandom = new ArrayList<>();
+
+		for(int i = 0; i<animalMotions.size(); i++) {
+			if(!animalMotions.get(i).getFileUrl().equals(fileUrl)) {
+				forRandom.add(animalMotions.get(i));
+			}
+		}
+
+		AnimalMotion randomMotion = RandomUtil.getRandomElement(forRandom);
+
+		NewImageResponse response = NewImageResponse.builder()
+			.animalId(animalId)
+			.fileUrl(randomMotion.getFileUrl())
+			.build();
+		return response;
 	}
 
 

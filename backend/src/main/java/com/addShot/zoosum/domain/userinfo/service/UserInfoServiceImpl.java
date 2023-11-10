@@ -156,6 +156,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			.seed(userPlogInfo.getSeed())
 			.treeAllCount(all.size())
 			.treeCount(userActivities.size())
+			.egg(userPlogInfo.getEgg())
 			.build();
 
 		int missionTime = mission.getMissionTime();

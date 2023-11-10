@@ -19,5 +19,6 @@ public class MainInfoResponse {
 	private int seed;
 	private int treeAllCount;
 	private int treeCount;
+	private int egg;
 
 }
