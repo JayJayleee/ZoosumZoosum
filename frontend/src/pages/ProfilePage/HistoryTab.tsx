@@ -10,6 +10,9 @@ import { useQuery } from '@tanstack/react-query';
 import Spinner from '@/components/ui/Spinner'
 import { TouchableOpacity } from 'react-native'
 import ModalComponent from '@/components/ui/Modal'
+import Toast from 'react-native-toast-message'
+import { toastConfig } from '@/components/ui/Toast'
+import { windowHeight } from '@/constants/styles'
 
 type HistoryProps = {
   nickname: string;
@@ -51,7 +54,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
   // 활동 변수에 받아온 결과를 저장하는 코드 
   const { isLoading: activityLoading, isError: isActivityError, error: ActivityError, refetch } = useQuery<activityHistory>(
     ["activityList"],
-    () => getActivityInfo(nickname, activityPageNumber, 5),
+    () => getActivityInfo(nickname, activityPageNumber, 10),
     {
       onSuccess: (data) => {
         setActivityList({
@@ -62,17 +65,26 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
       },
     }
   );
+  
+  // toast 함수 호출
+  const showToast = () => {
+    Toast.show({
+      type: "error",
+      text1: "모든 활동 내역을 불러왔습니다.",
+      visibilityTime: 2000,
+      topOffset: -(windowHeight * 0.4),
+    })
 
-  const OnEndReached = () => {
-    console.log(activityList.size)
-    if (activityList.size === 5) {
-      refetch()
-    } else {
-      Alert.alert("더 이상 데이터가 없습니다.")
-    }
   }
 
-  const EmptySentence = <AppText children="여기가 마지막 페이지입니다." />
+  // 무한 스크롤 함수(받아온 사이즈가 넣은 값과 같으면 한번 더 요청, 그보다 작으면 멈춤)
+  const OnEndReached = () => {
+    if (activityList.size === 10) {
+      refetch()
+    } else {
+      showToast()
+    }
+  }
 
   return (
   <>
@@ -81,6 +93,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
       {isMyProfile? "나의 활동 기록" :`${nickname}님의 활동 기록`}
     </AppText>
     <View style={styles.historyBox}>
+      <Toast config={toastConfig} />
       <View style={styles.historyInner}>
         {activityList.content.length === 0? <AppText children="아직 활동 기록이 없습니다." style={styles.historyEmpty} />
         : <FlatList 

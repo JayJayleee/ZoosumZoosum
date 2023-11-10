@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     top: '10%', 
     color: 'white', 
     justifyContent:'center', 
-    textAlign: 'center'
+    textAlign: 'center',
   },
   staNoteImg : {
     position: 'relative',
