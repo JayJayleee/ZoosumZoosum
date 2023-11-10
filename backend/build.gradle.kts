@@ -29,8 +29,8 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-test:6.0.13")
-	//testImplementation("org.springframework.security:spring-security-test")
+	// testImplementation("org.springframework.boot:spring-boot-starter-test:6.0.13")
+	// testImplementation("org.springframework.security:spring-security-test")
 
 	// Redis
 	implementation ("org.springframework.boot:spring-boot-starter-data-redis")
