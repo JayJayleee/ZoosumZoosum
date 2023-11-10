@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
   statusText: {
     justifyContent: 'center',
     alignContent: 'center',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'NPSfont_bold'
   },
   banner: {
     position: 'relative',
@@ -66,7 +67,14 @@ const styles = StyleSheet.create({
   bannerText: {
     color: 'white',
     textAlign: 'right',
-    fontSize: 12
+    fontSize: 15,
+  },
+  bannerBoldText: {
+    color: 'white',
+    marginTop: '5%',
+    textAlign: 'right',
+    fontSize: 20,
+    fontFamily: 'NPSfont_bold'
   },
   buttonToggle :{
     position: 'relative',
