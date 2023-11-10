@@ -12,3 +12,11 @@ export const getBadgeInfo = async (nickName: string) => {
 export const getActivityInfo = async (nickName: string, page: number, size: number) => {
   return await api.get<activityHistory>(`/activity/${nickName}?page=${page}&size=${size}`, await Header())
 }
+
+export const getActivityTreeInfo = async (nickName: string, page: number, size: number) => {
+  return await api.get<activityHistory>(`/activity/${nickName}?page=${page}&size=${size}&activityType=TREE`, await Header())
+}
+
+export const getActivityPlogInfo = async (nickName: string, page: number, size: number) => {
+  return await api.get<activityHistory>(`/activity/${nickName}?page=${page}&size=${size}&activityType=PLOG`, await Header())
+}

@@ -24,4 +24,5 @@ export type statusInfo = {
   seed: number;
   treeAllCount: number;
   treeCount: number;
+  egg: number;
 };

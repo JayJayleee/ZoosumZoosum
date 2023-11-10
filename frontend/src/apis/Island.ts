@@ -8,3 +8,7 @@ export const fetchMyIslandInfo = async () => {
 export const fetchMyStatusInfo = async () => {
   return await api.get<statusInfo>('/userinfo/mission', await Header());
 };
+
+export const getNewAnimalPose = async (animalId: number, fileUrl: string) => {
+  return await api.get<animalForm>(`/animal/new?animalId=${animalId}&fileUrl=${fileUrl}`, await Header());
+}

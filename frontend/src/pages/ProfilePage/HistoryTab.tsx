@@ -5,14 +5,14 @@ import FastImage from 'react-native-fast-image'
 import AppText from '@/components/ui/Text'
 import { styles } from './styles'
 import { activityHistory } from '@/types/profile'
-import { getActivityInfo } from '@/apis/profile';
+import { getActivityInfo, getActivityPlogInfo, getActivityTreeInfo } from '@/apis/profile';
 import { useQuery } from '@tanstack/react-query';
-import Spinner from '@/components/ui/Spinner'
 import { TouchableOpacity } from 'react-native'
 import ModalComponent from '@/components/ui/Modal'
 import Toast from 'react-native-toast-message'
 import { toastConfig } from '@/components/ui/Toast'
 import { windowHeight } from '@/constants/styles'
+import { SingleSelect } from '@/components/ui/SelectList'
 
 type HistoryProps = {
   nickname: string;
@@ -29,7 +29,9 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
       isVisible={isImageModalOpen}
       onClose={() => setImageModalOpen(false)}
       onRequestClose={() => setImageModalOpen(false)}
-      buttonInnerText={"확인"}>
+      buttonInnerText={"확인"}
+      ViewStyle='activity'
+      btnVariant='activity'>
       <View>
         <FastImage style={styles.imageModal} source={{ uri: imageURL }} />
       </View>
@@ -69,8 +71,8 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
   // toast 함수 호출
   const showToast = () => {
     Toast.show({
-      type: "error",
-      text1: "모든 활동 내역을 불러왔습니다.",
+      type: "end",
+      text1: "더 많은 활동을 통해 채워주세요!",
       visibilityTime: 2000,
       topOffset: -(windowHeight * 0.4),
     })
@@ -90,7 +92,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
   <>
     {isImageModalOpen && imageDetailModal}
     <AppText style={styles.upperTitle} >
-      {isMyProfile? "나의 활동 기록" :`${nickname}님의 활동 기록`}
+      {isMyProfile? "나의 활동 기록" :`${nickname}님의\n 활동 기록`}
     </AppText>
     <View style={styles.historyBox}>
       <Toast config={toastConfig} />
