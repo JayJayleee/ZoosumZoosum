@@ -5,14 +5,14 @@ import FastImage from 'react-native-fast-image'
 import AppText from '@/components/ui/Text'
 import { styles } from './styles'
 import { activityHistory } from '@/types/profile'
-import { getActivityInfo } from '@/apis/profile';
+import { getActivityInfo, getActivityPlogInfo, getActivityTreeInfo } from '@/apis/profile';
 import { useQuery } from '@tanstack/react-query';
-import Spinner from '@/components/ui/Spinner'
 import { TouchableOpacity } from 'react-native'
 import ModalComponent from '@/components/ui/Modal'
 import Toast from 'react-native-toast-message'
 import { toastConfig } from '@/components/ui/Toast'
 import { windowHeight } from '@/constants/styles'
+import { SingleSelect } from '@/components/ui/SelectList'
 
 type HistoryProps = {
   nickname: string;
