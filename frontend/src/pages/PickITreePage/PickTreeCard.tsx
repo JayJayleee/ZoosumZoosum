@@ -47,6 +47,8 @@ export default function PickTreeCard({itemName,fileUrl,itemId,navigation}: PickT
   );
 };
 
+import { windowHeight, windowWidth } from "@/constants/styles";
+
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    height : 100,
-    width : 100,
+    height : windowWidth*0.2,
+    width : windowWidth*2,
   }
 });

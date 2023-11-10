@@ -12,7 +12,7 @@ interface ItemCardProps {
 export default function ItemCard({itemName, fileUrl}: ItemCardProps) {
   return (
     <View style={styles.card}>
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity style={styles.card2}>
         <View style={styles.circle}>
           <Image style={styles.image} source={{uri : fileUrl }} />
         </View>
@@ -24,6 +24,8 @@ export default function ItemCard({itemName, fileUrl}: ItemCardProps) {
   );
 };
 
+
+import { windowHeight, windowWidth } from "@/constants/styles";
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
@@ -31,9 +33,13 @@ const styles = StyleSheet.create({
     flex : 1,
     justifyContent : 'center',
     alignItems : 'center',
-    width : 100,
-    height : 130,
+    // width : windowWidth,
+    height : windowHeight*0.18,
     margin : 5,
+  },
+  card2: {
+    justifyContent : 'center',
+    alignItems : 'center',
   },
   title: {
     fontSize: 18,

@@ -1,11 +1,12 @@
 import { StyleSheet, Button } from 'react-native';
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 const styles = StyleSheet.create({
   backgroungcolor : {
     backgroundColor: 'black',
     position: 'absolute',
-    width : '100%',
-    height : '100%',
+    width : windowWidth,
+    height : windowHeight,
     opacity : 0.2,
   },
   container: {
@@ -18,26 +19,31 @@ const styles = StyleSheet.create({
     fontFamily : 'NPSfont_extrabold'
   },
   head : {
-    height : '20%',
-    marginTop : '10%',
+    height : windowHeight*0.2,
+    marginTop : windowHeight*0.01,
     justifyContent : 'center',
     alignItems : 'center',
   },
   body1 : {
-    height : '80%',
-    width : '100%',
+    height : windowHeight,
+    width : windowWidth,
     alignItems : 'center',
     marginBottom : 30,
   },
   having_cardlist : {
-    width : '85%',
-    height : '65%',
+    width : windowWidth*1,
+    height : windowHeight*0.65,
     marginTop : 10,
+    alignItems : 'center',
   },
   hiddenCard: {
     width: 115,
     height: 130,
   },
+  isloading : {
+    textAlign : 'center',
+
+  }
 });
 
 export default styles;
