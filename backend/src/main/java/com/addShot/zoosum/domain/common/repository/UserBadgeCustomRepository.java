@@ -12,4 +12,13 @@ public interface UserBadgeCustomRepository {
      * @return
      */
     List<UserBadge> findDontHaveBadge(User user);
+
+    /**
+     * 사용자의 뱃지 현황 조회
+     *  - 갖고있으면 badge_get 1
+     *  - 없으면 badge_get 0
+     * @param user 사용자 Entity
+     * @return
+     */
+    List<UserBadge> findBadgeByUserId(User user);
 }
