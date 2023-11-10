@@ -128,40 +128,53 @@ const styles = StyleSheet.create({
   },
   firstAnimal: {
     position: 'relative',
-    left: '8.5%',
+    left: '45%',
     bottom: '22%',
-    height: '40%',
+    width: '20%',
+    height: '35%',
     zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   secondAnimal: {
     position: 'relative',
-    transform: 'scaleX(-1)',
-    right: '6%',
-    bottom: '75%',
-    height: '40%',
+    left: '28%',
+    bottom: '70%',
+    width: '20%',
+    height: '35%',
     zIndex: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   thirdAnimal: {
     position: 'relative',
-    left: '20%',
-    bottom: '115%',
-    height: '40%',
+    left: '60%',
+    bottom: '102%',
+    width: '20%',
+    height: '35%',
     zIndex: 8,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   fourthAnimal: {
     position: 'relative',
-    transform: 'scaleX(-1)',
-    right: '25%',
-    bottom: '165%',
-    height: '40%',
+    left: '10%',
+    bottom: '150%',
+    width: '20%',
+    height: '35%',
     zIndex: 6,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   fifthAnimal: {
     position: 'relative',
-    left: '30%',
-    bottom: '210%',
-    height: '40%',
+    left: '72%',
+    bottom: '182%',
+    width: '20%',
+    height: '35%',
     zIndex: 6,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   ploggingButton: {
     position: 'relative',
@@ -171,9 +184,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   Animal: {
-    width: '100%',
-    height: '100%'
-  }
+    position: 'relative',
+    width: '120%',
+    height: '120%',
+  },
+  ReverseAnimal: {
+    transform: 'scaleX(-1)',
+    width: '120%',
+    height: '120%',
+  },
 })
 
 export default styles;
