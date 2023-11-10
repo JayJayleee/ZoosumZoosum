@@ -1,4 +1,4 @@
-import { windowHeight } from "@/constants/styles";
+import { windowHeight, windowWidth } from "@/constants/styles";
 import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
@@ -9,9 +9,21 @@ export const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  Box: {
+    width: windowWidth,
+    height: windowHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  keyUpBox: {
+    width: windowWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: windowHeight*0.2,
+  },
   logo : {
-    width: "80%",
-    height: "30%",
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.25,
     justifyContent: 'center',
     alignItems: 'center',
   },

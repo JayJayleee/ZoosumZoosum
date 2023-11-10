@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ImageBackground,  TextInput } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { ImageBackground,  TextInput, Keyboard, View } from 'react-native';
 import { SingleSelect } from '@/components/ui/SelectList';
 import { UserInfoscreenProps } from '@/types/path';
 import { setStorage } from '@/apis/index';
@@ -24,6 +24,9 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
   const [nickDuplicated, setNickDuplicated] = useState<boolean>(false);
 
   const [userRegion, setUserRegion] = useState<string>('');
+
+  // 키보드 상태 확인
+  const [keyUp, setKeyUp] = useState<boolean>(false);
 
   // 지역 리스트 생성
   const regionList = ["서울", "부산", "인천", "대구", "대전", "광주", "울산", "세종",
@@ -86,17 +89,27 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
     </FastImage>
   </>
 
+  const saveNickname = (text: string) => {
+    if (text.length > 6) {
+      setUserNickname(text.slice(0,6));
+    } else {
+      setUserNickname(text)
+    }
+  }
+
   // 닉네임 창
   const NicknameInputModal = <>
     <AppText style={style.inputTitleText}>닉네임을 정해주세요</AppText>
     <FastImage source={require("@/assets/loginpage_image/login_inputbox.png")} style={style.inputBox}>
-      <TextInput
-      value={userNickname}
-      onChangeText={(text) => {setUserNickname(text)}}
-      placeholder='닉네임을 입력해주세요'
-      style={style.inputNickname}
-      maxLength={6}
-      />
+        <TextInput
+        value={userNickname}
+        textContentType='name'
+        onChangeText={saveNickname}
+        placeholder='닉네임을 입력해주세요'
+        style={style.inputNickname}
+        maxLength={7}
+        onSubmitEditing={Keyboard.dismiss}
+        />
       <AppText children="닉네임은 최대 6글자까지 가능합니다" style={style.nicknameInfo}/>
       <AppButton children='내 섬으로 가기' onPress={NicknameButton} variant='nickname'/>
     </FastImage>
@@ -110,13 +123,30 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
     });
   }
 
+  useLayoutEffect(() => {
+    const showKeyboard = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyUp(true);
+    });
+    const hideKeyboard = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyUp(false);
+    });
+
+    return () =>  {
+      showKeyboard.remove()
+      hideKeyboard.remove()
+    }
+  }, [])
+
+
   return (
   <ImageBackground 
   style={style.container}
   source={require('@/assets/loginpage_image/login_background.png')}>
-    <FastImage source={require("@/assets/loginpage_image/zooisland_logo.png")} style={style.logo} />
-    {!isRegionOk? RegionInputModal : NicknameInputModal}
-    <Toast config={toastConfig}/>
+    <View style={keyUp? style.keyUpBox: style.Box}>
+      <FastImage source={require("@/assets/loginpage_image/zooisland_logo.png")} style={style.logo} />
+      {!isRegionOk? RegionInputModal : NicknameInputModal}
+      <Toast config={toastConfig}/>
+    </View>
   </ImageBackground>
   );
 }
