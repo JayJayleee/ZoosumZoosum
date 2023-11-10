@@ -19,8 +19,5 @@ public class MissionReward {
     
     // 나무 목록
     private List<Item> treeList = new ArrayList<>();
-    
-    // 동물 목록
-    private List<AnimalMotion> animalList = new ArrayList<>();
 
 }

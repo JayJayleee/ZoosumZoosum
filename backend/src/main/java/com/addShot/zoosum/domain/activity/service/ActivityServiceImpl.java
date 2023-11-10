@@ -4,6 +4,7 @@ import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDtoAndSize;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.EggResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.MissionResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ScoreResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.SeedResponseDto;
@@ -165,15 +166,12 @@ public class ActivityServiceImpl implements ActivityService {
             treeList.add(item.toResponseDto());
         }
 
-        List<AnimalDrawResponse> animalList = new ArrayList<>();
-        for (AnimalMotion animalMotion : missionReward.getAnimalList()) {
-            animalList.add(animalMotion.toResponseDto());
-        }
-
         List<SeedResponseDto> seedList = new ArrayList<>();
         List<ScoreResponseDto> scoreList = new ArrayList<>();
+        List<EggResponseDto> eggList = new ArrayList<>();
         seedList.add(new SeedResponseDto((Integer) resultMap.get("addSeed")));
         scoreList.add(new ScoreResponseDto((Integer) resultMap.get("addScore")));
+        eggList.add(new EggResponseDto((Integer) resultMap.get("addEgg")));
 
         List<UserBadgeResponseDto> userBadgeList = new ArrayList<>();
         for (UserBadge userBadge : (List<UserBadge>) resultMap.get("newBadgeList")) {
@@ -185,9 +183,9 @@ public class ActivityServiceImpl implements ActivityService {
             .missionList(missionList)
             .islandList(islandList)
             .treeList(treeList)
-            .animalList(animalList)
             .seedList(seedList)
             .scoreList(scoreList)
+            .eggList(eggList)
             .userBadgeList(userBadgeList)
             .build();
         return responseDto;
@@ -276,12 +274,13 @@ public class ActivityServiceImpl implements ActivityService {
         resultMap.put("missionResponseDto", missionResponseDto);
         resultMap.put("missionReward", missionReward(user, missionLength, missionTime, missionTrash));
         resultMap.put("addSeed", mTrashQ);
+        resultMap.put("addEgg", mTrashQ);
 
         // 추가 점수 계산
         Integer score = addScore(activityRequestDto);
         resultMap.put("addScore", score);
 
-        // 플로깅 누적, 미션, 점수, 씨앗, 수정일 UPDATE
+        // 플로깅 누적, 미션, 점수, 씨앗, 알, 수정일 UPDATE
         log.info("updateUserPlogInfo 플로깅 누적, 미션, 점수, 씨앗, 수정일 UPDATE");
         UserPlogInfo newUserPlogInfo = UserPlogInfo.builder()
             .id(new UserPlogInfoId(user.getUserId()))
@@ -291,6 +290,7 @@ public class ActivityServiceImpl implements ActivityService {
             .mission(mission)
             .score(originUserPlogInfo.getScore() + score)
             .seed(originUserPlogInfo.getSeed() + mTrashQ)
+            .egg(originUserPlogInfo.getEgg() + mTrashQ)
             .time(new Time(originUserPlogInfo.getTime().getCreateTime(), LocalDateTime.now()))
             .build();
         UserPlogInfo save = userPlogInfoRepository.save(newUserPlogInfo);
@@ -340,7 +340,6 @@ public class ActivityServiceImpl implements ActivityService {
 
         int mLenQ = missionLength / ActivityLimit.LENGTH;
         int mTimeQ = missionTime / ActivityLimit.TIME;
-        int mTrashQ = missionTrash / ActivityLimit.TRASH;
 
         log.info("섬 리워드 지급");
         while (mLenQ-- > 0) { // 섬 리워드
@@ -356,13 +355,7 @@ public class ActivityServiceImpl implements ActivityService {
             saveUserItem(user, item);
             missionReward.getTreeList().add(item);
         }
-        log.info("동물 리워드 지급");
-        while (mTrashQ-- > 0) { // 동물 리워드
-            AnimalMotion animal = animalRepository.findRandomAnimal();
-            log.info("animal ; {}", animal);
-            saveUserAnimal(user, animal);
-            missionReward.getAnimalList().add(animal);
-        }
+
         log.info("missionReward : {}", missionReward);
         return missionReward;
     }
