@@ -2,8 +2,19 @@ import { windowHeight, windowWidth } from '@/constants/styles';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    alignItems: 'center',
+  },
   upperStatus: {
     position: 'relative',
+    width: windowWidth,
+    top: windowHeight* 0.005,
     height: '5%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -31,7 +42,9 @@ const styles = StyleSheet.create({
   },
   banner: {
     position: 'relative',
-    height: '12%',
+    top: windowHeight* 0.005,
+    width: windowWidth,
+    height: '13%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -57,16 +70,15 @@ const styles = StyleSheet.create({
   },
   buttonToggle :{
     position: 'relative',
-    height: '10%',
-    paddingTop: windowHeight * 0.09,
+    top: windowHeight* 0.132,
+    width: windowWidth* 0.98,
+    height: windowHeight*0.1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-  },
-  toggleButton: {
-    position: 'absolute',
-    top: 0,
-    right: 0
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderTopRightRadius: 12,
+    borderTopLeftRadius: 12,
   },
   toggleArrowBtn: {
     width: windowHeight * 0.08,
@@ -77,17 +89,18 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.07,
   },
   toggleBtnText: {
-    color: 'white',
-    fontSize : 11,
+    color: 'black',
+    fontSize : 13,
   },
   toggleMoveButton: {
-    position: 'absolute',
-    bottom: '220%',
+    height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centerImage: {
     position: 'relative',
+    width: windowWidth,
+    top: windowHeight* 0.08,
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -144,11 +157,11 @@ const styles = StyleSheet.create({
   },
   ploggingButton: {
     position: 'relative',
-    top: '5%',
+    top: windowHeight* 0.11,
+    width: windowWidth,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
 })
 
 export default styles;
