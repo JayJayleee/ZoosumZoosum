@@ -11,6 +11,7 @@ import AppButton from '@/components/ui/Button';
 import { style } from './styles';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '@/components/ui/Toast';
+import { windowHeight } from '@/constants/styles';
 
 
 export default function UserInfoPage({navigation}: UserInfoscreenProps) {
@@ -38,8 +39,8 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
     if(userNickname !== "") {
       const res = await nicknameDuplicate({nickname: userNickname});
       const nickDu = await res.json();
-
-      if (nickDu.isDuplicate === false) {
+      
+      if (nickDu.duplicated === false) {
         setNickDuplicated(true);
 
         await setStorage("Nickname", userNickname)
@@ -55,16 +56,12 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
 
   // 백엔드에 새로운 토큰 발급 받기
   const LastLoginFtn = async () => {
-    if (nickDuplicated === true) {
-      const response = await setUserInfoFtn({nickname: userNickname, region: regionDict[userRegion]});
-      const result = await response.json();
+    const response = await setUserInfoFtn({nickname: userNickname, region: regionDict[userRegion]});
+    const result = await response.json();
 
-      await setStorage("AccessToken", result.token);
+    await setStorage("AccessToken", result.token);
 
-      navigation.navigate('Tutorial');
-    } else {
-      showToast("토큰을 발급받지 못했어요");
-    }
+    navigation.navigate('Tutorial');
   }
 
   // 지역 창에서 버튼 클릭 시 발생할 이벤트
@@ -83,7 +80,7 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       <SingleSelect
       dataList={regionList}
       setSelected={setUserRegion} 
-      maxHeight={180}
+      maxHeight={windowHeight*0.22}
       placeholder='지역을 선택해주세요' />
       <AppButton children='닉네임 정하러 가기' onPress={RegionButton} variant='region' />
     </FastImage>
@@ -97,7 +94,10 @@ export default function UserInfoPage({navigation}: UserInfoscreenProps) {
       value={userNickname}
       onChangeText={(text) => {setUserNickname(text)}}
       placeholder='닉네임을 입력해주세요'
-      style={style.inputNickname}/>
+      style={style.inputNickname}
+      maxLength={6}
+      />
+      <AppText children="닉네임은 최대 6글자까지 가능합니다" style={style.nicknameInfo}/>
       <AppButton children='내 섬으로 가기' onPress={NicknameButton} variant='nickname'/>
     </FastImage>
   </>
