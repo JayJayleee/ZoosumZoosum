@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
   },
   firstAnimal: {
     position: 'relative',
-    left: '10%',
-    bottom: '20%',
+    left: '8.5%',
+    bottom: '22%',
     height: '40%',
     zIndex: 10,
   },
@@ -162,6 +162,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  Animal: {
+    width: '100%',
+    height: '100%'
+  }
 })
 
 export default styles;

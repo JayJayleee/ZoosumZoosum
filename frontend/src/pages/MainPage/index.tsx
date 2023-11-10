@@ -1,10 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
-  Image,
   ImageBackground,
-  StyleSheet,
-  Animated,
   TouchableOpacity,
   BackHandler,
 } from 'react-native';
@@ -12,16 +9,15 @@ import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import AppButton from '@/components/ui/Button';
-import {fetchMyIslandInfo, fetchMyStatusInfo} from '@/apis/Island';
+import {fetchMyIslandInfo, fetchMyStatusInfo, getNewAnimalPose} from '@/apis/Island';
 import {statusInfo, islandInfo, timeObj, animalForm} from '@/types/island';
 import AppText from '@/components/ui/Text';
 import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
-import {getStorage, setStorage} from '@/apis';
+import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
-import ModalComponent from '@/components/ui/Modal';
-import { windowWidth } from '@/constants/styles';
+
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -177,6 +173,13 @@ export default function MainPage({navigation}: MainScreenProps) {
     navigation.navigate('ItemList');
   };
 
+  // 섬에 있는 동물 클릭 시, 다른 이미지를 받아오는 함수
+  const newAnimalAct = async (index:number, animalId:number, fileUri:string ) => {
+    let newPose = await getNewAnimalPose(animalId, fileUri);
+    let copiedItems = [...animalUri];
+    copiedItems[index].fileUrl = newPose.fileUrl;
+    setAnimalUri(copiedItems);
+  }
 
   return (
     <ImageBackground
@@ -256,40 +259,48 @@ export default function MainPage({navigation}: MainScreenProps) {
             source={{uri: treeUri}}
             resizeMode="stretch"
           />
-          {numberAnimal > 0 && (
+          <TouchableOpacity onPress={() => console.log(animalUri[0])} style={styles.firstAnimal}>
             <FastImage
-              style={styles.firstAnimal}
+              style={styles.Animal}
               source={{uri: animalUri[0].fileUrl}}
               resizeMode={FastImage.resizeMode.contain}
             />
-          )}
+          </TouchableOpacity>
           {numberAnimal > 1 && (
-            <FastImage
-              style={styles.secondAnimal}
-              source={{uri: animalUri[1].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity  onPress={() => console.log(animalUri[1])} style={styles.secondAnimal}>
+              <FastImage
+                style={styles.Animal}
+                source={{uri: animalUri[1].fileUrl}}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            </TouchableOpacity>
           )}
           {numberAnimal > 2 && (
-            <FastImage
-              style={styles.thirdAnimal}
-              source={{uri: animalUri[2].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity onPress={() => console.log(animalUri[2])} style={styles.thirdAnimal}>
+              <FastImage
+                style={styles.Animal}
+                source={{uri: animalUri[2].fileUrl}}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            </TouchableOpacity>
           )}
           {numberAnimal > 3 && (
-            <FastImage
-              style={styles.fourthAnimal}
-              source={{uri: animalUri[3].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity onPress={() => console.log(animalUri[3])} style={styles.fourthAnimal}>
+              <FastImage
+                style={styles.Animal}
+                source={{uri: animalUri[3].fileUrl}}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            </TouchableOpacity>
           )}
           {numberAnimal > 4 && (
-            <FastImage
-              style={styles.fifthAnimal}
-              source={{uri: animalUri[4].fileUrl}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <TouchableOpacity onPress={() => console.log(animalUri[4])} style={styles.fifthAnimal}>
+              <FastImage
+                style={styles.fifthAnimal}
+                source={{uri: animalUri[4].fileUrl}}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            </TouchableOpacity>
           )}
         </FastImage>
       </View>
