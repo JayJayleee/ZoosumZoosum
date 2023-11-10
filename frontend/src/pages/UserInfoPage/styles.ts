@@ -1,3 +1,4 @@
+import { windowHeight } from "@/constants/styles";
 import { StyleSheet } from "react-native";
 
 export const style = StyleSheet.create({
@@ -31,6 +32,11 @@ export const style = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  nicknameInfo: {
+    fontSize: 15,
+    position: 'absolute',
+    top: windowHeight * 0.18
   },
   inputTitleText: {
     fontSize: 30,
