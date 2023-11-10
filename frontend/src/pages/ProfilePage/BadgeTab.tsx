@@ -15,7 +15,7 @@ export default function BadgeTab({isMyProfile, nickname, badgeList}: badgeProps)
   return (
   <>
     <AppText style={styles.upperTitle} >
-      {isMyProfile? "내가 모은 뱃지" :`${nickname}님이 모은 뱃지`}
+      {isMyProfile? "내가 모은 뱃지" :`${nickname}님이\n 모은 뱃지`}
     </AppText>
     <View style={styles.badgeBox}>
       <View style={styles.badgeInner}>
