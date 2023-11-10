@@ -43,7 +43,6 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
   // 로딩중임을 확인하는 변수 생성
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
 
-  console.log(route.params.nickname, '닉네임');
   // 탭 이동을 위한 변수 생성
   const [activityPageNumber, setPageNumber] = useState<number>(0);
 
