@@ -231,8 +231,8 @@ export default function MainPage({navigation}: MainScreenProps) {
             style={styles.bannerImage}
           />
           <View>
-            <AppText children="내가 심은 나무 수" style={styles.bannerText} />
-            <AppText style={styles.bannerText}>{treeCount} 그루</AppText>
+            <AppText children="내가 심은 나무" style={styles.bannerText} />
+            <AppText style={styles.bannerBoldText}>{treeCount} 그루</AppText>
           </View>
         </View>
         <View style={styles.bannerBox}>
@@ -242,10 +242,10 @@ export default function MainPage({navigation}: MainScreenProps) {
           />
           <View>
             <AppText
-              children="현재까지 심어진 나무 수"
+              children="우리가 심은 나무"
               style={styles.bannerText}
             />
-            <AppText style={styles.bannerText}>{allTreeCount} 그루</AppText>
+            <AppText style={styles.bannerBoldText}>{allTreeCount} 그루</AppText>
           </View>
         </View>
       </View>
