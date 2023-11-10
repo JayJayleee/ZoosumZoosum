@@ -29,7 +29,9 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
       isVisible={isImageModalOpen}
       onClose={() => setImageModalOpen(false)}
       onRequestClose={() => setImageModalOpen(false)}
-      buttonInnerText={"확인"}>
+      buttonInnerText={"확인"}
+      ViewStyle='activity'
+      btnVariant='activity'>
       <View>
         <FastImage style={styles.imageModal} source={{ uri: imageURL }} />
       </View>
@@ -69,8 +71,8 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
   // toast 함수 호출
   const showToast = () => {
     Toast.show({
-      type: "error",
-      text1: "모든 활동 내역을 불러왔습니다.",
+      type: "end",
+      text1: "더 많은 활동을 통해 채워주세요!",
       visibilityTime: 2000,
       topOffset: -(windowHeight * 0.4),
     })

@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   staNoteImg : {
     position: 'relative',
-    top: '10%', 
+    top: '4.5%', 
     width: '100%', 
     height: '90%', 
     justifyContent: 'center', 
@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
   staNoteSection: {
     width: '80%', 
     height: '17%', 
-    bottom: '5%', 
     flexDirection:'row',
     justifyContent:'space-evenly', 
     alignItems: 'center'
@@ -56,8 +55,7 @@ export const styles = StyleSheet.create({
   staNoteLine: {
     borderBottomWidth: 0.5, 
     borderBottomColor: 'black', 
-    width: '70%',
-    bottom: '3%', 
+    width: '70%', 
   },
   badgeBox: {
     position: 'relative',
@@ -301,7 +299,8 @@ export const styles = StyleSheet.create({
     fontSize: 15
   },
   imageModal: {
-    width: windowWidth * 0.7,
-    height: windowHeight * 0.5,
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.7,
+    borderRadius: 10,
   }
 })
