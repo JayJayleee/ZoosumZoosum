@@ -73,25 +73,35 @@ public class ActivityHistory {
     }
 
     public ActivityResponseDto toPloggingResponse(ActivityHistory ah) {
-        return ActivityResponseDto.builder()
-            .activityId(ah.activityId)
-            .userId(ah.user.getUserId())
-            .activityType(ah.activityType.toString())
-            .fileUrl(ah.fileUrl)
-            .plogging(Plogging.toResponseDto(ah.plogging))
-            .createTime(ah.time.getCreateTime())
-            .build();
+        if (ah.plogging != null) {
+            return ActivityResponseDto.builder()
+                .activityId(ah.activityId)
+                .userId(ah.user.getUserId())
+                .activityType(ah.activityType.toString())
+                .fileUrl(ah.fileUrl)
+                .plogging(Plogging.toResponseDto(ah.plogging))
+                .createTime(ah.time.getCreateTime())
+                .build();
+        } else {
+            return ActivityResponseDto.builder()
+                .activityId(ah.activityId)
+                .userId(ah.user.getUserId())
+                .activityType(ah.activityType.toString())
+                .fileUrl(ah.fileUrl)
+                .createTime(ah.time.getCreateTime())
+                .build();
+        }
     }
 
-    public ActivityResponseDto toTreeResponse(ActivityHistory ah) {
-        return ActivityResponseDto.builder()
-            .activityId(ah.activityId)
-            .userId(ah.user.getUserId())
-            .activityType(ah.activityType.toString())
-            .fileUrl(ah.fileUrl)
-            .createTime(ah.time.getCreateTime())
-            .build();
-    }
+//    public ActivityResponseDto toTreeResponse(ActivityHistory ah) {
+//        return ActivityResponseDto.builder()
+//            .activityId(ah.activityId)
+//            .userId(ah.user.getUserId())
+//            .activityType(ah.activityType.toString())
+//            .fileUrl(ah.fileUrl)
+//            .createTime(ah.time.getCreateTime())
+//            .build();
+//    }
 
     @Override
     public boolean equals(Object o) {

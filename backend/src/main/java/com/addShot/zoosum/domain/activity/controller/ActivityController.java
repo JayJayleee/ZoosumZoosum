@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,8 +50,9 @@ public class ActivityController {
         description = "사용자가 활동한 플로깅 내역과 인증서를 한 화면에서 목록 조회")
     @GetMapping("/{nickname}")
     public ResponseEntity<?> activityList(@PathVariable(name = "nickname") String nickname,
+        @RequestParam(name = "activityType", required = false) String activityType,
         Pageable pageable) {
-        log.info("ActivityController nickname : {}", nickname);
+        log.info("ActivityController nickname : {}, activityType : {}", nickname, activityType);
         // PageNumber: PageSize를 기준으로 잘랐을 때 몇 번째 페이지인지
         // PageSize: 페이지를 나누는 기준이 되는 수
         // Offset: 어디서 시작할 것인지. 시작지점
@@ -64,31 +66,31 @@ public class ActivityController {
         // 다른 사람의 활동 기록도 볼 수 있으므로, 추가적인 인가처리를 하지 않는다.
         
         // 목록 조회
-        ActivityResponseDtoAndSize result = activityServicel.activityList(nickname, pageable);
+        ActivityResponseDtoAndSize result = activityServicel.activityList(nickname, activityType, pageable);
         if (result == null) {
             return serverError500();
         }
         return ok200(result);
     }
 
-    @Operation(summary = "나무 인증서 상세 조회",
-        description = "사용자가 활동한 인증서의 상세 내용을 조회")
-    @GetMapping("/detail/{activityId}")
-    public ResponseEntity<?> certificateDetail(@PathVariable(name = "activityId") Long activityId) {
-        log.info("ActivityController activityId : {}", activityId);
-        if (activityId == null) {
-            return badRequest400();
-        }
-
-        // 마찬가지로, 다른 사람의 활동 기록을 볼 수 있기에, 추가적인 인가처리를 하지 않는다.
-
-        // 상세 조회
-        ActivityResponseDto certificateDetail = activityServicel.certificateDetail(activityId);
-        if (certificateDetail == null) {
-            return serverError500("나무심기만 상세보기가 가능합니다.");
-        }
-        return ok200(certificateDetail);
-    }
+//    @Operation(summary = "나무 인증서 상세 조회",
+//        description = "사용자가 활동한 인증서의 상세 내용을 조회")
+//    @GetMapping("/detail/{activityId}")
+//    public ResponseEntity<?> certificateDetail(@PathVariable(name = "activityId") Long activityId) {
+//        log.info("ActivityController activityId : {}", activityId);
+//        if (activityId == null) {
+//            return badRequest400();
+//        }
+//
+//        // 마찬가지로, 다른 사람의 활동 기록을 볼 수 있기에, 추가적인 인가처리를 하지 않는다.
+//
+//        // 상세 조회
+//        ActivityResponseDto certificateDetail = activityServicel.certificateDetail(activityId);
+//        if (certificateDetail == null) {
+//            return serverError500("나무심기만 상세보기가 가능합니다.");
+//        }
+//        return ok200(certificateDetail);
+//    }
 
     @Operation(summary = "플로깅 기록과 리워드 반환",
         description = "플로깅 정보를 입력하는 동시에, 리워드를 제공")
