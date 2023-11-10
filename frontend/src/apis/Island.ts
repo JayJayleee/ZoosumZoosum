@@ -1,5 +1,5 @@
 import {api, Header} from './index';
-import { animalForm, islandInfo, statusInfo  } from '@/types/island';
+import { timeObj, animalForm, islandInfo, statusInfo  } from '@/types/island';
 
 export const fetchMyIslandInfo = async () => {
   return await api.get<islandInfo>('/userinfo/main', await Header());
