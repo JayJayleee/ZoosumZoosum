@@ -39,7 +39,7 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
     ...(resultDataList.treeList ? resultDataList.treeList : []),
     ...(resultDataList.animalList ? resultDataList.animalList : []),
     ...(resultDataList.seedList && resultDataList.seedList[0].addSeed !== 0
-      ? [resultDataList.seedList]
+      ? resultDataList.seedList
       : []),
     ...(resultDataList.userBadgeList ? resultDataList.userBadgeList : []),
   ];

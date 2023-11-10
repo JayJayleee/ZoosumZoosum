@@ -23,7 +23,9 @@ type ButtonProps = {
     | 'tutorial'
     | 'trash_green'
     | 'trash_red'
-    | 'plog';
+    | 'plog'
+    | 'close'
+    | 'notclose';
   onPress: () => void;
 };
 
@@ -113,6 +115,14 @@ export default function AppButton({
     case 'trash_green':
       variantStyle = styles.trash_green;
       textStyle = styles.defaultText;
+      break;
+    case 'close':
+      variantStyle = styles.close;
+      textStyle = styles.closeText;
+      break;
+    case 'notclose':
+      variantStyle = styles.notclose;
+      textStyle = styles.closeText;
       break;
   }
 
