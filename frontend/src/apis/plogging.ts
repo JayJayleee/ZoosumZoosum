@@ -61,8 +61,9 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
 
     console.log('요청 결과:', response.data);
     return response.data;
-  } catch (e) {
+  } catch (e: any) {
     console.error('활동과 사진 업로드에 실패했습니다.', e);
+    console.log('왜냐면', e.response);
   }
 }
 

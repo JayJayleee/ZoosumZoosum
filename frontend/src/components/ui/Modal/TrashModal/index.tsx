@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, FlatList, Button} from 'react-native';
+import {View, Image, FlatList, ImageBackground} from 'react-native';
 import ModalComponent from '@/components/ui/Modal';
 import AppText from '@/components/ui/Text';
 import {TrashDataReturnList} from '@/types/plogging';
@@ -155,18 +155,7 @@ const TrashModal = ({
         }}>
         방금 주운 쓰레기
       </AppText>
-      <View
-        style={{
-          width: '100%',
-          backgroundColor: '#229464',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '8%',
-          borderRadius: 10,
-          marginBottom: '3%',
-        }}>
-        <AppText style={{color: 'white'}}>Tip: {tip}</AppText>
-      </View>
+
       <FlatList
         data={data}
         columnWrapperStyle={{
@@ -182,7 +171,51 @@ const TrashModal = ({
         keyExtractor={(_, index) => index.toString()}
         numColumns={3}
       />
+      <ImageBackground
+        resizeMode="contain"
+        style={{
+          aspectRatio: 4 / 1,
+          // backgroundColor: 'red',
+          width: '100%',
+          // height: '30%',
+          // justifyContent: 'center',
 
+          // bottom: '-30%',
+          flexDirection: 'row',
+          // position: 'absolute',
+          alignItems: 'center',
+        }}
+        source={{uri: 'https://i.imgur.com/ZlJ8et8.png'}}>
+        <View
+          style={{
+            height: '130%',
+            aspectRatio: 1,
+            position: 'relative',
+            // paddingRight: '10%',
+            // backgroundColor: 'green',
+          }}>
+          <FastImage
+            style={{
+              width: '100%',
+              // backgroundColor: 'green',
+              aspectRatio: 1,
+              transform: [{scaleX: -1}],
+            }}
+            source={{uri: animalImg}}
+            resizeMode="cover"
+          />
+        </View>
+        <AppText
+          style={{
+            color: 'white',
+            width: '65%',
+            textAlign: 'center',
+            paddingLeft: '1%',
+          }}>
+          Tip: {tip}
+        </AppText>
+      </ImageBackground>
+      <View style={{height: '5%'}}></View>
       <View
         style={{
           width: '100%',

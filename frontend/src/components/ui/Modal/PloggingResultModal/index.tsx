@@ -100,7 +100,11 @@ const PloggingResultModal = ({
   const topContent = activityData ? (
     <View style={styles.overlayContainer}>
       <AppText style={styles.overlayText}>오늘도 주섬주섬 성공!</AppText>
-      <Image source={{uri: animalImg}} style={styles.overlayImage} />
+      {/* <Image source={{uri: animalImg}} style={styles.overlayImage} /> */}
+      <Image
+        source={{uri: activityData.activityImg}}
+        style={styles.overlayImage}
+      />
     </View>
   ) : null;
 
