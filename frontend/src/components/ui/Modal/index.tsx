@@ -16,8 +16,8 @@ interface ModalComponentProps
   modalStyle?: 'top' | 'default' | 'close';
   noButton?: boolean;
   TopChildren?: ReactNode;
-  ViewStyle?: 'default' | 'treeInfo' | 'close';
-  btnVariant?: 'default' | 'button';
+  ViewStyle?: 'default' | 'treeInfo' | 'close' | 'activity';
+  btnVariant?: 'default' | 'button' | 'activity';
 }
 
 //  isVisible={isModalVisible(해당 페이지에서 모달 보여줄 지 결정할 요소)},onClose={() => setModalVisible(false)}, onRequestClose={() => setModalVisible(false)}
@@ -62,6 +62,9 @@ export default function ModalComponent({
       break;
     case 'close':
       viewVariantStyle = styles.closeView;
+      break;
+    case 'activity':
+      viewVariantStyle = styles.activityView;
       break;
   }
 
