@@ -1,4 +1,4 @@
-import { windowHeight, windowWidth } from '@/constants/styles';
+import {windowHeight, windowWidth} from '@/constants/styles';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({

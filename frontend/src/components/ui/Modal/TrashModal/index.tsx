@@ -76,7 +76,8 @@ const TrashModal = ({
       setTip(newTip);
     }
   }, [isVisible]);
-
+  // console.log(data);
+  // console.log(data);
   const Item = ({title, img, description}: TrashDataReturnList) => (
     <View
       style={{
@@ -84,11 +85,16 @@ const TrashModal = ({
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <FastImage
-        style={{height: 100, aspectRatio: 1}}
+      <Image
+        style={{
+          height: 100,
+          aspectRatio: 1,
+          resizeMode: 'contain',
+          tintColor: description != 0 ? '' : 'black',
+        }}
         source={img}
-        resizeMode="contain"
       />
+
       <AppText style={{color: 'black', fontSize: 14, marginTop: 5}}>
         {title}
       </AppText>
@@ -136,8 +142,24 @@ const TrashModal = ({
     return tips[Math.floor(Math.random() * tips.length)];
   };
 
-  const mostTrashType: TrashType = getMostTrashType(data);
-  const mostTrashTypeTip = getRandomTip(mostTrashType);
+  // const mostTrashType: TrashType = getMostTrashType(data);
+  // const mostTrashTypeTip = getRandomTip(mostTrashType);
+
+  const hasNonZeroItems = data.some(item => {
+    const count =
+      typeof item.description === 'number'
+        ? item.description
+        : parseInt(item.description, 10);
+    return count > 0;
+  });
+
+  const filteredData = data.filter(item => {
+    const count =
+      typeof item.description === 'number'
+        ? item.description
+        : parseInt(item.description, 10);
+    return count > 0;
+  });
 
   return (
     <ModalComponent
@@ -145,93 +167,149 @@ const TrashModal = ({
       onClose={onClose}
       onRequestClose={onClose}
       buttonInnerText={'닫기'}
-      noButton={true}>
-      <AppText
-        style={{
-          color: 'black',
-          fontFamily: 'NPSfont_bold',
-          fontSize: 25,
-          marginBottom: 15,
-        }}>
-        방금 주운 쓰레기
-      </AppText>
-
-      <FlatList
-        data={data}
-        columnWrapperStyle={{
-          justifyContent: 'space-between',
-        }}
-        renderItem={({item}) => (
-          <Item
-            title={item.title}
-            img={item.img}
-            description={item.description}
-          />
-        )}
-        keyExtractor={(_, index) => index.toString()}
-        numColumns={3}
-      />
-      <ImageBackground
-        resizeMode="contain"
-        style={{
-          aspectRatio: 4 / 1,
-          // backgroundColor: 'red',
-          width: '100%',
-          // height: '30%',
-          // justifyContent: 'center',
-
-          // bottom: '-30%',
-          flexDirection: 'row',
-          // position: 'absolute',
-          alignItems: 'center',
-        }}
-        source={{uri: 'https://i.imgur.com/ZlJ8et8.png'}}>
-        <View
-          style={{
-            height: '130%',
-            aspectRatio: 1,
-            position: 'relative',
-            // paddingRight: '10%',
-            // backgroundColor: 'green',
-          }}>
-          <FastImage
-            style={{
-              width: '100%',
-              // backgroundColor: 'green',
-              aspectRatio: 1,
-              transform: [{scaleX: -1}],
-            }}
-            source={{uri: animalImg}}
-            resizeMode="cover"
-          />
-        </View>
-        <AppText
-          style={{
-            color: 'white',
-            width: '65%',
-            textAlign: 'center',
-            paddingLeft: '1%',
-          }}>
-          Tip: {tip}
-        </AppText>
-      </ImageBackground>
-      <View style={{height: '5%'}}></View>
+      noButton={true}
+      ViewStyle={'treeInfo'}>
       <View
         style={{
           width: '100%',
+          height: '100%',
           justifyContent: 'space-between',
           alignItems: 'center',
-          flexDirection: 'row',
-          // marginTop: '4%',
         }}>
-        <AppButton
-          children="다시 찍을래!"
-          variant="trash_red"
-          onPress={() =>
-            navigation.navigate('Camera', {getAnimalIMG: animalImg})
-          }
-        />
-        <AppButton children="완료!" variant="trash_green" onPress={onClose} />
+        {hasNonZeroItems ? (
+          <AppText
+            style={{
+              color: 'black',
+              fontFamily: 'NPSfont_bold',
+              fontSize: 25,
+              marginBottom: 15,
+            }}>
+            방금 주운 쓰레기
+          </AppText>
+        ) : null}
+
+        {!hasNonZeroItems ? (
+          <View
+            style={{
+              width: '80%',
+              height: '65%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('@/assets/plogingpage_image/noEgg.png')}
+              style={{
+                width: '100%',
+                height: '80%',
+                resizeMode: 'contain',
+                marginBottom: '10%',
+                marginTop: '30%',
+              }}
+            />
+            <AppText
+              style={{
+                color: 'black',
+                fontSize: 20,
+                marginTop: 5,
+                fontFamily: 'NPSfont_bold',
+              }}>
+              이곳에는 정령이
+            </AppText>
+            <AppText
+              style={{
+                color: 'black',
+                fontSize: 20,
+
+                fontFamily: 'NPSfont_bold',
+              }}>
+              없는 것 같아요.
+            </AppText>
+            <AppText
+              style={{
+                color: 'black',
+                fontSize: 12,
+                marginTop: 10,
+              }}>
+              쓰레기를 다시 한 번 찍어보세요!
+            </AppText>
+          </View>
+        ) : (
+          <FlatList
+            data={data}
+            columnWrapperStyle={{
+              justifyContent: 'space-between',
+            }}
+            renderItem={({item}) => (
+              <Item
+                title={item.title}
+                img={item.img}
+                description={item.description}
+              />
+            )}
+            keyExtractor={(_, index) => index.toString()}
+            numColumns={3}
+          />
+        )}
+        {hasNonZeroItems ? (
+          <ImageBackground
+            resizeMode="contain"
+            style={{
+              aspectRatio: 4 / 1,
+              // backgroundColor: 'red',
+              width: '100%',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+            source={{uri: 'https://i.imgur.com/ZlJ8et8.png'}}>
+            <View
+              style={{
+                height: '130%',
+                aspectRatio: 1,
+                position: 'relative',
+                // paddingRight: '10%',
+                // backgroundColor: 'green',
+              }}>
+              <FastImage
+                style={{
+                  width: '100%',
+                  // backgroundColor: 'green',
+                  aspectRatio: 1,
+                  transform: [{scaleX: -1}],
+                }}
+                source={{uri: animalImg}}
+                resizeMode="cover"
+              />
+            </View>
+            <AppText
+              style={{
+                color: 'white',
+                width: '65%',
+                textAlign: 'center',
+                paddingLeft: '1%',
+              }}>
+              Tip: {tip}
+            </AppText>
+          </ImageBackground>
+        ) : null}
+        <View style={{height: '5%'}}></View>
+        <View
+          style={{
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+
+            // marginTop: '4%',
+          }}>
+          <AppButton
+            children="다시 찍을래!"
+            variant="trash_red"
+            onPress={() =>
+              navigation.navigate('Camera', {getAnimalIMG: animalImg})
+            }
+          />
+          <AppButton children="완료!" variant="trash_green" onPress={onClose} />
+        </View>
       </View>
     </ModalComponent>
   );

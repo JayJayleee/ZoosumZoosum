@@ -303,7 +303,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     {
       title: '일반 쓰레기',
       img: require('@/assets/img_icon/normal_trash.png'),
-      description: trashData?.general_trash || 0,
+      description: trashData?.['general trash'] || 0,
     },
     {
       title: '플라스틱',
@@ -328,9 +328,10 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     {
       title: '비닐 봉투',
       img: require('@/assets/img_icon/plastic_bag_trash.png'),
-      description: trashData?.plastic_bag || 0,
+      description: trashData?.['plastic bag'] || 0,
     },
   ];
+
   // console.log('이걸 주고 있거든여', DATA);
 
   // 쓰레기 사진 찍었을 때, 카메라로 이동하고, 찍었다는 신호를 지도에 전달

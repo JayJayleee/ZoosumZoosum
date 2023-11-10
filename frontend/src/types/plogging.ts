@@ -119,7 +119,7 @@ export interface TrashList {
 }
 
 export interface TrashDataReturnList {
-  img: Source;
+  img: ImageSourcePropType;
   title: string | number;
   description: number;
 }
@@ -141,11 +141,11 @@ export interface ActivityDataType {
 }
 
 export interface TrashDaTaList {
-  general_trash: number;
+  'general trash': number;
   glass: number;
   metal: number;
   paper: number;
   plastic: number;
-  plastic_bag: number;
+  'plastic bag': number;
   total: number;
 }
