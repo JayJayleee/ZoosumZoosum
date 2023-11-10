@@ -11,20 +11,23 @@ type badgeProps = {
 }
 
 export default function BadgeTab({isMyProfile, nickname, badgeList}: badgeProps) {
+
   return (
   <>
     <AppText style={styles.upperTitle} >
-      {isMyProfile? "내가 모은 뱃지" :`${nickname}님이 모은 뱃지`}
+      {isMyProfile? "내가 모은 뱃지" :`${nickname}님이\n 모은 뱃지`}
     </AppText>
     <View style={styles.badgeBox}>
       <View style={styles.badgeInner}>
         <ScrollView scrollToOverflowEnabled={true} contentContainerStyle={{justifyContent: 'center', alignItems: 'center',}}>
           {badgeList.map((badge, index) => {
-            if (badge.isHave === true) {
+            if (badge.have === true) {
               return (
                 <View style={styles.badgeBoxSectionTrue} key={index}>
-                  <FastImage source={{uri: badge.fileUrl}} style={styles.badgeBoxIconTrue}/>
-                  <View>
+                  <View style={styles.badgeBoxIconTrue}>
+                    <FastImage source={{uri: badge.fileUrl}} style={styles.badgeImg}/>
+                  </View>
+                  <View style={styles.badgeBoxTextSection}>
                     <AppText children={badge.badgeName} style={styles.badgeBoxTitle}/>
                     <AppText children={badge.badgeCondition} style={styles.badgeBoxContent}/>
                   </View>

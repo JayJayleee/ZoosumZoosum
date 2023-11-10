@@ -90,7 +90,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
   <>
     {isImageModalOpen && imageDetailModal}
     <AppText style={styles.upperTitle} >
-      {isMyProfile? "나의 활동 기록" :`${nickname}님의 활동 기록`}
+      {isMyProfile? "나의 활동 기록" :`${nickname}님의\n 활동 기록`}
     </AppText>
     <View style={styles.historyBox}>
       <Toast config={toastConfig} />
