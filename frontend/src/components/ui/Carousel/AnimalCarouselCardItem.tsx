@@ -14,7 +14,7 @@ import {Egg} from '../animation/LottieEffect';
 import {AnimalCarouselCardItemProps} from '@/types/plogging';
 import {useQueryClient, useMutation} from '@tanstack/react-query';
 // import {ShiningEffect} from './ShiningEffect';
-import {FirstEggName} from '@/apis/tutorial';
+import {EggName, FirstEggName} from '@/apis/tutorial';
 
 export function AnimalCarouselCardItem({
   item,
@@ -35,10 +35,30 @@ export function AnimalCarouselCardItem({
 
   // console.log(animalId);
   // const queryClient = useQueryClient();
-  const createMutation = useMutation(FirstEggName, {
+  const createMutation = useMutation(EggName, {
     onSuccess: data => {
       // 이름 저장 성공 시 수행할 작업
-      // console.log('이름 바꾸기 성공', data);
+      console.log('이름 바꾸기 성공', data);
+      const nameToSave =
+        animalName?.trim() !== '' ? animalName : item?.animalName;
+      setHeaderText(`${nameToSave}가 태어났어요!`);
+      setIsNameSaved(true);
+      setSavedName(nameToSave ? nameToSave : item?.animalName);
+      // if (onNamingComplete && isNameSaved && nameToSave) {
+      //   onNamingComplete(nameToSave); // 부모 컴포넌트의 상태를 업데이트하는 콜백 호출
+      // }
+    },
+    onError: error => {
+      // 이름 저장 실패 시 수행할 작업
+      console.log('이름 바꾸기 실패', error);
+    },
+  });
+
+  const firstEggCreateMutation = useMutation(FirstEggName, {
+    onSuccess: data => {
+      // 이름 저장 성공 시 수행할 작업
+      console.log('최초 이름 바꾸기 성공', data);
+
       const nameToSave =
         animalName?.trim() !== '' ? animalName : item?.animalName;
       setHeaderText(`${nameToSave}가 태어났어요!`);
@@ -58,10 +78,19 @@ export function AnimalCarouselCardItem({
     if (item && animalId !== undefined) {
       const nameToSave =
         animalName?.trim() !== '' ? animalName : item?.animalName;
-      createMutation.mutate({
-        animalId: animalId,
-        userAnimalName: nameToSave,
-      });
+      if (onNamingComplete) {
+        console.log('첫번째 egg');
+        firstEggCreateMutation.mutate({
+          animalId: animalId,
+          userAnimalName: nameToSave,
+        });
+      } else {
+        console.log('두번째 egg');
+        createMutation.mutate({
+          animalId: animalId,
+          userAnimalName: nameToSave,
+        });
+      }
     }
   };
 

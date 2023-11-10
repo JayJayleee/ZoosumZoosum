@@ -13,7 +13,7 @@ const getStoredToken = async () => {
 };
 
 export async function PloggingResultFtn(activityData: ActivityDataType) {
-  // console.log('받은 직후:', activityData);
+  console.log('받은 직후:', activityData);
 
   // 사용자 토큰 가져오기
   const token = await getStoredToken();
@@ -26,6 +26,8 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
     'activityRequestDto',
     JSON.stringify(activityData.activityRequestDto),
   );
+
+  formData.append('animalId', JSON.stringify(activityData.animalId));
 
   // 파일 경로에서 "file://" 접두어 제거
   // let cleanFilePath = activityData.activityImg.replace('file://', '');
@@ -57,7 +59,7 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
       },
     );
 
-    // console.log('요청 결과:', response.data);
+    console.log('요청 결과:', response.data);
     return response.data;
   } catch (e) {
     console.error('활동과 사진 업로드에 실패했습니다.', e);
@@ -107,7 +109,9 @@ export async function TrashImgResultFtn(
   Img: string,
   retries = 3,
   interval = 2000,
+  setIsLoading: (isLoading: boolean) => void,
 ) {
+  setIsLoading(true);
   const formData = new FormData();
 
   const now = new Date();
@@ -133,14 +137,16 @@ export async function TrashImgResultFtn(
     const response = await axios.post('http://zoosum.co.kr:8000/ai', formData, {
       headers,
     });
+    setIsLoading(false);
     return response.data;
   } catch (error) {
     if (retries > 0) {
-      console.warn(`Upload failed, retrying in ${interval}ms...`, error);
+      console.log(`Upload failed, retrying in ${interval}ms...`, error);
       await new Promise(resolve => setTimeout(resolve, interval));
-      return TrashImgResultFtn(Img, retries - 1, interval);
+      return TrashImgResultFtn(Img, retries - 1, interval, setIsLoading);
     } else {
-      throw error;
+      setIsLoading(false);
+      console.error('Failed to upload image', error);
     }
   }
 }

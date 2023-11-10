@@ -146,7 +146,7 @@ export const styles = StyleSheet.create({
   },
   ranking: {
     width: '30%',
-    height : '30%',
+    height: '30%',
     backgroundColor: 'white',
     borderRadius: 8,
     justifyContent: 'center',
@@ -162,7 +162,7 @@ export const styles = StyleSheet.create({
   },
   ranking_unselect: {
     width: '30%',
-    height : '30%',
+    height: '30%',
     backgroundColor: '#d4bb51',
     borderRadius: 8,
     justifyContent: 'center',
@@ -188,7 +188,23 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
   },
-  close : {
+  trash_red: {
+    width: '48%',
+    backgroundColor: '#d4655f',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  trash_green: {
+    width: '48%',
+    backgroundColor: '#2dcf8b',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  close: {
     borderRadius: 10,
     elevation: 2,
     marginTop: '20%',
@@ -197,7 +213,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#D94040',
   },
-  notclose : {
+  notclose: {
     borderRadius: 10,
     elevation: 2,
     marginTop: '20%',
@@ -206,10 +222,23 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#2196F3',
   },
-  closeText : {
+  closeText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
+  },
+  plog: {
+    width: '30%',
+    backgroundColor: 'rgba(247, 106, 106, 1);',
+    borderRadius: 8,
+    height: '7%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '5%',
+  },
+  plogText: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
   },
 });

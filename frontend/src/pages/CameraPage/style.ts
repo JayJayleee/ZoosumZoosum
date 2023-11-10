@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     width: '100%',
-    top: 50,
-    left: 10,
+    top: 45,
+    left: 37,
   },
   overlayImage: {
     width: '30%',

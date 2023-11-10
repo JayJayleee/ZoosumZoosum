@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-
+import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
 import {
   View,
   Image,
   TouchableOpacity,
   ImageBackground,
   AppState,
+  BackHandler,
 } from 'react-native';
 import {PloggingScreenProps} from 'typePath';
 import {NewData, TrashList, TrashDaTaList} from '@/types/plogging';
@@ -34,6 +35,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 모달 관리 값
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [trashData, setTrashData] = useState<TrashDaTaList>();
   const [getAnimalIMG, setGetAnimalIMG] = useState<string>('');
   const [getAnimalID, setGetAnimalID] = useState<number>(0);
@@ -41,6 +43,12 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 종료 여부
   let endPlog: boolean = false;
   // 모달 여는 부분. params로 함수 받아와서 그 값에 따라 모달 연다.
+
+  // 앱 종료 시, 실행하는 함수
+  const exitFtn = () => {
+    BackHandler.exitApp();
+    navigation.navigate('Login');
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
@@ -79,11 +87,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       console.log('trashData가 업데이트됨:', trashData);
     }
   }, [trashData]);
-
-  // useEffect(() => {
-  //   console.log('이미지를 받음', getAnimalIMG);
-  //   console.log('아이디도', getAnimalID);
-  // }, [getAnimalIMG]);
 
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(0);
@@ -142,11 +145,6 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       appStateSubscription.remove();
     };
   }, [appState, mapLoading]);
-
-  // useEffect(() => {
-  //   console.log(trashImage, '플로깅 페이지에서 업데이트 된 쓰레기 이미지');
-  //   // console.log('타이머가 왜 안될까🖤', activityData);
-  // }, [trashImage]);
 
   // 시간 포맷 맞추기 위한 상수. 추후 옮길 것
   const formatTime = (time: number) => {
@@ -257,11 +255,31 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       setTimer(0);
       setTrashCount(0);
       setGetAnimalID(0);
-      setGetAnimalIMG('');
+      // setGetAnimalIMG('');
       setPloggingDistance(0);
       setIsEndModalVisible(true);
     }
   }, [trashImage]);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (navigation.isFocused()) {
+        setCloseModalVisible(true);
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
 
   const resultNav = (newData: NewData) => {
     navigation.navigate('PloggingResult', {
@@ -319,14 +337,16 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const captureTrashCount = useRef<number>(0);
   const captureTrash = () => {
     captureTrashCount.current += 1;
-    navigation.navigate('Camera');
+    navigation.navigate('Camera', {getAnimalIMG: getAnimalIMG});
   };
 
+  // console.log('동물', getAnimalIMG);
   return (
     <View style={{flex: 1}}>
       <TrashModal
         isVisible={isModalVisible}
         onClose={closeModalAndUpdateCount}
+        animalImg={getAnimalIMG}
         data={DATA}
         navigation={navigation}
       />
@@ -334,30 +354,48 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         isVisible={isEndModalVisible}
         onClose={() => setIsEndModalVisible(false)}
         data={resultData}
+        animalImg={getAnimalIMG}
         activityData={activityData}
         navigation={resultNav}
+        nav={navigation}
+        exitFtn={exitFtn}
       />
+      {isCloseModalVisible && (
+        <AppCloseModal
+          isModalVisible={isCloseModalVisible}
+          RequestClose={() => setCloseModalVisible(false)}
+          exitFtn={exitFtn}
+        />
+      )}
 
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <AppButton children="플로깅 완료하기" onPress={stopAndResetTimer} />
-        </View>
-        <ImageBackground
-          style={styles.bottomContainer}
-          source={require('@/assets/plogingpage_image/Background.png')}
-          resizeMode="contain">
-          <View style={styles.textContainer}>
-            <AppText style={styles.text}>{ploggingDistance}km</AppText>
-            <AppText style={styles.text}>{formatTime(timer)}</AppText>
-            <AppText style={styles.text}>{trashCount}개</AppText>
-          </View>
-
-          <TouchableOpacity style={styles.cameraBtn} onPress={captureTrash}>
-            <Image
-              source={require('@/assets/plogingpage_image/cameraBtn.png')}
+          {appState === 'active' && mapLoading ? (
+            <AppButton
+              variant="plog"
+              children="플로깅 완료하기"
+              onPress={stopAndResetTimer}
             />
-          </TouchableOpacity>
-        </ImageBackground>
+          ) : null}
+        </View>
+        {appState === 'active' && mapLoading ? (
+          <ImageBackground
+            style={styles.bottomContainer}
+            source={require('@/assets/plogingpage_image/Background.png')}
+            resizeMode="contain">
+            <View style={styles.textContainer}>
+              <AppText style={styles.text}>{ploggingDistance}km</AppText>
+              <AppText style={styles.text}>{formatTime(timer)}</AppText>
+              <AppText style={styles.text}>{trashCount}개</AppText>
+            </View>
+
+            <TouchableOpacity style={styles.cameraBtn} onPress={captureTrash}>
+              <Image
+                source={require('@/assets/plogingpage_image/cameraBtn.png')}
+              />
+            </TouchableOpacity>
+          </ImageBackground>
+        ) : null}
         {/* 지도 import */}
         <ViewShot
           style={styles.mapContainer}

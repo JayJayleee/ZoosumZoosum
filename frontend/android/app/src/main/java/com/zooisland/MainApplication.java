@@ -11,6 +11,8 @@ import com.facebook.soloader.SoLoader;
 import java.util.List;
 import com.airbnb.android.react.lottie.LottiePackage;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -60,5 +62,6 @@ public class MainApplication extends Application implements ReactApplication {
       DefaultNewArchitectureEntryPoint.load();
     }
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
   }
 }

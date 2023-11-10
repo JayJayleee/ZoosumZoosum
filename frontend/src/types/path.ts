@@ -14,7 +14,9 @@ export type RootStackParamList = {
     selectedAnimalIMG?: string;
     selectedAnimalID?: number;
   };
-  Camera: undefined;
+  Camera: {
+    getAnimalIMG?: string;
+  };
   PloggingResult: {
     resultList?: TrashList[];
     activityData?: ActivityDataType;

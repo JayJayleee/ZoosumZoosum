@@ -6,6 +6,7 @@ import styles from './styles';
 import haversine from 'haversine';
 import AppText from '../../Text';
 import FastImage from 'react-native-fast-image';
+import Spinner from '../../Spinner';
 
 // type defined
 type latLng = {
@@ -223,11 +224,7 @@ const GoogleMap = (props: GoogleMapProps) => {
 
   // 페이지 로딩
   if (!imReady.current) {
-    return (
-      <View>
-        <AppText>잠시만 기다려주세요...</AppText>
-      </View>
-    );
+    return <Spinner />;
   }
 
   // console.log('11 ordinary space');
