@@ -7,7 +7,6 @@ import com.addShot.zoosum.entity.User;
 import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.enums.Region;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;

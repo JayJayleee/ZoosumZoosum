@@ -5,6 +5,8 @@ import static com.addShot.zoosum.entity.QUser.user;
 
 import com.addShot.zoosum.entity.ActivityHistory;
 import com.addShot.zoosum.entity.User;
+import com.addShot.zoosum.entity.enums.ActivityType;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -23,7 +25,7 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     }
 
     @Override
-    public Page<ActivityHistory> findAllByUserNickname(String nickname, Pageable pageable) {
+    public Page<ActivityHistory> findAllByUserNickname(String nickname, String activityType, Pageable pageable) {
         if (nickname == null) {
             return null;
         }
@@ -33,8 +35,14 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
             return null;
         }
 
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(activityHistory.user.eq(findUser));
+        if (activityType != null) {
+            builder.and(activityHistory.activityType.eq(ActivityType.valueOf(activityType)));
+        }
+
         QueryResults<ActivityHistory> result = queryFactory.selectFrom(activityHistory)
-            .where(activityHistory.user.nickname.eq(nickname))
+            .where(builder)
             .orderBy(activityHistory.activityId.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())

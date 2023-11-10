@@ -21,12 +21,12 @@ public class ActivityRewardResponseDto {
     private List<ItemResponseDto> islandList;
     // 나무 보상 목록
     private List<ItemResponseDto> treeList;
-    // 동물 보상 목록
-    private List<AnimalDrawResponse> animalList;
     // 추가 씨앗
     private List<SeedResponseDto> seedList;
     // 추가 점수
     private List<ScoreResponseDto> scoreList;
+    // 추가 알
+    private List<EggResponseDto> eggList;
     // 뱃지 보상 목록
     private List<UserBadgeResponseDto> userBadgeList;
 

@@ -4,12 +4,11 @@ import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityResponseDtoAndSize;
 import com.addShot.zoosum.domain.activity.dto.response.ActivityRewardResponseDto;
+import com.addShot.zoosum.domain.activity.dto.response.EggResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.MissionResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.ScoreResponseDto;
 import com.addShot.zoosum.domain.activity.dto.response.SeedResponseDto;
 import com.addShot.zoosum.domain.activity.repository.ActivityRepository;
-import com.addShot.zoosum.domain.animal.dto.response.AnimalDrawResponse;
-import com.addShot.zoosum.domain.animal.repository.AnimalRepository;
 import com.addShot.zoosum.domain.animal.repository.UserAnimalRepository;
 import com.addShot.zoosum.domain.common.dto.response.UserBadgeResponseDto;
 import com.addShot.zoosum.domain.common.repository.UserBadgeRepository;
@@ -50,7 +49,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +63,6 @@ public class ActivityServiceImpl implements ActivityService {
     private final ActivityRepository activityRepository;
     private final UserPlogInfoRepository userPlogInfoRepository;
     private final ItemRepository itemRepository;
-    private final AnimalRepository animalRepository;
     private final UserItemRepository userItemRepository;
     private final UserAnimalRepository userAnimalRepository;
     private final RankingRepository rankingRepository;
@@ -74,45 +71,41 @@ public class ActivityServiceImpl implements ActivityService {
     private final S3Service s3Service;
 
     @Override
-    public ActivityResponseDtoAndSize activityList(String nickname, Pageable pageable) {
+    public ActivityResponseDtoAndSize activityList(String nickname, String activityType, Pageable pageable) {
 
-        Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserNickname(nickname, pageable);
-        if (activityHistoryList == null || activityHistoryList.getContent().isEmpty()) {
+        Page<ActivityHistory> activityHistoryList = activityRepository.findAllByUserNickname(nickname, activityType, pageable);
+        if (activityHistoryList == null) {
             return null;
         }
         List<ActivityHistory> getList = activityHistoryList.getContent();
         List<ActivityResponseDto> resultList = new ArrayList<>();
 
-        for(ActivityHistory ah : getList) {
-            ActivityResponseDto dto;
-            if (ah.getActivityType().equals(ActivityType.TREE)) {
-                dto = ah.toTreeResponse(ah);
-            } else {
-                dto = ah.toPloggingResponse(ah);
-            }
+        getList.stream().forEach(ah -> {
+            ActivityResponseDto dto = ah.toPloggingResponse(ah);
             resultList.add(dto);
-        }
+        });
+
         log.info("resultList : {}", resultList);
 
         return new ActivityResponseDtoAndSize(resultList, resultList.size());
     }
 
-    @Override
-    public ActivityResponseDto certificateDetail(Long activityId) {
-        Optional<ActivityHistory> findActivityHistory = activityRepository.findByActivityId(activityId);
-        ActivityResponseDto responseDto;
-
-        // ++ activityId에 해당하는 데이터를 찾지 못하면 예외를 발생시키는 코드를 작성하자.
-        if (findActivityHistory.isEmpty()) return null;
-
-        // ++ 나무에 대한 데이터를 조회한 것이 아니라면, 예외를 발생시키는 코드를 작성하자.
-        ActivityHistory activityHistory = findActivityHistory.get();
-        if (!activityHistory.getActivityType().equals(ActivityType.TREE)) return null;
-
-        responseDto = activityHistory.toTreeResponse(activityHistory);
-
-        return responseDto;
-    }
+//    @Override
+//    public ActivityResponseDto certificateDetail(Long activityId) {
+//        Optional<ActivityHistory> findActivityHistory = activityRepository.findByActivityId(activityId);
+//        ActivityResponseDto responseDto;
+//
+//        // ++ activityId에 해당하는 데이터를 찾지 못하면 예외를 발생시키는 코드를 작성하자.
+//        if (findActivityHistory.isEmpty()) return null;
+//
+//        // ++ 나무에 대한 데이터를 조회한 것이 아니라면, 예외를 발생시키는 코드를 작성하자.
+//        ActivityHistory activityHistory = findActivityHistory.get();
+//        if (!activityHistory.getActivityType().equals(ActivityType.TREE)) return null;
+//
+//        responseDto = activityHistory.toTreeResponse(activityHistory);
+//
+//        return responseDto;
+//    }
 
     @Override
     @Transactional
@@ -165,15 +158,12 @@ public class ActivityServiceImpl implements ActivityService {
             treeList.add(item.toResponseDto());
         }
 
-        List<AnimalDrawResponse> animalList = new ArrayList<>();
-        for (AnimalMotion animalMotion : missionReward.getAnimalList()) {
-            animalList.add(animalMotion.toResponseDto());
-        }
-
         List<SeedResponseDto> seedList = new ArrayList<>();
         List<ScoreResponseDto> scoreList = new ArrayList<>();
+        List<EggResponseDto> eggList = new ArrayList<>();
         seedList.add(new SeedResponseDto((Integer) resultMap.get("addSeed")));
         scoreList.add(new ScoreResponseDto((Integer) resultMap.get("addScore")));
+        eggList.add(new EggResponseDto((Integer) resultMap.get("addEgg")));
 
         List<UserBadgeResponseDto> userBadgeList = new ArrayList<>();
         for (UserBadge userBadge : (List<UserBadge>) resultMap.get("newBadgeList")) {
@@ -185,9 +175,9 @@ public class ActivityServiceImpl implements ActivityService {
             .missionList(missionList)
             .islandList(islandList)
             .treeList(treeList)
-            .animalList(animalList)
             .seedList(seedList)
             .scoreList(scoreList)
+            .eggList(eggList)
             .userBadgeList(userBadgeList)
             .build();
         return responseDto;
@@ -276,12 +266,13 @@ public class ActivityServiceImpl implements ActivityService {
         resultMap.put("missionResponseDto", missionResponseDto);
         resultMap.put("missionReward", missionReward(user, missionLength, missionTime, missionTrash));
         resultMap.put("addSeed", mTrashQ);
+        resultMap.put("addEgg", mTrashQ);
 
         // 추가 점수 계산
         Integer score = addScore(activityRequestDto);
         resultMap.put("addScore", score);
 
-        // 플로깅 누적, 미션, 점수, 씨앗, 수정일 UPDATE
+        // 플로깅 누적, 미션, 점수, 씨앗, 알, 수정일 UPDATE
         log.info("updateUserPlogInfo 플로깅 누적, 미션, 점수, 씨앗, 수정일 UPDATE");
         UserPlogInfo newUserPlogInfo = UserPlogInfo.builder()
             .id(new UserPlogInfoId(user.getUserId()))
@@ -291,6 +282,7 @@ public class ActivityServiceImpl implements ActivityService {
             .mission(mission)
             .score(originUserPlogInfo.getScore() + score)
             .seed(originUserPlogInfo.getSeed() + mTrashQ)
+            .egg(originUserPlogInfo.getEgg() + mTrashQ)
             .time(new Time(originUserPlogInfo.getTime().getCreateTime(), LocalDateTime.now()))
             .build();
         UserPlogInfo save = userPlogInfoRepository.save(newUserPlogInfo);
@@ -340,7 +332,6 @@ public class ActivityServiceImpl implements ActivityService {
 
         int mLenQ = missionLength / ActivityLimit.LENGTH;
         int mTimeQ = missionTime / ActivityLimit.TIME;
-        int mTrashQ = missionTrash / ActivityLimit.TRASH;
 
         log.info("섬 리워드 지급");
         while (mLenQ-- > 0) { // 섬 리워드
@@ -356,13 +347,7 @@ public class ActivityServiceImpl implements ActivityService {
             saveUserItem(user, item);
             missionReward.getTreeList().add(item);
         }
-        log.info("동물 리워드 지급");
-        while (mTrashQ-- > 0) { // 동물 리워드
-            AnimalMotion animal = animalRepository.findRandomAnimal();
-            log.info("animal ; {}", animal);
-            saveUserAnimal(user, animal);
-            missionReward.getAnimalList().add(animal);
-        }
+
         log.info("missionReward : {}", missionReward);
         return missionReward;
     }

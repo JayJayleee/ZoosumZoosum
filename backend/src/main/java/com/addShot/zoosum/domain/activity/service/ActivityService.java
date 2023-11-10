@@ -20,17 +20,18 @@ public interface ActivityService {
      * 사용자가 활동한 플로깅 내역과 인증서 목록 조회
      * TREE 테이블과 PLOGGING 테이블을 활용한다.
      * @param nickname 사용자 닉네임
+     * @param activityType 활동 유형
      * @param pageable 페이징 정보, 몇번째 페이지인지, 얼만큼 조회할 것인지
      * @return List<ActivityResponseDto>
      */
-    ActivityResponseDtoAndSize activityList(String nickname, Pageable pageable);
+    ActivityResponseDtoAndSize activityList(String nickname, String activityType, Pageable pageable);
 
     /**
      * 인증서 상세 조회
      * @param activityId 활동 ID
      * @return ActivityResponseDto
      */
-    ActivityResponseDto certificateDetail(Long activityId);
+//    ActivityResponseDto certificateDetail(Long activityId);
 
     /**
      * 플로깅 기록 및 리워드 반환

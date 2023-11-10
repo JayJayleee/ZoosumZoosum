@@ -57,6 +57,10 @@ public class UserPlogInfo {
     @Column(name = "seed", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer seed;
 
+    // 알 개수
+    @Column(name = "egg", nullable = false, columnDefinition = "INT DEFAULT 1")
+    private Integer egg;
+
     // 시간
     @Embedded
     private Time time;
@@ -78,16 +82,16 @@ public class UserPlogInfo {
             return false;
         }
         UserPlogInfo that = (UserPlogInfo) o;
-        return Objects.equals(user, that.user) && Objects.equals(plogCount,
-            that.plogCount) && Objects.equals(sumPloggingData, that.sumPloggingData)
-            && Objects.equals(mission, that.mission) && Objects.equals(score,
-            that.score) && Objects.equals(seed, that.seed) && Objects.equals(time,
-            that.time);
+        return Objects.equals(id, that.id) && Objects.equals(user, that.user)
+            && Objects.equals(plogCount, that.plogCount) && Objects.equals(
+            sumPloggingData, that.sumPloggingData) && Objects.equals(mission, that.mission)
+            && Objects.equals(score, that.score) && Objects.equals(seed, that.seed)
+            && Objects.equals(egg, that.egg) && Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, plogCount, sumPloggingData, mission, score, seed, time);
+        return Objects.hash(id, user, plogCount, sumPloggingData, mission, score, seed, egg, time);
     }
 
     public void setSeed(int i) {
