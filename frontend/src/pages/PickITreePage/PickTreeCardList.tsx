@@ -58,7 +58,7 @@ export default function PickTreeCardlist({navigation} : PickTreeCardListProps) {
     },
   });
 
-  if (!ItemArray?.length) return <Text>로딩...</Text>;
+  if (!ItemArray?.length) return <Text style={styles.isloading}>로딩...</Text>;
   return (
     <View>
       <FlatList

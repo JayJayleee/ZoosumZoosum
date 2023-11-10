@@ -21,6 +21,9 @@ export default function SelectAnimalCard({navigation, animalId, userAnimalName, 
   );
 };
 
+import { windowHeight, windowWidth } from "@/constants/styles";
+
+
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
@@ -28,8 +31,8 @@ const styles = StyleSheet.create({
     flex : 1,
     justifyContent : 'center',
     alignItems : 'center',
-    width : 120,
-    height : 120,
+    // width : windowWidth*0.9,
+    height : windowHeight*0.17,
     margin : 3,
   },
   card2 : {
@@ -42,8 +45,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    height : 95,
-    width : 95,
+    height : windowHeight*0.11,
+    width : windowHeight*0.2,
   },
 
 });

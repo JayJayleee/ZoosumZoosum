@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
+import { windowHeight, windowWidth } from "@/constants/styles";
+
+
 
 const styles = StyleSheet.create({
   backgroungcolor : {
     backgroundColor: 'black',
     position: 'absolute',
-    width : '100%',
-    height : '100%',
+    width : windowWidth,
+    height : windowHeight,
     opacity : 0.2,
   },
   container: {
@@ -18,8 +21,8 @@ const styles = StyleSheet.create({
     margin : 10,
   },
   list_container : {
-    width : '100%',
-    height : '100%'
+    width : windowWidth,
+    height : windowHeight
   },
   title_head : {
     color : 'white',
@@ -27,14 +30,14 @@ const styles = StyleSheet.create({
     fontFamily : 'NPSfont_extrabold'
   },
   head : {
-    height : '10%',
-    marginTop : '10%',
+    height : windowHeight*0.1,
+    marginTop : windowHeight*0.03,
     marginBottom : '5%',
     alignItems: 'center',
   },
 
   hiddenCard: {
-    width: 115,
+    width: windowWidth*0.3,
     height: 130,
   },
   itemList : {
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     borderRadius : 10,
     width : '90%',
     height : '80%',
-    marginBottom : 10,
+    marginBottom : 5,
     justifyContent : 'flex-start',
     alignItems : 'center'
   },

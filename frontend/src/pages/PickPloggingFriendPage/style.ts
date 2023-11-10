@@ -1,80 +1,96 @@
-import {StyleSheet, Dimensions} from 'react-native';
-
-const MAIN_WIDTH = Dimensions.get('window').width;
-const MAIN_HEIGHT = Dimensions.get('window').height;
+import { StyleSheet, Button } from 'react-native';
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 const styles = StyleSheet.create({
+  backgroungcolor : {
+    backgroundColor: 'black',
+    position: 'absolute',
+    width : windowWidth,
+    height : windowHeight,
+    opacity : 0.2,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
-    width: MAIN_WIDTH,
-    height: MAIN_HEIGHT,
   },
-  body1: {
-    width: '100%',
-    height: '40%',
-    marginTop: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor : 'blue',
+  body1 : {
+    width : windowWidth,
+    height : windowHeight*0.4,
+    marginTop : windowHeight*0.04,
+    justifyContent : 'center',
+    alignItems : 'center'
   },
-  FriendDetail_Image: {
-    width: '90%',
-    height: '90%',
+  FriendDetail_Image : {
+    width : '90%',
+    height : '90%',
   },
-  animalName: {
-    color: 'white',
-    fontSize: 40,
-    fontFamily: 'NPSfont_extrabold',
-    marginBottom: 20,
+  animalName : {
+    color : 'white',
+    fontSize : 40,
+    fontFamily : 'NPSfont_extrabold',
+    marginBottom : 20,
   },
-  viewAnimalDescription: {
-    width: '60%',
+  viewAnimalDescription : {
+    width : windowWidth,
   },
-  animalDescription: {
-    color: 'white',
-    fontSize: 15,
-    textAlign: 'center',
-    fontFamily: 'NPSfont_bold',
-    flexWrap: 'wrap',
-    lineHeight: 35,
+  animalDescription : {
+    color : 'white',
+    fontSize : 15,
+    textAlign : 'center',
+    fontFamily : 'NPSfont_bold',
+    flexWrap : 'wrap',
+    lineHeight : 35,
   },
-  body2: {
-    width: '100%',
-    height: '30%',
-    marginTop: '25%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+  body2 : {
+    width : windowWidth,
+    height : windowHeight,
+    marginTop : windowHeight*0.09,
+    justifyContent : 'flex-start',
+    alignItems : 'center',
   },
-  bodyContainer1: {
-    width: '75%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  bodyContainer1 : {
+    width : windowWidth*0.75,
+    flexDirection : 'row',
+    justifyContent : 'space-around'
   },
-  active: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 30,
+  active : {
+    justifyContent : 'center',
+    alignItems : 'center',
+    marginBottom : 30,
   },
-  Together: {
-    backgroundColor: '#FFEBA6',
-    width: 140,
-    height: 40,
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-    elevation: 3,
+  Together : {
+    backgroundColor : '#FFEBA6',
+    width : windowWidth*0.35,
+    height : windowHeight*0.05,
+    marginTop : 10,
+    justifyContent : 'center',
+    alignItems : 'center',
+    borderRadius : 8,
+    elevation : 3,
   },
-  title: {
-    color: 'white',
-    fontSize: 20,
+  title : {
+    color : 'white',
+    fontSize : 20,
   },
-  title2: {
-    color: 'black',
-    fontSize: 20,
-    fontFamily: 'NPSfont_extrabold',
+  title2 : {
+    color : 'black',
+    fontSize : 20,
+    fontFamily : 'NPSfont_extrabold',
   },
+  switchButtons : {
+    width : windowWidth,
+    height : windowHeight*0.13,
+    position : 'absolute',
+    flexDirection : 'row',
+    justifyContent : 'space-between',
+    marginTop : windowHeight*0.15,
+    // backgroundColor : 'red'
+  },
+  arrow : {
+    width : 100,
+    height : 100,
+    
+  }
 });
 
 export default styles;

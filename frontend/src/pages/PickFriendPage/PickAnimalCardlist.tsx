@@ -22,12 +22,26 @@ interface PickFriendPageProps {
   navigation: () => void;
 }
 
+const targetNumColumns = 3;
+
 export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
   const [animalArray, setAnimalArray] = useState<Animal[]>();
+  const [numColumns, setNumColumns] = useState<number>(targetNumColumns);
+
 
   useQuery(['FriendList'], fetchMyAnimalListInfo, {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
+
+      const totalCards = data.length;
+      const calculatedNumColumns = Math.min(
+        targetNumColumns,
+        Math.ceil(totalCards / targetNumColumns),
+      );
+      setNumColumns(calculatedNumColumns);
+
+      const missingCards =
+        calculatedNumColumns - (totalCards % calculatedNumColumns);
 
       if (!Array.isArray(data)) {
         console.error('Data는 배열이 아닙니다:', data);
@@ -35,14 +49,10 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
       }
       let processedData = [...data];
 
-      const numColumns = 3;
-
-      const remainingCards = numColumns - (processedData.length % numColumns);
-
-      if (remainingCards > 0) {
-        for (let i = 0; i < remainingCards; i++) {
+      if (missingCards !== targetNumColumns) {
+        for (let i = 0; i < missingCards; i++) {
           processedData.push({
-            animalId: i + processedData.length,
+            animalId: i,
             animalName: '',
             fileUrl: '',
             selected: false,
@@ -96,45 +106,47 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
 
   if (!animalArray?.length) return <Text>로딩...</Text>;
   return (
-    <View style={styles.pickAnimalCardList}>
-      <FlatList
-        horizontal={false} // 수직으로 정렬
-        numColumns={3} // 한 줄에 표시할 카드 수 설정
-        data={animalArray}
-        keyExtractor={(item) => item.animalId.toString()}
-        renderItem={({ item }) => {
-          if (!item.animalName) {
-            return <View style={styles.hiddenCard} />;
-          }
-          return (
-            <PickAnimalCard
-              animalId={item.animalId}
-              animalName={item.animalName}
-              fileUrl={item.fileUrl}
-              // 클릭 상태를 전달 (선택된 상태면 true, 아니면 false)
-              isSelected={selectedIds.includes(item.animalId)}
-              // 클릭 이벤트 핸들러를 props로 전달
-              onSelect={() => handleSelectCard(item.animalId)}
-            />
-          );
-        }}
-      />
-      <AppButton
-        variant='gotoisland'
-        children='선택완료'
-        onPress={() => {
-          // selectedIds 배열 길이에 따라 조건 분기
-          if (selectedIds.length > 5) {
-            Alert.alert('경고', '5개 이하로 선택해주세요');
-          } else if (selectedIds.length === 0) {
-            Alert.alert('경고', '선택하지 않으면 섬으로 보낼 수 없습니다');
-          } else {
-            console.log('선택된 아이디들:', selectedIds);
-            // 다른 처리를 여기에 추가할 수 있습니다.
-            handleCompleteSelection()
-          }
-        }}
+    <View style={styles.container}>
+      <View style={styles.pickAnimalCardList}>
+        <FlatList
+          horizontal={false} // 수직으로 정렬
+          numColumns={3} // 한 줄에 표시할 카드 수 설정
+          data={animalArray}
+          keyExtractor={(item) => item.animalId.toString()}
+          renderItem={({ item }) => {
+            if (!item.animalName) {
+              return <View style={styles.hiddenCard} />;
+            }
+            return (
+              <PickAnimalCard
+                animalId={item.animalId}
+                animalName={item.animalName}
+                fileUrl={item.fileUrl}
+                // 클릭 상태를 전달 (선택된 상태면 true, 아니면 false)
+                isSelected={selectedIds.includes(item.animalId)}
+                // 클릭 이벤트 핸들러를 props로 전달
+                onSelect={() => handleSelectCard(item.animalId)}
+              />
+            );
+          }}
         />
+      </View>
+      <AppButton
+          variant='gotoisland'
+          children='선택완료'
+          onPress={() => {
+            // selectedIds 배열 길이에 따라 조건 분기
+            if (selectedIds.length > 5) {
+              Alert.alert('경고', '5개 이하로 선택해주세요');
+            } else if (selectedIds.length === 0) {
+              Alert.alert('경고', '선택하지 않으면 섬으로 보낼 수 없습니다');
+            } else {
+              console.log('선택된 아이디들:', selectedIds);
+              // 다른 처리를 여기에 추가할 수 있습니다.
+              handleCompleteSelection()
+            }
+          }}
+          />
     </View>
     
   );

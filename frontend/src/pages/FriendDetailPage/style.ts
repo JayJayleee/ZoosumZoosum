@@ -1,11 +1,12 @@
 import { StyleSheet, Button } from 'react-native';
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 const styles = StyleSheet.create({
   backgroungcolor : {
     backgroundColor: 'black',
     position: 'absolute',
-    width : '100%',
-    height : '100%',
+    width : windowWidth,
+    height : windowHeight,
     opacity : 0.2,
   },
   container: {
@@ -13,9 +14,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   body1 : {
-    width : '100%',
-    height : '40%',
-    marginTop : '20%',
+    width : windowWidth,
+    height : windowHeight*0.4,
+    marginTop : windowHeight*0.04,
     justifyContent : 'center',
     alignItems : 'center'
   },
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     marginBottom : 20,
   },
   viewAnimalDescription : {
-    width : '60%',
+    width : windowWidth,
   },
   animalDescription : {
     color : 'white',
@@ -41,14 +42,14 @@ const styles = StyleSheet.create({
     lineHeight : 35,
   },
   body2 : {
-    width : '100%',
-    height : '30%',
-    marginTop : "25%",
+    width : windowWidth,
+    height : windowHeight,
+    marginTop : windowHeight*0.09,
     justifyContent : 'flex-start',
     alignItems : 'center',
   },
   bodyContainer1 : {
-    width : '75%',
+    width : windowWidth*0.75,
     flexDirection : 'row',
     justifyContent : 'space-around'
   },
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
   },
   Together : {
     backgroundColor : '#FFEBA6',
-    width : 140,
-    height : 40,
+    width : windowWidth*0.35,
+    height : windowHeight*0.05,
     marginTop : 10,
     justifyContent : 'center',
     alignItems : 'center',

@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Button,
+  Image,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
@@ -120,19 +121,18 @@ export default function PickPloggingFriendPage({
                 <AppText style={styles.title}>함께 걸은 거리</AppText>
                 <View style={styles.Together}>
                   <AppText style={styles.title2}>
-                    {currentAnimal.lengthTogether}
+                    {currentAnimal.lengthTogether}km
                   </AppText>
                 </View>
               </View>
             </View>
           </View>
-          <View>
-            {/* <View style={styles.switchButtons}> */}
+          <View style={styles.switchButtons}>
             <TouchableOpacity onPress={goPrev}>
-              <Text>이전</Text>
+              <Image style={styles.arrow} source={require('@/assets/mainpage_image/left_arrow.png')}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={goNext}>
-              <Text>다음</Text>
+            <Image style={styles.arrow} source={require('@/assets/mainpage_image/right_arrow.png')}/>
             </TouchableOpacity>
           </View>
           <AppButton
