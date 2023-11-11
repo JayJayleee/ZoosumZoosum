@@ -143,6 +143,16 @@ export const styles = StyleSheet.create({
   badgeBoxContent: {
     fontSize: 15
   },
+  historySelect: {
+    position: 'absolute',
+    top: windowHeight*0.13,
+    width: windowWidth * 0.9,
+    height: windowHeight* 0.06,
+    // borderColor: 'red',
+    // borderWidth: 1,
+    zIndex: 10,
+    alignItems: 'flex-end'
+  },
   historyBox: {
     position: 'relative',
     width: '100%', 
@@ -298,9 +308,4 @@ export const styles = StyleSheet.create({
   tabText: {
     fontSize: 15
   },
-  imageModal: {
-    width: windowWidth * 0.8,
-    height: windowHeight * 0.7,
-    borderRadius: 10,
-  }
 })
