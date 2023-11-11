@@ -14,11 +14,7 @@ import AppText from '@/components/ui/Text';
 import {getStorage} from '@/apis';
 import {styles} from './styles';
 import {getBadgeInfo, getStatisticInfo} from '@/apis/profile';
-import {
-  statisticInfo,
-  badgeInfo,
-  badgeList,
-} from '@/types/profile';
+import {statisticInfo, badgeInfo, badgeList} from '@/types/profile';
 import {useQuery} from '@tanstack/react-query';
 import FastImage from 'react-native-fast-image';
 
@@ -60,6 +56,7 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
     compareNickname();
   }, []);
 
+  console.log(getStorage('nickname'));
   // 산책 변수에 받아온 결과를 저장하는 코드
   const {
     isLoading: statisticLoading,

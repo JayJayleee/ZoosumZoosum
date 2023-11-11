@@ -64,8 +64,8 @@ const PloggingResultModal = ({
   }, []);
 
   useEffect(() => {
-    console.log(activityData, '애니멀 아이디 들어옴?');
-  }, []);
+    console.log(activityData, '1 애니멀 아이디 들어옴?');
+  }, [data]);
   const mutation = useMutation(
     (activityData: ActivityDataType) => PloggingResultFtn(activityData),
     {
@@ -100,11 +100,11 @@ const PloggingResultModal = ({
   const topContent = activityData ? (
     <View style={styles.overlayContainer}>
       <AppText style={styles.overlayText}>오늘도 주섬주섬 성공!</AppText>
-      {/* <Image source={{uri: animalImg}} style={styles.overlayImage} /> */}
-      <Image
+      <Image source={{uri: animalImg}} style={styles.overlayImage} />
+      {/* <Image
         source={{uri: activityData.activityImg}}
         style={styles.overlayImage}
-      />
+      /> */}
     </View>
   ) : null;
 

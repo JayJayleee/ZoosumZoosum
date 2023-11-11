@@ -9,15 +9,18 @@ import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import AppButton from '@/components/ui/Button';
-import {fetchMyIslandInfo, fetchMyStatusInfo, getNewAnimalPose} from '@/apis/Island';
+import {
+  fetchMyIslandInfo,
+  fetchMyStatusInfo,
+  getNewAnimalPose,
+} from '@/apis/Island';
 import {statusInfo, islandInfo, timeObj, animalForm} from '@/types/island';
 import AppText from '@/components/ui/Text';
 import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
 import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
-import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
-
+import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -45,13 +48,9 @@ export default function MainPage({navigation}: MainScreenProps) {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
   // 섬 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 섬 링크
-  const [islandUri, setIslandUri] = useState<string>(
-    '',
-  );
+  const [islandUri, setIslandUri] = useState<string>('');
   // 나무 이미지 링크를 저장할 변수 생성, 초기값은 기본적으로 모든 유저에게 제공되는 기본 나무 링크
-  const [treeUri, setTreeUri] = useState<string>(
-    '',
-  );
+  const [treeUri, setTreeUri] = useState<string>('');
   // 동물 gif 링크를 저장할 변수 생성
   const [animalUri, setAnimalUri] = useState<animalForm[]>([]);
   // 동물 리스트의 갯수를 저장할 변수 생성
@@ -89,16 +88,18 @@ export default function MainPage({navigation}: MainScreenProps) {
   // 나무 씨앗이 100개가 넘어가면 나무 모달창을 띄우도록 하는 코드
   useEffect(() => {
     if (getSeed >= 100) {
-      setIsTreeModalVisible(true)
+      setIsTreeModalVisible(true);
     }
-  }, [getSeed])
+  }, [getSeed]);
 
   // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
   useEffect(() => {
     if (isHaveEgg) {
-      console.log("부화하지 않은 알이 있어!\n여기에다가 이제 navigation 넣을거야!")
+      console.log(
+        '부화하지 않은 알이 있어!\n여기에다가 이제 navigation 넣을거야!',
+      );
     }
-  }, [isHaveEgg])
+  }, [isHaveEgg]);
 
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
@@ -126,9 +127,9 @@ export default function MainPage({navigation}: MainScreenProps) {
       setDistance(statusContent.missionLength);
 
       if (statusContent.egg > 0) {
-        setHaveEgg(true)
+        setHaveEgg(true);
       } else {
-        setHaveEgg(false)
+        setHaveEgg(false);
       }
     },
   });
@@ -164,11 +165,11 @@ export default function MainPage({navigation}: MainScreenProps) {
   // BGM on/off 함수
   const changeSoundState = () => {
     if (isSoundOn) {
-      console.log("소리 끄는 함수가 실행됩니다.")
-      setSound(false)
+      console.log('소리 끄는 함수가 실행됩니다.');
+      setSound(false);
     } else {
-      console.log("소리 키는 함수가 실행됩니다.")
-      setSound(true)
+      console.log('소리 키는 함수가 실행됩니다.');
+      setSound(true);
     }
   };
 
@@ -200,12 +201,16 @@ export default function MainPage({navigation}: MainScreenProps) {
   };
 
   // 섬에 있는 동물 클릭 시, 다른 이미지를 받아오는 함수
-  const newAnimalAct = async (index:number, animalId:number, fileUri:string ) => {
+  const newAnimalAct = async (
+    index: number,
+    animalId: number,
+    fileUri: string,
+  ) => {
     let newPose = await getNewAnimalPose(animalId, fileUri);
     let copiedItems = [...animalUri];
     copiedItems[index].fileUrl = newPose.fileUrl;
     setAnimalUri(copiedItems);
-  }
+  };
 
   return (
     <ImageBackground
@@ -215,7 +220,13 @@ export default function MainPage({navigation}: MainScreenProps) {
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
       />
-      {isModalVisible && <AppCloseModal isModalVisible={isModalVisible} RequestClose={() => setModalVisible(false)} exitFtn={exitFtn} />}
+      {isModalVisible && (
+        <AppCloseModal
+          isModalVisible={isModalVisible}
+          RequestClose={() => setModalVisible(false)}
+          exitFtn={exitFtn}
+        />
+      )}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
           <FastImage
@@ -267,10 +278,7 @@ export default function MainPage({navigation}: MainScreenProps) {
             style={styles.bannerImage}
           />
           <View>
-            <AppText
-              children="우리가 심은 나무"
-              style={styles.bannerText}
-            />
+            <AppText children="우리가 심은 나무" style={styles.bannerText} />
             <AppText style={styles.bannerBoldText}>{allTreeCount} 그루</AppText>
           </View>
         </View>
@@ -286,7 +294,11 @@ export default function MainPage({navigation}: MainScreenProps) {
             resizeMode="stretch"
           />
           {numberAnimal > 0 && (
-            <TouchableOpacity onPress={() => newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)} style={styles.firstAnimal}>
+            <TouchableOpacity
+              onPress={() =>
+                newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
+              }
+              style={styles.firstAnimal}>
               <FastImage
                 style={styles.Animal}
                 source={{uri: animalUri[0].fileUrl}}
@@ -294,7 +306,11 @@ export default function MainPage({navigation}: MainScreenProps) {
             </TouchableOpacity>
           )}
           {numberAnimal > 1 && (
-            <TouchableOpacity  onPress={() => newAnimalAct(1, animalUri[1].animalId, animalUri[1].fileUrl)} style={styles.secondAnimal}>
+            <TouchableOpacity
+              onPress={() =>
+                newAnimalAct(1, animalUri[1].animalId, animalUri[1].fileUrl)
+              }
+              style={styles.secondAnimal}>
               <FastImage
                 style={styles.ReverseAnimal}
                 source={{uri: animalUri[1].fileUrl}}
@@ -302,7 +318,11 @@ export default function MainPage({navigation}: MainScreenProps) {
             </TouchableOpacity>
           )}
           {numberAnimal > 2 && (
-            <TouchableOpacity onPress={() => newAnimalAct(2, animalUri[2].animalId, animalUri[2].fileUrl)} style={styles.thirdAnimal}>
+            <TouchableOpacity
+              onPress={() =>
+                newAnimalAct(2, animalUri[2].animalId, animalUri[2].fileUrl)
+              }
+              style={styles.thirdAnimal}>
               <FastImage
                 style={styles.Animal}
                 source={{uri: animalUri[2].fileUrl}}
@@ -310,7 +330,11 @@ export default function MainPage({navigation}: MainScreenProps) {
             </TouchableOpacity>
           )}
           {numberAnimal > 3 && (
-            <TouchableOpacity onPress={() => newAnimalAct(3, animalUri[3].animalId, animalUri[3].fileUrl)} style={styles.fourthAnimal}>
+            <TouchableOpacity
+              onPress={() =>
+                newAnimalAct(3, animalUri[3].animalId, animalUri[3].fileUrl)
+              }
+              style={styles.fourthAnimal}>
               <FastImage
                 style={styles.ReverseAnimal}
                 source={{uri: animalUri[3].fileUrl}}
@@ -318,7 +342,11 @@ export default function MainPage({navigation}: MainScreenProps) {
             </TouchableOpacity>
           )}
           {numberAnimal > 4 && (
-            <TouchableOpacity onPress={() => newAnimalAct(4, animalUri[4].animalId, animalUri[4].fileUrl)} style={styles.fifthAnimal}>
+            <TouchableOpacity
+              onPress={() =>
+                newAnimalAct(4, animalUri[4].animalId, animalUri[4].fileUrl)
+              }
+              style={styles.fifthAnimal}>
               <FastImage
                 style={styles.Animal}
                 source={{uri: animalUri[4].fileUrl}}
@@ -335,38 +363,35 @@ export default function MainPage({navigation}: MainScreenProps) {
         />
       </View>
       <View style={styles.buttonToggle}>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => changeSoundState()}
           style={styles.toggleMoveButton}>
-          {isSoundOn? 
-          <>
-            <FastImage
-              source={require('@/assets/img_icon/sound_on_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="소리 끄기" style={styles.toggleBtnText} />
-          </> :
-          <>
-            <FastImage
-              source={require('@/assets/img_icon/sound_off_icon.png')}
-              style={styles.toggleBtnImage}
-            />
-            <AppText children="소리 켜기" style={styles.toggleBtnText} />
-          </>
-          }
+          {isSoundOn ? (
+            <>
+              <FastImage
+                source={require('@/assets/img_icon/sound_on_icon.png')}
+                style={styles.toggleBtnImage}
+              />
+              <AppText children="소리 끄기" style={styles.toggleBtnText} />
+            </>
+          ) : (
+            <>
+              <FastImage
+                source={require('@/assets/img_icon/sound_off_icon.png')}
+                style={styles.toggleBtnImage}
+              />
+              <AppText children="소리 켜기" style={styles.toggleBtnText} />
+            </>
+          )}
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={goToRanking}
-          style={styles.toggleMoveButton}>
+        <TouchableOpacity onPress={goToRanking} style={styles.toggleMoveButton}>
           <FastImage
             source={require('@/assets/img_icon/animal_earth_icon.png')}
             style={styles.toggleBtnImage}
           />
           <AppText children="랭킹 보기" style={styles.toggleBtnText} />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={goToProfile}
-          style={styles.toggleMoveButton}>
+        <TouchableOpacity onPress={goToProfile} style={styles.toggleMoveButton}>
           <FastImage
             source={require('@/assets/img_icon/profile_icon.png')}
             style={styles.toggleBtnImage}

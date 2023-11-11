@@ -13,7 +13,7 @@ const getStoredToken = async () => {
 };
 
 export async function PloggingResultFtn(activityData: ActivityDataType) {
-  console.log('받은 직후:', activityData);
+  console.log('2 받은 직후:', activityData);
 
   // 사용자 토큰 가져오기
   const token = await getStoredToken();
@@ -28,9 +28,6 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
   );
 
   formData.append('animalId', JSON.stringify(activityData.animalId));
-
-  // 파일 경로에서 "file://" 접두어 제거
-  // let cleanFilePath = activityData.activityImg.replace('file://', '');
 
   const now = new Date();
   const fileName = `${now.getFullYear()}-${
@@ -47,21 +44,19 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
   }
 
   try {
-    // Axios로 POST 요청 보내기
-    const response = await axios.post(
-      'https://zoosum.co.kr/api/activity',
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // 'Content-Type': 'multipart/form-data'는 axios에서 자동으로 설정됩니다.
-        },
+    // Fetch로 POST 요청 보내기
+    const response = await fetch('https://zoosum.co.kr/api/activity', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: formData,
+    });
 
-    console.log('요청 결과:', response.data);
-    return response.data;
-  } catch (e: any) {
+    const responseData = await response.json();
+    console.log('요청 결과:', responseData);
+    return responseData;
+  } catch (e) {
     console.error('활동과 사진 업로드에 실패했습니다.', e);
   }
 }

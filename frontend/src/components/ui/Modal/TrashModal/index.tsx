@@ -90,7 +90,7 @@ const TrashModal = ({
           height: 100,
           aspectRatio: 1,
           resizeMode: 'contain',
-          tintColor: description != 0 ? '' : 'black',
+          ...(description != 0 ? {} : {tintColor: '#000000'}),
         }}
         source={img}
       />
@@ -168,25 +168,23 @@ const TrashModal = ({
       onRequestClose={onClose}
       buttonInnerText={'닫기'}
       noButton={true}
-      ViewStyle={'treeInfo'}>
+      ViewStyle={'trashinfo'}>
       <View
         style={{
           width: '100%',
           height: '100%',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {hasNonZeroItems ? (
-          <AppText
-            style={{
-              color: 'black',
-              fontFamily: 'NPSfont_bold',
-              fontSize: 25,
-              marginBottom: 15,
-            }}>
-            방금 주운 쓰레기
-          </AppText>
-        ) : null}
+        <AppText
+          style={{
+            color: 'black',
+            fontFamily: 'NPSfont_bold',
+            fontSize: 25,
+            marginVertical: 15,
+          }}>
+          방금 주운 쓰레기
+        </AppText>
 
         {!hasNonZeroItems ? (
           <View
@@ -198,13 +196,7 @@ const TrashModal = ({
             }}>
             <Image
               source={require('@/assets/plogingpage_image/noEgg.png')}
-              style={{
-                width: '100%',
-                height: '80%',
-                resizeMode: 'contain',
-                marginBottom: '10%',
-                marginTop: '30%',
-              }}
+              style={{width: '100%', height: '80%', resizeMode: 'contain'}}
             />
             <AppText
               style={{
@@ -239,6 +231,7 @@ const TrashModal = ({
             columnWrapperStyle={{
               justifyContent: 'space-between',
             }}
+            // contentContainerStyle={{backgroundColor: 'red'}}
             renderItem={({item}) => (
               <Item
                 title={item.title}

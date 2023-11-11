@@ -22,7 +22,7 @@ interface Photo {
 
 export default function CameraPage({navigation, route}: CamerascreenProps) {
   const AnimalImage = route.params.getAnimalIMG;
-  // console.log('가젤', AnimalImage);
+  console.log('가젤', AnimalImage);
   const camera = useRef<Camera | null>(null);
   const devices = useCameraDevices();
   // device.back으로 작성이 안됨... 확인해보기
