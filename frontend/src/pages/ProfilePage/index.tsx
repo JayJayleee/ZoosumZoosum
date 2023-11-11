@@ -150,7 +150,7 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
                 source={require('@/assets/img_icon/badge_icon.png')}
                 style={styles.tabImage}
               />
-              <AppText children="나의 뱃지" style={styles.tabText} />
+              <AppText children="뱃지 보기" style={styles.tabText} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
