@@ -49,14 +49,15 @@ export default function TopRanking({goToprofile} : RankingProps) {
   return (
     <View style={styles.ranking_container}>
       <View style={styles.select_container2}>
-        <Text style={styles.title_head}>전체 랭킹</Text>
+        <Text style={styles.title_head}>TOP RANK</Text>
       </View>
-      <View style={styles.title_container}>
+      {/* <View style={styles.title_container}>
         <Text style={styles.title_grid1}>순위</Text>
         <Text style={styles.title_grid2}>닉네임</Text>
         <Text style={styles.title_grid3}>지역</Text>
         <Text style={styles.title_grid4}>점수</Text>
-      </View>
+        <Text style={styles.title_grid5}>버튼</Text>
+      </View> */}
       <View style={styles.body_container}>
         <FlatList
           horizontal={false}
