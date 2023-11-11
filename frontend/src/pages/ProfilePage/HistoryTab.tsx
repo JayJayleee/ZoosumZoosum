@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { TouchableOpacity } from 'react-native'
 import ModalComponent from '@/components/ui/Modal'
 import Toast from 'react-native-toast-message'
-import { toastConfig } from '@/components/ui/Toast'
+import { toastConfig } from '@/constants/toastConfig'
 import { windowHeight } from '@/constants/styles'
 import { SingleSelect } from '@/components/ui/SelectList'
 
