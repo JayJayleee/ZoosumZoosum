@@ -4,6 +4,8 @@ import numpy as np
 import cv2
 from ultralytics import YOLO
 import base64
+from typing import Optional
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -29,70 +31,17 @@ color = [
 
 
 # 모델 로딩
-model = YOLO('./yolov8s_custom.pt')
+smodel = YOLO('./yolov8s_custom.pt')
+nmodel = YOLO('./yolov8n_custom.pt')
 print("model load 완료")
 
-
-@app.get("/")
-def root():
-    return "Ggyumo's fastapi server is running!"
-
-
-# image upload 후 예측 결과 반환
-@app.post('/ai')
-def predict(file: bytes = File() ):
-        
-    # numpy를 image buffer를 array로 변환
-    nparr = np.frombuffer(file, np.uint8)
-
-    # 이미지 코드로 변환
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-    # 예측 실행
-    results = model(img)
-
-    # class 별 count 초기화 
-    trash_count = [0]*6
-
-    class_ids = []
-    for result in results:
-        boxes = result.boxes
-        for box in boxes:
-            #xyxy = box.xyxy.tolist()[0]
-            #print(xyxy)
-            confidence = box.conf
-
-            # 0.4 이상의 confidence 만 검출
-            if confidence >= 0.4:
-                class_ids.append(box.cls.tolist())
-                if box.cls == 0.:
-                    trash_count[0] += 1
-                elif box.cls == 1. or box.cls == 2.:
-                    trash_count[1] += 1
-                elif box.cls == 3.:
-                    trash_count[2] += 1
-                elif box.cls == 4.:
-                    trash_count[3] += 1
-                elif box.cls == 5.:
-                    trash_count[4] += 1
-                elif box.cls == 7.:
-                    trash_count[5] += 1
-
-    predict_result = {trash_name[i]: trash_count[i] for i in range(len(trash_name))}
-    predict_result["total"] = sum(trash_count)
-
-    return JSONResponse(predict_result)
-
-
-# image upload 후 예측 결과 이미지반환
-@app.post('/ai/image')
-def predict(
-    file: bytes = File(),
-    leftRightPercent : float = Form(...),
-    topPercentPercent : float = Form(...),
-    bottomPercentPercent : float = Form(...),
-    ):
-        
+def getResultFromData(
+        file,
+        leftRightPercent,
+        topPercentPercent,
+        bottomPercentPercent,
+        modelType
+):
     # numpy를 image buffer를 array로 변환
     nparr = np.frombuffer(file, np.uint8)
 
@@ -114,6 +63,10 @@ def predict(
     y2Limit = h - int(h*bottomPercentPercent)
 
     # 예측 실행
+    # model
+    model = smodel
+    if modelType == 'n':
+        model = nmodel
     results = model(img)
 
     # class 별 count 초기화 
@@ -157,9 +110,52 @@ def predict(
                     class_ids.append(5)
                     trash_count[5] += 1
 
-    # 결과 객체
     predict_result = {trash_name[i]: trash_count[i] for i in range(len(trash_name))}
     predict_result["total"] = sum(trash_count)
+    result = {
+        "predict_result" : predict_result,
+        "confidences" : confidences,
+        "bboxes" : bboxes,
+        "class_ids" : class_ids,
+        "img" : img
+    }
+    return result
+
+
+@app.get("/")
+def root():
+    return "Ggyumo's fastapi server is running!"
+
+
+# image upload 후 예측 결과 반환
+@app.post('/ai')
+def predict(
+    file: bytes = File(),
+    leftRightPercent : Optional[float] = Form(0.1),
+    topPercentPercent : Optional[float] = Form(0.1),
+    bottomPercentPercent : Optional[float] = Form(0.3),
+    modelType : Optional[str] = Form('s'),
+    ):
+    return JSONResponse(getResultFromData(file, leftRightPercent, topPercentPercent,bottomPercentPercent, modelType)["predict_result"])
+
+        
+
+# image upload 후 예측 결과 이미지반환
+@app.post('/ai/image')
+def predict(
+    file: bytes = File(),
+    leftRightPercent : Optional[float] = Form(0.1),
+    topPercentPercent : Optional[float] = Form(0.1),
+    bottomPercentPercent : Optional[float] = Form(0.3),
+    modelType : Optional[str] = Form('s'),
+    ):
+        
+    result = getResultFromData(file, leftRightPercent, topPercentPercent,bottomPercentPercent, modelType)
+    predict_result = result["predict_result"]
+    confidences = result["confidences"]
+    bboxes = result["bboxes"]
+    class_ids = result["class_ids"]
+    img = result["img"]
 
     # cv2 가 제공하는 후처리 모델
     result_boxes = cv2.dnn.NMSBoxes(bboxes, confidences, 0.25, 0.45, 0.5)
