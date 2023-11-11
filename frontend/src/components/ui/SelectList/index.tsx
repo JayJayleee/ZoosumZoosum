@@ -5,7 +5,7 @@ import { SelectList, MultipleSelectList }from 'react-native-dropdown-select-list
 
 interface singleProps {
   dataList: Array<string>;
-  setSelected: (e: string) => Promise<void> | React.Dispatch<React.SetStateAction<string>>;
+  setSelected: (e: string) => void | React.Dispatch<React.SetStateAction<string>>;
   maxHeight?: number | undefined;
   placeholder?: string;
   defalut?: string;
@@ -93,7 +93,7 @@ const style = StyleSheet.create({
   type: {
     width: '45%', 
     backgroundColor: '#A5DCA0',
-    borderColor: 'green',
+    borderColor: '#359608',
   },
   defaultInput: {
     width: '100%', 
@@ -111,18 +111,18 @@ const style = StyleSheet.create({
   }, 
   typelist: {
     backgroundColor: '#A5DCA0',
-    borderColor: 'green',
+    borderColor: '#359608',
     borderWidth: 2, 
     width: 'auto',
     zIndex: 100,
-    height: windowHeight* 0.15
+    height: windowHeight * 0.15,
   },
   defaultText: {
     fontSize: 18, 
-    width:'80%'
+    width:'80%',
   }, 
   typeText: {
     fontSize: 17, 
-    width:'100%'
+    width:'100%',
   },
 })
