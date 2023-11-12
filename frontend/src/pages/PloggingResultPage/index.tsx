@@ -5,6 +5,7 @@ import {PloggingResultscreenProps} from '../../types/path';
 import CarouselCards from '../../components/ui/Carousel/CarouselCards';
 import Spinner from '@/components/ui/Spinner';
 import {BackHandler} from 'react-native';
+import RNExitApp from 'react-native-exit-app';
 
 export default function PloggingResultPage({
   navigation,
@@ -51,8 +52,9 @@ export default function PloggingResultPage({
   };
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const exitFtn = () => {
-    BackHandler.exitApp();
-    navigation.navigate('Login');
+    RNExitApp.exitApp();
+    // BackHandler.exitApp();
+    // navigation.navigate('Login');
   };
   return (
     <View style={styles.container}>

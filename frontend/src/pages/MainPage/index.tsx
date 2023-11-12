@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
-  Image,
   Animated,
   ImageBackground,
   TouchableOpacity,
@@ -20,7 +19,9 @@ import {useQuery} from '@tanstack/react-query';
 import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
-import { windowHeight, windowWidth } from '@/constants/styles';
+import { windowWidth } from '@/constants/styles';
+import { pause, replay, stop } from '@/constants/sound';
+import RNExitApp from 'react-native-exit-app';
 
 
 export default function MainPage({navigation}: MainScreenProps) {
@@ -123,8 +124,7 @@ export default function MainPage({navigation}: MainScreenProps) {
 
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
-    BackHandler.exitApp();
-    navigation.navigate('Login');
+    RNExitApp.exitApp();
   };
 
   // 상단 스탯 api 호출 및 상태 저장하는 코드 생성
@@ -187,10 +187,10 @@ export default function MainPage({navigation}: MainScreenProps) {
   // BGM on/off 함수
   const changeSoundState = () => {
     if (isSoundOn) {
-      console.log("소리 끄는 함수가 실행됩니다.")
+      pause();
       setSound(false)
     } else {
-      console.log("소리 키는 함수가 실행됩니다.")
+      replay();
       setSound(true)
     }
   };
