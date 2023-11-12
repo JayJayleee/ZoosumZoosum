@@ -22,7 +22,7 @@ interface Photo {
 
 export default function CameraPage({navigation, route}: CamerascreenProps) {
   const AnimalImage = route.params.getAnimalIMG;
-  console.log('가젤', AnimalImage);
+  // console.log('가젤', AnimalImage);
   const camera = useRef<Camera | null>(null);
   const devices = useCameraDevices();
   // device.back으로 작성이 안됨... 확인해보기
@@ -192,15 +192,32 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
         <View
           style={{
             alignSelf: 'center',
+            justifyContent: 'flex-end',
             width: '90%',
-            height: '65%',
+            height: '80%',
+            marginBottom: '3%',
             // backgroundColor: 'rgba(0,0,0,0.5)',
             borderWidth: 3,
             borderColor: 'white',
             borderRadius: 10,
             zIndex: 1,
             borderStyle: 'dashed',
-          }}></View>
+          }}>
+          {!isLoading && (
+            <View style={styles.overlayContainer}>
+              {/* 왼쪽 이미지 */}
+              <Image source={{uri: AnimalImage}} style={styles.overlayImage} />
+
+              <Image
+                source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
+                style={styles.overlayRightImage}
+              />
+              <AppText style={styles.overlayText}>
+                박스에 쓰레기를 맞춰주세요!
+              </AppText>
+            </View>
+          )}
+        </View>
       )}
       <Camera
         ref={camera}
@@ -223,20 +240,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
           </AppText>
         </View>
       )}
-      {!isLoading && (
-        <View style={styles.overlayContainer}>
-          {/* 왼쪽 이미지 */}
-          <Image source={{uri: AnimalImage}} style={styles.overlayImage} />
 
-          <Image
-            source={{uri: 'https://i.imgur.com/7CbpjWi.png'}}
-            style={styles.overlayRightImage}
-          />
-          <AppText style={styles.overlayText}>
-            위의 박스에 쓰레기를 맞춰주세요!
-          </AppText>
-        </View>
-      )}
       {!isLoading && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />

@@ -18,7 +18,7 @@ interface TrashModalProps {
 type TrashType =
   | '일반 쓰레기'
   | '유리'
-  | '금속'
+  | '캔'
   | '종이'
   | '플라스틱'
   | '비닐 봉투'
@@ -37,7 +37,7 @@ const tipsByType: Record<TrashType, string[]> = {
     '소형 유리병은 라벨과 뚜껑을 분리한 후 배출하세요.',
     '안경이나 특수 유리는 별도로 분리 수거합니다.',
   ],
-  금속: [
+  캔: [
     '캔은 압착하여 내용물을 비우고 분리배출하세요.',
     '금속류는 가능한 작게 압축하여 배출하는 것이 좋습니다.',
     '스프레이 캔은 내용물을 비우고 구멍을 뚫어서 배출하세요.',
@@ -108,7 +108,7 @@ const TrashModal = ({
     const trashCounts: Record<TrashType, number> = {
       '일반 쓰레기': 0,
       유리: 0,
-      금속: 0,
+      캔: 0,
       종이: 0,
       플라스틱: 0,
       '비닐 봉투': 0,
@@ -153,13 +153,13 @@ const TrashModal = ({
     return count > 0;
   });
 
-  const filteredData = data.filter(item => {
-    const count =
-      typeof item.description === 'number'
-        ? item.description
-        : parseInt(item.description, 10);
-    return count > 0;
-  });
+  // const filteredData = data.filter(item => {
+  //   const count =
+  //     typeof item.description === 'number'
+  //       ? item.description
+  //       : parseInt(item.description, 10);
+  //   return count > 0;
+  // });
 
   return (
     <ModalComponent
