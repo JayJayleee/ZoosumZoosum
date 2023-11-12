@@ -41,7 +41,9 @@ export type RootStackParamList = {
   FriendDetail: {
     animalId: number;
   };
-  FirstEgg: undefined;
+  FirstEgg: {
+    isFirstLogin?: boolean;
+  };
 };
 
 export type LoginScreenProps = NativeStackScreenProps<

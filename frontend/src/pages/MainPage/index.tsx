@@ -85,21 +85,19 @@ export default function MainPage({navigation}: MainScreenProps) {
     });
   }, []);
 
+  // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
+  useEffect(() => {
+    if (isHaveEgg) {
+      navigation.navigate('FirstEgg', {isFirstLogin: false});
+    }
+  }, [isHaveEgg]);
+
   // 나무 씨앗이 100개가 넘어가면 나무 모달창을 띄우도록 하는 코드
   useEffect(() => {
     if (getSeed >= 100) {
       setIsTreeModalVisible(true);
     }
   }, [getSeed]);
-
-  // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
-  useEffect(() => {
-    if (isHaveEgg) {
-      console.log(
-        '부화하지 않은 알이 있어!\n여기에다가 이제 navigation 넣을거야!',
-      );
-    }
-  }, [isHaveEgg]);
 
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {

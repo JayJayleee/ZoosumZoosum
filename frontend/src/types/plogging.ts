@@ -11,6 +11,7 @@ export interface AnimalCarouselCardItemProps {
   index?: number;
   activeIndex?: number;
   onNamingComplete?: (name: string) => void;
+  isFirstLogin?: boolean;
   gotomain?: () => void;
 }
 
@@ -57,6 +58,14 @@ export interface ProgressCarouselCardItemProps {
 export interface SeedCarouselCardItemProps {
   item?: {
     addSeed: number;
+  };
+  index: number;
+  activeIndex?: number;
+}
+
+export interface EggCarouselCardItemProps {
+  item?: {
+    addEgg: number;
   };
   index: number;
   activeIndex?: number;

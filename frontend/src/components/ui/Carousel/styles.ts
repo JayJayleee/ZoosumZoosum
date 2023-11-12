@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     width: ITEM_WIDTH,
     paddingBottom: 40,
     height: '100%',
+
     // backgroundColor: 'white',
     // shadowColor: '#000',
     // shadowOffset: {
@@ -34,6 +35,13 @@ const styles = StyleSheet.create({
   },
 
   seedimage: {
+    width: ITEM_WIDTH - 80,
+    aspectRatio: 1,
+    zIndex: 1,
+    position: 'absolute',
+    resizeMode: 'contain',
+  },
+  Eggimage: {
     width: ITEM_WIDTH - 80,
     aspectRatio: 1,
     zIndex: 1,
@@ -90,6 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     paddingLeft: 20,
     paddingTop: 50,
+
     position: 'absolute',
     top: 10,
   },
@@ -143,7 +152,8 @@ const styles = StyleSheet.create({
   inputcontainer: {
     alignItems: 'center',
     position: 'relative',
-    bottom: 40,
+    bottom: 30,
+    marginTop: '10%',
   },
   centerContent: {
     flex: 1,
