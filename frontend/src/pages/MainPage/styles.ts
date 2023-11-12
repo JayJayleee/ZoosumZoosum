@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
   },
   buttonToggle :{
     position: 'relative',
-    top: windowHeight* 0.132,
+    top: windowHeight* 0.11,
     width: windowWidth* 0.98,
-    height: windowHeight*0.1,
+    height: windowHeight*0.15,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     fontSize : 13,
   },
   toggleMoveButton: {
-    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     height: '35%',
     zIndex: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   secondAnimal: {
     position: 'relative',
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
   },
   ploggingButton: {
     position: 'relative',
-    top: windowHeight* 0.11,
+    top: windowHeight* 0.09,
     width: windowWidth,
     justifyContent: 'center',
     alignItems: 'center',
