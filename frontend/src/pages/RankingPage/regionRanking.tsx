@@ -12,6 +12,9 @@ import { fetchMyRegionRankingListInfo } from '@/apis/ranking';
 import { useQuery } from '@tanstack/react-query';
 import { windowHeight } from '@/constants/styles';
 
+import { Wave } from '@/components/ui/animation/LottieEffect';
+import FastImage from 'react-native-fast-image';
+
 type ApiResponse = {
   data: Rank[];
 };
@@ -62,7 +65,13 @@ export default function RegionRanking({goToprofile} : RankingProps) {
   }, [selectedRegion, refetch]);
 
 
-  // if (!RankingArray.length) return <Text>로딩...</Text>;
+  if (!RankingArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>로딩중..</AppText>
+    </View>
+  )
   
   return (
     <View style={styles.ranking_container}>

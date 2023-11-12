@@ -2,6 +2,13 @@ import { StyleSheet } from 'react-native';
 import { windowHeight, windowWidth } from "@/constants/styles";
 
 const styles = StyleSheet.create({
+  isLoading : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent : 'flex-start',
+    fontSize : 35,
+    fontFamily : 'NPSfont_extrabold',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
