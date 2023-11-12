@@ -1,9 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
+  Image,
+  Animated,
   ImageBackground,
   TouchableOpacity,
   BackHandler,
+  Easing
 } from 'react-native';
 import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
@@ -17,16 +20,19 @@ import {useQuery} from '@tanstack/react-query';
 import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
+import { windowHeight, windowWidth } from '@/constants/styles';
 
 
 export default function MainPage({navigation}: MainScreenProps) {
+      
   // 나무 심기 모달 창
   const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
   // 소리 on/off 상태를 나타내는 변수 생성
   const [isSoundOn, setSound] = useState<boolean>(true);
   // 현재 부화하지 않은 알이 있는지를 나타내기 위한 변수 생성
   const [isHaveEgg, setHaveEgg] = useState<boolean>(false);
-
+  // 구름 흘러가는 효과를 위한 변수 생성
+  const moveValue = useRef(new Animated.Value(0)).current;
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);
   const [getTime, setTime] = useState<timeObj>({
@@ -56,6 +62,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   const [animalUri, setAnimalUri] = useState<animalForm[]>([]);
   // 동물 리스트의 갯수를 저장할 변수 생성
   const [numberAnimal, setNumberAnimal] = useState<number>(0);
+
 
   // 뒤로 가기 클릭 시 종료 여부 묻도록 설정
   useEffect(() => {
@@ -100,6 +107,20 @@ export default function MainPage({navigation}: MainScreenProps) {
     }
   }, [isHaveEgg])
 
+  // 배경의 구름이 흘러가는 효과를 위한 애니메이션 함수
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(
+        moveValue, {
+          toValue: 1,
+          duration: 8000,
+          useNativeDriver: true,
+          easing: Easing.linear
+        }
+      )
+    ).start()
+  }, []);
+
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
     BackHandler.exitApp();
@@ -132,6 +153,7 @@ export default function MainPage({navigation}: MainScreenProps) {
       }
     },
   });
+  
   // 에러 발생 시, 콘솔 창에 해당 에러 찍는 코드
   if (isStatusError && StatusError) {
     console.log('에러 발생 :', StatusError);
@@ -156,6 +178,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   if (isIslandError && IslandError) {
     console.log('에러 발생 :', IslandError);
   }
+
   // 로딩 중일 때, 로딩 페이지를 띄우는 코드
   if (isIslandLoading || isStatusLoading) {
     return <Spinner />;
@@ -207,6 +230,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     setAnimalUri(copiedItems);
   }
 
+
   return (
     <ImageBackground
       source={require('@/assets/mainpage_image/Background.png')}
@@ -215,6 +239,12 @@ export default function MainPage({navigation}: MainScreenProps) {
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
       />
+      <Animated.Image
+       source={require("@/assets/mainpage_image/cloud.png")} 
+       style={[styles.cloud, {transform: [{translateX : moveValue.interpolate({
+        inputRange: [0,1],
+        outputRange: [windowWidth * 0.55, -windowWidth* 0.6]
+       })}]}]}/>
       {isModalVisible && <AppCloseModal isModalVisible={isModalVisible} RequestClose={() => setModalVisible(false)} exitFtn={exitFtn} />}
       <View style={styles.upperStatus}>
         <View style={styles.statusBox}>
