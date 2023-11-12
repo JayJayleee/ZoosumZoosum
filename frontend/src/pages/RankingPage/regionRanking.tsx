@@ -81,7 +81,7 @@ export default function RegionRanking({goToprofile} : RankingProps) {
           maxHeight={0}
           data={regions}
           search={false}
-          boxStyles={{width: '80%', borderColor:"#d4bb51", borderWidth: 2, justifyContent : 'center', alignItems : 'center'}} 
+          boxStyles={{width: '80%', height: windowHeight * 0.08, borderColor:"#d4bb51", borderWidth: 2, justifyContent : 'center', alignItems : 'center'}} 
           inputStyles={{width: '80%', fontSize: 15, }}
           dropdownStyles={{height: windowHeight*0.3, borderColor:"#d4bb51", borderWidth: 1, width: 'auto', backgroundColor: 'white',}}
           dropdownTextStyles={{fontSize: 15, width:'80%'}}

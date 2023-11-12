@@ -74,14 +74,14 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     justifyContent : 'center',
     alignItems : 'center',
-    borderWidth : 5,
+    // borderWidth : 5,
     borderStyle: 'solid',
     borderRadius : 50,
     padding : '3%',
     marginBottom : '2%',
     width : '100%',
-    height : windowHeight*0.1
-
+    height : windowHeight*0.1,
+    backgroundColor : '#A5DCA0'
 
   },
   title_grid1 : {

@@ -163,7 +163,7 @@ export const styles = StyleSheet.create({
   ranking_unselect: {
     width: '30%',
     height: '30%',
-    backgroundColor: '#d4bb51',
+    backgroundColor: '#7ED3A1',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
