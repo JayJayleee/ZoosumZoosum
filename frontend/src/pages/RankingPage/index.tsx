@@ -46,6 +46,7 @@ export default function RankingPage({navigation}: RankingScreenProps) {
 
   // 섬 선택 호출 함수(props로 전달)
   const goToprofile = (data: string) => {
+    console.log("프로필 부르기 닉네임 :",data)
     navigation.navigate({
       name :'Profile',
       params: {nickname: data}
