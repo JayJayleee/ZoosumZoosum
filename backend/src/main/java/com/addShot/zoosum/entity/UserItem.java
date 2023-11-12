@@ -59,7 +59,7 @@ public class UserItem {
     // UserItem -> ItemResponseDto
     public ItemResponseDto toResponse(UserItem userItem) {
         return ItemResponseDto.builder()
-            .itemId(userItem.item.getItmeId())
+            .itemId(userItem.item.getItemId())
             .itemName(userItem.item.getItemName())
             .itemType(userItem.item.getItemType().toString())
             .fileUrl(userItem.item.getFileUrl())

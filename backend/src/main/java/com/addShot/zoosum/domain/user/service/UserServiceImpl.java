@@ -80,8 +80,8 @@ public class UserServiceImpl implements UserService {
             activityService.saveUserItem(user, tree);
             activityService.saveUserItem(user, island);
 
-            itemService.itemUpdate(user.getUserId(), ItemType.TREE, tree.getItmeId());
-            itemService.itemUpdate(user.getUserId(), ItemType.ISLAND, island.getItmeId());
+            itemService.itemUpdate(user.getUserId(), ItemType.TREE, tree.getItemId());
+            itemService.itemUpdate(user.getUserId(), ItemType.ISLAND, island.getItemId());
             // 기존 유저라면 기존에 보관 중인 jwtToken 제거해야 하는데 이걸 제거할 수가 없음
             // 근데 logout 과정에서 token을 삭제할 거기 때문에 여기서 삭제할 필요는 없음
         } else {

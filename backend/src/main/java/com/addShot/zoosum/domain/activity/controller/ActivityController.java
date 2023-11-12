@@ -73,24 +73,26 @@ public class ActivityController {
         return ok200(result);
     }
 
-//    @Operation(summary = "나무 인증서 상세 조회",
-//        description = "사용자가 활동한 인증서의 상세 내용을 조회")
-//    @GetMapping("/detail/{activityId}")
-//    public ResponseEntity<?> certificateDetail(@PathVariable(name = "activityId") Long activityId) {
-//        log.info("ActivityController activityId : {}", activityId);
-//        if (activityId == null) {
-//            return badRequest400();
-//        }
-//
-//        // 마찬가지로, 다른 사람의 활동 기록을 볼 수 있기에, 추가적인 인가처리를 하지 않는다.
-//
-//        // 상세 조회
-//        ActivityResponseDto certificateDetail = activityServicel.certificateDetail(activityId);
-//        if (certificateDetail == null) {
-//            return serverError500("나무심기만 상세보기가 가능합니다.");
-//        }
-//        return ok200(certificateDetail);
-//    }
+    /*
+    @Operation(summary = "나무 인증서 상세 조회",
+        description = "사용자가 활동한 인증서의 상세 내용을 조회")
+    @GetMapping("/detail/{activityId}")
+    public ResponseEntity<?> certificateDetail(@PathVariable(name = "activityId") Long activityId) {
+        log.info("ActivityController activityId : {}", activityId);
+        if (activityId == null) {
+            return badRequest400();
+        }
+
+        // 마찬가지로, 다른 사람의 활동 기록을 볼 수 있기에, 추가적인 인가처리를 하지 않는다.
+
+        // 상세 조회
+        ActivityResponseDto certificateDetail = activityServicel.certificateDetail(activityId);
+        if (certificateDetail == null) {
+            return serverError500("나무심기만 상세보기가 가능합니다.");
+        }
+        return ok200(certificateDetail);
+    }
+    */
 
     @Operation(summary = "플로깅 기록과 리워드 반환",
         description = "플로깅 정보를 입력하는 동시에, 리워드를 제공")
@@ -104,9 +106,6 @@ public class ActivityController {
             return badRequest400();
         }
         log.info("ActivityController userId: {}, activityImg: {}, animalId: {}", userId, activityImg, animalId);
-//        log.info("##### activityImg의 Content-Type: {} #####", activityImg.getContentType());
-//        log.info("##### activityImg의 Resource: {} #####", activityImg.getResource());
-//        log.info("##### activityImg의 OriginalFilename: {} #####", activityImg.getOriginalFilename());
 
         // 입력
         ActivityRewardResponseDto responseDto = activityServicel.writeActivityAndReward(userId, activityImg, activityRequestDto, animalId);

@@ -335,14 +335,14 @@ public class ActivityServiceImpl implements ActivityService {
 
         log.info("섬 리워드 지급");
         while (mLenQ-- > 0) { // 섬 리워드
-            Item item = itemRepository.findRandomItem(ItemType.ISLAND);
+            Item item = itemRepository.findRandomItem(user, ItemType.ISLAND);
             log.info("item ; {}", item);
             saveUserItem(user, item);
             missionReward.getIslandList().add(item);
         }
         log.info("나무 리워드 지급");
         while (mTimeQ-- > 0) { // 나무 리워드
-            Item item = itemRepository.findRandomItem(ItemType.TREE);
+            Item item = itemRepository.findRandomItem(user, ItemType.TREE);
             log.info("item ; {}", item);
             saveUserItem(user, item);
             missionReward.getTreeList().add(item);
@@ -362,7 +362,7 @@ public class ActivityServiceImpl implements ActivityService {
     public void saveUserItem(User user, Item item) {
         log.info("USER_ITEM 테이블에 리워드 저장");
         UserItem userItem = UserItem.builder()
-            .id(new UserItemId(user.getUserId(), item.getItmeId()))
+            .id(new UserItemId(user.getUserId(), item.getItemId()))
             .user(user)
             .item(item)
             .selected(false)
