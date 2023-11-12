@@ -91,9 +91,9 @@ const style = StyleSheet.create({
     borderWidth: 2,
   }, 
   type: {
-    width: '45%', 
-    backgroundColor: '#A5DCA0',
-    borderColor: '#359608',
+    width: '48%', 
+    backgroundColor: '#FFFFFF',
+    borderColor: '#000000',
   },
   defaultInput: {
     width: '100%', 
@@ -110,12 +110,11 @@ const style = StyleSheet.create({
     width: 'auto'
   }, 
   typelist: {
-    backgroundColor: '#A5DCA0',
-    borderColor: '#359608',
-    borderWidth: 2, 
+    backgroundColor: '#FFFFFF',
+    borderColor: '#000000',
     width: 'auto',
     zIndex: 100,
-    height: windowHeight * 0.15,
+    height: windowHeight * 0.2,
   },
   defaultText: {
     fontSize: 18, 
@@ -124,5 +123,8 @@ const style = StyleSheet.create({
   typeText: {
     fontSize: 17, 
     width:'100%',
+    paddingBottom: '5%',
+    borderBottomColor: 'rgba(0,0,0,0.2)',
+    borderBottomWidth: 1
   },
 })

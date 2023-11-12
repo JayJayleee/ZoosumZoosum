@@ -19,7 +19,7 @@ export const toastConfig = {
   end: (props: any) => (
     <BaseToast
       {...props}
-      style={{backgroundColor: '#2C9261', borderLeftColor: '#2C9261', justifyContent: 'center', alignItems: 'center', zIndex: 100, position: 'absolute', top: windowHeight*0.02,}}
+      style={{backgroundColor: '#2C9261', borderLeftColor: '#2C9261', justifyContent: 'center', alignItems: 'center', zIndex: 100, position: 'absolute', top: -windowHeight*0.01,}}
       text1Style={{fontSize: 20, fontFamily: 'NPSfont_bold', color: 'white'}}
     />
   )
