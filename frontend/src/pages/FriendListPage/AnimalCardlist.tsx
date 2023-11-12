@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, FlatList, Text} from 'react-native';
 import AnimalCard from './AnimalCard';
 import styles from './style';
 import {fetchMyAnimalListInfo} from '@/apis/animal';
 import {useQuery} from '@tanstack/react-query';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Animal = {
   animalId: number;
@@ -25,8 +26,8 @@ const targetNumColumns = 3;
 export default function AnimalCardlist({navigation}: AnimalCardListProps) {
   const [animalsArray, setAnimalsArray] = useState<Animal[]>([]);
   const [numColumns, setNumColumns] = useState<number>(targetNumColumns);
-
-  useQuery(['animalList'], fetchMyAnimalListInfo, {
+  
+  const {refetch} = useQuery(['animalList'], fetchMyAnimalListInfo, {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
 
@@ -63,6 +64,7 @@ export default function AnimalCardlist({navigation}: AnimalCardListProps) {
       console.error('돌발돌발', error);
     },
   });
+  useFocusEffect(useCallback(() => {refetch()}, []))
 
   if (!animalsArray.length) return <Text>로딩...</Text>;
 
@@ -83,6 +85,7 @@ export default function AnimalCardlist({navigation}: AnimalCardListProps) {
               animalName={item.animalName}
               fileUrl={item.fileUrl}
               navigation={navigation}
+              selected={item.selected}
             />
           );
         }}

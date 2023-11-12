@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
   head_title : {
     fontSize : 30,
     color : "white",
+    fontFamily : 'NPSfont_extrabold',
   },
   body1 : {
     width : windowWidth,

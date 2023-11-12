@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AppText from '@/components/ui/Text';
+import FastImage from 'react-native-fast-image';
 
 interface PickAnimalCardProps {
   animalId: number;
@@ -15,6 +16,12 @@ export default function PickAnimalCard({animalName, fileUrl, animalId, isSelecte
     <View style={[styles.card, isSelected && styles.selectedCard]}>
       {/* TouchableOpacity에 onSelect 함수를 연결 */}
       <TouchableOpacity style={styles.card2} onPress={onSelect}>
+        {isSelected && (
+          <Image
+            style={styles.checkIcon}
+            source={require('@/assets/check.png')} // 체크 표시 이미지 경로
+          />
+        )}
         <Image style={styles.image} source={{ uri: fileUrl }} />
         <AppText style={styles.title}>{animalName}</AppText>
       </TouchableOpacity>
@@ -31,7 +38,7 @@ const styles = StyleSheet.create({
     flex : 1,
     justifyContent : 'center',
     alignItems : 'center',
-    width : windowWidth*0.5,
+    width : windowWidth*0.1,
     height : windowHeight*0.17,
     margin : 5,
   },
@@ -40,18 +47,21 @@ const styles = StyleSheet.create({
     alignItems : 'center',
   },
   selectedCard: {
-    // 선택 상태일 때의 스타일, 예시로 테두리 추가
-    borderWidth: 3,
-    borderColor: '#34D399',
-    // margin : 5,
-    // padding : 3,
+    backgroundColor : '#646567'
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
   },
   image: {
-    height : windowHeight*0.13,
-    width : windowHeight*0.13,
-  }
+    height : windowHeight*0.1,
+    width : windowHeight*0.1,
+  },
+  checkIcon: {
+    position: 'absolute',
+    width : windowWidth*0.35,
+    height : windowHeight*0.35,
+    resizeMode : 'contain',
+    zIndex: 99
+  },
 });
