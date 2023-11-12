@@ -42,8 +42,9 @@ public class ItemCustomRepositoryImpl implements ItemCustomRepository {
                 .and(item.itemId.notIn(ownedItems))) // where not in 으로 중복제거
             .fetch();
 
-        // log.info("중복 제거 후, ItemCustomRepositoryImpl, allItems : {}, ownedItems : {}", allItems, ownedItems);
+         log.info("중복 제거 후, ItemCustomRepositoryImpl, allItems : {}, ownedItems : {}", allItems, ownedItems);
 
+         if (allItems.isEmpty()) return null;
         return RandomUtil.getRandomElement(allItems);
     }
 
