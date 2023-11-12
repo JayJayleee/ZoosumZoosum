@@ -11,6 +11,12 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
   },
+  cloud: {
+    position: 'absolute', 
+    top: 0, 
+    width: windowHeight, 
+    height: windowHeight * 0.5,
+  },
   upperStatus: {
     position: 'relative',
     width: windowWidth,
