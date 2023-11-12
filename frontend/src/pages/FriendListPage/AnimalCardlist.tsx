@@ -83,6 +83,7 @@ export default function AnimalCardlist({navigation}: AnimalCardListProps) {
               animalName={item.animalName}
               fileUrl={item.fileUrl}
               navigation={navigation}
+              selected={item.selected}
             />
           );
         }}

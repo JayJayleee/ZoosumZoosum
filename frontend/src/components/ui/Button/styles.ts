@@ -42,14 +42,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pickfriend: {
-    width: '30%',
+    width: '40%',
     backgroundColor: '#F1B0B0',
     borderRadius: 8,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    marginBottom: 10,
+    marginRight : "5%"
   },
   pickfriendText: {
     color: 'white',
@@ -81,7 +81,6 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
   },
-
   selectItem: {
     width: '30%',
     backgroundColor: '#ECA3A3',
@@ -146,7 +145,7 @@ export const styles = StyleSheet.create({
   },
   ranking: {
     width: '30%',
-    height: '30%',
+    height: '35%',
     backgroundColor: 'white',
     borderRadius: 8,
     justifyContent: 'center',
@@ -158,11 +157,11 @@ export const styles = StyleSheet.create({
   rankingText: {
     color: 'black',
     fontFamily: 'NPSfont_bold',
-    fontSize: 20,
+    fontSize: 15,
   },
   ranking_unselect: {
     width: '30%',
-    height: '30%',
+    height: '35%',
     backgroundColor: '#7ED3A1',
     borderRadius: 8,
     justifyContent: 'center',
@@ -172,7 +171,7 @@ export const styles = StyleSheet.create({
   rankingText_unselect: {
     color: 'black',
     fontFamily: 'NPSfont_bold',
-    fontSize: 20,
+    fontSize: 15,
   },
   tutorial: {
     width: '45%',
@@ -253,5 +252,18 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
-  }
+  },
+  gotoisland2: {
+    width: '40%',
+    backgroundColor: '#34D399',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gotoislandText2: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
+  },
 });

@@ -12,6 +12,7 @@ type ButtonProps = {
     | 'primary'
     | 'pickfriend'
     | 'gotoisland'
+    | 'gotoisland2'
     | 'selectItem'
     | 'carouselBtn'
     | 'picnic'
@@ -27,6 +28,7 @@ type ButtonProps = {
     | 'close'
     | 'notclose'
     | 'activity';
+
   onPress: () => void;
 };
 
@@ -68,6 +70,10 @@ export default function AppButton({
     case 'gotoisland':
       variantStyle = styles.gotoisland;
       textStyle = styles.gotoislandText;
+      break;
+    case 'gotoisland2':
+      variantStyle = styles.gotoisland2;
+      textStyle = styles.gotoislandText2;
       break;
     case 'selectItem':
       variantStyle = styles.selectItem;

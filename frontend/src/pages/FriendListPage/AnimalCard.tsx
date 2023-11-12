@@ -7,10 +7,11 @@ interface AnimalCardProps {
   animalId : number,
   animalName : string,
   fileUrl : string,
+  selected : boolean,
   navigation: (data: number) => void;
 }
 
-export default function AnimalCard({navigation, animalId, animalName, fileUrl}: AnimalCardProps) {
+export default function AnimalCard({navigation, animalId, animalName, fileUrl, selected}: AnimalCardProps) {
 
   return (
     <View style={styles.card}>
@@ -18,7 +19,12 @@ export default function AnimalCard({navigation, animalId, animalName, fileUrl}: 
         <View style={styles.circle}>
           <FastImage style={styles.image} source={{uri : fileUrl }} />
         </View>
-        <Text numberOfLines={1} style={styles.title}>{animalName}</Text>
+        <View>
+          <Text numberOfLines={1} style={styles.title}>{animalName}</Text>
+          {selected == true && 
+          <Text>선택중</Text>
+          }
+        </View>
       </TouchableOpacity>
       
 
