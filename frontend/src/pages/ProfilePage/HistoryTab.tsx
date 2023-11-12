@@ -85,21 +85,21 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
       const Result = await getActivityInfo(nickname, activityPageNumber, 10)
 
       setActivityList({
-        content: Result.content,
+        content: [...activityList.content, ...Result.content],
         size: Result.size,
       })
     } else if (selectType === "플로깅 내역") {
       const Result = await getActivityPlogInfo(nickname, activityPageNumber, 10)
 
       setActivityList({
-        content: Result.content,
+        content: [...activityList.content, ...Result.content],
         size: Result.size,
       })
     } else {
       const Result = await getActivityTreeInfo(nickname, activityPageNumber, 10)
 
       setActivityList({
-        content: Result.content,
+        content: [...activityList.content, ...Result.content],
         size: Result.size,
       })
     }
@@ -111,6 +111,10 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
   const changeType = (type: string) => {
     if (type !== selectType) {
       setSelectType(type);
+      setActivityList({
+        content: [],
+        size: 0,
+      })
       setPageNumber(activityPageNumber => activityPageNumber - activityPageNumber);
     }
   }
