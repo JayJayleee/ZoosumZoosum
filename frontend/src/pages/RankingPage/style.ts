@@ -6,8 +6,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent : 'flex-start',
-    fontSize : 35,
+    // fontSize : 35,
     fontFamily : 'NPSfont_extrabold',
+    marginTop : windowHeight * 0.06
   },
   container: {
     flex: 1,
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
   title_head : {
     fontSize : 30,
     fontFamily : 'NPSfont_extrabold',
+    height: windowHeight * 0.06
   },
   ranking_container : {
     width : '90%',
