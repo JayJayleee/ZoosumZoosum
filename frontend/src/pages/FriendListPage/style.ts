@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
     marginBottom : windowHeight*0.01,
   },
   body2 : {
-    height : windowHeight*0.5,
+    height : windowHeight*0.7,
     width : windowWidth,
     alignItems : 'center',
-    marginBottom : windowHeight*0.05,
+    marginBottom : windowHeight*0.04,
   },
   select_cardlist : {
     width : windowWidth*0.9,
@@ -55,6 +55,10 @@ const styles = StyleSheet.create({
     width : windowWidth*0.28,
     // height : windowHeight*0.15,
   },
+  button_container : {
+    flexDirection : 'row',
+
+  }
 });
 
 export default styles;

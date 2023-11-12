@@ -45,11 +45,60 @@ export default function RankingCard({nickname, region, score, index, goToprofile
 
   const rank = index + 1;
 
+  // rank에 따라 title_container와 title_grid1 스타일 동적으로 변경
+  const getDynamicStyles = () => {
+    switch (rank) {
+      case 1:
+        return {
+          titleContainer: {
+            ...styles.title_container,
+            borderWidth: 3,
+            borderColor: 'green',
+          },
+          titleGrid1: {
+            ...styles.title_grid1,
+            color: 'green', // 1등 색상
+          },
+        };
+      case 2:
+        return {
+          titleContainer: {
+            ...styles.title_container,
+            borderWidth: 3,
+            borderColor: '#0aa80a',
+          },
+          titleGrid1: {
+            ...styles.title_grid1,
+            color: '#0aa80a', // 2등 색상
+          },
+        };
+      case 3:
+        return {
+          titleContainer: {
+            ...styles.title_container,
+            borderWidth: 3,
+            borderColor: '#0cc71f',
+          },
+          titleGrid1: {
+            ...styles.title_grid1,
+            color: '#0cc71f', // 3등 색상
+          },
+        };
+      default:
+        return {
+          titleContainer: styles.title_container,
+          titleGrid1: styles.title_grid1,
+        };
+    }
+  };
+
+  const { titleContainer, titleGrid1 } = getDynamicStyles();
+
   return (
     <View>
       {nickname !== undefined &&
-      <View style={styles.title_container} >
-        <Text style={styles.title_grid1}>{rank}등</Text>
+      <View style={titleContainer}>
+        <Text style={titleGrid1}>{rank}</Text>
         <View style={styles.title_grid2}>
           <Text style={styles.title_text1}>{nickname}</Text>
           <Text style={styles.title_text2}>({displayRegion})</Text>
@@ -74,21 +123,21 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     justifyContent : 'center',
     alignItems : 'center',
-    borderWidth : 5,
+    // borderWidth : 5,
     borderStyle: 'solid',
     borderRadius : 50,
     padding : '3%',
     marginBottom : '2%',
     width : '100%',
-    height : windowHeight*0.1
-
+    height : windowHeight*0.1,
+    backgroundColor : '#A5DCA0'
 
   },
   title_grid1 : {
     width : '20%',
     textAlign : 'center',
     fontFamily : 'NPSfont_extrabold',
-    fontSize : 20,
+    fontSize : 35,
   },
   title_grid2 : {
     width : '35%',

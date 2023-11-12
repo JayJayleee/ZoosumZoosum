@@ -11,7 +11,6 @@ import AppButton from '@/components/ui/Button';
 import {FriendListscreenProps} from 'typePath';
 import styles from './style';
 import AnimalCardlist from './AnimalCardlist';
-import SelectAnimalCardlist from './SelectAnimalCardlist';
 
 
 export default function FriendListPage({navigation}: FriendListscreenProps) {
@@ -38,28 +37,21 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
             나와 함께한 친구들
           </AppText>
         </View>
-        <View style={styles.body1}>
-          <AppText style={styles.title_body}>
-            섬에 나와있는 동물들
-          </AppText>
-          <View style={styles.select_cardlist}>
-            <SelectAnimalCardlist navigation={propsFtn} />
-          </View>
-        </View>
-        <AppButton
-        children='동물 선택하기'
-        variant='pickfriend'
-        onPress={() => navigation.navigate('PickFriend')}/>
         <View style={styles.body2}>
           <View style={styles.having_cardlist}>
             <AnimalCardlist navigation={propsFtn} />
           </View>
         </View>
-        <AppButton
-        variant='gotoisland'
-        children='섬으로 돌아가기'
-        onPress={() => navigation.navigate('Main')}/>
-        
+        <View style={styles.button_container}>
+          <AppButton
+          children='동물 선택하기'
+          variant='pickfriend'
+          onPress={() => navigation.navigate('PickFriend')}/>
+          <AppButton
+          variant='gotoisland2'
+          children='섬으로 돌아가기'
+          onPress={() => navigation.navigate('Main')}/>
+        </View>
       </View>  
     </ImageBackground>
   );

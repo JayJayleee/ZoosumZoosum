@@ -10,6 +10,8 @@ import RankingCard from './rankingCard';
 
 import { fetchMyTopRankingListInfo } from '@/apis/ranking';
 import { useQuery } from '@tanstack/react-query';
+import FastImage from 'react-native-fast-image';
+import { Wave } from '@/components/ui/animation/LottieEffect';
 
 type ApiResponse = {
   data: Rank[];
@@ -44,7 +46,13 @@ export default function TopRanking({goToprofile} : RankingProps) {
     },
   });
 
-  if (!RankingArray.length) return <Text>로딩...</Text>;
+  if (!RankingArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>로딩중..</AppText>
+    </View>
+  )
 
   return (
     <View style={styles.ranking_container}>

@@ -2,6 +2,14 @@ import { StyleSheet } from 'react-native';
 import { windowHeight, windowWidth } from "@/constants/styles";
 
 const styles = StyleSheet.create({
+  isLoading : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent : 'flex-start',
+    // fontSize : 35,
+    fontFamily : 'NPSfont_extrabold',
+    marginTop : windowHeight * 0.06
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -19,21 +27,27 @@ const styles = StyleSheet.create({
     height : windowHeight,
     justifyContent : 'center',
     alignItems : 'center',
-    paddingTop : windowHeight*0.22
+    paddingTop : windowHeight*0.1
   },
   button_container :{
     flexDirection: 'row',
     alignItems: 'center',
+    borderWidth : 3,
+    borderRadius : 30,
+    // height : "20%"
+    backgroundColor : 'white'
   },
   list_container : {
     width : windowWidth*0.85,
     height : '80%',
     justifyContent : 'flex-start',
     alignItems : 'center',
+    
   },
   title_head : {
     fontSize : 30,
     fontFamily : 'NPSfont_extrabold',
+    height: windowHeight * 0.06
   },
   ranking_container : {
     width : '90%',
@@ -46,7 +60,6 @@ const styles = StyleSheet.create({
   },
   select_container : {
     width : '100%',
-    height : '100%',
     position : 'absolute',
     justifyContent : 'flex-start',
     alignItems : 'center',
@@ -57,7 +70,7 @@ const styles = StyleSheet.create({
     height : '10%',
     justifyContent : 'flex-start',
     alignItems : 'center',
-    marginBottom : '10%'
+    // marginBottom : '10%'
   },
   title_container : {
     width : '100%',

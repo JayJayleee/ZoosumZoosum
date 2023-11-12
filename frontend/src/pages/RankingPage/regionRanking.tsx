@@ -12,6 +12,9 @@ import { fetchMyRegionRankingListInfo } from '@/apis/ranking';
 import { useQuery } from '@tanstack/react-query';
 import { windowHeight } from '@/constants/styles';
 
+import { Wave } from '@/components/ui/animation/LottieEffect';
+import FastImage from 'react-native-fast-image';
+
 type ApiResponse = {
   data: Rank[];
 };
@@ -62,7 +65,13 @@ export default function RegionRanking({goToprofile} : RankingProps) {
   }, [selectedRegion, refetch]);
 
 
-  // if (!RankingArray.length) return <Text>로딩...</Text>;
+  if (!RankingArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>로딩중..</AppText>
+    </View>
+  )
   
   return (
     <View style={styles.ranking_container}>
@@ -72,9 +81,9 @@ export default function RegionRanking({goToprofile} : RankingProps) {
           maxHeight={0}
           data={regions}
           search={false}
-          boxStyles={{width: '80%', borderColor:"#d4bb51", borderWidth: 2, justifyContent : 'center', alignItems : 'center'}} 
+          boxStyles={{width: '80%', height: windowHeight * 0.06, borderColor:"#7ED3A1", borderWidth: 2, justifyContent : 'center', alignItems : 'center'}} 
           inputStyles={{width: '80%', fontSize: 15, }}
-          dropdownStyles={{height: windowHeight*0.3, borderColor:"#d4bb51", borderWidth: 1, width: 'auto', backgroundColor: 'white',}}
+          dropdownStyles={{height: windowHeight*0.3, borderColor:"#7ED3A1", borderWidth: 1, width: 'auto', backgroundColor: 'white',}}
           dropdownTextStyles={{fontSize: 15, width:'80%'}}
           fontFamily='NPSfont_regular'
           placeholder={"지역을 선택해주세요"}
