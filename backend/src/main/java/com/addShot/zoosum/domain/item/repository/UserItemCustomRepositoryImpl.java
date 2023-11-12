@@ -44,7 +44,7 @@ public class UserItemCustomRepositoryImpl implements UserItemCustomRepository {
 
     @Override
     public Long updateSelected(User user, ItemType itemType, Item item) {
-        log.info("UserItemCustomRepositoryImpl userId : {}, itemType : {}, itemId : {}", user.getUserId(), itemType, item.getItmeId());
+        log.info("UserItemCustomRepositoryImpl userId : {}, itemType : {}, itemId : {}", user.getUserId(), itemType, item.getItemId());
 
         // itemId가 아닌 것의 selected를 false로 변경
         long changeFalse = queryFactory.update(userItem)

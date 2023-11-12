@@ -28,7 +28,7 @@ public class Item {
     // 아이템 ID
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id", nullable = false)
-    private Long itmeId;
+    private Long itemId;
 
     // 아이템 유형
     @Enumerated(EnumType.STRING)
@@ -45,7 +45,7 @@ public class Item {
 
     public ItemResponseDto toResponseDto() {
         return ItemResponseDto.builder()
-            .itemId(this.getItmeId())
+            .itemId(this.getItemId())
             .itemName(this.getItemName())
             .itemType(this.getItemType().toString())
             .fileUrl(this.getFileUrl())
@@ -55,7 +55,7 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-            "itmeId=" + itmeId +
+            "itmeId=" + itemId +
             ", itemType=" + itemType +
             ", itemName='" + itemName + '\'' +
             ", fileUrl='" + fileUrl + '\'' +
@@ -71,13 +71,13 @@ public class Item {
             return false;
         }
         Item item = (Item) o;
-        return Objects.equals(itmeId, item.itmeId) && itemType == item.itemType
+        return Objects.equals(itemId, item.itemId) && itemType == item.itemType
             && Objects.equals(itemName, item.itemName) && Objects.equals(fileUrl,
             item.fileUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(itmeId, itemType, itemName, fileUrl);
+        return Objects.hash(itemId, itemType, itemName, fileUrl);
     }
 }
