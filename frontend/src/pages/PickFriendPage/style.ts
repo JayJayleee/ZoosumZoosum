@@ -33,13 +33,12 @@ const styles = StyleSheet.create({
   having_cardlist : {
     width : windowWidth,
     height : windowHeight*0.65,
-    // marginTop : 10,
   },
   hiddenCard: {
-    width: windowWidth*0.34,
+    width: windowWidth*0.3,
   },
   pickAnimalCardList : {
-    width : "100%",
+    width : "90%",
     height : "100%",
   }
 });

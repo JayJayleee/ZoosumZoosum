@@ -27,17 +27,22 @@ const styles = StyleSheet.create({
     height : windowHeight,
     justifyContent : 'center',
     alignItems : 'center',
-    paddingTop : windowHeight*0.22
+    paddingTop : windowHeight*0.1
   },
   button_container :{
     flexDirection: 'row',
     alignItems: 'center',
+    borderWidth : 3,
+    borderRadius : 30,
+    // height : "20%"
+    backgroundColor : 'white'
   },
   list_container : {
     width : windowWidth*0.85,
     height : '80%',
     justifyContent : 'flex-start',
     alignItems : 'center',
+    
   },
   title_head : {
     fontSize : 30,
@@ -65,7 +70,7 @@ const styles = StyleSheet.create({
     height : '10%',
     justifyContent : 'flex-start',
     alignItems : 'center',
-    marginBottom : '10%'
+    // marginBottom : '10%'
   },
   title_container : {
     width : '100%',
