@@ -37,6 +37,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [trashData, setTrashData] = useState<TrashDaTaList>();
+  const [trashResultImg, setTrashResultImg] = useState<string>('');
   const [getAnimalIMG, setGetAnimalIMG] = useState<string>('');
   const [getAnimalID, setGetAnimalID] = useState<number>(0);
 
@@ -63,6 +64,13 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   useEffect(() => {
     if (route.params?.shouldOpenModal === true) {
       setModalVisible(true);
+    }
+
+    if (route.params.TrashImg) {
+      const base64Image = route.params.TrashImg;
+      setTrashResultImg(`data:image/jpeg;base64,${base64Image}`);
+
+      // console.log('그걸 새로 저장함', trashData);
     }
 
     if (route.params.TrashData) {
@@ -348,6 +356,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         isVisible={isModalVisible}
         onClose={closeModalAndUpdateCount}
         animalImg={getAnimalIMG}
+        TrashResultImg={trashResultImg}
         data={DATA}
         navigation={navigation}
       />

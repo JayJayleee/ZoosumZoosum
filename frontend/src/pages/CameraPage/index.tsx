@@ -13,7 +13,7 @@ import {AppState, AppStateStatus} from 'react-native';
 import styles from './style';
 import AppText from '@/components/ui/Text';
 import {useMutation} from '@tanstack/react-query';
-import {TrashImgResultFtn} from '@/apis/plogging';
+import {TrashImgResultFtn, TrashImgResultReturnFtn} from '@/apis/plogging';
 import {Wave} from '@/components/ui/animation/LottieEffect';
 
 interface Photo {
@@ -125,7 +125,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
 
   const mutation = useMutation(
     (imageSource: string) =>
-      TrashImgResultFtn(imageSource, 3, 2000, setIsLoading),
+      TrashImgResultReturnFtn(imageSource, 3, 2000, setIsLoading),
     {
       onMutate: () => {
         setIsLoading(true); // 요청 시작 시 로딩 시작
@@ -137,7 +137,8 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
         await new Promise(resolve => setTimeout(resolve, 0)); // 이벤트 루프를 기다리게 함
         navigation.navigate('Plogging', {
           shouldOpenModal: true,
-          TrashData: responseData,
+          TrashData: responseData.predictResult,
+          TrashImg: responseData.decodedImage,
         });
       },
       onError: error => {

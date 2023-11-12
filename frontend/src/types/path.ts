@@ -13,6 +13,7 @@ export type RootStackParamList = {
     TrashData?: TrashDaTaList;
     selectedAnimalIMG?: string;
     selectedAnimalID?: number;
+    TrashImg: string;
   };
   Camera: {
     getAnimalIMG?: string;

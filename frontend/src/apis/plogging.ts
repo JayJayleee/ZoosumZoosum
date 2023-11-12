@@ -145,3 +145,53 @@ export async function TrashImgResultFtn(
     }
   }
 }
+
+export async function TrashImgResultReturnFtn(
+  Img: string,
+  retries = 3,
+  interval = 2000,
+  setIsLoading: (isLoading: boolean) => void,
+) {
+  setIsLoading(true);
+  const formData = new FormData();
+
+  const now = new Date();
+  const TrashfileName = `trash-${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()}-${now.getHours()}`;
+
+  formData.append('file', {
+    uri: Img,
+    name: `${TrashfileName}.jpg`,
+    type: 'image/jpeg',
+  });
+
+  const token = await getStoredToken();
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'multipart/form-data',
+    // Add your headers here
+  };
+
+  try {
+    const response = await axios.post(
+      'http://zoosum.co.kr:8000/ai/image',
+      formData,
+      {
+        headers,
+      },
+    );
+    setIsLoading(false);
+    return response.data;
+  } catch (error) {
+    if (retries > 0) {
+      console.log(`Upload failed, retrying in ${interval}ms...`, error);
+      await new Promise(resolve => setTimeout(resolve, interval));
+      return TrashImgResultFtn(Img, retries - 1, interval, setIsLoading);
+    } else {
+      setIsLoading(false);
+      console.error('Failed to upload image', error);
+    }
+  }
+}

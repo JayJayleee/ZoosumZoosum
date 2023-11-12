@@ -13,6 +13,7 @@ interface TrashModalProps {
   data: TrashDataReturnList[];
   navigation: NativeStackNavigationProp<RootStackParamList>;
   animalImg: string;
+  TrashResultImg: string;
 }
 
 type TrashType =
@@ -67,8 +68,10 @@ const TrashModal = ({
   data,
   navigation,
   animalImg,
+  TrashResultImg,
 }: TrashModalProps) => {
   const [tip, setTip] = useState('');
+  const [showFlatList, setShowFlatList] = useState(true);
   useEffect(() => {
     if (isVisible && data.length > 0) {
       const mostTrashType: TrashType = getMostTrashType(data);
@@ -103,7 +106,9 @@ const TrashModal = ({
       </AppText>
     </View>
   );
-
+  const toggleFlatList = () => {
+    setShowFlatList(!showFlatList);
+  };
   const getMostTrashType = (data: TrashDataReturnList[]): TrashType => {
     const trashCounts: Record<TrashType, number> = {
       '일반 쓰레기': 0,
@@ -176,73 +181,82 @@ const TrashModal = ({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <AppText
+        <View
           style={{
-            color: 'black',
-            fontFamily: 'NPSfont_bold',
-            fontSize: 25,
-            marginVertical: 15,
+            width: '100%',
+            height: 'auto',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-          방금 주운 쓰레기
-        </AppText>
-
-        {!hasNonZeroItems ? (
-          <View
+          <AppText
             style={{
-              width: '80%',
-              height: '65%',
-              justifyContent: 'center',
-              alignItems: 'center',
+              color: 'black',
+              fontFamily: 'NPSfont_bold',
+              fontSize: 25,
+              marginVertical: 15,
             }}>
-            <Image
-              source={require('@/assets/plogingpage_image/noEgg.png')}
-              style={{width: '100%', height: '80%', resizeMode: 'contain'}}
-            />
-            <AppText
-              style={{
-                color: 'black',
-                fontSize: 20,
-                marginTop: 5,
-                fontFamily: 'NPSfont_bold',
-              }}>
-              이곳에는 정령이
-            </AppText>
-            <AppText
-              style={{
-                color: 'black',
-                fontSize: 20,
+            방금 주운 쓰레기
+          </AppText>
+          <AppButton
+            onPress={toggleFlatList}
+            children="어떤 쓰레기가 있었을까?"></AppButton>
+        </View>
 
-                fontFamily: 'NPSfont_bold',
-              }}>
-              없는 것 같아요.
-            </AppText>
-            <AppText
+        {showFlatList ? (
+          !hasNonZeroItems ? (
+            <View
               style={{
-                color: 'black',
-                fontSize: 12,
-                marginTop: 10,
+                width: '80%',
+                height: '65%',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              쓰레기를 다시 한 번 찍어보세요!
-            </AppText>
-          </View>
-        ) : (
-          <FlatList
-            data={data}
-            columnWrapperStyle={{
-              justifyContent: 'space-between',
-            }}
-            // contentContainerStyle={{backgroundColor: 'red'}}
-            renderItem={({item}) => (
-              <Item
-                title={item.title}
-                img={item.img}
-                description={item.description}
+              <Image
+                source={require('@/assets/plogingpage_image/noEgg.png')}
+                style={{width: '100%', height: '80%', resizeMode: 'contain'}}
               />
-            )}
-            keyExtractor={(_, index) => index.toString()}
-            numColumns={3}
+              <AppText
+                style={{
+                  color: 'black',
+                  fontSize: 20,
+                  marginTop: 5,
+                  fontFamily: 'NPSfont_bold',
+                }}>
+                이곳에는 정령이 없는 것 같아요.
+              </AppText>
+              <AppText
+                style={{
+                  color: 'black',
+                  fontSize: 12,
+                  marginTop: 10,
+                }}>
+                쓰레기를 다시 한 번 찍어보세요!
+              </AppText>
+            </View>
+          ) : (
+            <FlatList
+              data={data}
+              columnWrapperStyle={{
+                justifyContent: 'space-between',
+              }}
+              renderItem={({item}) => (
+                <Item
+                  title={item.title}
+                  img={item.img}
+                  description={item.description}
+                />
+              )}
+              keyExtractor={(_, index) => index.toString()}
+              numColumns={3}
+            />
+          )
+        ) : (
+          <Image
+            source={{uri: TrashResultImg}}
+            style={{width: 200, height: 200}}
           />
         )}
+
         {hasNonZeroItems ? (
           <ImageBackground
             resizeMode="contain"
