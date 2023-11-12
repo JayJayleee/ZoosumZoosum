@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   staNoteImg : {
     position: 'relative',
-    top: '4.5%', 
+    top: windowHeight * 0.04, 
     width: '100%', 
     height: '90%', 
     justifyContent: 'center', 
