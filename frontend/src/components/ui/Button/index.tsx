@@ -13,6 +13,7 @@ type ButtonProps = {
     | 'pickfriend'
     | 'gotoisland'
     | 'gotoisland2'
+    | 'gotoisland3'
     | 'selectItem'
     | 'carouselBtn'
     | 'picnic'
@@ -74,6 +75,10 @@ export default function AppButton({
     case 'gotoisland2':
       variantStyle = styles.gotoisland2;
       textStyle = styles.gotoislandText2;
+      break;
+    case 'gotoisland3':
+      variantStyle = styles.gotoisland3;
+      textStyle = styles.gotoislandText3;
       break;
     case 'selectItem':
       variantStyle = styles.selectItem;

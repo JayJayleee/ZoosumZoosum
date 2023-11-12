@@ -54,8 +54,8 @@ export const styles = StyleSheet.create({
   },
   pickfriendText: {
     color: 'white',
-    fontFamily: 'NPSfont_regular',
-    fontSize: 15,
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
   },
   gotoisland: {
     width: '50%',
@@ -265,6 +265,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gotoislandText2: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
+  },
+  gotoisland3: {
+    width: '40%',
+    backgroundColor: '#34D399',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop : 20
+  },
+  gotoislandText3: {
     color: 'white',
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
