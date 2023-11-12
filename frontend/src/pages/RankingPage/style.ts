@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     height : windowHeight,
     justifyContent : 'center',
     alignItems : 'center',
-    paddingTop : windowHeight*0.22
+    paddingTop : windowHeight*0.1
   },
   button_container :{
     flexDirection: 'row',
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     height : '10%',
     justifyContent : 'flex-start',
     alignItems : 'center',
-    marginBottom : '10%'
+    // marginBottom : '10%'
   },
   title_container : {
     width : '100%',
