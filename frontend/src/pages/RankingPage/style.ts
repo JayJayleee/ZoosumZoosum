@@ -32,12 +32,17 @@ const styles = StyleSheet.create({
   button_container :{
     flexDirection: 'row',
     alignItems: 'center',
+    borderWidth : 3,
+    borderRadius : 30,
+    // height : "20%"
+    backgroundColor : 'white'
   },
   list_container : {
     width : windowWidth*0.85,
     height : '80%',
     justifyContent : 'flex-start',
     alignItems : 'center',
+    
   },
   title_head : {
     fontSize : 30,

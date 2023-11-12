@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 export const styles = StyleSheet.create({
   default: {
@@ -144,15 +145,16 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   ranking: {
-    width: '30%',
-    height: '35%',
+    width: windowWidth*0.15,
+    height: windowHeight*0.05,
     backgroundColor: 'white',
-    borderRadius: 8,
+    borderRadius : 30,
     justifyContent: 'center',
-    borderWidth: 2,
+    // borderWidth: 2,
     borderStyle: 'solid',
     alignItems: 'center',
     marginHorizontal: 10,
+    marginVertical : 2,
   },
   rankingText: {
     color: 'black',
@@ -160,17 +162,18 @@ export const styles = StyleSheet.create({
     fontSize: 15,
   },
   ranking_unselect: {
-    width: '30%',
-    height: '35%',
+    width: windowWidth*0.45,
+    height: windowHeight*0.05,
     backgroundColor: '#7ED3A1',
-    borderRadius: 8,
+    borderRadius : 30,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,
+    marginVertical : 2,
   },
   rankingText_unselect: {
     color: 'black',
-    fontFamily: 'NPSfont_bold',
+    fontFamily: 'NPSfont_extrabold',
     fontSize: 15,
   },
   tutorial: {
