@@ -15,6 +15,7 @@ import AppText from '@/components/ui/Text';
 import {useMutation} from '@tanstack/react-query';
 import {TrashImgResultFtn, TrashImgResultReturnFtn} from '@/apis/plogging';
 import {Wave} from '@/components/ui/animation/LottieEffect';
+import KeyEvent from 'react-native-keyevent';
 
 interface Photo {
   path: string;
@@ -174,7 +175,20 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       console.log('TrashImg 없음', imageSource);
     }
   }, [imageSource]);
+  useEffect(() => {
+    // 볼륨 버튼 이벤트 리스너 등록
+    KeyEvent.onKeyDownListener((keyEvent: any) => {
+      if (keyEvent.keyCode === 25 || keyEvent.keyCode === 24) {
+        // 안드로이드 볼륨 다운/업 키 코드
+        capturePhoto();
+      }
+    });
 
+    // 컴포넌트 언마운트 시 이벤트 리스너 해제
+    return () => {
+      KeyEvent.removeKeyDownListener();
+    };
+  }, []);
   return (
     <View style={styles.container}>
       {!isLoading && (

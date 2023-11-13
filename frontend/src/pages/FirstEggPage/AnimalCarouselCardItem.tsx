@@ -17,6 +17,7 @@ import {AnimalCarouselCardItemProps} from '@/types/plogging';
 import {useMutation} from '@tanstack/react-query';
 import {ShiningEffect} from '@/components/ui/Carousel/ShiningEffect';
 import {EggName, FirstEggName} from '@/apis/tutorial';
+import {changeEggCrack, pause} from '@/constants/sound';
 
 export function AnimalCarouselCardItem({
   item,
@@ -43,7 +44,6 @@ export function AnimalCarouselCardItem({
   const tintColorAnim = useRef(new Animated.Value(0)).current;
   // 흔들리는 효과
   const shakingAnimation = useRef(new Animated.Value(0)).current;
-
   // console.log(animalId);
   // const queryClient = useQueryClient();
   const createMutation = useMutation(EggName, {
@@ -173,11 +173,14 @@ export function AnimalCarouselCardItem({
       Vibration.vibrate();
       // 터치 횟수에 따라 이미지 소스 변경됨 여기에 소리넣으면 될 듯
       if (newCount === 1) {
+        changeEggCrack();
         setImageSource(require('@/assets/img_icon/egg_crack1.png'));
       } else if (newCount === 4) {
         setImageSource(require('@/assets/img_icon/egg_crack2.png'));
+        changeEggCrack();
       } else if (newCount === 7) {
         setImageSource(require('@/assets/img_icon/egg_crack3.png'));
+        changeEggCrack();
       }
 
       // 애니메이션 실행
