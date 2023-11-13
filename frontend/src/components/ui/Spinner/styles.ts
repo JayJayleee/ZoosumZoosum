@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: 'white', 
-    fontSize: 25, 
+    fontSize: 20, 
     bottom: windowHeight * 0.01,
   }
 })
