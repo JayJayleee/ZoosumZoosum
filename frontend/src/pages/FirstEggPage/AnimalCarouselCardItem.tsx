@@ -17,7 +17,12 @@ import {AnimalCarouselCardItemProps} from '@/types/plogging';
 import {useMutation} from '@tanstack/react-query';
 import {ShiningEffect} from '@/components/ui/Carousel/ShiningEffect';
 import {EggName, FirstEggName} from '@/apis/tutorial';
-import {changeEggCrack, pause} from '@/constants/sound';
+import {
+  changeEggCrack,
+  changeEggWhite,
+  changeEggBorn,
+  pause,
+} from '@/constants/sound';
 
 export function AnimalCarouselCardItem({
   item,
@@ -138,6 +143,7 @@ export function AnimalCarouselCardItem({
 
   useEffect(() => {
     if (touchCount === 9) {
+      changeEggWhite();
       Animated.timing(whiteImageOpacity, {
         toValue: 1,
         duration: 600,
@@ -155,6 +161,7 @@ export function AnimalCarouselCardItem({
       return () => clearTimeout(timer);
     }
     if (index === activeIndex && touchCount === 10) {
+      changeEggBorn();
       setShowEgg(false);
       setHeaderText(`${item?.animalName}(이)가 태어났어요!`);
       setImageSrc({uri: item?.fileUrl});

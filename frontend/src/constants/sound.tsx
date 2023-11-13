@@ -68,3 +68,37 @@ export const changeEggCrack = () => {
     eggCrack.pause();
   }, 1000);
 };
+
+const eggWhite = new Sound('egg_white.mp3', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+  // Reduce the volume by half
+  eggWhite.setVolume(10);
+  eggWhite.setNumberOfLoops(-1);
+});
+
+export const changeEggWhite = () => {
+  eggWhite.play();
+  setTimeout(() => {
+    eggWhite.pause();
+  }, 2000);
+};
+
+const eggBorn = new Sound('egg_born.mp3', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+  // Reduce the volume by half
+  eggBorn.setVolume(10);
+  eggBorn.setNumberOfLoops(-1);
+});
+
+export const changeEggBorn = () => {
+  eggBorn.play();
+  setTimeout(() => {
+    eggBorn.pause();
+  }, 2000);
+};
