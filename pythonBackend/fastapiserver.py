@@ -6,6 +6,7 @@ from ultralytics import YOLO
 import base64
 from typing import Optional
 from pydantic import BaseModel
+from PIL import ImageFont, ImageDraw, Image
 
 app = FastAPI()
 
@@ -35,6 +36,8 @@ smodel = YOLO('./yolov8s_custom.pt')
 nmodel = YOLO('./yolov8n_custom.pt')
 print("model load 완료")
 
+font = ImageFont.truetype("fonts/MaruBuri-Bold.ttf", 10)
+
 def getResultFromData(
         file,
         leftRightPercent,
@@ -46,6 +49,8 @@ def getResultFromData(
 ):
     # numpy를 image buffer를 array로 변환
     nparr = np.frombuffer(file, np.uint8)
+
+
 
     # 이미지 코드로 변환
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -156,7 +161,8 @@ def getResultFromData(
         "confidences" : confidences,
         "bboxes" : bboxes,
         "class_ids" : class_ids,
-        "img" : img
+        "img" : img,
+        "nparr" : nparr
     }
     return result
 
@@ -192,15 +198,14 @@ def predict(
     modelType : Optional[str] = Form('s'),
     imageDetectAreaRatio : Optional[float] = Form(0.05),
     ):
-        
+    
     result = getResultFromData(file, leftRightPercent, topPercentPercent,bottomPercentPercent, confidenceValue, modelType, imageDetectAreaRatio)
     predict_result = result["predict_result"]
     confidences = result["confidences"]
     bboxes = result["bboxes"]
     class_ids = result["class_ids"]
     img = result["img"]
-
-    # print(bboxes)
+    nparr = result["nparr"]
 
     # cv2 가 제공하는 후처리 모델
     result_boxes = cv2.dnn.NMSBoxes(bboxes, confidences, 0.25, 0.45, 0.5)
@@ -217,15 +222,16 @@ def predict(
         if i in result_boxes:
             bbox = list(map(int, bboxes[i])) 
             x, y, x2, y2 = bbox
-            # if class_ids[i] > len(color):
 
-            cv2.rectangle(img, (x, y), (x2, y2), color[class_ids[i]], 2)
+            cv2.rectangle(img, (x, y), (x2, y2), color[class_ids[i]], 6)
+
             cv2.putText(img, 
                         trash_name[class_ids[i]]
-                        , (x, y + 30), font, 2, color[class_ids[i]], 2)
+                        , (x+10, y + 50), font, 5, color[class_ids[i]], 5)
 
     # cv2 데이터를 base64 로 인코딩
     encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),90]
+    
     _, bts = cv2.imencode('.jpg', img, encode_param)
     encoded = base64.b64encode(bts.tobytes())
     decoded = encoded.decode('ascii')
