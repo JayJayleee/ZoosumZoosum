@@ -261,6 +261,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         // 리워드 계산
         int mTrashQ = missionTrash / ActivityLimit.TRASH;   // 쓰레기 수 몫
+        int newEgg = mTrashQ; // 알 개수
         // 사용자가 지니지 못한 동물 수 계산
         int userDoesntHaveAnimals = userAnimalRepository.doesntHaveAnimals(user);
 
@@ -270,11 +271,8 @@ public class ActivityServiceImpl implements ActivityService {
         resultMap.put("addSeed", mTrashQ);
 
         // 모든 동물을 지니고 있기에, 지니지 못한 동물이 없다면 Egg 보상도 없다.
-        if (userDoesntHaveAnimals == 0) {
-            resultMap.put("addEgg", 0);
-        } else {
-            resultMap.put("addEgg", mTrashQ);
-        }
+        if (userDoesntHaveAnimals == 0) newEgg = 0;
+        resultMap.put("addEgg", newEgg);
 
         // 추가 점수 계산
         Integer score = addScore(activityRequestDto);
@@ -290,7 +288,7 @@ public class ActivityServiceImpl implements ActivityService {
             .mission(mission)
             .score(originUserPlogInfo.getScore() + score)
             .seed(originUserPlogInfo.getSeed() + mTrashQ)
-            .egg(originUserPlogInfo.getEgg() + mTrashQ)
+            .egg(originUserPlogInfo.getEgg() + newEgg)
             .time(new Time(originUserPlogInfo.getTime().getCreateTime(), LocalDateTime.now()))
             .build();
         UserPlogInfo save = userPlogInfoRepository.save(newUserPlogInfo);
