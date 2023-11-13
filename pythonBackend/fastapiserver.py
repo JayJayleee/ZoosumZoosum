@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, Form
+from fastapi import FastAPI, File, Form, HTTPException
 from fastapi.responses import JSONResponse
 import numpy as np
 import cv2
@@ -46,24 +46,14 @@ def getResultFromData(
     # numpy를 image buffer를 array로 변환
     nparr = np.frombuffer(file, np.uint8)
 
-
-
     # 이미지 코드로 변환
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     # 이미지 크기 계산
     h, w, _ = img.shape
 
-    print(leftRightPercent,
-        topPercentPercent,
-        bottomPercentPercent)
-
-    
-
     # 이미지 전체 넓이 계산
     area = h*w
-
-    # print(h, w, area)
 
     minimumImageArea = int(area * imageDetectAreaRatio)
 
@@ -88,6 +78,9 @@ def getResultFromData(
     # class 별 count 초기화 
     trash_count = [0]*6
 
+    bigFlag = False
+    smallFlag = False
+
     confidences = []
     bboxes = []
     class_ids = []
@@ -102,8 +95,6 @@ def getResultFromData(
                 bbox = list(map(int, xyxy)) 
                 x1, y1, x2, y2 = bbox
 
-                print(x1, y1, x2, y2)
-
                 if x1 < 0 or x2 > w or y1 < 0 or y2 > h :
                     print("이미지 바운더리 체크 필요")
                     continue
@@ -111,10 +102,12 @@ def getResultFromData(
                 # 바운더리 초과 시 결과에 포함하지 않음
                 if x1 <= x1Limit or y1 <= y1Limit or x2 >= x2Limit or y2 >= y2Limit:
                     print("이미지 바운더리 초과")
+                    bigFlag = True
                     continue
                 
                 imageArea = (x2 - x1) * (y2 - y1)
                 if imageArea < minimumImageArea :
+                    smallFlag = True
                     print("it's too small object")
                     print("minimumImageArea : ", minimumImageArea)
                     print("imageArea : ", imageArea)
@@ -152,13 +145,21 @@ def getResultFromData(
 
     predict_result = {trash_name[i]: trash_count[i] for i in range(len(trash_name))}
     predict_result["total"] = sum(trash_count)
+    if sum(trash_count) == 0:
+        if smallFlag == True and bigFlag == True:
+            raise HTTPException(status_code=501, detail="exist only too large and too small object to detect..")
+        elif smallFlag == True:
+            raise HTTPException(status_code=502, detail="exist only too small object to detect..")
+        elif bigFlag == True:
+            raise HTTPException(status_code=503, detail="exist only too large object to detect..")
     result = {
         "predict_result" : predict_result,
         "confidences" : confidences,
         "bboxes" : bboxes,
         "class_ids" : class_ids,
         "img" : img,
-        "nparr" : nparr
+        "nparr" : nparr,
+        "trash_count" : trash_count
     }
     return result
 
