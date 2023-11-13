@@ -145,11 +145,17 @@ export const styles = StyleSheet.create({
   },
   historySelect: {
     position: 'absolute',
-    top: windowHeight*0.13,
+    top: windowHeight*0.135,
     width: windowWidth * 0.9,
     height: windowHeight* 0.06,
-    // borderColor: 'red',
-    // borderWidth: 1,
+    zIndex: 10,
+    alignItems: 'flex-end'
+  },
+  historySelectYours: {
+    position: 'absolute',
+    top: windowHeight*0.16,
+    width: windowWidth * 0.9,
+    height: windowHeight* 0.06,
     zIndex: 10,
     alignItems: 'flex-end'
   },
