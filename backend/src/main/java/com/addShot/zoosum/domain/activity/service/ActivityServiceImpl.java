@@ -261,12 +261,20 @@ public class ActivityServiceImpl implements ActivityService {
 
         // 리워드 계산
         int mTrashQ = missionTrash / ActivityLimit.TRASH;   // 쓰레기 수 몫
+        // 사용자가 지니지 못한 동물 수 계산
+        int userDoesntHaveAnimals = userAnimalRepository.doesntHaveAnimals(user);
 
         resultMap.put("mission", mission);
         resultMap.put("missionResponseDto", missionResponseDto);
         resultMap.put("missionReward", missionReward(user, missionLength, missionTime, missionTrash));
         resultMap.put("addSeed", mTrashQ);
-        resultMap.put("addEgg", mTrashQ);
+
+        // 모든 동물을 지니고 있기에, 지니지 못한 동물이 없다면 Egg 보상도 없다.
+        if (userDoesntHaveAnimals == 0) {
+            resultMap.put("addEgg", 0);
+        } else {
+            resultMap.put("addEgg", mTrashQ);
+        }
 
         // 추가 점수 계산
         Integer score = addScore(activityRequestDto);

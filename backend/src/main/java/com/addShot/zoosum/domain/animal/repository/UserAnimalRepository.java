@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface UserAnimalRepository extends JpaRepository<UserAnimal, UserAnimalId> {
+public interface UserAnimalRepository extends JpaRepository<UserAnimal, UserAnimalId>, UserAnimalCustomRepository {
 
 	//유저 id로 유저 동물 전체 리스트 조회
 	@Query("select ua from UserAnimal ua where ua.user.userId =:userId order by ua.selected desc")
