@@ -97,6 +97,10 @@ const GoogleMap = (props: GoogleMapProps) => {
     await calcDistance(newLatLng)
       .then(distance => {
         // console.log('7 add distance');
+        if (distance > 100) {
+          posirouteCoordinates.current.pop();
+          return;
+        }
         distanceTravelled.current += distance;
         // 상위 컴포넌트에 전달
         // console.log('8 set plogging distance to up');
@@ -121,7 +125,7 @@ const GoogleMap = (props: GoogleMapProps) => {
     Geolocation.getCurrentPosition(
       // 성공
       pos => {
-        imReady.current = true;
+        imReady.current = false;
         // console.log('3 get current position');
         // console.log(pos);
         const {latitude, longitude} = pos.coords;
@@ -161,7 +165,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         distanceFilter: 1,
         interval: 5000,
         fastestInterval: 2000,
