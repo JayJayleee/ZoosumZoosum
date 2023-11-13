@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, FlatList, Text, Alert } from 'react-native';
+import { View, FlatList, Text} from 'react-native';
 import PickAnimalCard from './PickAnimalCard';
 import styles from './style';
 import { fetchMyAnimalListInfo, fetchSelectMyFriend } from '@/apis/animal';
 import { useQuery } from '@tanstack/react-query';
 import AppButton from '@/components/ui/Button';
 import { useMutation, useQueryClient} from '@tanstack/react-query';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '@/constants/toastConfig';
 
 type ApiResponse = {
   data: Animal[];
@@ -105,7 +107,16 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
   };
 
   if (!animalArray?.length) return <Text>로딩...</Text>;
+
+  const showToast = (text:string) => {
+    Toast.show({
+      type: 'notSelect',
+      text1: text,
+    })
+  }
   return (
+    <>
+    <Toast config={toastConfig}/>
     <View style={styles.container}>
       <View style={styles.pickAnimalCardList}>
         <FlatList
@@ -137,9 +148,9 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
           onPress={() => {
             // selectedIds 배열 길이에 따라 조건 분기
             if (selectedIds.length > 5) {
-              Alert.alert('잠깐!', '5개 이하로 선택해주세요');
+              showToast('다섯 마리 이하로 선택해주세요');
             } else if (selectedIds.length === 0) {
-              Alert.alert('잠깐!', '선택하지 않으면 섬으로 보낼 수 없습니다');
+              showToast('한 마리 이상 선택해주세요');
             } else {
               console.log('선택된 아이디들:', selectedIds);
               handleCompleteSelection()
@@ -147,6 +158,6 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
           }}
           />
     </View>
-    
+    </>
   );
 };
