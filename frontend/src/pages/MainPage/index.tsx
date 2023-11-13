@@ -20,7 +20,7 @@ import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
 import { windowWidth } from '@/constants/styles';
-import { changeMotion, pause, replay } from '@/constants/sound';
+import { changeMotion, pause, replay, changeMotionStop } from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
 
 
@@ -225,7 +225,7 @@ export default function MainPage({navigation}: MainScreenProps) {
 
   // 섬에 있는 동물 클릭 시, 다른 이미지를 받아오는 함수
   const newAnimalAct = async (index:number, animalId:number, fileUri:string ) => {
-    changeMotion.play();
+    changeMotionStop();
     let newPose = await getNewAnimalPose(animalId, fileUri);
     let copiedItems = [...animalUri];
     copiedItems[index].fileUrl = newPose.fileUrl;
