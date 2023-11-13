@@ -8,6 +8,8 @@ import AppText from '../../Text';
 import FastImage from 'react-native-fast-image';
 import Spinner from '../../Spinner';
 
+// https://github.com/react-native-maps/react-native-maps/blob/HEAD/docs/mapview.md
+
 // type defined
 type latLng = {
   latitude: number;
