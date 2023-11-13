@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
+  Animated,
   ImageBackground,
   TouchableOpacity,
   BackHandler,
+  Easing,
 } from 'react-native';
 import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
@@ -21,6 +23,9 @@ import {useQuery} from '@tanstack/react-query';
 import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
+import {windowWidth} from '@/constants/styles';
+import {changeMotion, pause, replay} from '@/constants/sound';
+import RNExitApp from 'react-native-exit-app';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -29,7 +34,8 @@ export default function MainPage({navigation}: MainScreenProps) {
   const [isSoundOn, setSound] = useState<boolean>(true);
   // 현재 부화하지 않은 알이 있는지를 나타내기 위한 변수 생성
   const [isHaveEgg, setHaveEgg] = useState<boolean>(false);
-
+  // 구름 흘러가는 효과를 위한 변수 생성
+  const moveValue = useRef(new Animated.Value(0)).current;
   // 내 상태를 보여줄 변수 생성
   const [getTrash, setTrash] = useState<number>(0);
   const [getTime, setTime] = useState<timeObj>({
@@ -99,10 +105,21 @@ export default function MainPage({navigation}: MainScreenProps) {
     }
   }, [getSeed]);
 
+  // 배경의 구름이 흘러가는 효과를 위한 애니메이션 함수
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(moveValue, {
+        toValue: 1,
+        duration: 8000,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+    ).start();
+  }, []);
+
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
-    BackHandler.exitApp();
-    navigation.navigate('Login');
+    RNExitApp.exitApp();
   };
 
   // 상단 스탯 api 호출 및 상태 저장하는 코드 생성
@@ -113,6 +130,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     refetch: StatusRefetch,
   } = useQuery<statusInfo>(['mainStatus'], fetchMyStatusInfo, {
     onSuccess: statusContent => {
+      console.log(statusContent);
       setTrash(statusContent.missionTrash);
       setSeed(statusContent.seed);
       setTreeCount(statusContent.treeCount);
@@ -131,6 +149,7 @@ export default function MainPage({navigation}: MainScreenProps) {
       }
     },
   });
+
   // 에러 발생 시, 콘솔 창에 해당 에러 찍는 코드
   if (isStatusError && StatusError) {
     console.log('에러 발생 :', StatusError);
@@ -155,6 +174,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   if (isIslandError && IslandError) {
     console.log('에러 발생 :', IslandError);
   }
+
   // 로딩 중일 때, 로딩 페이지를 띄우는 코드
   if (isIslandLoading || isStatusLoading) {
     return <Spinner />;
@@ -163,10 +183,10 @@ export default function MainPage({navigation}: MainScreenProps) {
   // BGM on/off 함수
   const changeSoundState = () => {
     if (isSoundOn) {
-      console.log('소리 끄는 함수가 실행됩니다.');
+      pause();
       setSound(false);
     } else {
-      console.log('소리 키는 함수가 실행됩니다.');
+      replay();
       setSound(true);
     }
   };
@@ -204,6 +224,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     animalId: number,
     fileUri: string,
   ) => {
+    changeMotion.play();
     let newPose = await getNewAnimalPose(animalId, fileUri);
     let copiedItems = [...animalUri];
     copiedItems[index].fileUrl = newPose.fileUrl;
@@ -217,6 +238,22 @@ export default function MainPage({navigation}: MainScreenProps) {
       <TreeNameModal
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
+      />
+      <Animated.Image
+        source={require('@/assets/mainpage_image/cloud.png')}
+        style={[
+          styles.cloud,
+          {
+            transform: [
+              {
+                translateX: moveValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [windowWidth * 0.55, -windowWidth * 0.6],
+                }),
+              },
+            ],
+          },
+        ]}
       />
       {isModalVisible && (
         <AppCloseModal
@@ -293,6 +330,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           />
           {numberAnimal > 0 && (
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() =>
                 newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
               }
@@ -305,6 +343,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           )}
           {numberAnimal > 1 && (
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() =>
                 newAnimalAct(1, animalUri[1].animalId, animalUri[1].fileUrl)
               }
@@ -317,6 +356,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           )}
           {numberAnimal > 2 && (
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() =>
                 newAnimalAct(2, animalUri[2].animalId, animalUri[2].fileUrl)
               }
@@ -329,6 +369,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           )}
           {numberAnimal > 3 && (
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() =>
                 newAnimalAct(3, animalUri[3].animalId, animalUri[3].fileUrl)
               }
@@ -341,6 +382,7 @@ export default function MainPage({navigation}: MainScreenProps) {
           )}
           {numberAnimal > 4 && (
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() =>
                 newAnimalAct(4, animalUri[4].animalId, animalUri[4].fileUrl)
               }

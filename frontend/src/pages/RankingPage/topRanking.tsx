@@ -10,6 +10,8 @@ import RankingCard from './rankingCard';
 
 import { fetchMyTopRankingListInfo } from '@/apis/ranking';
 import { useQuery } from '@tanstack/react-query';
+import FastImage from 'react-native-fast-image';
+import { Wave } from '@/components/ui/animation/LottieEffect';
 
 type ApiResponse = {
   data: Rank[];
@@ -44,19 +46,26 @@ export default function TopRanking({goToprofile} : RankingProps) {
     },
   });
 
-  if (!RankingArray.length) return <Text>로딩...</Text>;
+  if (!RankingArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>로딩중..</AppText>
+    </View>
+  )
 
   return (
     <View style={styles.ranking_container}>
       <View style={styles.select_container2}>
-        <Text style={styles.title_head}>전체 랭킹</Text>
+        <Text style={styles.title_head}>TOP RANK</Text>
       </View>
-      <View style={styles.title_container}>
+      {/* <View style={styles.title_container}>
         <Text style={styles.title_grid1}>순위</Text>
         <Text style={styles.title_grid2}>닉네임</Text>
         <Text style={styles.title_grid3}>지역</Text>
         <Text style={styles.title_grid4}>점수</Text>
-      </View>
+        <Text style={styles.title_grid5}>버튼</Text>
+      </View> */}
       <View style={styles.body_container}>
         <FlatList
           horizontal={false}

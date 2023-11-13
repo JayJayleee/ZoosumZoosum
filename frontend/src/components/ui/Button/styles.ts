@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 export const styles = StyleSheet.create({
   default: {
@@ -42,19 +43,19 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pickfriend: {
-    width: '30%',
+    width: '40%',
     backgroundColor: '#F1B0B0',
     borderRadius: 8,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    marginBottom: 10,
+    marginRight : "5%"
   },
   pickfriendText: {
     color: 'white',
-    fontFamily: 'NPSfont_regular',
-    fontSize: 15,
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
   },
   gotoisland: {
     width: '50%',
@@ -81,7 +82,6 @@ export const styles = StyleSheet.create({
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
   },
-
   selectItem: {
     width: '30%',
     backgroundColor: '#ECA3A3',
@@ -145,34 +145,36 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   ranking: {
-    width: '30%',
-    height: '30%',
+    width: windowWidth*0.15,
+    height: windowHeight*0.05,
     backgroundColor: 'white',
-    borderRadius: 8,
+    borderRadius : 30,
     justifyContent: 'center',
-    borderWidth: 2,
+    // borderWidth: 2,
     borderStyle: 'solid',
     alignItems: 'center',
     marginHorizontal: 10,
+    marginVertical : 2,
   },
   rankingText: {
     color: 'black',
     fontFamily: 'NPSfont_bold',
-    fontSize: 20,
+    fontSize: 15,
   },
   ranking_unselect: {
-    width: '30%',
-    height: '30%',
-    backgroundColor: '#d4bb51',
-    borderRadius: 8,
+    width: windowWidth*0.45,
+    height: windowHeight*0.05,
+    backgroundColor: '#7ED3A1',
+    borderRadius : 30,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,
+    marginVertical : 2,
   },
   rankingText_unselect: {
     color: 'black',
-    fontFamily: 'NPSfont_bold',
-    fontSize: 20,
+    fontFamily: 'NPSfont_extrabold',
+    fontSize: 15,
   },
   tutorial: {
     width: '45%',
@@ -253,5 +255,32 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'NPSfont_bold',
     fontSize: 20,
-  }
+  },
+  gotoisland2: {
+    width: '40%',
+    backgroundColor: '#34D399',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gotoislandText2: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
+  },
+  gotoisland3: {
+    width: '40%',
+    backgroundColor: '#34D399',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop : 20
+  },
+  gotoislandText3: {
+    color: 'white',
+    fontFamily: 'NPSfont_bold',
+    fontSize: 20,
+  },
 });

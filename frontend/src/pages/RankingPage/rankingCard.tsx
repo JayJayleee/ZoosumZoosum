@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AppText from '@/components/ui/Text';
+import FastImage from 'react-native-fast-image';
 
 interface RankingCardProps {
   nickname : string,
@@ -44,47 +45,136 @@ export default function RankingCard({nickname, region, score, index, goToprofile
 
   const rank = index + 1;
 
+  // rank에 따라 title_container와 title_grid1 스타일 동적으로 변경
+  const getDynamicStyles = () => {
+    switch (rank) {
+      case 1:
+        return {
+          titleContainer: {
+            ...styles.title_container,
+            borderWidth: 3,
+            borderColor: 'green',
+          },
+          titleGrid1: {
+            ...styles.title_grid1,
+            color: 'green', // 1등 색상
+          },
+        };
+      case 2:
+        return {
+          titleContainer: {
+            ...styles.title_container,
+            borderWidth: 3,
+            borderColor: '#0aa80a',
+          },
+          titleGrid1: {
+            ...styles.title_grid1,
+            color: '#0aa80a', // 2등 색상
+          },
+        };
+      case 3:
+        return {
+          titleContainer: {
+            ...styles.title_container,
+            borderWidth: 3,
+            borderColor: '#0cc71f',
+          },
+          titleGrid1: {
+            ...styles.title_grid1,
+            color: '#0cc71f', // 3등 색상
+          },
+        };
+      default:
+        return {
+          titleContainer: styles.title_container,
+          titleGrid1: styles.title_grid1,
+        };
+    }
+  };
+
+  const { titleContainer, titleGrid1 } = getDynamicStyles();
+
   return (
     <View>
       {nickname !== undefined &&
-      <TouchableOpacity style={styles.title_container} onPress={() => goToprofile(nickname)}>
-        <Text style={styles.title_grid1}>{rank}</Text>
-        <Text style={styles.title_grid2}>{nickname}</Text>
-        <Text style={styles.title_grid3}>{displayRegion}</Text>
-        <Text style={styles.title_grid4}>{score}</Text>
-      </TouchableOpacity>
+      <View style={titleContainer}>
+        <Text style={titleGrid1}>{rank}</Text>
+        <View style={styles.title_grid2}>
+          <Text style={styles.title_text1}>{nickname}</Text>
+          <Text style={styles.title_text2}>({displayRegion})</Text>
+        </View>
+        <View style={styles.title_grid3}>
+          <Text style={styles.title_text3}>점수</Text>
+          <Text style={styles.title_text4}>{score}</Text>
+        </View>
+        <TouchableOpacity style={styles.title_grid4} onPress={() => goToprofile(nickname)}>
+          <FastImage style={styles.image} source={require('@/assets/img_icon/ranking_img.png')} resizeMode={FastImage.resizeMode.contain}/>
+        </TouchableOpacity>
+      </View>
       }
     </View>
   )
 }
+
+import { windowHeight, windowWidth } from "@/constants/styles";
 
 const styles = StyleSheet.create({
   title_container : {
     flexDirection : 'row',
     justifyContent : 'center',
     alignItems : 'center',
-    marginVertical : '5%',
-    borderBottomWidth : 1,
+    // borderWidth : 5,
     borderStyle: 'solid',
+    borderRadius : 50,
+    padding : '3%',
+    marginBottom : '2%',
+    width : '100%',
+    height : windowHeight*0.1,
+    backgroundColor : '#A5DCA0'
+
   },
   title_grid1 : {
-    width : '15%',
+    width : '20%',
     textAlign : 'center',
-    fontFamily : 'NPSfont_bold',
+    fontFamily : 'NPSfont_extrabold',
+    fontSize : 35,
   },
   title_grid2 : {
-    width : '40%',
-    textAlign : 'center',
+    width : '35%',
+    alignItems : 'flex-start',
+    justifyContent : 'center',
+  },
+  title_text1 : {
+    fontSize : 15,
+    fontFamily : 'NPSfont_extrabold',
+  },
+  title_text2 : {
+    fontSize : 13,
     fontFamily : 'NPSfont_bold',
   },
+  
   title_grid3 : {
-    width : '15%',
-    textAlign : 'center',
+    width : '25%',
+    alignItems : 'center',
+    justifyContent : 'center',
+  },
+  title_text3 : {
+    fontSize : 13,
+    fontFamily : 'NPSfont_extrabold',
+  },
+  title_text4 : {
+    fontSize : 13,
     fontFamily : 'NPSfont_bold',
   },
   title_grid4 : {
-    width : '30%',
+    width : '20%',
     textAlign : 'center',
-    fontFamily : 'NPSfont_bold',
+    justifyContent : 'center',
+    fontSize : 13,
+    fontFamily : 'NPSfont_extrabold',
   },
+  image : {
+    width : '100%',
+    height : '100%',
+  }
 });

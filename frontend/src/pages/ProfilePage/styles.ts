@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   staNoteImg : {
     position: 'relative',
-    top: '4.5%', 
+    top: windowHeight * 0.04, 
     width: '100%', 
     height: '90%', 
     justifyContent: 'center', 
@@ -142,6 +142,16 @@ export const styles = StyleSheet.create({
   },
   badgeBoxContent: {
     fontSize: 15
+  },
+  historySelect: {
+    position: 'absolute',
+    top: windowHeight*0.13,
+    width: windowWidth * 0.9,
+    height: windowHeight* 0.06,
+    // borderColor: 'red',
+    // borderWidth: 1,
+    zIndex: 10,
+    alignItems: 'flex-end'
   },
   historyBox: {
     position: 'relative',
@@ -298,9 +308,4 @@ export const styles = StyleSheet.create({
   tabText: {
     fontSize: 15
   },
-  imageModal: {
-    width: windowWidth * 0.8,
-    height: windowHeight * 0.7,
-    borderRadius: 10,
-  }
 })

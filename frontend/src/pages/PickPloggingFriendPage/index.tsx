@@ -75,6 +75,14 @@ export default function PickPloggingFriendPage({
       {currentAnimal !== undefined && (
         <View style={styles.container}>
           <View style={styles.body1}>
+            <View style={styles.head}>
+              <AppText style={styles.head_title}>
+                함께 나갈
+              </AppText>
+              <AppText style={styles.head_title}>
+                정령을 골라주세요!
+              </AppText>
+            </View>
             <FastImage
               style={styles.FriendDetail_Image}
               source={{uri: currentAnimal.fileUrl}}
@@ -82,11 +90,11 @@ export default function PickPloggingFriendPage({
             <AppText style={styles.animalName}>
               {currentAnimal.userAnimalName}
             </AppText>
-            <View style={styles.viewAnimalDescription}>
+            {/* <View style={styles.viewAnimalDescription}>
               <Text style={styles.animalDescription}>
                 {currentAnimal.description}
               </Text>
-            </View>
+            </View> */}
           </View>
           <View style={styles.body2}>
             <View style={styles.bodyContainer1}>
@@ -127,16 +135,8 @@ export default function PickPloggingFriendPage({
               </View>
             </View>
           </View>
-          <View style={styles.switchButtons}>
-            <TouchableOpacity onPress={goPrev}>
-              <Image style={styles.arrow} source={require('@/assets/mainpage_image/left_arrow.png')}/>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={goNext}>
-            <Image style={styles.arrow} source={require('@/assets/mainpage_image/right_arrow.png')}/>
-            </TouchableOpacity>
-          </View>
           <AppButton
-            children="산책하러가자GO"
+            children="산책하러가자!"
             variant="gotoisland"
             // onPress={() => console.log(currentAnimal.animalId, currentAnimal.fileUrl, "얘가 지원이한테 전달할 값")}
             onPress={() =>
@@ -150,6 +150,14 @@ export default function PickPloggingFriendPage({
               })
             }
           />
+          <View style={styles.switchButtons}>
+            <TouchableOpacity onPress={goPrev}>
+              <Image style={styles.arrow} source={require('@/assets/mainpage_image/left_arrow.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goNext}>
+            <Image style={styles.arrow} source={require('@/assets/mainpage_image/right_arrow.png')}/>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </ImageBackground>

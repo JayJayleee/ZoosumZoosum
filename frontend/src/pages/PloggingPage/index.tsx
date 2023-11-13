@@ -21,6 +21,8 @@ import PloggingResultModal from '@/components/ui/Modal/PloggingResultModal';
 // import {StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {storeImage} from '../CameraPage/savePhoto';
+import RNExitApp from 'react-native-exit-app';
+
 interface ActivityDataType {
   activityImg: string; // 이미지에 대한 타입을 가정
   activityRequestDto: {
@@ -47,8 +49,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
-    BackHandler.exitApp();
-    navigation.navigate('Login');
+RNExitApp.exitApp();
   };
 
   useEffect(() => {

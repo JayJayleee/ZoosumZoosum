@@ -132,17 +132,16 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
         />
       </View>
       <AppButton
-          variant='gotoisland'
+          variant='gotoisland3'
           children='선택완료'
           onPress={() => {
             // selectedIds 배열 길이에 따라 조건 분기
             if (selectedIds.length > 5) {
-              Alert.alert('경고', '5개 이하로 선택해주세요');
+              Alert.alert('잠깐!', '5개 이하로 선택해주세요');
             } else if (selectedIds.length === 0) {
-              Alert.alert('경고', '선택하지 않으면 섬으로 보낼 수 없습니다');
+              Alert.alert('잠깐!', '선택하지 않으면 섬으로 보낼 수 없습니다');
             } else {
               console.log('선택된 아이디들:', selectedIds);
-              // 다른 처리를 여기에 추가할 수 있습니다.
               handleCompleteSelection()
             }
           }}

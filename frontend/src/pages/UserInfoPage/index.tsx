@@ -10,7 +10,7 @@ import FastImage from 'react-native-fast-image';
 import AppButton from '@/components/ui/Button';
 import { style } from './styles';
 import Toast from 'react-native-toast-message';
-import { toastConfig } from '@/components/ui/Toast';
+import { toastConfig } from '@/constants/toastConfig';
 import { windowHeight } from '@/constants/styles';
 
 

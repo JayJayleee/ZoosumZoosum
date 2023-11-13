@@ -13,16 +13,28 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  head : {
+    marginTop : windowWidth*0.2,
+    alignItems: 'center',
+    paddingBottom : windowWidth*0.05,
+    // marginBottom : windowWidth*0.1,
+  },
+  head_title : {
+    fontSize : 30,
+    color : "white",
+    fontFamily : 'NPSfont_extrabold',
+  },
   body1 : {
     width : windowWidth,
     height : windowHeight*0.4,
-    marginTop : windowHeight*0.04,
+    marginTop : windowHeight*0.05,
     justifyContent : 'center',
-    alignItems : 'center'
+    alignItems : 'center',
+    // marginBottom : windowHeight*0.02
   },
   FriendDetail_Image : {
-    width : '90%',
-    height : '90%',
+    width : '75%',
+    height : '75%',
   },
   animalName : {
     color : 'white',
@@ -83,7 +95,7 @@ const styles = StyleSheet.create({
     position : 'absolute',
     flexDirection : 'row',
     justifyContent : 'space-between',
-    marginTop : windowHeight*0.15,
+    bottom : "5%",
     // backgroundColor : 'red'
   },
   arrow : {

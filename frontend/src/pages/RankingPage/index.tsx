@@ -46,6 +46,7 @@ export default function RankingPage({navigation}: RankingScreenProps) {
 
   // 섬 선택 호출 함수(props로 전달)
   const goToprofile = (data: string) => {
+    console.log("프로필 부르기 닉네임 :",data)
     navigation.navigate({
       name :'Profile',
       params: {nickname: data}
@@ -65,6 +66,10 @@ export default function RankingPage({navigation}: RankingScreenProps) {
               style={StyleSheet.absoluteFill}
               source={require('@/assets/Ranking.png')}
               resizeMode='stretch'></ImageBackground>
+              <View style={styles.list_container}>
+                {showComponent1 && <TopRanking goToprofile={goToprofile}/>}
+                {showComponent2 && <RegionRanking goToprofile={goToprofile} />}
+              </View>
               <View style={styles.button_container}>
                 <AppButton
                   variant={variant1}
@@ -74,10 +79,6 @@ export default function RankingPage({navigation}: RankingScreenProps) {
                   variant={variant2}
                   children='지역 랭킹'
                   onPress={toggleComponent2}/>
-              </View>
-              <View style={styles.list_container}>
-                {showComponent1 && <TopRanking goToprofile={goToprofile}/>}
-                {showComponent2 && <RegionRanking goToprofile={goToprofile} />}
               </View>
             </View> 
           </View>
