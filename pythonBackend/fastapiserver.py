@@ -40,7 +40,9 @@ def getResultFromData(
         leftRightPercent,
         topPercentPercent,
         bottomPercentPercent,
-        modelType
+        confidenceValue,
+        modelType,
+        imageDetectAreaRatio
 ):
     # numpy를 image buffer를 array로 변환
     nparr = np.frombuffer(file, np.uint8)
@@ -50,6 +52,19 @@ def getResultFromData(
 
     # 이미지 크기 계산
     h, w, _ = img.shape
+
+    print(leftRightPercent,
+        topPercentPercent,
+        bottomPercentPercent)
+
+    
+
+    # 이미지 전체 넓이 계산
+    area = h*w
+
+    # print(h, w, area)
+
+    minimumImageArea = int(area * imageDetectAreaRatio)
 
     # 혹시 가로로 찍혔다면 좌우를 고려하여 넓게 잡음
     if w > h:
@@ -79,17 +94,35 @@ def getResultFromData(
         boxes = result.boxes
         for box in boxes:
             confidence = box.conf
-            # 0.4 이상의 confidence 만 검출
-            if confidence >= 0.4:
+            # confidenceValue 이상의 confidence 만 검출
+            if confidence >= confidenceValue:
+
                 xyxy = box.xyxy.tolist()[0]
                 bbox = list(map(int, xyxy)) 
                 x1, y1, x2, y2 = bbox
 
+                print(x1, y1, x2, y2)
+
+                if x1 < 0 or x2 > w or y1 < 0 or y2 > h :
+                    print("이미지 바운더리 체크 필요")
+                    continue
+
                 # 바운더리 초과 시 결과에 포함하지 않음
                 if x1 <= x1Limit or y1 <= y1Limit or x2 >= x2Limit or y2 >= y2Limit:
+                    print("이미지 바운더리 초과")
                     continue
-                bboxes.append(xyxy)
-                confidences.append(float(confidence))
+                
+                imageArea = (x2 - x1) * (y2 - y1)
+                if imageArea < minimumImageArea :
+                    print("it's too small object")
+                    print("minimumImageArea : ", minimumImageArea)
+                    print("imageArea : ", imageArea)
+                    continue
+
+                
+                
+
+                print(box.cls)
 
                 if box.cls == 0.:
                     class_ids.append(0)
@@ -109,6 +142,12 @@ def getResultFromData(
                 elif box.cls == 7.:
                     class_ids.append(5)
                     trash_count[5] += 1
+                else :
+                    continue
+
+                bboxes.append(xyxy)
+                confidences.append(float(confidence))
+
 
     predict_result = {trash_name[i]: trash_count[i] for i in range(len(trash_name))}
     predict_result["total"] = sum(trash_count)
@@ -133,10 +172,12 @@ def predict(
     file: bytes = File(),
     leftRightPercent : Optional[float] = Form(0.1),
     topPercentPercent : Optional[float] = Form(0.1),
-    bottomPercentPercent : Optional[float] = Form(0.3),
+    bottomPercentPercent : Optional[float] = Form(0.2),
+    confidenceValue : Optional[float] = Form(0.5),
     modelType : Optional[str] = Form('s'),
+    imageDetectAreaRatio : Optional[float] = Form(0.05),
     ):
-    return JSONResponse(getResultFromData(file, leftRightPercent, topPercentPercent,bottomPercentPercent, modelType)["predict_result"])
+    return JSONResponse(getResultFromData(file, leftRightPercent, topPercentPercent,bottomPercentPercent, confidenceValue, modelType, imageDetectAreaRatio)["predict_result"])
 
         
 
@@ -144,21 +185,28 @@ def predict(
 @app.post('/ai/image')
 def predict(
     file: bytes = File(),
-    leftRightPercent : Optional[float] = Form(0.1),
-    topPercentPercent : Optional[float] = Form(0.1),
-    bottomPercentPercent : Optional[float] = Form(0.3),
+    leftRightPercent : Optional[float] = Form(0.05),
+    topPercentPercent : Optional[float] = Form(0.05),
+    bottomPercentPercent : Optional[float] = Form(0.2),
+    confidenceValue : Optional[float] = Form(0.5),
     modelType : Optional[str] = Form('s'),
+    imageDetectAreaRatio : Optional[float] = Form(0.05),
     ):
         
-    result = getResultFromData(file, leftRightPercent, topPercentPercent,bottomPercentPercent, modelType)
+    result = getResultFromData(file, leftRightPercent, topPercentPercent,bottomPercentPercent, confidenceValue, modelType, imageDetectAreaRatio)
     predict_result = result["predict_result"]
     confidences = result["confidences"]
     bboxes = result["bboxes"]
     class_ids = result["class_ids"]
     img = result["img"]
 
+    # print(bboxes)
+
     # cv2 가 제공하는 후처리 모델
     result_boxes = cv2.dnn.NMSBoxes(bboxes, confidences, 0.25, 0.45, 0.5)
+
+    
+    # print(result_boxes)
 
     # cv2 글씨 폰트
     # 한글로 수정예정
@@ -169,6 +217,8 @@ def predict(
         if i in result_boxes:
             bbox = list(map(int, bboxes[i])) 
             x, y, x2, y2 = bbox
+            # if class_ids[i] > len(color):
+
             cv2.rectangle(img, (x, y), (x2, y2), color[class_ids[i]], 2)
             cv2.putText(img, 
                         trash_name[class_ids[i]]
