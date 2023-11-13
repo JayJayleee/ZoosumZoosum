@@ -31,18 +31,21 @@ const styles = StyleSheet.create({
     marginBottom : 30,
   },
   having_cardlist : {
-    width : windowWidth*1,
+    width : windowWidth,
     height : windowHeight*0.65,
     marginTop : 10,
     alignItems : 'center',
   },
   hiddenCard: {
-    width: 115,
-    height: 130,
+    width: windowWidth*0.3,
   },
   isloading : {
     textAlign : 'center',
-
+  }
+  ,
+  pickTreeCardList : {
+    width : "90%",
+    height : "100%",
   }
 });
 

@@ -60,26 +60,28 @@ export default function PickTreeCardlist({navigation} : PickTreeCardListProps) {
 
   if (!ItemArray?.length) return <Text style={styles.isloading}>로딩...</Text>;
   return (
-    <View>
-      <FlatList
-        horizontal={false} // 수직으로 정렬
-        numColumns={3}
-        data={ItemArray}
-        keyExtractor={(item) => item.itemId.toString()}
-        renderItem={({ item }) => {
-          if (!item.itemName) {
-            return <View style={styles.hiddenCard} />;
-          }
-          return (
-            <PickTreeCard
-              itemId={item.itemId}
-              itemName={item.itemName}
-              fileUrl={item.fileUrl}
-              navigation={navigation}
-            />
-          );
-        }}
-      />
+    <View style={styles.container}>
+      <View style={styles.pickTreeCardList}>
+        <FlatList
+          horizontal={false} // 수직으로 정렬
+          numColumns={3}
+          data={ItemArray}
+          keyExtractor={(item) => item.itemId.toString()}
+          renderItem={({ item }) => {
+            if (!item.itemName) {
+              return <View style={styles.hiddenCard} />;
+            }
+            return (
+              <PickTreeCard
+                itemId={item.itemId}
+                itemName={item.itemName}
+                fileUrl={item.fileUrl}
+                navigation={navigation}
+              />
+            );
+          }}
+        />
+      </View>  
     </View>
   );
 };

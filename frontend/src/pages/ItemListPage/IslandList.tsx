@@ -8,9 +8,6 @@ import {fetchMyItemListInfo} from '@/apis/Item';
 import {useQuery} from '@tanstack/react-query';
 import { useFocusEffect } from '@react-navigation/native';
 
-interface IslandListProps {
-  goToSelectIsland : (data: number) => void;
-}
 
 type ApiResponse = {
   data: Item[];
@@ -24,37 +21,23 @@ type Item = {
   selected: boolean;
 };
 
-
-const targetNumColumns = 3; // 원하는 열의 수
-
-export default function IslandList({goToSelectIsland} : IslandListProps) {
+export default function IslandList() {
   
   const [ItemArray, setItemArray] = useState<Item[]>([]);
-  const [numColumns, setNumColumns] = useState<number>(targetNumColumns);
   const itemType = "ISLAND"
-  const [selectedIslandImgURI, setSelectedIslandImgURI] = useState('');
-  const [selectedIslandTitle, setSelectedIslandTitle] = useState('');
-  const [selectedIslandItemId, setselectedIslandItemId] = useState(0);
+ 
 
   const {refetch} = useQuery(['ItemList'], 
   () => fetchMyItemListInfo(itemType), {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
 
-      const selectedIsland = data.find(item => item.selected);
-      if (selectedIsland) {
-        setSelectedIslandImgURI(selectedIsland.fileUrl)
-        setSelectedIslandTitle(selectedIsland.itemName)
-        setselectedIslandItemId(selectedIsland.itemId)
-      }
-      
       if (!Array.isArray(data)) {
         console.error('Data는 배열이 아닙니다:', data);
         return;
       }
 
       let processedData = [...data];
-
 
       const numColumns = 3;
 
@@ -85,21 +68,6 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
 
   return (
     <View style={styles.itemList}>
-      <View style={styles.headItem}>
-        <AppText style={styles.headItemTitle}>내가 선택한 섬</AppText>
-      </View>
-      <View style={styles.bodyItem}>
-        <View style={styles.ItemCardSelect}>
-          <View style={styles.ItemCardSelectImgage}>
-           <Image style={styles.islandCard_image} source={{uri : selectedIslandImgURI }} />
-          </View>
-          <AppText style={styles.islandCard_title}>{selectedIslandTitle}</AppText>
-        </View>
-        <AppButton
-        children='섬 선택하기'
-        variant='pickfriend'
-        onPress={() => goToSelectIsland(selectedIslandItemId)}/>
-      </View>
       <View style={styles.body2Item}>
         <FlatList
           horizontal={false} // 수직으로 정렬
@@ -115,6 +83,8 @@ export default function IslandList({goToSelectIsland} : IslandListProps) {
                 itemId={item.itemId}
                 itemName={item.itemName}
                 fileUrl={item.fileUrl}
+                selected={item.selected}
+                itemType={item.itemType}
               />
             );
           }}
