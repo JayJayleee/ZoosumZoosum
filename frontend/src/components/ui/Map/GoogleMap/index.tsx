@@ -87,17 +87,17 @@ const GoogleMap = (props: GoogleMapProps) => {
 
   // 거리 계산 함수
   const calcDistance = async (newLatLng: latLng) => {
-    console.log('6 calculate distance');
+    // console.log('6 calculate distance');
     return haversine(prevLatLng.current, newLatLng, {unit: 'meter'}) || 0;
   };
 
   const addDistance = async (newLatLng: latLng) => {
     await calcDistance(newLatLng)
       .then(distance => {
-        console.log('7 add distance');
+        // console.log('7 add distance');
         distanceTravelled.current += distance;
         // 상위 컴포넌트에 전달
-        console.log('8 set plogging distance to up');
+        // console.log('8 set plogging distance to up');
         props.setPloggingDistance(
           Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) /
             100,
@@ -107,7 +107,7 @@ const GoogleMap = (props: GoogleMapProps) => {
   };
 
   const getPosition = async () => {
-    console.log('getPosition');
+    // console.log('getPosition');
     await myCurrnetPosition();
     await myWatchPosition();
   };
@@ -120,7 +120,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       // 성공
       pos => {
         imReady.current = true;
-        console.log('3 get current position');
+        // console.log('3 get current position');
         // console.log(pos);
         const {latitude, longitude} = pos.coords;
         // 과거위치 변경
@@ -144,7 +144,7 @@ const GoogleMap = (props: GoogleMapProps) => {
     watchId = Geolocation.watchPosition(
       // 성공
       pos => {
-        console.log('4 watch position');
+        // console.log('4 watch position');
         const {latitude, longitude} = pos.coords;
         setRegion({
           latitude: latitude,
@@ -169,16 +169,16 @@ const GoogleMap = (props: GoogleMapProps) => {
 
   // 최초 1회 현재위치 설정
   useEffect(() => {
-    console.log('1 init useEffect');
+    // console.log('1 init useEffect');
     // console.log('endPlog', props.endPlog);
     // 플로깅 끝나면 위치 이동 중지
     Geolocation.clearWatch(watchId);
 
-    console.log(watchId, 'watchId');
+    // console.log(watchId, 'watchId');
 
     // 권한 확인 후, 위치 설정
     requestPermission().then(result => {
-      console.log('2 permission');
+      // console.log('2 permission');
       // console.log({result});
       // 허가받지 못한 경우 에러메세지
       if (result !== 'granted') {
@@ -191,15 +191,15 @@ const GoogleMap = (props: GoogleMapProps) => {
 
   // region이 변경되었을 때 나머지 데이터들도 갱신
   useEffect(() => {
-    console.log('5 renew region');
-    console.log('region', region);
+    // console.log('5 renew region');
+    // console.log('region', region);
     const newCoordinate: latLng = {
       latitude: region.latitude,
       longitude: region.longitude,
     };
 
     // 위치배열갱신 -> 이동경로 그려줌
-    console.log('5.5 renew position array. this is use to polyline');
+    // console.log('5.5 renew position array. this is use to polyline');
     posirouteCoordinates.current = [
       ...posirouteCoordinates.current,
       newCoordinate,
@@ -216,7 +216,7 @@ const GoogleMap = (props: GoogleMapProps) => {
 
     // 과거위치 변경
     setTimeout(() => {
-      console.log('10 past position change');
+      // console.log('10 past position change');
       prevLatLng.current = newCoordinate;
     }, 1000);
   }, [region]);
