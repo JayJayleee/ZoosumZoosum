@@ -132,7 +132,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       },
       onSuccess: async (responseData: any) => {
         setIsLoading(false);
-        console.log('쓰레기 이미지가 보내지긴 했어요...일단', responseData);
+        // console.log('쓰레기 이미지가 보내지긴 했어요...일단', responseData);
 
         await new Promise(resolve => setTimeout(resolve, 0)); // 이벤트 루프를 기다리게 함
         navigation.navigate('Plogging', {

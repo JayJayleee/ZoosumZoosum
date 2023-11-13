@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     // backgroundColor: 'red',
     paddingBottom: 0,
-    bottom: '-1.5%',
+    bottom: '-3%',
   },
   cameraBtn: {
     width: '30%',

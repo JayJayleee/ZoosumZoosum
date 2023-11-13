@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, FlatList, ImageBackground} from 'react-native';
+import {
+  View,
+  Image,
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import ModalComponent from '@/components/ui/Modal';
 import AppText from '@/components/ui/Text';
 import {TrashDataReturnList} from '@/types/plogging';
@@ -64,7 +70,7 @@ const tipsByType: Record<TrashType, string[]> = {
 
 const TrashModal = ({
   isVisible,
-  onClose,
+  onClose: onCloseProp,
   data,
   navigation,
   animalImg,
@@ -166,6 +172,17 @@ const TrashModal = ({
   //   return count > 0;
   // });
 
+  useEffect(() => {
+    if (!isVisible) {
+      setShowFlatList(true); // 모달이 닫힐 때 showFlatList를 true로 설정
+    }
+  }, [isVisible]);
+
+  const onClose = () => {
+    setShowFlatList(false); // 모달이 닫힐 때 showFlatList를 false로 설정
+    onCloseProp(); // 부모 컴포넌트에서 전달받은 기존 onClose 함수 호출
+  };
+
   return (
     <ModalComponent
       isVisible={isVisible}
@@ -185,6 +202,7 @@ const TrashModal = ({
           style={{
             width: '100%',
             height: 'auto',
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
@@ -197,9 +215,25 @@ const TrashModal = ({
             }}>
             방금 주운 쓰레기
           </AppText>
-          <AppButton
+
+          <TouchableOpacity
             onPress={toggleFlatList}
-            children="어떤 쓰레기가 있었을까?"></AppButton>
+            style={{
+              // backgroundColor: 'green',
+              width: '10%',
+              height: '50%',
+              position: 'absolute',
+              left: '80%',
+            }}>
+            <Image
+              source={
+                showFlatList
+                  ? require('@/assets/img_icon/gallery_icon.png')
+                  : require('@/assets/img_icon/xbox_icon.png')
+              }
+              style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
         </View>
 
         {showFlatList ? (
@@ -222,7 +256,15 @@ const TrashModal = ({
                   marginTop: 5,
                   fontFamily: 'NPSfont_bold',
                 }}>
-                이곳에는 정령이 없는 것 같아요.
+                여기엔 정령이
+              </AppText>
+              <AppText
+                style={{
+                  color: 'black',
+                  fontSize: 20,
+                  fontFamily: 'NPSfont_bold',
+                }}>
+                없는 것 같아요.
               </AppText>
               <AppText
                 style={{
@@ -253,7 +295,7 @@ const TrashModal = ({
         ) : (
           <Image
             source={{uri: TrashResultImg}}
-            style={{width: 200, height: 200}}
+            style={{width: '100%', height: '63%', borderRadius: 20}}
           />
         )}
 

@@ -43,6 +43,7 @@ export interface CarouselProps {
 export interface AnimatedProgressCircleProps {
   progress: number;
   duration?: number;
+  children?: ImageSourcePropType;
 }
 
 export interface ProgressCarouselCardItemProps {

@@ -13,9 +13,8 @@ import {
 import AppText from '../../components/ui/Text';
 import AppButton from '../../components/ui/Button';
 import styles from '../../components/ui/Carousel/styles';
-import {Egg} from '../../components/ui/animation/LottieEffect';
 import {AnimalCarouselCardItemProps} from '@/types/plogging';
-import {useQueryClient, useMutation} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import {ShiningEffect} from '@/components/ui/Carousel/ShiningEffect';
 import {EggName, FirstEggName} from '@/apis/tutorial';
 
@@ -40,7 +39,10 @@ export function AnimalCarouselCardItem({
   const [imageSource, setImageSource] = useState(
     require('@/assets/img_icon/egg.png'),
   );
+  // 흰색 필터
   const tintColorAnim = useRef(new Animated.Value(0)).current;
+  // 흔들리는 효과
+  const shakingAnimation = useRef(new Animated.Value(0)).current;
 
   // console.log(animalId);
   // const queryClient = useQueryClient();
@@ -58,7 +60,6 @@ export function AnimalCarouselCardItem({
       }
     },
     onError: error => {
-      // 이름 저장 실패 시 수행할 작업
       console.log('이름 바꾸기 실패', error);
     },
   });
@@ -74,11 +75,10 @@ export function AnimalCarouselCardItem({
       setIsNameSaved(true);
       setSavedName(nameToSave ? nameToSave : item?.animalName);
       if (onNamingComplete && isNameSaved && nameToSave) {
-        onNamingComplete(nameToSave); // 부모 컴포넌트의 상태를 업데이트하는 콜백 호출
+        onNamingComplete(nameToSave); // 바로 상단의 정령 이름 바꿔주기
       }
     },
     onError: error => {
-      // 이름 저장 실패 시 수행할 작업
       console.log('이름 바꾸기 실패', error);
     },
   });
@@ -123,22 +123,18 @@ export function AnimalCarouselCardItem({
     };
   }, []);
 
+  // 알 9번 누르면 하얘지는 부분
   useEffect(() => {
     if (touchCount === 9) {
-      // tintColor를 서서히 흰색으로 변경하는 애니메이션 시작
       Animated.timing(tintColorAnim, {
         toValue: 1,
-        duration: 2000, // 색상 변경 지속 시간
-        useNativeDriver: false, // tintColor는 네이티브 드라이버를 사용할 수 없음
+        duration: 2000,
+        useNativeDriver: false,
       }).start();
     }
   }, [touchCount]);
 
-  // tintColor를 interpolate를 사용하여 값으로 변환
-
-  const [whiteImageOpacity, setWhiteImageOpacity] = useState(
-    new Animated.Value(0),
-  );
+  const [whiteImageOpacity] = useState(new Animated.Value(0));
 
   useEffect(() => {
     if (touchCount === 9) {
@@ -150,9 +146,9 @@ export function AnimalCarouselCardItem({
     }
   }, [touchCount]);
 
+  // 9번째에서 1.5초 뒤에 10으로 넘어가는데 이때 정령이 태어남
   useEffect(() => {
     if (index === activeIndex && touchCount === 9) {
-      // setImageStyle({tintColor: 'white'});
       const timer = setTimeout(() => {
         setTouchCount(10);
       }, 1500);
@@ -167,16 +163,15 @@ export function AnimalCarouselCardItem({
     }
   }, [activeIndex, item, touchCount]);
 
-  const shakingAnimation = useRef(new Animated.Value(0)).current;
-
   const handlePress = () => {
     if (touchCount >= 9) {
       return;
     }
     setTouchCount(prevCount => {
       const newCount = prevCount + 1;
+      //진동
       Vibration.vibrate();
-      // 터치 횟수에 따라 이미지 소스 변경
+      // 터치 횟수에 따라 이미지 소스 변경됨 여기에 소리넣으면 될 듯
       if (newCount === 1) {
         setImageSource(require('@/assets/img_icon/egg_crack1.png'));
       } else if (newCount === 4) {
@@ -271,7 +266,7 @@ export function AnimalCarouselCardItem({
                         }),
                       },
                     ],
-                    opacity: whiteImageOpacity, // 흰색 이미지는 점차 불투명해짐
+                    opacity: whiteImageOpacity,
                   }}
                 />
               </View>

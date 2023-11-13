@@ -149,7 +149,7 @@ export async function TrashImgResultFtn(
 export async function TrashImgResultReturnFtn(
   Img: string,
   retries = 3,
-  interval = 2000,
+  interval = 3000,
   setIsLoading: (isLoading: boolean) => void,
 ) {
   setIsLoading(true);
@@ -166,32 +166,40 @@ export async function TrashImgResultReturnFtn(
     type: 'image/jpeg',
   });
 
+  formData.append('leftRightPercent', 0.01);
+  formData.append('topPercentPercent', 0.01);
+  formData.append('bottomPercentPercent', 0.1);
+
   const token = await getStoredToken();
 
   const headers = {
     Authorization: `Bearer ${token}`,
+
     'Content-Type': 'multipart/form-data',
-    // Add your headers here
   };
 
-  try {
-    const response = await axios.post(
-      'http://zoosum.co.kr:8000/ai/image',
-      formData,
-      {
-        headers,
-      },
-    );
-    setIsLoading(false);
-    return response.data;
-  } catch (error) {
-    if (retries > 0) {
-      console.log(`Upload failed, retrying in ${interval}ms...`, error);
-      await new Promise(resolve => setTimeout(resolve, interval));
-      return TrashImgResultFtn(Img, retries - 1, interval, setIsLoading);
-    } else {
+  // 반복 로직 구현
+  async function attemptUpload(retryCount: number) {
+    try {
+      const response = await axios.post(
+        'http://zoosum.co.kr:8000/ai/image',
+        formData,
+        {headers},
+      );
       setIsLoading(false);
-      console.error('Failed to upload image', error);
+      return response.data; // 성공 응답시 결과 반환
+    } catch (error) {
+      if (retryCount > 0) {
+        console.log(`Upload failed, retrying in ${interval}ms...`, error);
+        await new Promise(resolve => setTimeout(resolve, interval));
+        return attemptUpload(retryCount - 1); // 재귀적으로 재시도
+      } else {
+        setIsLoading(false);
+        console.error('Failed to upload image after multiple attempts', error);
+        throw error; // 모든 시도 실패시 에러 발생
+      }
     }
   }
+
+  return attemptUpload(retries);
 }
