@@ -161,7 +161,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         distanceFilter: 1,
         interval: 5000,
         fastestInterval: 2000,
