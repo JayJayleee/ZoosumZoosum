@@ -175,6 +175,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       console.log('TrashImg 없음', imageSource);
     }
   }, [imageSource]);
+
   useEffect(() => {
     // 볼륨 버튼 이벤트 리스너 등록
     KeyEvent.onKeyDownListener((keyEvent: any) => {
@@ -189,6 +190,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       KeyEvent.removeKeyDownListener();
     };
   }, []);
+
   return (
     <View style={styles.container}>
       {!isLoading && (

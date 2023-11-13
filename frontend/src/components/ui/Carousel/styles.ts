@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     paddingLeft: 20,
     paddingTop: 50,
-
+    textAlign: 'center',
     position: 'absolute',
     top: 10,
   },
