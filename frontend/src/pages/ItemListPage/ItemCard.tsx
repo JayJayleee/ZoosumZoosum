@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AppText from '@/components/ui/Text';
 import FastImage from 'react-native-fast-image';
+import { ItemDetailModal } from '@/components/ui/Modal/ItemDetailModal';
 
 interface ItemCardProps {
   itemId : number,
@@ -12,14 +13,23 @@ interface ItemCardProps {
 }
 
 export default function ItemCard({itemName, fileUrl, selected, itemType}: ItemCardProps) {
+  const [isImageModalOpen, setImageModalOpen] = useState<boolean>(false);
+  const [imageURL, setImageURL] = useState<string>("");
+  const [itemTypes, setItemTypes] = useState<string>("");
 
   const getImageStyle = () => {
     return itemType === 'TREE' ? styles.image : styles.image2;
   };
-
+  const gotodetail = (fileUrl :string,itemType : string, ) => {
+    setImageURL(fileUrl)
+    setItemTypes(itemType)
+    setImageModalOpen(true)
+  }
   return (
+    <>
+    {isImageModalOpen && <ItemDetailModal isImageModalOpen={isImageModalOpen} closeFnt={() => setImageModalOpen(false)} imageURL={imageURL} itemType={itemTypes} />}
     <View style={styles.card}>
-      <TouchableOpacity style={styles.card2}>
+      <TouchableOpacity style={styles.card2} onPress={() => gotodetail(fileUrl, itemType)}>
         {selected == true &&
           <FastImage
           source={require('@/assets/tagging.png')}
@@ -34,6 +44,7 @@ export default function ItemCard({itemName, fileUrl, selected, itemType}: ItemCa
       
 
     </View>
+    </>
   );
 };
 

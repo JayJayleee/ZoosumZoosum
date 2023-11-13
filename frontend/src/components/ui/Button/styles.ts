@@ -156,15 +156,15 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   ranking: {
-    width: windowWidth*0.15,
+    width: windowWidth*0.3,
     height: windowHeight*0.05,
     backgroundColor: 'white',
     borderRadius : 30,
     justifyContent: 'center',
-    // borderWidth: 2,
+    // borderWidth: 2,r
     borderStyle: 'solid',
     alignItems: 'center',
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     marginVertical : 2,
   },
   rankingText: {
@@ -173,13 +173,13 @@ export const styles = StyleSheet.create({
     fontSize: 15,
   },
   ranking_unselect: {
-    width: windowWidth*0.45,
+    width: windowWidth*0.3,
     height: windowHeight*0.05,
     backgroundColor: '#7ED3A1',
     borderRadius : 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     marginVertical : 2,
   },
   rankingText_unselect: {
