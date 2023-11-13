@@ -38,14 +38,6 @@ const styles = StyleSheet.create({
     alignItems : 'center',
     marginBottom : windowHeight*0.04,
   },
-  select_cardlist : {
-    width : windowWidth*0.9,
-    height : windowHeight*0.2,
-    marginTop : windowHeight*0.01, // 10px
-    backgroundColor : '#646567',
-    borderRadius : 10,
-    justifyContent : 'center'
-  },
   having_cardlist : {
     width : '85%',
     height : '100%',
@@ -57,7 +49,6 @@ const styles = StyleSheet.create({
   },
   button_container : {
     flexDirection : 'row',
-
   }
 });
 

@@ -32,12 +32,8 @@ export type RootStackParamList = {
   };
   Ranking: undefined;
 
-  PickIsland: {
-    itemId: number;
-  };
-  PickTree: {
-    itemId: number;
-  };
+  PickIsland: undefined;
+  PickTree: undefined;
   FriendDetail: {
     animalId: number;
   };
