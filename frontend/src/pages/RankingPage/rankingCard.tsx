@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     justifyContent : 'center',
   },
   title_text1 : {
-    fontSize : 15,
+    fontSize : 13.5,
     fontFamily : 'NPSfont_extrabold',
   },
   title_text2 : {

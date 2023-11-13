@@ -4,6 +4,9 @@ import PickIslandCard from './PickIslandCard';
 import styles from './style';
 import { fetchMyItemListInfo } from '@/apis/Item';
 import { useQuery } from '@tanstack/react-query';
+import FastImage from 'react-native-fast-image';
+import { Wave } from '@/components/ui/animation/LottieEffect';
+import AppText from '@/components/ui/Text';
 
 type ApiResponse = {
   data: Item[];
@@ -22,7 +25,7 @@ interface PickIslandCardListProps {
 }
 
 export default function PickIslandCardList({navigation} : PickIslandCardListProps) {
-  const [ItemArray, setItemArray] = useState<Item[]>();
+  const [ItemArray, setItemArray] = useState<Item[]>([]);
   const itemType = 'ISLAND';
 
   useQuery(['ItemList'], () => fetchMyItemListInfo(itemType), {
@@ -58,8 +61,13 @@ export default function PickIslandCardList({navigation} : PickIslandCardListProp
     },
   });
 
-  if (!ItemArray?.length) return <Text>로딩...</Text>;
-
+  if (!ItemArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+    </View>
+  )
   return (
     <View>
       <FlatList

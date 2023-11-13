@@ -46,7 +46,15 @@ const styles = StyleSheet.create({
   },
   button_container : {
     flexDirection : 'row',
-  }
+  },
+  isLoading : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent : 'flex-start',
+    // fontSize : 35,
+    fontFamily : 'NPSfont_extrabold',
+    marginTop : windowHeight * 0.06
+  },
 });
 
 export default styles;

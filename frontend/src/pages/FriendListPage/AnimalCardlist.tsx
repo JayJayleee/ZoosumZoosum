@@ -5,6 +5,9 @@ import styles from './style';
 import {fetchMyAnimalListInfo} from '@/apis/animal';
 import {useQuery} from '@tanstack/react-query';
 import { useFocusEffect } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import { Wave } from '@/components/ui/animation/LottieEffect';
+import AppText from '@/components/ui/Text';
 
 type Animal = {
   animalId: number;
@@ -58,8 +61,13 @@ export default function AnimalCardlist({navigation}: AnimalCardListProps) {
   });
   useFocusEffect(useCallback(() => {refetch()}, []))
 
-  if (!animalsArray.length) return <Text>로딩...</Text>;
-
+  if (!animalsArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+    </View>
+  )
   return (
     <View>
       <FlatList
