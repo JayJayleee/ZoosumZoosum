@@ -16,7 +16,7 @@ interface ModalComponentProps
   modalStyle?: 'top' | 'default' | 'close';
   noButton?: boolean;
   TopChildren?: ReactNode;
-  ViewStyle?: 'default' | 'treeInfo' | 'close' | 'activity';
+  ViewStyle?: 'default' | 'treeInfo' | 'close' | 'activity' | 'trashinfo';
   btnVariant?: 'default' | 'button' | 'activity';
 }
 
@@ -66,6 +66,9 @@ export default function ModalComponent({
     case 'activity':
       viewVariantStyle = styles.activityView;
       break;
+    case 'trashinfo':
+      viewVariantStyle = styles.trashinfo;
+      break;
   }
 
   return (
@@ -74,8 +77,7 @@ export default function ModalComponent({
       transparent={transparent}
       animationType={animationType}
       visible={isVisible}
-      onRequestClose={onRequestClose}
-      >
+      onRequestClose={onRequestClose}>
       <View style={variantStyle}>
         <Toast />
         {TopChildren}

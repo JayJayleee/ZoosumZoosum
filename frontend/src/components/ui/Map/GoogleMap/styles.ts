@@ -39,6 +39,12 @@ const styles = StyleSheet.create({
     height: 130,
     zIndex: 1,
   },
+  trash: {
+    marginTop: 30,
+    width: 80,
+    height: 80,
+    zIndex: -1,
+  },
 });
 
 export default styles;

@@ -19,7 +19,7 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 export default function TutorialPage({navigation}: TutorialScreenProps) {
   const goIsland = () => {
-    navigation.navigate('FirstEgg');
+    navigation.navigate('FirstEgg', {isFirstLogin: true});
   };
 
   const goToPrev = () => {

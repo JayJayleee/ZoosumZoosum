@@ -39,6 +39,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [trashData, setTrashData] = useState<TrashDaTaList>();
+  const [trashResultImg, setTrashResultImg] = useState<string>('');
   const [getAnimalIMG, setGetAnimalIMG] = useState<string>('');
   const [getAnimalID, setGetAnimalID] = useState<number>(0);
 
@@ -48,7 +49,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
   // 앱 종료 시, 실행하는 함수
   const exitFtn = () => {
-RNExitApp.exitApp();
+    RNExitApp.exitApp();
   };
 
   useEffect(() => {
@@ -64,6 +65,13 @@ RNExitApp.exitApp();
   useEffect(() => {
     if (route.params?.shouldOpenModal === true) {
       setModalVisible(true);
+    }
+
+    if (route.params.TrashImg) {
+      const base64Image = route.params.TrashImg;
+      setTrashResultImg(`data:image/jpeg;base64,${base64Image}`);
+
+      // console.log('그걸 새로 저장함', trashData);
     }
 
     if (route.params.TrashData) {
@@ -91,7 +99,7 @@ RNExitApp.exitApp();
 
   const [resultData, setResultData] = useState<TrashList[]>();
   const [ploggingDistance, setPloggingDistance] = useState(0);
-  const [trashCount, setTrashCount] = useState(100);
+  const [trashCount, setTrashCount] = useState(0);
   const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityDataType>();
@@ -304,7 +312,7 @@ RNExitApp.exitApp();
     {
       title: '일반 쓰레기',
       img: require('@/assets/img_icon/normal_trash.png'),
-      description: trashData?.general_trash || 0,
+      description: trashData?.['general trash'] || 0,
     },
     {
       title: '플라스틱',
@@ -329,9 +337,10 @@ RNExitApp.exitApp();
     {
       title: '비닐 봉투',
       img: require('@/assets/img_icon/plastic_bag_trash.png'),
-      description: trashData?.plastic_bag || 0,
+      description: trashData?.['plastic bag'] || 0,
     },
   ];
+
   // console.log('이걸 주고 있거든여', DATA);
 
   // 쓰레기 사진 찍었을 때, 카메라로 이동하고, 찍었다는 신호를 지도에 전달
@@ -348,6 +357,7 @@ RNExitApp.exitApp();
         isVisible={isModalVisible}
         onClose={closeModalAndUpdateCount}
         animalImg={getAnimalIMG}
+        TrashResultImg={trashResultImg}
         data={DATA}
         navigation={navigation}
       />
@@ -392,6 +402,12 @@ RNExitApp.exitApp();
 
             <TouchableOpacity style={styles.cameraBtn} onPress={captureTrash}>
               <Image
+                style={{
+                  width: '100%',
+                  resizeMode: 'contain',
+                  paddingRight: '100%',
+                  // backgroundColor: 'green',
+                }}
                 source={require('@/assets/plogingpage_image/cameraBtn.png')}
               />
             </TouchableOpacity>

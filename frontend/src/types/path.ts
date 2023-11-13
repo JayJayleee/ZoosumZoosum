@@ -13,6 +13,7 @@ export type RootStackParamList = {
     TrashData?: TrashDaTaList;
     selectedAnimalIMG?: string;
     selectedAnimalID?: number;
+    TrashImg: string;
   };
   Camera: {
     getAnimalIMG?: string;
@@ -37,7 +38,9 @@ export type RootStackParamList = {
   FriendDetail: {
     animalId: number;
   };
-  FirstEgg: undefined;
+  FirstEgg: {
+    isFirstLogin?: boolean;
+  };
 };
 
 export type LoginScreenProps = NativeStackScreenProps<

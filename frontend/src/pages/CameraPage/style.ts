@@ -82,20 +82,23 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     width: '100%',
-    top: 45,
-    left: 37,
+    top: '40%',
+    left: '8%',
   },
   overlayImage: {
-    width: '30%',
+    width: '25%',
     height: undefined,
     aspectRatio: 1,
     zIndex: 1,
+    resizeMode: 'cover',
+    // paddingLeft: '30%',
     // backgroundColor: 'black',
     transform: [{scaleX: -1}],
   },
   overlayRightImage: {
     width: '70%',
     zIndex: 1,
+    transform: [{scaleY: -1}],
   },
 });
 

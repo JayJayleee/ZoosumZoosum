@@ -11,6 +11,7 @@ export interface AnimalCarouselCardItemProps {
   index?: number;
   activeIndex?: number;
   onNamingComplete?: (name: string) => void;
+  isFirstLogin?: boolean;
   gotomain?: () => void;
 }
 
@@ -42,6 +43,7 @@ export interface CarouselProps {
 export interface AnimatedProgressCircleProps {
   progress: number;
   duration?: number;
+  children?: ImageSourcePropType;
 }
 
 export interface ProgressCarouselCardItemProps {
@@ -57,6 +59,14 @@ export interface ProgressCarouselCardItemProps {
 export interface SeedCarouselCardItemProps {
   item?: {
     addSeed: number;
+  };
+  index: number;
+  activeIndex?: number;
+}
+
+export interface EggCarouselCardItemProps {
+  item?: {
+    addEgg: number;
   };
   index: number;
   activeIndex?: number;
@@ -119,7 +129,7 @@ export interface TrashList {
 }
 
 export interface TrashDataReturnList {
-  img: Source;
+  img: ImageSourcePropType;
   title: string | number;
   description: number;
 }
@@ -141,11 +151,11 @@ export interface ActivityDataType {
 }
 
 export interface TrashDaTaList {
-  general_trash: number;
+  'general trash': number;
   glass: number;
   metal: number;
   paper: number;
   plastic: number;
-  plastic_bag: number;
+  'plastic bag': number;
   total: number;
 }

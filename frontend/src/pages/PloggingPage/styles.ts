@@ -18,12 +18,14 @@ export const styles = StyleSheet.create({
     width: '100%',
     // backgroundColor: 'red',
     paddingBottom: 0,
-    bottom: '-1.5%',
+    bottom: '-3%',
   },
   cameraBtn: {
-    width: '20%',
+    width: '30%',
     resizeMode: 'contain',
+    // backgroundColor: 'red',
     alignSelf: 'flex-start',
+    // marginRight: 10,
   },
   text: {
     color: 'white',
@@ -34,7 +36,7 @@ export const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    width: '77%',
+    width: '71%',
     paddingLeft: 10,
   },
   mapContainer: {

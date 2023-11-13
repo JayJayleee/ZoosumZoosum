@@ -1,4 +1,4 @@
-import { windowHeight, windowWidth } from '@/constants/styles';
+import {windowHeight, windowWidth} from '@/constants/styles';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -110,6 +110,23 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 10,
     textAlign: 'center',
+  },
+  trashinfo: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
+    maxHeight: '70%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
