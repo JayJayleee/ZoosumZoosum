@@ -38,7 +38,7 @@ public class UserItemCustomRepositoryImpl implements UserItemCustomRepository {
         return queryFactory.selectFrom(userItem)
             .join(userItem.item, item).fetchJoin()
             .where(builder)
-            .orderBy(userItem.time.createTime.asc()) // 먼저 획득한 아이템이 위로 가도록 정렬
+            .orderBy(userItem.selected.desc(), userItem.time.createTime.asc()) // 먼저 획득한 아이템이 위로 가도록 정렬
             .fetch();
     }
 
