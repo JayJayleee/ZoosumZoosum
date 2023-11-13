@@ -66,7 +66,7 @@ export default function RegionRanking({goToprofile}: RankingProps) {
   );
 
   const rankingData = apiResponse ? apiResponse.data : [];
-  console.log('rankingData', rankingData);
+  // console.log('rankingData', rankingData);
   if (isLoading) {
     return (
       <View style={styles.isLoading}>
