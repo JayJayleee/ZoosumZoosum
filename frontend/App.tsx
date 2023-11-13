@@ -36,7 +36,7 @@ import PickIslandPage from '@/pages/PickIslandPage';
 import PickTreePage from '@/pages/PickITreePage';
 import FriendDetailPage from '@/pages/FriendDetailPage';
 import {useEffect} from 'react';
-import {PermissionsAndroid} from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native';
 
 import TutorialPage from '@/pages/TutorialPage';
 import FirstEggPage from '@/pages/FirstEggPage';
@@ -48,9 +48,35 @@ const queryClient = new QueryClient();
 // Enable playback in silence mode
 // Sound.setCategory('Playback');
 
+// 위치 정보 수집 권한 요청
+async function requestPermission() {
+  try {
+    // Android
+    if (Platform.OS === 'android') {
+      return await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: '위치 권한 요청',
+          message: '위치 권한 사용을 허가해주세요.',
+          buttonNeutral: '나중에',
+          buttonNegative: '취소',
+          buttonPositive: '수락',
+        },
+      );
+    }
+    // iOS
+    /* 
+    if (Platform.OS === 'ios') {
+        return await Geolocation.requestAuthorization('always');
+      }
+    */
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function App() {
   whoosh;
-
   useEffect(() => {
     PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
