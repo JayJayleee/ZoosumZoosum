@@ -5,7 +5,6 @@ import static com.addShot.zoosum.entity.QAnimalMotion.animalMotion;
 
 import com.addShot.zoosum.entity.Animal;
 import com.addShot.zoosum.entity.AnimalMotion;
-import com.addShot.zoosum.entity.Item;
 import com.addShot.zoosum.entity.enums.MotionCategory;
 import com.addShot.zoosum.util.RandomUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
