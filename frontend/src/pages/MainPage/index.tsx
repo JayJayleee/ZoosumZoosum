@@ -130,7 +130,6 @@ export default function MainPage({navigation}: MainScreenProps) {
     refetch: StatusRefetch,
   } = useQuery<statusInfo>(['mainStatus'], fetchMyStatusInfo, {
     onSuccess: statusContent => {
-      console.log(statusContent);
       setTrash(statusContent.missionTrash);
       setSeed(statusContent.seed);
       setTreeCount(statusContent.treeCount);
