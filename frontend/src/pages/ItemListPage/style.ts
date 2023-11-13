@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     margin : 10,
   },
   list_container : {
+    height : windowHeight*0.67,
     width : windowWidth,
-    height : windowHeight
   },
   title_head : {
     color : 'white',
@@ -45,42 +45,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // width : '100%',
   },
-  headItem : {
-    width : '100%',
-    height : '5%',
-    justifyContent : 'center',
-    alignItems : 'center',
-  },
-  headItemTitle : {
-    color : 'white',
-    fontSize : 20,
-  },
-  bodyItem: {
-    backgroundColor : '#646567',
-    borderRadius : 10,
-    width : '100%',
-    height : '40%',
-    justifyContent : 'flex-start',
-    alignItems : 'center',
-    paddingTop : 20,
-  },
   body2Item : {
     paddingTop : 20,
     width : '90%',
-    height : '30%',
-  },
-  ItemCardSelect : {
-    backgroundColor: "white",
-    borderRadius : 10,
-    width : '90%',
-    height : '80%',
-    marginBottom : 5,
-    justifyContent : 'flex-start',
-    alignItems : 'center'
-  },
-  ItemCardSelectImgage : {
-    height: "80%",
-    width : "80%"
+    height : '100%',
   },
   islandCard_image : {
     height : '100%',
@@ -98,6 +66,9 @@ const styles = StyleSheet.create({
   treeCard_title : {
     fontSize: 25,
   },
+  button_container2 : {
+    flexDirection : 'row'
+  }
 });
 
 export default styles;

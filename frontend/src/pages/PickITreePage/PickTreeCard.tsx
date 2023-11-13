@@ -39,8 +39,10 @@ export default function PickTreeCard({itemName,fileUrl,itemId,navigation}: PickT
     <View>
       <View style={styles.card}>
         <TouchableOpacity style={styles.card2} onPress={handleCompleteSelection}>
-          <Image style={styles.image} source={{ uri: fileUrl }} resizeMode="contain" />
-          <Text style={styles.title} numberOfLines={1}>{itemName}</Text>
+          <View style={styles.circle}>
+            <Image style={styles.image} source={{uri : fileUrl }} />
+            <Text style={styles.title} numberOfLines={1}>{itemName}</Text>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -56,13 +58,11 @@ const styles = StyleSheet.create({
     flex : 1,
     justifyContent : 'center',
     alignItems : 'center',
-    width : 100,
-    height : 130,
+    width : windowWidth*0.25,
+    height : windowHeight*0.17,
     margin : 5,
   },
   card2: {
-    flex: 1,
-    zIndex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -71,7 +71,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
+    // marginTop : 20,
+    height : '70%',
+    width : '100%',
+    resizeMode : 'cover',
+  },
+  circle: {
+    width : windowWidth*0.26,
     height : windowWidth*0.2,
-    width : windowWidth*2,
+    paddingTop : 20,
+    flex :1,
+    justifyContent : 'center',
+    alignItems : 'center',
   }
+
 });

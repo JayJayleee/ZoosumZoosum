@@ -34,20 +34,21 @@ export default function RegionRanking({goToprofile} : RankingProps) {
   const [selectedRegion, setSelectedRegion] = useState<string>(''); // 기본 선택된 지역
   
   const regions = [
-    { key: '1', value: '서울' },
-    { key: '2', value: '대전' },
-    { key: '3', value: '세종' },
+    { key: '1', value: '강원' },
+    { key: '2', value: '경기' },
+    { key: '3', value: '경상' },
     { key: '4', value: '광주' },
-    { key: '5', value: '인천' },
-    { key: '6', value: '대구' },
+    { key: '5', value: '대구' },
+    { key: '6', value: '대전' },
     { key: '7', value: '부산' },
-    { key: '8', value: '울산' },
-    { key: '9', value: '제주' },
-    { key: '10', value: '경기' },
-    { key: '11', value: '강원' },
-    { key: '12', value: '충청' },
-    { key: '13', value: '전라' },
-    { key: '14', value: '경상' },
+    { key: '8', value: '서울' },
+    { key: '9', value: '세종' },
+    { key: '10', value: '울산' },
+    { key: '11', value: '인천' },
+    { key: '12', value: '전라' },
+    { key: '13', value: '제주' },
+    { key: '14', value: '충청' },
+
   ]; // key-value 형식의 지역 배열
 
   const { refetch } = useQuery(['TopRankingList', selectedRegion], () => fetchMyRegionRankingListInfo(selectedRegion), {
