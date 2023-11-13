@@ -129,7 +129,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
     <AppText style={styles.upperTitle} >
       {isMyProfile? "나의 활동 기록" :`${nickname}님의\n 활동 기록`}
     </AppText>
-    <View style={styles.historySelect}>
+    <View style={isMyProfile? styles.historySelect : styles.historySelectYours}>
       <SingleSelect
        dataList={dataList} 
        setSelected={changeType} 

@@ -56,7 +56,6 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
     compareNickname();
   }, []);
 
-  console.log(getStorage('nickname'));
   // 산책 변수에 받아온 결과를 저장하는 코드
   const {
     isLoading: statisticLoading,

@@ -3,7 +3,6 @@ import * as React from 'react';
 import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import Sound from 'react-native-sound';
 import {whoosh} from '@/constants/sound';
 
 // react-native-screens에 에러가 나서 아래 구문을 추가해줌
@@ -36,10 +35,10 @@ import PickIslandPage from '@/pages/PickIslandPage';
 import PickTreePage from '@/pages/PickITreePage';
 import FriendDetailPage from '@/pages/FriendDetailPage';
 import {useEffect} from 'react';
-import {PermissionsAndroid} from 'react-native';
+import { PermissionsAndroid, TextInput, Text } from 'react-native';
 
 import TutorialPage from '@/pages/TutorialPage';
-import FirstEggPage from '@/pages/FirstEggPage';
+import FirstEggPage from '@/pages/FirstEggPage';;
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -47,6 +46,17 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const queryClient = new QueryClient();
 // Enable playback in silence mode
 // Sound.setCategory('Playback');
+
+interface TextWithDefaultProps extends Text {
+  defaultProps?: {allowFontScaling?: boolean};
+}
+interface TextInputWithDefaultProps extends TextInput {
+  defaultProps?: {allowFontScaling?: boolean};
+}
+(Text as unknown as TextWithDefaultProps).defaultProps = (Text as unknown as TextWithDefaultProps).defaultProps || {};
+(Text as unknown as TextWithDefaultProps).defaultProps!.allowFontScaling = false;
+(TextInput as unknown as TextInputWithDefaultProps).defaultProps = (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {};
+(TextInput as unknown as TextInputWithDefaultProps).defaultProps!.allowFontScaling = false;
 
 function App() {
   whoosh;
