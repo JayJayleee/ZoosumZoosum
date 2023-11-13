@@ -5,8 +5,6 @@ import cv2
 from ultralytics import YOLO
 import base64
 from typing import Optional
-from pydantic import BaseModel
-from PIL import ImageFont, ImageDraw, Image
 
 app = FastAPI()
 
@@ -35,8 +33,6 @@ color = [
 smodel = YOLO('./yolov8s_custom.pt')
 nmodel = YOLO('./yolov8n_custom.pt')
 print("model load 완료")
-
-font = ImageFont.truetype("fonts/MaruBuri-Bold.ttf", 10)
 
 def getResultFromData(
         file,
