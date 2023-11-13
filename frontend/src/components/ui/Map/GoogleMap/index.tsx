@@ -116,7 +116,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
       },
@@ -143,7 +143,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         distanceFilter: 1,
         interval: 5000,
         fastestInterval: 2000,
@@ -247,12 +247,9 @@ const GoogleMap = (props: GoogleMapProps) => {
         onRegionChangeComplete={region => {}}>
         {/* 주운 쓰레기 목록 마커 */}
         {markers.current.map(marker => (
-          <Marker
-            key={marker.id}
-            coordinate={marker.coordinate}
-            image={markerImage}
-            zIndex={-1}
-          />
+          <Marker key={marker.id} coordinate={marker.coordinate}>
+            <FastImage source={markerImage} style={styles.trash} />
+          </Marker>
         ))}
         {/* 내가 고른 동물 마커 */}
         <Marker

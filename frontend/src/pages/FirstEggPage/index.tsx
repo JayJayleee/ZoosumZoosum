@@ -1,17 +1,17 @@
 import React, {useCallback, useState} from 'react';
 import {View, ImageBackground, StyleSheet, Dimensions} from 'react-native';
 import {FirstEggScreenProps} from '@/types/path';
-import {AnimalCarouselCardItem} from '@/components/ui/Carousel/AnimalCarouselCardItem';
+import {AnimalCarouselCardItem} from '@/pages/FirstEggPage/AnimalCarouselCardItem';
 import {useQuery} from '@tanstack/react-query';
 import {fetchFirstEgg} from '@/apis/tutorial';
 import AppButton from '@/components/ui/Button';
-export default function FirstEggPage({navigation}: FirstEggScreenProps) {
+export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
   type Egg = {
     animalId: number;
     animalName: string;
     fileUrl: string;
   };
-
+  const [isFirstLogin] = useState(route.params?.isFirstLogin || false);
   const [firstEgg, setFirstEgg] = useState<Egg>();
 
   const {isError: isGetError, error: getError} = useQuery<Egg, Error>(
@@ -56,6 +56,7 @@ export default function FirstEggPage({navigation}: FirstEggScreenProps) {
           index={1}
           onNamingComplete={handleNamingComplete}
           gotomain={gotomain}
+          isFirstLogin={isFirstLogin}
           item={{
             fileUrl: firstEgg?.fileUrl ?? '',
             animalName: firstEgg?.animalName ?? '',

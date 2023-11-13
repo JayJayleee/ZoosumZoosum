@@ -13,6 +13,7 @@ export type RootStackParamList = {
     TrashData?: TrashDaTaList;
     selectedAnimalIMG?: string;
     selectedAnimalID?: number;
+    TrashImg: string;
   };
   Camera: {
     getAnimalIMG?: string;
@@ -32,16 +33,14 @@ export type RootStackParamList = {
   };
   Ranking: undefined;
 
-  PickIsland: {
-    itemId: number;
-  };
-  PickTree: {
-    itemId: number;
-  };
+  PickIsland: undefined;
+  PickTree: undefined;
   FriendDetail: {
     animalId: number;
   };
-  FirstEgg: undefined;
+  FirstEgg: {
+    isFirstLogin?: boolean;
+  };
 };
 
 export type LoginScreenProps = NativeStackScreenProps<

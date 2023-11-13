@@ -3,7 +3,7 @@ import {FlatListProps, View, Keyboard} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {BadgeCarouselCardItem} from '../Carousel/BadgeCarouselCardItem';
 import {BoxCarouselCardItem} from '../Carousel/BoxCarouselCardItem';
-import {AnimalCarouselCardItem} from '../Carousel/AnimalCarouselCardItem';
+import {EggCarouselCardItem} from './EggCarouselCardItem';
 import {ProgressCarouselCardItem} from './ProgressCarouselCardItem';
 import {SeedCarouselCardItem} from './SeedCarouselCardItem';
 import {ITEM_WIDTH, SLIDER_WIDTH} from '@/constants/styles';
@@ -37,7 +37,9 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
     ...(resultDataList.missionList ? resultDataList.missionList : []),
     ...(resultDataList.islandList ? resultDataList.islandList : []),
     ...(resultDataList.treeList ? resultDataList.treeList : []),
-    ...(resultDataList.animalList ? resultDataList.animalList : []),
+    ...(resultDataList.eggList && resultDataList.eggList[0].addEgg !== 0
+      ? resultDataList.eggList
+      : []),
     ...(resultDataList.seedList && resultDataList.seedList[0].addSeed !== 0
       ? resultDataList.seedList
       : []),
@@ -54,6 +56,9 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
     if (item.addSeed && item.addSeed != 0) {
       return <SeedCarouselCardItem item={item} index={itemIndex} />;
     }
+    if (item.addEgg && item.addEgg != 0) {
+      return <EggCarouselCardItem item={item} index={itemIndex} />;
+    }
     if (item.badgeId) {
       return <BadgeCarouselCardItem item={item} index={itemIndex} />;
     }
@@ -64,15 +69,6 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
           index={itemIndex}
           activeIndex={index}
           itemType={item.itemType}
-        />
-      );
-    }
-    if (item.animalId) {
-      return (
-        <AnimalCarouselCardItem
-          item={item}
-          index={itemIndex}
-          activeIndex={index}
         />
       );
     }

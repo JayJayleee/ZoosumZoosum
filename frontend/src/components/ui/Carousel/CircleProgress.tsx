@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Animated} from 'react-native';
+import {View, Animated, Image} from 'react-native';
 import {Circle} from 'react-native-progress';
 import AppText from '../Text';
 import {AnimatedProgressCircleProps} from '@/types/plogging';
@@ -7,6 +7,7 @@ import {AnimatedProgressCircleProps} from '@/types/plogging';
 function AnimatedProgressCircle({
   progress,
   duration = 1000,
+  children,
 }: AnimatedProgressCircleProps) {
   const [animatedValue] = useState(new Animated.Value(0));
   const [displayedProgress, setDisplayedProgress] = useState(0);
@@ -33,9 +34,20 @@ function AnimatedProgressCircle({
         size={140}
         progress={displayedProgress}
         thickness={15}
-        color="#ACFA58"
+        color="#2dcf8b"
         unfilledColor="#f2f2f2"
       />
+      {children && (
+        <Image
+          source={children}
+          style={{
+            width: 100,
+            height: 100,
+            position: 'absolute',
+            opacity: 0.5,
+          }}
+        />
+      )}
       <AppText
         style={{position: 'absolute', color: 'white', fontSize: 30}}>{`${(
         displayedProgress * 100

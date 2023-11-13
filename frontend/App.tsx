@@ -4,7 +4,7 @@ import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Sound from 'react-native-sound';
-import { whoosh } from '@/constants/sound';
+import {whoosh} from '@/constants/sound';
 
 // react-native-screens에 에러가 나서 아래 구문을 추가해줌
 import {enableScreens} from 'react-native-screens';
