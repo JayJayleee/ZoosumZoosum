@@ -31,9 +31,7 @@ const styles = StyleSheet.create({
   },
   head : {
     height : windowHeight*0.1,
-    marginTop : windowHeight*0.03,
-    marginBottom : '5%',
-    alignItems: 'center',
+    marginTop : windowWidth*0.1
   },
 
   hiddenCard: {
@@ -68,7 +66,15 @@ const styles = StyleSheet.create({
   },
   button_container2 : {
     flexDirection : 'row'
-  }
+  },
+  isLoading : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent : 'flex-start',
+    // fontSize : 35,
+    fontFamily : 'NPSfont_extrabold',
+    marginTop : windowHeight * 0.06
+  },
 });
 
 export default styles;

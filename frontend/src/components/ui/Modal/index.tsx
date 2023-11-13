@@ -16,7 +16,7 @@ interface ModalComponentProps
   modalStyle?: 'top' | 'default' | 'close';
   noButton?: boolean;
   TopChildren?: ReactNode;
-  ViewStyle?: 'default' | 'treeInfo' | 'close' | 'activity' | 'trashinfo';
+  ViewStyle?: 'default' | 'treeInfo' | 'close' | 'activity' | 'trashinfo' | 'iteminfo';
   btnVariant?: 'default' | 'button' | 'activity';
 }
 
@@ -68,6 +68,9 @@ export default function ModalComponent({
       break;
     case 'trashinfo':
       viewVariantStyle = styles.trashinfo;
+      break;
+    case 'iteminfo':
+      viewVariantStyle = styles.iteminfo;
       break;
   }
 

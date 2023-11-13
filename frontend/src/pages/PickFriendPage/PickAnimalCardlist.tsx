@@ -8,6 +8,9 @@ import AppButton from '@/components/ui/Button';
 import { useMutation, useQueryClient} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '@/constants/toastConfig';
+import FastImage from 'react-native-fast-image';
+import { Wave } from '@/components/ui/animation/LottieEffect';
+import AppText from '@/components/ui/Text';
 
 type ApiResponse = {
   data: Animal[];
@@ -24,37 +27,28 @@ interface PickFriendPageProps {
   navigation: () => void;
 }
 
-const targetNumColumns = 3;
-
 export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
-  const [animalArray, setAnimalArray] = useState<Animal[]>();
-  const [numColumns, setNumColumns] = useState<number>(targetNumColumns);
-
+  const [animalArray, setAnimalArray] = useState<Animal[]>([]);
 
   useQuery(['FriendList'], fetchMyAnimalListInfo, {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
 
-      const totalCards = data.length;
-      const calculatedNumColumns = Math.min(
-        targetNumColumns,
-        Math.ceil(totalCards / targetNumColumns),
-      );
-      setNumColumns(calculatedNumColumns);
-
-      const missingCards =
-        calculatedNumColumns - (totalCards % calculatedNumColumns);
-
       if (!Array.isArray(data)) {
         console.error('Data는 배열이 아닙니다:', data);
         return;
       }
+
       let processedData = [...data];
 
-      if (missingCards !== targetNumColumns) {
-        for (let i = 0; i < missingCards; i++) {
+      const numColumns = 3;
+
+      const remainingCards = numColumns - (processedData.length % numColumns);
+
+      if (remainingCards > 0) {
+        for (let i = 0; i < remainingCards; i++) {
           processedData.push({
-            animalId: i,
+            animalId: i + processedData.length,
             animalName: '',
             fileUrl: '',
             selected: false,
@@ -64,7 +58,7 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
       setAnimalArray(processedData);
     },
 
-    onError: (error) => {
+    onError: error => {
       console.error('돌발돌발', error);
     },
   });
@@ -105,8 +99,13 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
     // updateMutation 함수를 호출하여 PUT 요청 실행
     updateMutation.mutate(selectedIds);
   };
-
-  if (!animalArray?.length) return <Text>로딩...</Text>;
+  if (!animalArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+    </View>
+  )
 
   const showToast = (text:string) => {
     Toast.show({

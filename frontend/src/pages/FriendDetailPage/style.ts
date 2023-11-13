@@ -76,7 +76,15 @@ const styles = StyleSheet.create({
     color : 'black',
     fontSize : 20,
     fontFamily : 'NPSfont_extrabold',
-  }
+  },
+  isLoading : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent : 'flex-start',
+    // fontSize : 35,
+    fontFamily : 'NPSfont_extrabold',
+    marginTop : windowHeight * 0.06
+  },
 });
 
 export default styles;

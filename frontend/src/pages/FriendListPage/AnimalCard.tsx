@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     right : "-15%"
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily : 'NPSfont_bold'
   },
   image: {
     height : windowHeight*0.10,

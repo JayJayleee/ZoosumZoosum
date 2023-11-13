@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
+    // padding: 10,
     marginRight : "5%"
   },
   pickfriendText: {
