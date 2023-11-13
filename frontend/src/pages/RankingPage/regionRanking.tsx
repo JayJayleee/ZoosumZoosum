@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ImageBackground, StyleSheet, FlatList} from 'react-native';
-import { SelectList, MultipleSelectList }from 'react-native-dropdown-select-list'
+import {
+  SelectList,
+  MultipleSelectList,
+} from 'react-native-dropdown-select-list';
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
 
@@ -8,11 +11,11 @@ import styles from './style';
 
 import RankingCard from './rankingCard';
 
-import { fetchMyRegionRankingListInfo } from '@/apis/ranking';
-import { useQuery } from '@tanstack/react-query';
-import { windowHeight } from '@/constants/styles';
+import {fetchMyRegionRankingListInfo} from '@/apis/ranking';
+import {useQuery} from '@tanstack/react-query';
+import {windowHeight} from '@/constants/styles';
 
-import { Wave } from '@/components/ui/animation/LottieEffect';
+import {Wave} from '@/components/ui/animation/LottieEffect';
 import FastImage from 'react-native-fast-image';
 
 type ApiResponse = {
@@ -26,68 +29,87 @@ type Rank = {
 };
 
 interface RankingProps {
-  goToprofile : (data: string) => void;
+  goToprofile: (data: string) => void;
 }
 
-export default function RegionRanking({goToprofile} : RankingProps) {
-  const [RankingArray, setRankingArray] = useState<Rank[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<string>(''); // 기본 선택된 지역
-  
-  const regions = [
-    { key: '1', value: '강원' },
-    { key: '2', value: '경기' },
-    { key: '3', value: '경상' },
-    { key: '4', value: '광주' },
-    { key: '5', value: '대구' },
-    { key: '6', value: '대전' },
-    { key: '7', value: '부산' },
-    { key: '8', value: '서울' },
-    { key: '9', value: '세종' },
-    { key: '10', value: '울산' },
-    { key: '11', value: '인천' },
-    { key: '12', value: '전라' },
-    { key: '13', value: '제주' },
-    { key: '14', value: '충청' },
+export default function RegionRanking({goToprofile}: RankingProps) {
+  const [selectedRegion, setSelectedRegion] = useState<string>('서울'); // 기본으로 일단 한 곳을 정해야 하니까 서울로 해두겠음
 
+  const regions = [
+    {key: '1', value: '강원'},
+    {key: '2', value: '경기'},
+    {key: '3', value: '경상'},
+    {key: '4', value: '광주'},
+    {key: '5', value: '대구'},
+    {key: '6', value: '대전'},
+    {key: '7', value: '부산'},
+    {key: '8', value: '서울'},
+    {key: '9', value: '세종'},
+    {key: '10', value: '울산'},
+    {key: '11', value: '인천'},
+    {key: '12', value: '전라'},
+    {key: '13', value: '제주'},
+    {key: '14', value: '충청'},
   ]; // key-value 형식의 지역 배열
 
-  const { refetch } = useQuery(['TopRankingList', selectedRegion], () => fetchMyRegionRankingListInfo(selectedRegion), {
-    onSuccess: (data) => {
-      setRankingArray(data.data);
+  const {
+    data: apiResponse,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(
+    ['TopRankingList', selectedRegion],
+    () => fetchMyRegionRankingListInfo(selectedRegion),
+    {
+      enabled: !!selectedRegion, // 지역이 선택될 때만 쿼리가 실행되어 기존 데이터 무효화 하는 것임
     },
-    onError: (error) => {
-      console.error('Error fetching rankings', error);
-    },
-    enabled: !!selectedRegion,
-  });
+  );
 
-  useEffect(() => {
-    refetch();
-  }, [selectedRegion, refetch]);
+  const rankingData = apiResponse ? apiResponse.data : [];
+  console.log('rankingData', rankingData);
+  if (isLoading) {
+    return (
+      <View style={styles.isLoading}>
+        <FastImage
+          source={require('@/assets/loginpage_image/zooisland_logo.png')}
+        />
+        <Wave />
+        <AppText style={styles.isLoading}>로딩중..</AppText>
+      </View>
+    );
+  }
 
+  if (isError) {
+    console.log('지역 별 랭킹 호출 - 오류 발생', error);
+  }
 
-  if (!RankingArray.length) return (
-    <View style={styles.isLoading}>
-      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
-      <Wave />
-      <AppText style={styles.isLoading}>로딩중..</AppText>
-    </View>
-  )
-  
   return (
     <View style={styles.ranking_container}>
       <View style={styles.select_container}>
         <SelectList
-          setSelected={(val:string) => setSelectedRegion(val) }
+          setSelected={(val: string) => setSelectedRegion(val)}
           maxHeight={0}
           data={regions}
           search={false}
-          boxStyles={{width: '80%', height: windowHeight * 0.06, borderColor:"#7ED3A1", borderWidth: 2, justifyContent : 'center', alignItems : 'center'}} 
-          inputStyles={{width: '80%', fontSize: 15, }}
-          dropdownStyles={{height: windowHeight*0.3, borderColor:"#7ED3A1", borderWidth: 1, width: 'auto', backgroundColor: 'white',}}
-          dropdownTextStyles={{fontSize: 15, width:'80%'}}
-          fontFamily='NPSfont_regular'
-          placeholder={"지역을 선택해주세요"}
+          boxStyles={{
+            width: '80%',
+            height: windowHeight * 0.06,
+            borderColor: '#7ED3A1',
+            borderWidth: 2,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          inputStyles={{width: '80%', fontSize: 15}}
+          dropdownStyles={{
+            height: windowHeight * 0.3,
+            borderColor: '#7ED3A1',
+            borderWidth: 1,
+            width: 'auto',
+            backgroundColor: 'white',
+          }}
+          dropdownTextStyles={{fontSize: 15, width: '80%'}}
+          fontFamily="NPSfont_regular"
+          placeholder={'지역을 선택해주세요'}
           save="value"
         />
       </View>
@@ -99,14 +121,14 @@ export default function RegionRanking({goToprofile} : RankingProps) {
         <Text style={styles.title_grid4}>점수</Text>
       </View> */}
       <View style={styles.body_container}>
-        {RankingArray.length === 0 ? (
-          <Text style={styles.error_text} >데이터가 없습니다.</Text>
+        {rankingData.length === 0 ? (
+          <AppText style={styles.error_text}>데이터가 없습니다.</AppText>
         ) : (
           <FlatList
             horizontal={false}
-            data={RankingArray}
+            data={rankingData}
             keyExtractor={item => item.nickname}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <RankingCard
                 index={index}
                 nickname={item.nickname}
