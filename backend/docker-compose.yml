@@ -13,7 +13,7 @@ services:
             - spring
         restart: unless-stopped
         volumes:
-            - /var/lib/jenkins/workspace/B102-SERVER-DEPLOY/backend/src/main/resources/html:/usr/share/nginx/html
+            - /var/lib/jenkins/workspace/B102-SERVER-DEPLOY/backend/src/main/resources/index:/usr/share/nginx/html
             - /data/nginx:/etc/nginx/conf.d
             - /data/certbot/conf:/etc/letsencrypt
             - /data/certbot/www:/var/www/certbot
