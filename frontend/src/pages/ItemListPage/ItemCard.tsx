@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily : 'NPSfont_bold'
   },
   image: {
     marginTop : 20,

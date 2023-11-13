@@ -31,9 +31,7 @@ const styles = StyleSheet.create({
   },
   head : {
     height : windowHeight*0.1,
-    marginTop : windowHeight*0.03,
-    marginBottom : '5%',
-    alignItems: 'center',
+    marginTop : windowWidth*0.1
   },
 
   hiddenCard: {

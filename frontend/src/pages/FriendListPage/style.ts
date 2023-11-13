@@ -18,10 +18,7 @@ const styles = StyleSheet.create({
     fontSize : 35,
     fontFamily : 'NPSfont_extrabold'
   },
-  title_body : {
-    color : 'white',
-    fontSize : 20,
-  },
+
   head : {
     height : windowHeight*0.1,
     marginTop : windowWidth*0.1
