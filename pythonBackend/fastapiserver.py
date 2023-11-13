@@ -219,11 +219,11 @@ def predict(
             bbox = list(map(int, bboxes[i])) 
             x, y, x2, y2 = bbox
 
-            cv2.rectangle(img, (x, y), (x2, y2), color[class_ids[i]], 6)
+            cv2.rectangle(img, (x, y), (x2, y2), color[class_ids[i]], 14)
 
             cv2.putText(img, 
                         trash_name[class_ids[i]]
-                        , (x+10, y + 50), font, 5, color[class_ids[i]], 5)
+                        , (x+10, y-10), font, 6, color[class_ids[i]], 10)
 
     # cv2 데이터를 base64 로 인코딩
     encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),90]
