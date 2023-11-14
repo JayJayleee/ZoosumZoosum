@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     color: 'white',
-    fontFamily: 'NPSfont_bold'
+    fontFamily: 'NPSfont_bold',
+    fontSize: 12,
   },
   banner: {
     position: 'relative',
@@ -73,13 +74,13 @@ const styles = StyleSheet.create({
   bannerText: {
     color: 'white',
     textAlign: 'right',
-    fontSize: 15,
+    fontSize: 13,
   },
   bannerBoldText: {
     color: 'white',
     marginTop: '5%',
     textAlign: 'right',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'NPSfont_bold'
   },
   buttonToggle :{
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
   toggleBtnText: {
     color: 'black',
-    fontSize : 13,
+    fontSize : 12,
   },
   toggleMoveButton: {
     justifyContent: 'center',

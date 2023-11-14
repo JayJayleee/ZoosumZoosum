@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleProp, TextStyle, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import AppText from '../Text';
+import { changeButtonSound } from '@/constants/sound';
 
 type ButtonProps = {
   children?: string;
@@ -147,9 +148,15 @@ export default function AppButton({
       break;
   }
 
+  // 버튼 클릭 함수(소리 추가)
+  const buttonFtn = () => {
+    changeButtonSound();
+    onPress();
+  } 
+
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={() => {buttonFtn()}}
       style={variantStyle}
       activeOpacity={0.9}>
       <AppText style={textStyle}>{children}</AppText>
