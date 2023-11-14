@@ -22,9 +22,9 @@ import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
 import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
-import { AppCloseModal } from '@/components/ui/Modal/CloseModal';
-import { windowWidth } from '@/constants/styles';
-import { changeMotion, pause, replay, changeMotionStop } from '@/constants/sound';
+import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
+import {windowWidth} from '@/constants/styles';
+import {changeMotion, pause, replay, changeMotionStop} from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
 
 export default function MainPage({navigation}: MainScreenProps) {
@@ -61,7 +61,10 @@ export default function MainPage({navigation}: MainScreenProps) {
   const [animalUri, setAnimalUri] = useState<animalForm[]>([]);
   // 동물 리스트의 갯수를 저장할 변수 생성
   const [numberAnimal, setNumberAnimal] = useState<number>(0);
+  // 알 갯수를 저장할 변수 생성
+  const [numberEgg, setNumberEgg] = useState<number>(0);
 
+  console.log(numberEgg, '남은 알');
   // 뒤로 가기 클릭 시 종료 여부 묻도록 설정
   useEffect(() => {
     const backAction = () => {
@@ -94,7 +97,10 @@ export default function MainPage({navigation}: MainScreenProps) {
   // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
   useEffect(() => {
     if (isHaveEgg) {
-      navigation.navigate('FirstEgg', {isFirstLogin: false});
+      navigation.navigate('FirstEgg', {
+        isFirstLogin: false,
+        eggCount: numberEgg,
+      });
     }
   }, [isHaveEgg]);
 
@@ -140,7 +146,7 @@ export default function MainPage({navigation}: MainScreenProps) {
         second: statusContent.second,
       });
       setDistance(statusContent.missionLength);
-
+      setNumberEgg(statusContent.egg);
       if (statusContent.egg > 0) {
         setHaveEgg(true);
       } else {
@@ -218,7 +224,11 @@ export default function MainPage({navigation}: MainScreenProps) {
   };
 
   // 섬에 있는 동물 클릭 시, 다른 이미지를 받아오는 함수
-  const newAnimalAct = async (index:number, animalId:number, fileUri:string ) => {
+  const newAnimalAct = async (
+    index: number,
+    animalId: number,
+    fileUri: string,
+  ) => {
     changeMotionStop();
     let newPose = await getNewAnimalPose(animalId, fileUri);
     let copiedItems = [...animalUri];

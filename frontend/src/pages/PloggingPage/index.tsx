@@ -42,6 +42,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [trashResultImg, setTrashResultImg] = useState<string>('');
   const [getAnimalIMG, setGetAnimalIMG] = useState<string>('');
   const [getAnimalID, setGetAnimalID] = useState<number>(0);
+  const [getErrorStatus, setGetErrorStatus] = useState<number>(0);
 
   // 종료 여부
   let endPlog: boolean = false;
@@ -87,6 +88,11 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
 
     if (route.params.selectedAnimalID) {
       setGetAnimalID(route.params.selectedAnimalID);
+      // console.log('정령 ID 받음', getAnimalID);
+    }
+
+    if (route.params.errorStatus) {
+      setGetErrorStatus(route.params.errorStatus);
       // console.log('정령 ID 받음', getAnimalID);
     }
   }, [route.params]);
@@ -267,6 +273,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       // setGetAnimalIMG('');
       setPloggingDistance(0);
       setIsEndModalVisible(true);
+      setGetErrorStatus(0);
     }
   }, [trashImage]);
 
@@ -341,7 +348,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     },
   ];
 
-  // console.log('이걸 주고 있거든여', DATA);
+  // console.log('전달되는 데이터', DATA);
 
   // 쓰레기 사진 찍었을 때, 카메라로 이동하고, 찍었다는 신호를 지도에 전달
   const captureTrashCount = useRef<number>(0);
@@ -360,6 +367,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
         TrashResultImg={trashResultImg}
         data={DATA}
         navigation={navigation}
+        errorStatus={getErrorStatus}
       />
       <PloggingResultModal
         isVisible={isEndModalVisible}

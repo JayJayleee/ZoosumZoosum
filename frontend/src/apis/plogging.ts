@@ -100,51 +100,51 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
 //   }
 // }
 
-export async function TrashImgResultFtn(
-  Img: string,
-  retries = 3,
-  interval = 2000,
-  setIsLoading: (isLoading: boolean) => void,
-) {
-  setIsLoading(true);
-  const formData = new FormData();
+// export async function TrashImgResultFtn(
+//   Img: string,
+//   retries = 3,
+//   interval = 2000,
+//   setIsLoading: (isLoading: boolean) => void,
+// ) {
+//   setIsLoading(true);
+//   const formData = new FormData();
 
-  const now = new Date();
-  const TrashfileName = `trash-${now.getFullYear()}-${
-    now.getMonth() + 1
-  }-${now.getDate()}-${now.getHours()}`;
+//   const now = new Date();
+//   const TrashfileName = `trash-${now.getFullYear()}-${
+//     now.getMonth() + 1
+//   }-${now.getDate()}-${now.getHours()}`;
 
-  formData.append('file', {
-    uri: Img,
-    name: `${TrashfileName}.jpg`,
-    type: 'image/jpeg',
-  });
+//   formData.append('file', {
+//     uri: Img,
+//     name: `${TrashfileName}.jpg`,
+//     type: 'image/jpeg',
+//   });
 
-  const token = await getStoredToken();
+//   const token = await getStoredToken();
 
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
-    // Add your headers here
-  };
+//   const headers = {
+//     Authorization: `Bearer ${token}`,
+//     'Content-Type': 'multipart/form-data',
+//     // Add your headers here
+//   };
 
-  try {
-    const response = await axios.post('http://zoosum.co.kr:8000/ai', formData, {
-      headers,
-    });
-    setIsLoading(false);
-    return response.data;
-  } catch (error) {
-    if (retries > 0) {
-      console.log(`Upload failed, retrying in ${interval}ms...`, error);
-      await new Promise(resolve => setTimeout(resolve, interval));
-      return TrashImgResultFtn(Img, retries - 1, interval, setIsLoading);
-    } else {
-      setIsLoading(false);
-      console.error('Failed to upload image', error);
-    }
-  }
-}
+//   try {
+//     const response = await axios.post('http://zoosum.co.kr:8000/ai', formData, {
+//       headers,
+//     });
+//     setIsLoading(false);
+//     return response.data;
+//   } catch (error) {
+//     if (retries > 0) {
+//       console.log(`Upload failed, retrying in ${interval}ms...`, error);
+//       await new Promise(resolve => setTimeout(resolve, interval));
+//       return TrashImgResultFtn(Img, retries - 1, interval, setIsLoading);
+//     } else {
+//       setIsLoading(false);
+//       console.error('Failed to upload image', error);
+//     }
+//   }
+// }
 
 export async function TrashImgResultReturnFtn(
   Img: string,
@@ -188,7 +188,15 @@ export async function TrashImgResultReturnFtn(
       );
       setIsLoading(false);
       return response.data; // 성공 응답시 결과 반환
-    } catch (error) {
+    } catch (error: any) {
+      const status = error.response ? error.response.status : null;
+      if (status === 501 || status === 502 || status === 503) {
+        // console.error(`플로깅 api- 에러코드 ${status}`, error);
+        setIsLoading(false);
+
+        throw {error, status};
+      }
+
       if (retryCount > 0) {
         console.log(`Upload failed, retrying in ${interval}ms...`, error);
         await new Promise(resolve => setTimeout(resolve, interval));

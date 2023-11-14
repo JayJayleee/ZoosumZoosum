@@ -13,10 +13,10 @@ import {AppState, AppStateStatus} from 'react-native';
 import styles from './style';
 import AppText from '@/components/ui/Text';
 import {useMutation} from '@tanstack/react-query';
-import {TrashImgResultFtn, TrashImgResultReturnFtn} from '@/apis/plogging';
+import {TrashImgResultReturnFtn} from '@/apis/plogging';
 import {Wave} from '@/components/ui/animation/LottieEffect';
 import KeyEvent from 'react-native-keyevent';
-
+import axios, {AxiosError} from 'axios';
 interface Photo {
   path: string;
 }
@@ -142,11 +142,26 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
           TrashImg: responseData.decodedImage,
         });
       },
-      onError: error => {
+      onError: (error: any) => {
         setIsLoading(false);
-        // 요청 실패 시 처리할 작업
-        console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
+
+        // error 객체를 any 타입으로 단언하고 status 속성에 접근
+        const status = error?.status;
+
+        if (status === 501 || status === 502 || status === 503) {
+          console.error(
+            `카메라 페이지 에러코드를 통해 전달됨 ${status}`,
+            error,
+          );
+          navigation.navigate('Plogging', {
+            shouldOpenModal: true,
+            errorStatus: status,
+          });
+        } else {
+          console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
+        }
       },
+
       onSettled: () => {
         setIsLoading(false);
       },
@@ -185,8 +200,8 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       }
     });
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 해제
     return () => {
+      // 컴포넌트 언마운트 시 모든 키 다운 리스너 해제
       KeyEvent.removeKeyDownListener();
     };
   }, []);
@@ -194,18 +209,6 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   return (
     <View style={styles.container}>
       {!isLoading && (
-        //   <Image
-        //     source={require('@/assets/plogingpage_image/filter.png')}
-        //     style={{
-        //       ...StyleSheet.absoluteFillObject,
-        //       width: '100%',
-        //       height: '100%',
-        //       aspectRatio: 1,
-        //       // resizeMode: 'stretch',
-        //       zIndex: 1,
-        //     }}
-        //   />
-
         <View
           style={{
             alignSelf: 'center',
@@ -213,7 +216,6 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
             width: '90%',
             height: '80%',
             marginBottom: '3%',
-            // backgroundColor: 'rgba(0,0,0,0.5)',
             borderWidth: 3,
             borderColor: 'white',
             borderRadius: 10,

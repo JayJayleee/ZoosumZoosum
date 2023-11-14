@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   overlayText: {
     position: 'absolute',
     zIndex: 2,
-    fontSize: 16,
+    fontSize: 14,
     color: 'white',
     textAlign: 'center',
     width: '100%',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     transform: [{scaleX: -1}],
   },
   overlayRightImage: {
-    width: '70%',
+    width: '80%',
     zIndex: 1,
     transform: [{scaleY: -1}],
   },

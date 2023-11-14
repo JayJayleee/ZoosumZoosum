@@ -13,6 +13,9 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '@/types/path';
 import AppButton from '../../Button';
 import FastImage from 'react-native-fast-image';
+import {useFocusEffect} from '@react-navigation/native';
+import {containStorage} from '@/apis';
+
 interface TrashModalProps {
   isVisible: boolean;
   onClose: () => void;
@@ -20,6 +23,7 @@ interface TrashModalProps {
   navigation: NativeStackNavigationProp<RootStackParamList>;
   animalImg: string;
   TrashResultImg: string;
+  errorStatus?: number;
 }
 
 type TrashType =
@@ -75,9 +79,31 @@ const TrashModal = ({
   navigation,
   animalImg,
   TrashResultImg,
+  errorStatus,
 }: TrashModalProps) => {
   const [tip, setTip] = useState('');
   const [showFlatList, setShowFlatList] = useState(true);
+
+  const [getErrorStatus, setgetErrorStatus] = useState<number | undefined>(
+    errorStatus,
+  );
+
+  useEffect(() => {
+    setgetErrorStatus(errorStatus);
+    // console.log('현재 에러 상태', getErrorStatus);
+  }, [errorStatus]);
+
+  useEffect(() => {
+    console.log('업데이트된 에러 상태:', getErrorStatus);
+  }, [getErrorStatus]);
+
+  useEffect(() => {
+    if (!isVisible) {
+      setgetErrorStatus(undefined);
+      setShowFlatList(true); // 모달이 닫힐 때 showFlatList도 초기화
+    }
+  }, [isVisible]);
+
   useEffect(() => {
     if (isVisible && data.length > 0) {
       const mostTrashType: TrashType = getMostTrashType(data);
@@ -115,6 +141,87 @@ const TrashModal = ({
   const toggleFlatList = () => {
     setShowFlatList(!showFlatList);
   };
+
+  const renderContent = () => {
+    // errorStatus가 있을 경우
+    if (getErrorStatus) {
+      // console.log(errorStatus, '에러있음');
+      return (
+        <View
+          style={{
+            width: '80%',
+            height: '65%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('@/assets/plogingpage_image/cannotfind.png')}
+            style={{width: '100%', height: '80%', resizeMode: 'contain'}}
+          />
+          <AppText
+            style={{
+              color: 'black',
+              fontSize: 20,
+              marginTop: 5,
+              fontFamily: 'NPSfont_bold',
+              textAlign: 'center',
+            }}>
+            사진이 너무 작거나,{'\n'}크게 찍혔어요!
+          </AppText>
+          <AppText
+            style={{
+              color: 'black',
+              fontSize: 12,
+              marginTop: 10,
+            }}>
+            쓰레기를 다시 한 번 찍어주세요.
+          </AppText>
+          <View style={{height: '5%'}}></View>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            width: '100%',
+            height: 'auto',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <AppText
+            style={{
+              color: 'black',
+              fontFamily: 'NPSfont_bold',
+              fontSize: 23,
+              marginVertical: 15,
+            }}>
+            방금 주운 쓰레기
+          </AppText>
+
+          <TouchableOpacity
+            onPress={toggleFlatList}
+            style={{
+              // backgroundColor: 'green',
+              width: '10%',
+              height: '50%',
+              position: 'absolute',
+              left: '85%',
+            }}>
+            <Image
+              source={
+                showFlatList
+                  ? require('@/assets/img_icon/gallery_icon.png')
+                  : require('@/assets/img_icon/xbox_icon.png')
+              }
+              style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
+
   const getMostTrashType = (data: TrashDataReturnList[]): TrashType => {
     const trashCounts: Record<TrashType, number> = {
       '일반 쓰레기': 0,
@@ -194,28 +301,21 @@ const TrashModal = ({
       <View
         style={{
           width: '100%',
-          height: '100%',
-          justifyContent: 'center',
+          height: 'auto',
+          flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        <View
+        <AppText
           style={{
-            width: '100%',
-            height: 'auto',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
+            color: 'black',
+            fontFamily: 'NPSfont_bold',
+            fontSize: 23,
+            marginVertical: 15,
           }}>
-          <AppText
-            style={{
-              color: 'black',
-              fontFamily: 'NPSfont_bold',
-              fontSize: 25,
-              marginVertical: 15,
-            }}>
-            방금 주운 쓰레기
-          </AppText>
-
+          방금 주운 쓰레기
+        </AppText>
+        {!getErrorStatus && (
           <TouchableOpacity
             onPress={toggleFlatList}
             style={{
@@ -223,7 +323,7 @@ const TrashModal = ({
               width: '10%',
               height: '50%',
               position: 'absolute',
-              left: '80%',
+              left: '85%',
             }}>
             <Image
               source={
@@ -234,14 +334,56 @@ const TrashModal = ({
               style={{width: '100%', height: '100%', resizeMode: 'contain'}}
             />
           </TouchableOpacity>
-        </View>
+        )}
+      </View>
 
-        {showFlatList ? (
-          !hasNonZeroItems ? (
+      <View
+        style={{
+          width: '100%',
+          height: '89%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {getErrorStatus && (
+          <View
+            style={{
+              width: '80%',
+              height: '85%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('@/assets/plogingpage_image/cannotfind.png')}
+              style={{width: '100%', height: '80%', resizeMode: 'contain'}}
+            />
+            <AppText
+              style={{
+                color: 'black',
+                fontSize: 20,
+                marginTop: 5,
+                fontFamily: 'NPSfont_bold',
+                textAlign: 'center',
+              }}>
+              사진이 너무 작거나,{'\n'}크게 찍혔어요!
+            </AppText>
+            <AppText
+              style={{
+                color: 'black',
+                fontSize: 12,
+                marginTop: 10,
+              }}>
+              쓰레기를 다시 한 번 찍어주세요.
+            </AppText>
+            <View style={{height: '5%'}}></View>
+          </View>
+        )}
+
+        {!getErrorStatus && showFlatList ? (
+          !getErrorStatus && !hasNonZeroItems ? (
             <View
               style={{
                 width: '80%',
-                height: '65%',
+                height: '85%',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
@@ -292,14 +434,14 @@ const TrashModal = ({
               numColumns={3}
             />
           )
-        ) : (
+        ) : !getErrorStatus ? (
           <Image
             source={{uri: TrashResultImg}}
             style={{width: '100%', height: '63%', borderRadius: 20}}
           />
-        )}
+        ) : null}
 
-        {hasNonZeroItems ? (
+        {!getErrorStatus && hasNonZeroItems ? (
           <ImageBackground
             resizeMode="contain"
             style={{
@@ -335,6 +477,7 @@ const TrashModal = ({
                 width: '65%',
                 textAlign: 'center',
                 paddingLeft: '1%',
+                fontSize: 12,
               }}>
               Tip: {tip}
             </AppText>
@@ -365,3 +508,33 @@ const TrashModal = ({
 };
 
 export default TrashModal;
+
+// <View
+//   style={{
+//     width: '80%',
+//     height: '65%',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   }}>
+//   <Image
+//     source={require('@/assets/plogingpage_image/cannotfind.png')}
+//     style={{width: '100%', height: '80%', resizeMode: 'contain'}}
+//   />
+//   <AppText
+//     style={{
+//       color: 'black',
+//       fontSize: 20,
+//       marginTop: 5,
+//       fontFamily: 'NPSfont_bold',
+//     }}>
+//     사진이 너무 작거나, 크게 찍혔어요!
+//   </AppText>
+//   <AppText
+//     style={{
+//       color: 'black',
+//       fontSize: 12,
+//       marginTop: 10,
+//     }}>
+//     쓰레기를 다시 한 번 찍어주세요.
+//   </AppText>
+// </View>
