@@ -157,8 +157,7 @@ def getResultFromData(
             if i in result_boxes:
 
                 box = boxes[i]
-                xyxy = box.xyxy.tolist()[0]
-                newBoxes.append(xyxy)
+                
 
                 if box.cls == 0.:
                     class_ids.append(0)
@@ -180,6 +179,9 @@ def getResultFromData(
                     trash_count[5] += 1
                 else :
                     continue
+
+                xyxy = box.xyxy.tolist()[0]
+                newBoxes.append(xyxy)
 
     predict_result = {trash_name[i]: trash_count[i] for i in range(len(trash_name))}
 
