@@ -73,6 +73,7 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, moveTu
       const data: ProfileType = {id: Number(profile.id), email: profile.email, socialType: "KAKAO"}
       isFirstLogin(data);
     }).catch((error) => {
+      showToast()
       console.log(`GetProfile Fail(code:${error.code})`, error.message);
     })
   }
