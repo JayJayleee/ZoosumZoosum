@@ -13,7 +13,7 @@ import {fetchFirstEgg} from '@/apis/tutorial';
 import AppButton from '@/components/ui/Button';
 import RNExitApp from 'react-native-exit-app';
 import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
-import { setStorage } from '@/apis';
+import {setStorage} from '@/apis';
 
 export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
   type Egg = {
@@ -21,7 +21,6 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
     animalName: string;
     fileUrl: string;
   };
-  const [eggCount] = useState(route.params?.eggCount || 0);
   const [isFirstLogin] = useState(route.params?.isFirstLogin || false);
   const [firstEgg, setFirstEgg] = useState<Egg>();
 
@@ -69,8 +68,7 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
     setNamingComplete(true);
   }, []);
 
-  const gotomain = async () => {
-    await setStorage("isHave", "Y");
+  const gotomain = () => {
     navigation.navigate('Main');
   };
 
@@ -101,7 +99,6 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
           onNamingComplete={handleNamingComplete}
           gotomain={gotomain}
           isFirstLogin={isFirstLogin}
-          eggCount={eggCount}
           item={{
             fileUrl: firstEgg?.fileUrl ?? '',
             animalName: firstEgg?.animalName ?? '',

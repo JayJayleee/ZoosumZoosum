@@ -109,6 +109,26 @@ export function AnimalCarouselCardItem({
   };
 
   useEffect(() => {
+    // 컴포넌트가 마운트 될 때 실행되는 코드 (예: API 호출 등)
+
+    return () => {
+      // 컴포넌트가 언마운트 될 때 실행되는 클린업 함수
+      // 여기에 상태 초기화 로직을 추가
+      setHeaderText('어떤 정령이 들어있을까요?');
+      setImageSrc('');
+      setShowInput(false);
+      setAnimalName('');
+      setAnimalId(undefined);
+      setIsNameSaved(false);
+      setShowEgg(true);
+      setSavedName('');
+      setTouchCount(0);
+      setImageSource(require('@/assets/img_icon/egg.png'));
+      // 그 외 필요한 상태들도 여기서 초기화
+    };
+  }, []);
+
+  useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
@@ -169,21 +189,6 @@ export function AnimalCarouselCardItem({
       setShowInput(true);
     }
   }, [activeIndex, item, touchCount]);
-
-  useEffect(() => {
-    return () => {
-      setHeaderText('어떤 정령이 들어있을까요?');
-      setImageSrc('');
-      setShowInput(false);
-      setAnimalName('');
-      setAnimalId(undefined);
-      setIsNameSaved(false);
-      setShowEgg(true);
-      setSavedName('');
-      setTouchCount(0);
-      setImageSource(require('@/assets/img_icon/egg.png'));
-    };
-  }, []);
 
   const handlePress = () => {
     if (touchCount >= 9) {
@@ -331,6 +336,17 @@ export function AnimalCarouselCardItem({
               children="섬으로 가기"
               variant="animalName"
               onPress={() => {
+                setTouchCount(0);
+                setHeaderText('어떤 정령이 들어있을까요?');
+                setImageSrc('');
+                setShowInput(false);
+                setAnimalName('');
+                setAnimalId(undefined);
+                setIsNameSaved(false);
+                setShowEgg(true);
+                setSavedName('');
+                setTouchCount(0);
+                setImageSource(require('@/assets/img_icon/egg.png'));
                 gotomain();
               }}
             />
