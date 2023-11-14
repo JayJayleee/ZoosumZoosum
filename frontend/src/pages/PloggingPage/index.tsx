@@ -22,6 +22,7 @@ import PloggingResultModal from '@/components/ui/Modal/PloggingResultModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {storeImage} from '../CameraPage/savePhoto';
 import RNExitApp from 'react-native-exit-app';
+import TrashErrorModal from '@/components/ui/Modal/TrashErrorModal';
 
 interface ActivityDataType {
   activityImg: string; // 이미지에 대한 타입을 가정
@@ -37,6 +38,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 모달 관리 값
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isErrModalVisible, setErrModalVisible] = useState(true);
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [trashData, setTrashData] = useState<TrashDaTaList>();
   const [trashResultImg, setTrashResultImg] = useState<string>('');
@@ -94,6 +96,10 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     if (route.params.TrashStatus) {
       setGetTrashStatus(route.params.TrashStatus);
       // console.log('정령 ID 받음', getAnimalID);
+    }
+
+    if (route.params.shouldOpenErrModal === true) {
+      setErrModalVisible(true);
     }
   }, [route.params]);
 
@@ -360,6 +366,10 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // console.log('동물', getAnimalIMG);
   return (
     <View style={{flex: 1}}>
+      <TrashErrorModal
+        isVisible={isErrModalVisible}
+        onClose={() => setErrModalVisible(false)}
+      />
       <TrashModal
         isVisible={isModalVisible}
         onClose={closeModalAndUpdateCount}

@@ -146,6 +146,9 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       onError: (error: any) => {
         setIsLoading(false);
         console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
+        navigation.navigate('Plogging', {
+          shouldOpenErrModal: true,
+        });
       },
 
       onSettled: () => {
