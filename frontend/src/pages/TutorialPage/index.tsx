@@ -4,7 +4,7 @@ import {View, ImageBackground, StyleSheet, Dimensions} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {TutorialImageCard} from './TutorialImageCard';
 import {ImageSourcePropType, BackHandler} from 'react-native';
-import { SkipModal } from '@/components/ui/Modal/SkipModal';
+import {SkipModal} from '@/components/ui/Modal/SkipModal';
 
 type TutorialData = {
   Title: string;
@@ -24,12 +24,16 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
     navigation.navigate('FirstEgg', {isFirstLogin: true});
   };
 
-  const goToPrev = () => {
-    carouselRef.current?.snapToPrev();
+  const goToNext = () => {
+    if (carouselRef.current && activeIndex < data.length - 1) {
+      carouselRef.current.snapToItem(activeIndex + 1, false);
+    }
   };
 
-  const goToNext = () => {
-    carouselRef.current?.snapToNext();
+  const goToPrev = () => {
+    if (carouselRef.current && activeIndex > 0) {
+      carouselRef.current.snapToItem(activeIndex - 1, false);
+    }
   };
   const renderItem = ({item, index}: {item: TutorialData; index: number}) => {
     return (
@@ -50,7 +54,7 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
     navigation.navigate({
       name: 'FirstEgg',
       params: {isFirstLogin: true},
-    })
+    });
   };
 
   // 뒤로 가기 클릭 시 종료 여부 묻도록 설정

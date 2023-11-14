@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import AppText from '@/components/ui/Text';
 import FastImage from 'react-native-fast-image';
 
@@ -11,7 +11,13 @@ interface PickAnimalCardProps {
   onSelect: () => void; // 카드 선택 핸들러 prop
 }
 
-export default function PickAnimalCard({animalName, fileUrl, animalId, isSelected, onSelect,}: PickAnimalCardProps) {
+export default function PickAnimalCard({
+  animalName,
+  fileUrl,
+  animalId,
+  isSelected,
+  onSelect,
+}: PickAnimalCardProps) {
   return (
     <View style={[styles.card, isSelected && styles.selectedCard]}>
       {/* TouchableOpacity에 onSelect 함수를 연결 */}
@@ -22,48 +28,48 @@ export default function PickAnimalCard({animalName, fileUrl, animalId, isSelecte
             source={require('@/assets/check.png')} // 체크 표시 이미지 경로
           />
         )}
-        <Image style={styles.image} source={{ uri: fileUrl }} />
+        <Image style={styles.image} source={{uri: fileUrl}} />
         <AppText style={styles.title}>{animalName}</AppText>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
-import { windowHeight, windowWidth } from "@/constants/styles";
+import {windowHeight, windowWidth} from '@/constants/styles';
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
-    borderRadius : 10,
-    flex : 1,
-    justifyContent : 'center',
-    alignItems : 'center',
-    width : windowWidth*0.1,
-    height : windowHeight*0.17,
-    margin : 5,
+    borderRadius: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: windowWidth * 0.1,
+    height: windowHeight * 0.17,
+    margin: 5,
   },
-  card2 : {
-    justifyContent : 'center',
-    alignItems : 'center',
-    width : '100%',
-    height : '100%',
+  card2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
   selectedCard: {
-    backgroundColor : '#646567'
+    backgroundColor: '#646567',
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'NPSfont_bold',
   },
   image: {
-    height : windowHeight*0.1,
-    width : windowHeight*0.1,
+    height: windowHeight * 0.1,
+    width: windowHeight * 0.1,
   },
   checkIcon: {
     position: 'absolute',
-    width : windowWidth*0.35,
-    height : windowHeight*0.35,
-    resizeMode : 'contain',
-    zIndex: 99
+    width: windowWidth * 0.35,
+    height: windowHeight * 0.35,
+    resizeMode: 'contain',
+    zIndex: 99,
   },
 });

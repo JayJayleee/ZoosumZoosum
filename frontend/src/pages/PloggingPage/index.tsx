@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {storeImage} from '../CameraPage/savePhoto';
 import RNExitApp from 'react-native-exit-app';
 import TrashErrorModal from '@/components/ui/Modal/TrashErrorModal';
+import {changeButtonSound} from '@/constants/sound';
 
 interface ActivityDataType {
   activityImg: string; // 이미지에 대한 타입을 가정
@@ -38,7 +39,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 모달 관리 값
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isErrModalVisible, setErrModalVisible] = useState(true);
+  const [isErrModalVisible, setErrModalVisible] = useState(false);
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
   const [trashData, setTrashData] = useState<TrashDaTaList>();
   const [trashResultImg, setTrashResultImg] = useState<string>('');
@@ -222,6 +223,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   };
 
   const stopAndResetTimer = async () => {
+    changeButtonSound();
     // 플로깅 종료 신호 넘겨주기
     endPlog = false;
 
@@ -359,6 +361,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   // 쓰레기 사진 찍었을 때, 카메라로 이동하고, 찍었다는 신호를 지도에 전달
   const captureTrashCount = useRef<number>(0);
   const captureTrash = () => {
+    changeButtonSound();
     captureTrashCount.current += 1;
     navigation.navigate('Camera', {getAnimalIMG: getAnimalIMG});
   };

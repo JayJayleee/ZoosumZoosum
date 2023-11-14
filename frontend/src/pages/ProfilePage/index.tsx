@@ -93,11 +93,11 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
     },
   );
 
-  // const checkcheck = async () => {
-  //   const token = await getStorage('AccessToken');
-  //   console.log(token);
-  // };
-  // checkcheck();
+  const checkcheck = async () => {
+    const token = await getStorage('AccessToken');
+    console.log(token);
+  };
+  checkcheck();
 
   if (statisticLoading || badgeLoading) {
     return <Spinner />;

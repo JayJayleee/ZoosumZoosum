@@ -2,7 +2,7 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import AppText from '../Text';
-import { changeButtonSound } from '@/constants/sound';
+import {changeButtonSound} from '@/constants/sound';
 
 type ButtonProps = {
   children?: string;
@@ -30,7 +30,9 @@ type ButtonProps = {
     | 'plog'
     | 'close'
     | 'notclose'
-    | 'activity';
+    | 'activity'
+    | 'selectBtn'
+    | 'selectIslandBtn';
 
   onPress: () => void;
 };
@@ -70,6 +72,17 @@ export default function AppButton({
       variantStyle = styles.pickfriend;
       textStyle = styles.pickfriendText;
       break;
+
+    case 'selectBtn':
+      variantStyle = styles.selectBtn;
+      textStyle = styles.defaultText;
+      break;
+
+    case 'selectIslandBtn':
+      variantStyle = styles.selectIslandBtn;
+      textStyle = styles.defaultText;
+      break;
+
     case 'gotoisland':
       variantStyle = styles.gotoisland;
       textStyle = styles.gotoislandText;
@@ -152,11 +165,13 @@ export default function AppButton({
   const buttonFtn = () => {
     changeButtonSound();
     onPress();
-  } 
+  };
 
   return (
     <TouchableOpacity
-      onPress={() => {buttonFtn()}}
+      onPress={() => {
+        buttonFtn();
+      }}
       style={variantStyle}
       activeOpacity={0.9}>
       <AppText style={textStyle}>{children}</AppText>

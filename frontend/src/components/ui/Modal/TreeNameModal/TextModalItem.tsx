@@ -25,7 +25,7 @@ export function TextModalItem({item, index}: TreeCarouselCardItemProps) {
         style={{
           marginTop: 30,
           marginLeft: 10,
-          fontSize: 30,
+          fontSize: 25,
           fontFamily: 'NPSfont_bold',
           textAlign: 'center',
         }}>

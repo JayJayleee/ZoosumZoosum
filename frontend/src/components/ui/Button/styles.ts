@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { windowHeight, windowWidth } from "@/constants/styles";
+import {windowHeight, windowWidth} from '@/constants/styles';
 
 export const styles = StyleSheet.create({
   default: {
@@ -50,7 +50,27 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // padding: 10,
-    marginRight : "5%"
+    marginRight: '5%',
+  },
+  selectBtn: {
+    width: '50%',
+    backgroundColor: '#7ED3A1',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 10,
+    marginRight: '5%',
+  },
+  selectIslandBtn: {
+    width: '50%',
+    backgroundColor: '#34D399',
+    borderRadius: 8,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 10,
+    marginRight: '5%',
   },
   pickfriendText: {
     color: 'white',
@@ -83,8 +103,8 @@ export const styles = StyleSheet.create({
     fontSize: 20,
   },
   selectItem2: {
-    width: windowWidth*0.2,
-    height: windowHeight*0.035,
+    width: windowWidth * 0.2,
+    height: windowHeight * 0.035,
     justifyContent: 'center',
     borderStyle: 'solid',
     alignItems: 'center',
@@ -92,11 +112,11 @@ export const styles = StyleSheet.create({
     // marginVertical : 2,
   },
   selectItem: {
-    width: windowWidth*0.2,
-    height: windowHeight*0.035,
+    width: windowWidth * 0.2,
+    height: windowHeight * 0.035,
     // backgroundColor: '#F1B0B0',
-    borderBottomWidth : 3,
-    borderColor : 'white',
+    borderBottomWidth: 3,
+    borderColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     // marginHorizontal: 10,
@@ -156,16 +176,16 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   ranking: {
-    width: windowWidth*0.3,
-    height: windowHeight*0.05,
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.05,
     backgroundColor: 'white',
-    borderRadius : 30,
+    borderRadius: 30,
     justifyContent: 'center',
     // borderWidth: 2,r
     borderStyle: 'solid',
     alignItems: 'center',
     // marginHorizontal: 10,
-    marginVertical : 2,
+    marginVertical: 2,
   },
   rankingText: {
     color: 'black',
@@ -173,14 +193,14 @@ export const styles = StyleSheet.create({
     fontSize: 15,
   },
   ranking_unselect: {
-    width: windowWidth*0.3,
-    height: windowHeight*0.05,
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.05,
     backgroundColor: '#7ED3A1',
-    borderRadius : 30,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     // marginHorizontal: 10,
-    marginVertical : 2,
+    marginVertical: 2,
   },
   rankingText_unselect: {
     color: 'black',
@@ -287,7 +307,7 @@ export const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop : 20
+    marginTop: 20,
   },
   gotoislandText3: {
     color: 'white',

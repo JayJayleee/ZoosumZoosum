@@ -16,7 +16,8 @@ import {useMutation} from '@tanstack/react-query';
 import {TrashImgResultReturnFtn} from '@/apis/plogging';
 import {Wave} from '@/components/ui/animation/LottieEffect';
 import KeyEvent from 'react-native-keyevent';
-import axios, {AxiosError} from 'axios';
+import {changeButtonSound} from '@/constants/sound';
+
 interface Photo {
   path: string;
 }
@@ -158,6 +159,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   );
 
   const capturePhoto = async () => {
+    changeButtonSound();
     if (camera.current) {
       const photoOptions = {
         enableShutterSound: false,
