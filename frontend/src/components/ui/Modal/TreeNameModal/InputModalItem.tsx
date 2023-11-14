@@ -86,10 +86,10 @@ export function InputModalItem({
           <AppText
             style={{
               fontFamily: 'NPSfont_extrabold',
-              fontSize: 30,
+              fontSize: 25,
               padding: 10,
               textAlign: 'center',
-              lineHeight: 40,
+              lineHeight: 33,
               color: 'black',
             }}>
             🌱 나무에게 🌱{'\n'}이름을 지어주세요

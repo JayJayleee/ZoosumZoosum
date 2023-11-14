@@ -15,6 +15,7 @@ export type RootStackParamList = {
     selectedAnimalID?: number;
     TrashImg?: string;
     TrashStatus?: number;
+    shouldOpenErrModal?: boolean;
   };
   Camera: {
     getAnimalIMG?: string;

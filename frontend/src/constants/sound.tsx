@@ -36,7 +36,10 @@ export const stop = () => {
   whoosh.reset();
 };
 
-export const changeMotion = new Sound('change.mp3',Sound.MAIN_BUNDLE, error => {
+export const changeMotion = new Sound(
+  'change.mp3',
+  Sound.MAIN_BUNDLE,
+  error => {
     if (error) {
       console.log('failed to load the sound change', error);
       return;
@@ -55,7 +58,7 @@ export const changeMotionStop = () => {
   // setTimeout(() => {
   //   changeMotion.pause();
   // }, 200);
-}
+};
 
 const eggCrack = new Sound('egg.wav', Sound.MAIN_BUNDLE, error => {
   if (error) {
@@ -116,8 +119,73 @@ const buttonSound = new Sound('button.wav', Sound.MAIN_BUNDLE, error => {
   }
 
   buttonSound.setVolume(20);
-})
+});
 
 export const changeButtonSound = () => {
   buttonSound.play();
-}
+};
+
+const progressSound = new Sound('progress2.wav', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+
+  progressSound.setVolume(10);
+});
+
+export const changeProgressSound = () => {
+  progressSound.play();
+};
+
+const eggrewardSound = new Sound('reward1.wav', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+
+  eggrewardSound.setVolume(10);
+});
+
+export const changeEggRewardSound = () => {
+  eggrewardSound.play();
+};
+
+const seedRewardSound = new Sound('reward1.wav', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+
+  seedRewardSound.setVolume(10);
+});
+
+export const changeSeedRewardSound = () => {
+  seedRewardSound.play();
+};
+
+const badgeRewardSound = new Sound('reward1.wav', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+
+  badgeRewardSound.setVolume(10);
+});
+
+export const changeBadgeRewardSound = () => {
+  badgeRewardSound.play();
+};
+
+const box = new Sound('drum.mp3', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+  // Reduce the volume by half
+  box.setVolume(10);
+});
+
+export const changeBox = () => {
+  box.play();
+};

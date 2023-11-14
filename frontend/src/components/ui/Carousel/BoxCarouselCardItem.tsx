@@ -4,7 +4,7 @@ import styles from './styles';
 import AppText from '../Text';
 import {Gift} from '../animation/LottieEffect';
 import {ItemCarouselCardItemProps} from '@/types/plogging';
-
+import {changeEggBorn, changeBox} from '@/constants/sound';
 export function BoxCarouselCardItem({
   item,
   index,
@@ -16,14 +16,20 @@ export function BoxCarouselCardItem({
     require('@/assets/img_icon/gift_img.png'),
   );
   const [showItem, setShowItem] = useState(false);
+  if (!item) {
+    return null;
+  }
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (index === activeIndex) {
       setShowItem(false);
+      changeBox();
       timer = setTimeout(() => {
         setShowItem(true);
         setImageSrc({uri: item.fileUrl});
+
+        changeEggBorn();
         if (itemType === 'TREE') {
           setHeaderText(`${item.itemName}를 얻었어요!`);
         } else {

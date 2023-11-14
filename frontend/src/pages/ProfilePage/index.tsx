@@ -22,7 +22,7 @@ import Spinner from '@/components/ui/Spinner';
 import HistoryTab from './HistoryTab';
 import BadgeTab from './BadgeTab';
 import StatisticTab from './StatisticTab';
-import { changeButtonSound } from '@/constants/sound';
+import {changeButtonSound} from '@/constants/sound';
 
 export default function ProfilePage({navigation, route}: ProfilescreenProps) {
   // 페이지 이동 시 받을 변수를 저장할 변수 생성
@@ -92,6 +92,12 @@ export default function ProfilePage({navigation, route}: ProfilescreenProps) {
       },
     },
   );
+
+  // const checkcheck = async () => {
+  //   const token = await getStorage('AccessToken');
+  //   console.log(token);
+  // };
+  // checkcheck();
 
   if (statisticLoading || badgeLoading) {
     return <Spinner />;

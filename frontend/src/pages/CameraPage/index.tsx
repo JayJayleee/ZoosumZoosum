@@ -16,7 +16,8 @@ import {useMutation} from '@tanstack/react-query';
 import {TrashImgResultReturnFtn} from '@/apis/plogging';
 import {Wave} from '@/components/ui/animation/LottieEffect';
 import KeyEvent from 'react-native-keyevent';
-import axios, {AxiosError} from 'axios';
+import {changeButtonSound} from '@/constants/sound';
+
 interface Photo {
   path: string;
 }
@@ -146,6 +147,9 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       onError: (error: any) => {
         setIsLoading(false);
         console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
+        navigation.navigate('Plogging', {
+          shouldOpenErrModal: true,
+        });
       },
 
       onSettled: () => {
@@ -155,6 +159,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   );
 
   const capturePhoto = async () => {
+    changeButtonSound();
     if (camera.current) {
       const photoOptions = {
         enableShutterSound: false,

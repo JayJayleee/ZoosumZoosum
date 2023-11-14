@@ -35,10 +35,10 @@ import PickIslandPage from '@/pages/PickIslandPage';
 import PickTreePage from '@/pages/PickITreePage';
 import FriendDetailPage from '@/pages/FriendDetailPage';
 import {useEffect} from 'react';
-import { PermissionsAndroid, TextInput, Text } from 'react-native';
+import {PermissionsAndroid, TextInput, Text} from 'react-native';
 
 import TutorialPage from '@/pages/TutorialPage';
-import FirstEggPage from '@/pages/FirstEggPage';;
+import FirstEggPage from '@/pages/FirstEggPage';
 
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -53,10 +53,15 @@ interface TextWithDefaultProps extends Text {
 interface TextInputWithDefaultProps extends TextInput {
   defaultProps?: {allowFontScaling?: boolean};
 }
-(Text as unknown as TextWithDefaultProps).defaultProps = (Text as unknown as TextWithDefaultProps).defaultProps || {};
-(Text as unknown as TextWithDefaultProps).defaultProps!.allowFontScaling = false;
-(TextInput as unknown as TextInputWithDefaultProps).defaultProps = (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {};
-(TextInput as unknown as TextInputWithDefaultProps).defaultProps!.allowFontScaling = false;
+(Text as unknown as TextWithDefaultProps).defaultProps =
+  (Text as unknown as TextWithDefaultProps).defaultProps || {};
+(Text as unknown as TextWithDefaultProps).defaultProps!.allowFontScaling =
+  false;
+(TextInput as unknown as TextInputWithDefaultProps).defaultProps =
+  (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {};
+(
+  TextInput as unknown as TextInputWithDefaultProps
+).defaultProps!.allowFontScaling = false;
 
 function App() {
   whoosh;

@@ -101,6 +101,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
   useEffect(() => {
     if (isHaveEgg) {
+      console.log(isHaveEgg, '알 있음');
       navigation.navigate('FirstEgg', {
         isFirstLogin: false,
       });
@@ -149,7 +150,7 @@ export default function MainPage({navigation}: MainScreenProps) {
         second: statusContent.second,
       });
       setDistance(statusContent.missionLength);
-
+      console.log('mutation-egg', statusContent.egg);
       if (statusContent.egg > 0) {
         setHaveEgg(true);
       } else {

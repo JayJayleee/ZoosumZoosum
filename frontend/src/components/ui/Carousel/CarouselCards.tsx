@@ -51,16 +51,40 @@ export default function CarouselCards({onNavigate, data}: CarouselCardsProps) {
       // console.log(resultDataList);
       console.log('들어오는거', combinedData);
       console.log('컴바인', combinedData.length);
-      return <ProgressCarouselCardItem item={item} index={itemIndex} />;
+      return (
+        <ProgressCarouselCardItem
+          item={item}
+          index={itemIndex}
+          activeIndex={index}
+        />
+      );
     }
     if (item.addSeed && item.addSeed != 0) {
-      return <SeedCarouselCardItem item={item} index={itemIndex} />;
+      return (
+        <SeedCarouselCardItem
+          item={item}
+          index={itemIndex}
+          activeIndex={index}
+        />
+      );
     }
     if (item.addEgg && item.addEgg != 0) {
-      return <EggCarouselCardItem item={item} index={itemIndex} />;
+      return (
+        <EggCarouselCardItem
+          item={item}
+          index={itemIndex}
+          activeIndex={index}
+        />
+      );
     }
     if (item.badgeId) {
-      return <BadgeCarouselCardItem item={item} index={itemIndex} />;
+      return (
+        <BadgeCarouselCardItem
+          item={item}
+          index={itemIndex}
+          activeIndex={index}
+        />
+      );
     }
     if (item.itemId) {
       return (

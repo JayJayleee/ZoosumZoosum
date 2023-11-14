@@ -40,7 +40,7 @@ export default function TreeNameModal({
 
   const handleNextPress = () => {
     if (carouselRef.current) {
-      carouselRef.current.snapToNext(true); // 다음 아이템으로 슬라이드
+      carouselRef.current.snapToNext(false); // 다음 아이템으로 슬라이드
     }
   };
 
@@ -58,9 +58,12 @@ export default function TreeNameModal({
 
   const plantTree = useMutation(treeApi, {
     onSuccess: data => {
+      console.log(data);
       console.log(data.status);
       if (data.status == 500) {
         InputToast();
+      } else if (data.status == 400) {
+        SeedToast();
       } else {
         console.log('나무 심기 성공 데이터', userData);
         handleNextPress();
@@ -74,6 +77,15 @@ export default function TreeNameModal({
     },
   });
 
+  const SeedToast = () => {
+    (Toast as any).show({
+      type: 'success',
+      text1: '씨앗이 아직 모자르네요...! 다음에 다시 도전!',
+      text1Style: {
+        fontSize: 200,
+      },
+    });
+  };
   const InputToast = () => {
     (Toast as any).show({
       type: 'success',

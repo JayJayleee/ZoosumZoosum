@@ -138,7 +138,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 10000,
       },
@@ -165,7 +165,7 @@ const GoogleMap = (props: GoogleMapProps) => {
       },
       // 옵션
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         distanceFilter: 1,
         interval: 5000,
         fastestInterval: 2000,

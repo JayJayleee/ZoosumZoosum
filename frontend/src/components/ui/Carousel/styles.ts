@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   progressHeader: {
+    fontFamily: 'NPSfont_extrabold',
     color: 'white',
     fontSize: 28,
     paddingLeft: 20,
@@ -97,7 +98,9 @@ const styles = StyleSheet.create({
   },
   header: {
     color: 'white',
+    lineHeight: 35,
     fontSize: 28,
+    fontFamily: 'NPSfont_extrabold',
     paddingLeft: 20,
     paddingTop: 50,
     textAlign: 'center',

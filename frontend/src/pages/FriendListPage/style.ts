@@ -1,59 +1,61 @@
-import { StyleSheet, Button } from 'react-native';
-import { windowHeight, windowWidth } from "@/constants/styles";
+import {StyleSheet, Button} from 'react-native';
+import {windowHeight, windowWidth} from '@/constants/styles';
 
 const styles = StyleSheet.create({
-  backgroungcolor : {
+  backgroungcolor: {
     backgroundColor: 'black',
     position: 'absolute',
-    width : windowWidth,
-    height : windowHeight,
-    opacity : 0.2,
+    width: windowWidth,
+    height: windowHeight,
+    opacity: 0.2,
   },
   container: {
     flex: 1,
     alignItems: 'center',
   },
-  title_head : {
-    color : 'white',
-    fontSize : 35,
-    fontFamily : 'NPSfont_extrabold'
+  title_head: {
+    color: 'white',
+    fontSize: 35,
+    fontFamily: 'NPSfont_extrabold',
   },
 
-  head : {
-    height : windowHeight*0.1,
-    marginTop : windowWidth*0.1
+  head: {
+    height: windowHeight * 0.1,
+    marginTop: windowWidth * 0.1,
   },
-  body1 : {
-    height : windowHeight*0.2,
-    width : windowWidth,
-    alignItems : 'center',
-    marginBottom : windowHeight*0.01,
+  body1: {
+    height: windowHeight * 0.2,
+    width: windowWidth,
+    alignItems: 'center',
+    marginBottom: windowHeight * 0.01,
   },
-  body2 : {
-    height : windowHeight*0.7,
-    width : windowWidth,
-    alignItems : 'center',
-    marginBottom : windowHeight*0.04,
+  body2: {
+    height: windowHeight * 0.7,
+    width: windowWidth,
+    alignItems: 'center',
+    marginBottom: windowHeight * 0.04,
   },
-  having_cardlist : {
-    width : '85%',
-    height : '100%',
-    marginTop : windowHeight*0.01,
+  having_cardlist: {
+    width: '85%',
+    height: '100%',
+    marginTop: windowHeight * 0.01,
   },
   hiddenCard: {
-    width : windowWidth*0.28,
+    width: windowWidth * 0.28,
     // height : windowHeight*0.15,
   },
-  button_container : {
-    flexDirection : 'row',
+  button_container: {
+    flexDirection: 'row',
+    width: '78%',
+    marginRight: '5%',
   },
-  isLoading : {
+  isLoading: {
     flex: 1,
     alignItems: 'center',
-    justifyContent : 'flex-start',
+    justifyContent: 'flex-start',
     // fontSize : 35,
-    fontFamily : 'NPSfont_extrabold',
-    marginTop : windowHeight * 0.06
+    fontFamily: 'NPSfont_extrabold',
+    marginTop: windowHeight * 0.06,
   },
 });
 

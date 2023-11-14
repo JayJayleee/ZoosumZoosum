@@ -204,7 +204,7 @@ export async function TrashImgResultReturnFtn(
         return attemptUpload(retryCount - 1); // 재귀적으로 재시도
       } else {
         setIsLoading(false);
-        console.error('Failed to upload image after multiple attempts', error);
+        //   console.error('Failed to upload image after multiple attempts', error);
         throw error; // 모든 시도 실패시 에러 발생
       }
     }

@@ -4,13 +4,18 @@ import AppText from '../Text';
 import AnimatedProgressCircle from './CircleProgress';
 import styles from './styles';
 import {ProgressCarouselCardItemProps} from '@/types/plogging';
-
+import {changeProgressSound} from '@/constants/sound';
 // 플로깅 모든 통계에 대한 캐롯셀 아이템
 
 export function ProgressCarouselCardItem({
   item,
   index,
+  activeIndex,
 }: ProgressCarouselCardItemProps) {
+  if (activeIndex === index) {
+    changeProgressSound();
+  }
+
   return (
     <View style={styles.container}>
       <AppText style={styles.progressHeader}>
