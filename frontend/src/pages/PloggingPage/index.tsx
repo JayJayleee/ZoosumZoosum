@@ -250,7 +250,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
     const newActivityData = {
       activityImg: trashImage,
       activityRequestDto: {
-        length: ploggingDistance,
+        length: ploggingDistance * 1000,
         time: timer,
         trash: trashCount,
       },
