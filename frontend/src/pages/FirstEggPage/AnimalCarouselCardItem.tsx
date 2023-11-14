@@ -170,6 +170,21 @@ export function AnimalCarouselCardItem({
     }
   }, [activeIndex, item, touchCount]);
 
+  useEffect(() => {
+    return () => {
+      setHeaderText('어떤 정령이 들어있을까요?');
+      setImageSrc('');
+      setShowInput(false);
+      setAnimalName('');
+      setAnimalId(undefined);
+      setIsNameSaved(false);
+      setShowEgg(true);
+      setSavedName('');
+      setTouchCount(0);
+      setImageSource(require('@/assets/img_icon/egg.png'));
+    };
+  }, []);
+
   const handlePress = () => {
     if (touchCount >= 9) {
       return;
