@@ -3,9 +3,6 @@ package com.addShot.zoosum.domain.user.service;
 import com.addShot.zoosum.domain.user.dto.request.UserInfoUpdateRequestDto;
 import com.addShot.zoosum.domain.user.dto.request.UserLoginRequestDto;
 import com.addShot.zoosum.domain.user.dto.response.NicknameDuplicatedResponseDto;
-import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
@@ -46,4 +43,12 @@ public interface UserService {
     String updateUserInfo(String accessToken, UserInfoUpdateRequestDto updateRequestDto, String userId);
 
 
+    /**
+     * 회원 정보 삭제
+     *
+     * @param userId
+     * @param nickname
+     * @return
+     */
+    long deleteUser(String userId, String nickname);
 }

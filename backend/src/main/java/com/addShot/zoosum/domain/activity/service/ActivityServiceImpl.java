@@ -254,9 +254,12 @@ public class ActivityServiceImpl implements ActivityService {
         Mission mission = updateMission(missionLength, missionTime, missionTrash);
 
         MissionResponseDto missionResponseDto = MissionResponseDto.builder()
-            .missionLength(missionLength / ActivityLimit.LENGTH_DIVIDE / ActivityLimit.TEN)
-            .missionTime(missionTime / ActivityLimit.TIME_DIVIDE / ActivityLimit.HUNDRED)
-            .missionTrash(missionTrash / ActivityLimit.HUNDRED)
+            .missionLength(missionLength / 500f)
+            .missionTime(missionTime / ActivityLimit.TIME_DIVIDE / 5f)
+            .missionTrash(missionTrash / 10f)
+//            .missionLength(missionLength / ActivityLimit.LENGTH_DIVIDE / ActivityLimit.TEN)
+//            .missionTime(missionTime / ActivityLimit.TIME_DIVIDE / ActivityLimit.HUNDRED)
+//            .missionTrash(missionTrash / ActivityLimit.HUNDRED)
             .build();
 
         // 리워드 계산

@@ -166,4 +166,10 @@ public class UserServiceImpl implements UserService {
 
         return jwtToken.getAccessToken();
     }
+
+    @Override
+    public long deleteUser(String userId, String nickname) {
+        User user = userRepository.findUserByIdAndNickname(userId, nickname);
+        return userRepository.deleteAllDataById(user);
+    }
 }
