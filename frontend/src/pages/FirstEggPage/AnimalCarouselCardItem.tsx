@@ -159,7 +159,9 @@ export function AnimalCarouselCardItem({
     }
   }, [touchCount]);
 
-  const [whiteImageOpacity] = useState(new Animated.Value(0));
+  const [whiteImageOpacity, setWhiteImageOpacity] = useState(
+    new Animated.Value(0),
+  );
 
   useEffect(() => {
     if (touchCount === 9) {
@@ -346,6 +348,7 @@ export function AnimalCarouselCardItem({
                 setShowEgg(true);
                 setSavedName('');
                 setTouchCount(0);
+                setWhiteImageOpacity(new Animated.Value(0));
                 setImageSource(require('@/assets/img_icon/egg.png'));
                 gotomain();
               }}

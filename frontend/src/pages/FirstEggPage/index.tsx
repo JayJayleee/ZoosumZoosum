@@ -21,7 +21,9 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
     animalName: string;
     fileUrl: string;
   };
-  const [isFirstLogin] = useState(route.params?.isFirstLogin || false);
+  const [isFirstLogin, setIsFristLogin] = useState(
+    route.params?.isFirstLogin || false,
+  );
   const [firstEgg, setFirstEgg] = useState<Egg>();
 
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
@@ -49,18 +51,24 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
       backHandler.remove();
     };
   }, []);
-  const {isError: isGetError, error: getError} = useQuery<Egg, Error>(
-    ['firstEgg'],
-    fetchFirstEgg,
-    {
-      onSuccess: (data: Egg) => {
-        setFirstEgg(data);
-      },
-      onError: (error: Error) => {
-        console.log('못받음', error);
-      },
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      refetch();
+    });
+  }, []);
+  const {
+    isError: isGetError,
+    error: getError,
+    refetch,
+  } = useQuery<Egg, Error>(['firstEgg'], fetchFirstEgg, {
+    onSuccess: (data: Egg) => {
+      setFirstEgg(data);
     },
-  );
+    onError: (error: Error) => {
+      console.log('못받음', error);
+    },
+  });
 
   const [isNamingComplete, setNamingComplete] = useState(false);
 
@@ -69,6 +77,7 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
   }, []);
 
   const gotomain = () => {
+    setIsFristLogin(false);
     navigation.navigate('Main');
   };
 

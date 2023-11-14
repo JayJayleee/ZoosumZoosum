@@ -31,7 +31,7 @@ import {
   changeMotionStop,
 } from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -90,10 +90,12 @@ export default function MainPage({navigation}: MainScreenProps) {
   }, []);
 
   // 메인 페이지에 다시 들어왔을 때 api를 다시 호출하도록 하는 코드
-  useFocusEffect(() => {
+  useEffect(() => {
+    navigation.addListener('focus', () => {
       IslandRefetch();
       StatusRefetch();
-  });
+    });
+  }, []);
 
   // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
   useEffect(() => {
@@ -201,6 +203,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   const goToProfile = async () => {
     const nickname = await getStorage('Nickname');
 
+    console.log('닉네임 누름', nickname);
     if (nickname !== null) {
       changeButtonSound();
       navigation.navigate({
