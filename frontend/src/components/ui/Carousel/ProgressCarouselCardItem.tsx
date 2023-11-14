@@ -22,7 +22,9 @@ export function ProgressCarouselCardItem({
           children={require('@/assets/img_icon/egg.png')}
         />
         <AppText style={styles.body}>
-          쓰레기 {100 - item.missionTrash * 100}개 더!
+          {item.missionTrash >= 1
+            ? '리워드 획득!'
+            : `쓰레기 ${10 - item.missionTrash * 10}개 더!`}
         </AppText>
       </View>
       <View style={styles.doubleprogressContainer}>
@@ -32,7 +34,9 @@ export function ProgressCarouselCardItem({
             children={require('@/assets/img_icon/island_icon.png')}
           />
           <AppText style={styles.body}>
-            {Math.round((1 - item.missionLength) * 10)} km 더!
+            {item.missionLength >= 1
+              ? '리워드 획득!'
+              : `${Math.round((1 - item.missionLength) * 500)} m 더!`}
           </AppText>
         </View>
         <View style={styles.progressContainer}>
@@ -41,7 +45,9 @@ export function ProgressCarouselCardItem({
             children={require('@/assets/img_icon/tree_img.png')}
           />
           <AppText style={styles.body}>
-            {Math.round((1 - item.missionTime) * 100)}분 더!
+            {item.missionTime >= 1
+              ? '리워드 획득!'
+              : `${Math.round((1 - item.missionTime) * 5)}분 더!`}
           </AppText>
         </View>
       </View>

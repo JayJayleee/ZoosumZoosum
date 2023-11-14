@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {TutorialScreenProps} from '@/types/path';
 import {View, ImageBackground, StyleSheet, Dimensions} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {TutorialImageCard} from './TutorialImageCard';
-import {ImageSourcePropType} from 'react-native';
+import {ImageSourcePropType, BackHandler} from 'react-native';
+import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
+import RNExitApp from 'react-native-exit-app';
 type TutorialData = {
   Title: string;
   Image: ImageSourcePropType;
@@ -42,6 +44,31 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
   };
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef<Carousel<TutorialData>>(null);
+  const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
+  const exitFtn = () => {
+    RNExitApp.exitApp();
+  };
+
+  // 뒤로 가기 클릭 시 종료 여부 묻도록 설정
+  useEffect(() => {
+    const backAction = () => {
+      if (navigation.isFocused()) {
+        setCloseModalVisible(true);
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
 
   return (
     <ImageBackground
@@ -49,6 +76,13 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
       source={require('@/assets/pickPloggingFriend_image.png')}
       resizeMode="cover"
       blurRadius={1}>
+      {isCloseModalVisible && (
+        <AppCloseModal
+          isModalVisible={isCloseModalVisible}
+          RequestClose={() => setCloseModalVisible(false)}
+          exitFtn={exitFtn}
+        />
+      )}
       <View
         style={{
           flex: 1,
