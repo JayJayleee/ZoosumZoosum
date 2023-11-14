@@ -40,7 +40,15 @@ const styles = StyleSheet.create({
   pickAnimalCardList : {
     width : "90%",
     height : "100%",
-  }
+  },
+  isLoading : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent : 'flex-start',
+    // fontSize : 35,
+    fontFamily : 'NPSfont_extrabold',
+    marginTop : windowHeight * 0.06
+  },
 });
 
 export default styles;

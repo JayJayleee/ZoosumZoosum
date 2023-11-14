@@ -74,7 +74,7 @@ export default function RegionRanking({goToprofile}: RankingProps) {
           source={require('@/assets/loginpage_image/zooisland_logo.png')}
         />
         <Wave />
-        <AppText style={styles.isLoading}>로딩중..</AppText>
+        <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
       </View>
     );
   }
@@ -99,7 +99,7 @@ export default function RegionRanking({goToprofile}: RankingProps) {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          inputStyles={{width: '80%', fontSize: 15}}
+          inputStyles={{width: '80%', fontSize: 10, alignItems: 'center'}}
           dropdownStyles={{
             height: windowHeight * 0.3,
             borderColor: '#7ED3A1',
@@ -108,7 +108,7 @@ export default function RegionRanking({goToprofile}: RankingProps) {
             backgroundColor: 'white',
           }}
           dropdownTextStyles={{fontSize: 15, width: '80%'}}
-          fontFamily="NPSfont_regular"
+          fontFamily="NPSfont_bold"
           placeholder={'지역을 선택해주세요'}
           save="value"
         />
@@ -122,7 +122,7 @@ export default function RegionRanking({goToprofile}: RankingProps) {
       </View> */}
       <View style={styles.body_container}>
         {rankingData.length === 0 ? (
-          <AppText style={styles.error_text}>데이터가 없습니다.</AppText>
+          <AppText style={styles.error_text}>데이터가 없습니다</AppText>
         ) : (
           <FlatList
             horizontal={false}

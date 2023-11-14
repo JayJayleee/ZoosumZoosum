@@ -24,7 +24,12 @@ import {getStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
 import {windowWidth} from '@/constants/styles';
-import {changeMotion, pause, replay, changeMotionStop} from '@/constants/sound';
+import {
+  changeButtonSound,
+  pause,
+  replay,
+  changeMotionStop,
+} from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
 
 export default function MainPage({navigation}: MainScreenProps) {
@@ -187,6 +192,7 @@ export default function MainPage({navigation}: MainScreenProps) {
 
   // BGM on/off 함수
   const changeSoundState = () => {
+    changeButtonSound();
     if (isSoundOn) {
       pause();
       setSound(false);
@@ -201,6 +207,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     const nickname = await getStorage('Nickname');
 
     if (nickname !== null) {
+      changeButtonSound();
       navigation.navigate({
         name: 'Profile',
         params: {nickname: nickname},
@@ -210,16 +217,19 @@ export default function MainPage({navigation}: MainScreenProps) {
 
   // 랭킹 클릭 시, 이동하는 함수
   const goToRanking = () => {
+    changeButtonSound();
     navigation.navigate('Ranking');
   };
 
   // 동물 클릭 시, 이동하는 함수
   const goToAnimalList = () => {
+    changeButtonSound();
     navigation.navigate('FriendList');
   };
 
   // 섬 클릭 시, 이동하는 함수
   const goToItemList = () => {
+    changeButtonSound();
     navigation.navigate('ItemList');
   };
 

@@ -1,5 +1,5 @@
 import ModalComponent from "..";
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { styles } from "./styles";
 import FastImage from "react-native-fast-image";
 
@@ -8,9 +8,10 @@ type ItemDetailProps = {
   closeFnt: () => void;
   imageURL: string;
   itemType: string;
+  itemName : string;
 }
 
-export const ItemDetailModal = ({isImageModalOpen, closeFnt, imageURL, itemType}: ItemDetailProps) => {
+export const ItemDetailModal = ({isImageModalOpen, closeFnt, imageURL, itemType, itemName}: ItemDetailProps) => {
 
   const getResizeMode = () => {
     return itemType === 'TREE' ? FastImage.resizeMode.cover : FastImage.resizeMode.stretch;
@@ -24,10 +25,11 @@ export const ItemDetailModal = ({isImageModalOpen, closeFnt, imageURL, itemType}
     onClose={closeFnt}
     onRequestClose={closeFnt}
     buttonInnerText={"확인"}
-    ViewStyle='activity'
-    btnVariant='activity'>
-    <View>
+    ViewStyle='iteminfo'
+    btnVariant='default'>
+    <View style={styles.container}>
       <FastImage style={getStyle()} source={{ uri: imageURL }} resizeMode={getResizeMode()}/>
+      <Text numberOfLines={1} style={styles.container_text}>{itemName}</Text>
     </View>
   </ModalComponent>
 };

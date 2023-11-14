@@ -14,6 +14,7 @@ import FastImage from 'react-native-fast-image';
 
 import { fetchMyAnimalDetailInfo } from '@/apis/animalDetail';
 import {useQuery} from '@tanstack/react-query';
+import { Wave } from '@/components/ui/animation/LottieEffect';
 
 type Animal = {
   animalId: number;
@@ -48,6 +49,13 @@ export default function FriendDetailPage({navigation, route }: FriendDetailScree
     },
   });
 
+  if (!animal) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+    </View>
+  )
   return (
     <ImageBackground
       style={StyleSheet.absoluteFill}

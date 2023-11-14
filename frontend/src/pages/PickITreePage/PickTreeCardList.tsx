@@ -4,6 +4,9 @@ import PickTreeCard from './PickTreeCard';
 import styles from './style';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMyItemListInfo } from '@/apis/Item';
+import FastImage from 'react-native-fast-image';
+import { Wave } from '@/components/ui/animation/LottieEffect';
+import AppText from '@/components/ui/Text';
 
 type ApiResponse = {
   data: Item[];
@@ -22,7 +25,7 @@ interface PickTreeCardListProps {
 }
 
 export default function PickTreeCardlist({navigation} : PickTreeCardListProps) {
-  const [ItemArray, setItemArray] = useState<Item[]>();
+  const [ItemArray, setItemArray] = useState<Item[]>([]);
   const itemType = 'TREE';
 
   useQuery(['ItemList'], () => fetchMyItemListInfo(itemType), {
@@ -58,7 +61,13 @@ export default function PickTreeCardlist({navigation} : PickTreeCardListProps) {
     },
   });
 
-  if (!ItemArray?.length) return <Text style={styles.isloading}>로딩...</Text>;
+  if (!ItemArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+    </View>
+  )
   return (
     <View style={styles.container}>
       <View style={styles.pickTreeCardList}>

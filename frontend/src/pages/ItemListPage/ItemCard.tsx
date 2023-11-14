@@ -15,6 +15,7 @@ interface ItemCardProps {
 export default function ItemCard({itemName, fileUrl, selected, itemType}: ItemCardProps) {
   const [isImageModalOpen, setImageModalOpen] = useState<boolean>(false);
   const [imageURL, setImageURL] = useState<string>("");
+  const [itemNames, setItemNames] = useState<string>("");
   const [itemTypes, setItemTypes] = useState<string>("");
 
   const getImageStyle = () => {
@@ -24,10 +25,11 @@ export default function ItemCard({itemName, fileUrl, selected, itemType}: ItemCa
     setImageURL(fileUrl)
     setItemTypes(itemType)
     setImageModalOpen(true)
+    setItemNames(itemName)
   }
   return (
     <>
-    {isImageModalOpen && <ItemDetailModal isImageModalOpen={isImageModalOpen} closeFnt={() => setImageModalOpen(false)} imageURL={imageURL} itemType={itemTypes} />}
+    {isImageModalOpen && <ItemDetailModal isImageModalOpen={isImageModalOpen} closeFnt={() => setImageModalOpen(false)} imageURL={imageURL} itemType={itemTypes} itemName={itemNames} />}
     <View style={styles.card}>
       <TouchableOpacity style={styles.card2} onPress={() => gotodetail(fileUrl, itemType)}>
         {selected == true &&
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily : 'NPSfont_bold'
   },
   image: {
     marginTop : 20,

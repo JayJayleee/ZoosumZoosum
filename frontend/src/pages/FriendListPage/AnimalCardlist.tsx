@@ -5,6 +5,9 @@ import styles from './style';
 import {fetchMyAnimalListInfo} from '@/apis/animal';
 import {useQuery} from '@tanstack/react-query';
 import { useFocusEffect } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import { Wave } from '@/components/ui/animation/LottieEffect';
+import AppText from '@/components/ui/Text';
 
 type Animal = {
   animalId: number;
@@ -21,36 +24,28 @@ type ApiResponse = {
   data: Animal[];
 };
 
-const targetNumColumns = 3;
-
 export default function AnimalCardlist({navigation}: AnimalCardListProps) {
   const [animalsArray, setAnimalsArray] = useState<Animal[]>([]);
-  const [numColumns, setNumColumns] = useState<number>(targetNumColumns);
   
   const {refetch} = useQuery(['animalList'], fetchMyAnimalListInfo, {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
 
-      const totalCards = data.length;
-      const calculatedNumColumns = Math.min(
-        targetNumColumns,
-        Math.ceil(totalCards / targetNumColumns),
-      );
-      setNumColumns(calculatedNumColumns);
-
-      const missingCards =
-        calculatedNumColumns - (totalCards % calculatedNumColumns);
-
       if (!Array.isArray(data)) {
         console.error('Data는 배열이 아닙니다:', data);
         return;
       }
+
       let processedData = [...data];
 
-      if (missingCards !== targetNumColumns) {
-        for (let i = 0; i < missingCards; i++) {
+      const numColumns = 3;
+
+      const remainingCards = numColumns - (processedData.length % numColumns);
+
+      if (remainingCards > 0) {
+        for (let i = 0; i < remainingCards; i++) {
           processedData.push({
-            animalId: i,
+            animalId: i + processedData.length,
             animalName: '',
             fileUrl: '',
             selected: false,
@@ -66,8 +61,13 @@ export default function AnimalCardlist({navigation}: AnimalCardListProps) {
   });
   useFocusEffect(useCallback(() => {refetch()}, []))
 
-  if (!animalsArray.length) return <Text>로딩...</Text>;
-
+  if (!animalsArray.length) return (
+    <View style={styles.isLoading}>
+      <FastImage source={require('@/assets/loginpage_image/zooisland_logo.png')} />
+      <Wave />
+      <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+    </View>
+  )
   return (
     <View>
       <FlatList

@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   title2 : {
     color : 'black',
-    fontSize : 20,
+    fontSize : 18,
     fontFamily : 'NPSfont_extrabold',
   },
   switchButtons : {

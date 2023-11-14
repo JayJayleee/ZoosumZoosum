@@ -18,10 +18,7 @@ const styles = StyleSheet.create({
     fontSize : 35,
     fontFamily : 'NPSfont_extrabold'
   },
-  title_body : {
-    color : 'white',
-    fontSize : 20,
-  },
+
   head : {
     height : windowHeight*0.1,
     marginTop : windowWidth*0.1
@@ -49,7 +46,15 @@ const styles = StyleSheet.create({
   },
   button_container : {
     flexDirection : 'row',
-  }
+  },
+  isLoading : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent : 'flex-start',
+    // fontSize : 35,
+    fontFamily : 'NPSfont_extrabold',
+    marginTop : windowHeight * 0.06
+  },
 });
 
 export default styles;
