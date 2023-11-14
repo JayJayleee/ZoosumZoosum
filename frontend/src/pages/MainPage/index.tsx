@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   BackHandler,
   Easing,
+  Image,
 } from 'react-native';
 import {MainScreenProps} from 'typePath';
 import FastImage from 'react-native-fast-image';
@@ -31,7 +32,7 @@ import {
   changeMotionStop,
 } from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
-import {useFocusEffect} from '@react-navigation/native';
+import { Brightness } from 'react-native-color-matrix-image-filters';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -343,69 +344,79 @@ export default function MainPage({navigation}: MainScreenProps) {
             resizeMode="stretch"
           />
           {numberAnimal > 0 && (
-            <TouchableOpacity
+            <Brightness amount={1.3} style={styles.firstAnimal}>
+              <TouchableOpacity
               activeOpacity={1}
               onPress={() =>
-                newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
-              }
-              style={styles.firstAnimal}>
-              <FastImage
-                style={styles.Animal}
-                source={{uri: animalUri[0].fileUrl}}
-              />
-            </TouchableOpacity>
+                  newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
+                }
+                style={styles.full}>
+                <Image
+                  style={styles.Animal}
+                  source={{uri: animalUri[0].fileUrl}}
+                />
+              </TouchableOpacity>
+            </Brightness>
           )}
           {numberAnimal > 1 && (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() =>
-                newAnimalAct(1, animalUri[1].animalId, animalUri[1].fileUrl)
-              }
-              style={styles.secondAnimal}>
-              <FastImage
-                style={styles.ReverseAnimal}
-                source={{uri: animalUri[1].fileUrl}}
-              />
-            </TouchableOpacity>
+            <Brightness amount={1.3} style={styles.secondAnimal}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() =>
+                  newAnimalAct(1, animalUri[1].animalId, animalUri[1].fileUrl)
+                }
+                style={styles.full}>
+                <Image
+                  style={styles.ReverseAnimal}
+                  source={{uri: animalUri[1].fileUrl}}
+                />
+              </TouchableOpacity>
+            </Brightness>
           )}
           {numberAnimal > 2 && (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() =>
-                newAnimalAct(2, animalUri[2].animalId, animalUri[2].fileUrl)
-              }
-              style={styles.thirdAnimal}>
-              <FastImage
-                style={styles.Animal}
-                source={{uri: animalUri[2].fileUrl}}
-              />
-            </TouchableOpacity>
+            <Brightness amount={1.3} style={styles.thirdAnimal}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() =>
+                  newAnimalAct(2, animalUri[2].animalId, animalUri[2].fileUrl)
+                }
+                style={styles.full}>
+                <Image
+                  style={styles.Animal}
+                  source={{uri: animalUri[2].fileUrl}}
+                />
+              </TouchableOpacity>
+            </Brightness>
           )}
           {numberAnimal > 3 && (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() =>
-                newAnimalAct(3, animalUri[3].animalId, animalUri[3].fileUrl)
-              }
-              style={styles.fourthAnimal}>
-              <FastImage
-                style={styles.ReverseAnimal}
-                source={{uri: animalUri[3].fileUrl}}
-              />
-            </TouchableOpacity>
+            <Brightness amount={1.3} style={styles.fourthAnimal}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() =>
+                  newAnimalAct(3, animalUri[3].animalId, animalUri[3].fileUrl)
+                }
+                style={styles.full}>
+                <Image
+                  style={styles.ReverseAnimal}
+                  source={{uri: animalUri[3].fileUrl}}
+                />
+              </TouchableOpacity>
+            </Brightness>
           )}
           {numberAnimal > 4 && (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() =>
-                newAnimalAct(4, animalUri[4].animalId, animalUri[4].fileUrl)
-              }
-              style={styles.fifthAnimal}>
-              <FastImage
-                style={styles.Animal}
-                source={{uri: animalUri[4].fileUrl}}
-              />
-            </TouchableOpacity>
+            <Brightness amount={1.3} style={styles.fifthAnimal}>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() =>
+                  newAnimalAct(4, animalUri[4].animalId, animalUri[4].fileUrl)
+                }
+                style={styles.full}>
+                <Image
+                  style={styles.Animal}
+                  source={{uri: animalUri[4].fileUrl}}
+                />
+              </TouchableOpacity>
+            </Brightness>
           )}
         </FastImage>
       </View>
