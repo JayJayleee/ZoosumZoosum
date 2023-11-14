@@ -70,7 +70,6 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
   }, []);
 
   const gotomain = async () => {
-    await setStorage("isHave", "Y");
     navigation.navigate('Main');
   };
 
