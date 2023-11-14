@@ -32,9 +32,9 @@ export async function PloggingResultFtn(activityData: ActivityDataType) {
   const now = new Date();
   const fileName = `${now.getFullYear()}-${
     now.getMonth() + 1
-  }-${now.getDate()}-${now.getHours()}`;
+  }-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
 
-  // 이미지가 있을 경우 formData에 추가
+  // 이미지가 있을 경우 formData에 추
   if (activityData.activityImg) {
     formData.append('activityImg', {
       uri: activityData.activityImg,
@@ -187,16 +187,17 @@ export async function TrashImgResultReturnFtn(
         {headers},
       );
       setIsLoading(false);
+      // console.log(response.data, '바로 응답');
       return response.data; // 성공 응답시 결과 반환
     } catch (error: any) {
       const status = error.response ? error.response.status : null;
-      if (status === 501 || status === 502 || status === 503) {
-        // console.error(`플로깅 api- 에러코드 ${status}`, error);
-        setIsLoading(false);
+      // if (status === 501 || status === 502 || status === 503) {
+      //   // console.error(`플로깅 api- 에러코드 ${status}`, error);
+      //   setIsLoading(false);
 
-        throw {error, status};
-      }
-
+      //   throw {error, status};
+      // }
+      console.log(status, error, ' 플로깅 api 에러');
       if (retryCount > 0) {
         console.log(`Upload failed, retrying in ${interval}ms...`, error);
         await new Promise(resolve => setTimeout(resolve, interval));

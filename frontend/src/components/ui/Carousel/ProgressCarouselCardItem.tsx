@@ -14,7 +14,7 @@ export function ProgressCarouselCardItem({
   return (
     <View style={styles.container}>
       <AppText style={styles.progressHeader}>
-        조금만 더하면 받을 수 있어요!
+        조금만 더하면{'\n'}받을 수 있어요!
       </AppText>
       <View style={styles.progressContainer}>
         <AnimatedProgressCircle
