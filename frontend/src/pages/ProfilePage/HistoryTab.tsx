@@ -46,20 +46,20 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
   };
   
 
-  // 활동 변수에 받아온 결과를 저장하는 코드 
-  const { isLoading: activityLoading, isError: isActivityError, error: ActivityError} = useQuery<activityHistory>(
-    ["activityList"],
-    () => getActivityInfo(nickname, activityPageNumber, 10),
-    {
-      onSuccess: (data) => {
-        setActivityList({
-          content: [...activityList.content, ...data.content],
-          size: data.size,
-        })
-        setPageNumber(activityPageNumber + 1)
-      },
-    }
-  );
+  // // 활동 변수에 받아온 결과를 저장하는 코드 
+  // const { isLoading: activityLoading, isError: isActivityError, error: ActivityError} = useQuery<activityHistory>(
+  //   ["activityList"],
+  //   () => getActivityInfo(nickname, activityPageNumber, 10),
+  //   {
+  //     onSuccess: (data) => {
+  //       setActivityList({
+  //         content: [...activityList.content, ...data.content],
+  //         size: data.size,
+  //       })
+  //       setPageNumber(activityPageNumber + 1)
+  //     },
+  //   }
+  // );
   
   // toast 함수 호출
   const showToast = () => {
@@ -121,6 +121,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
 
   useEffect(() => {
     getListByType();
+
   }, [selectType])
 
   return (
