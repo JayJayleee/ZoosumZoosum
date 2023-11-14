@@ -13,7 +13,7 @@ import {fetchFirstEgg} from '@/apis/tutorial';
 import AppButton from '@/components/ui/Button';
 import RNExitApp from 'react-native-exit-app';
 import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
-import { setStorage } from '@/apis';
+import {setStorage} from '@/apis';
 
 export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
   type Egg = {
@@ -21,8 +21,9 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
     animalName: string;
     fileUrl: string;
   };
-  const [eggCount] = useState(route.params?.eggCount || 0);
-  const [isFirstLogin] = useState(route.params?.isFirstLogin || false);
+  const [isFirstLogin, setIsFristLogin] = useState(
+    route.params?.isFirstLogin || false,
+  );
   const [firstEgg, setFirstEgg] = useState<Egg>();
 
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
@@ -50,18 +51,24 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
       backHandler.remove();
     };
   }, []);
-  const {isError: isGetError, error: getError} = useQuery<Egg, Error>(
-    ['firstEgg'],
-    fetchFirstEgg,
-    {
-      onSuccess: (data: Egg) => {
-        setFirstEgg(data);
-      },
-      onError: (error: Error) => {
-        console.log('못받음', error);
-      },
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      refetch();
+    });
+  }, []);
+  const {
+    isError: isGetError,
+    error: getError,
+    refetch,
+  } = useQuery<Egg, Error>(['firstEgg'], fetchFirstEgg, {
+    onSuccess: (data: Egg) => {
+      setFirstEgg(data);
     },
-  );
+    onError: (error: Error) => {
+      console.log('못받음', error);
+    },
+  });
 
   const [isNamingComplete, setNamingComplete] = useState(false);
 
@@ -69,7 +76,8 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
     setNamingComplete(true);
   }, []);
 
-  const gotomain = async () => {
+  const gotomain = () => {
+    setIsFristLogin(false);
     navigation.navigate('Main');
   };
 
@@ -100,7 +108,6 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
           onNamingComplete={handleNamingComplete}
           gotomain={gotomain}
           isFirstLogin={isFirstLogin}
-          eggCount={eggCount}
           item={{
             fileUrl: firstEgg?.fileUrl ?? '',
             animalName: firstEgg?.animalName ?? '',

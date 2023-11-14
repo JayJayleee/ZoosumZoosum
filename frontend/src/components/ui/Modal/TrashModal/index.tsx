@@ -107,9 +107,10 @@ const TrashModal = ({
   useEffect(() => {
     if (getErrorStatus) {
       setDisplayedImage(''); // 에러가 있을 경우 이미지를 비움
-    } else {
-      setDisplayedImage(TrashResultImg); // 에러가 없을 경우 원래 이미지를 다시 설정
     }
+    // else {
+    //   setDisplayedImage(TrashResultImg); // 에러가 없을 경우 원래 이미지를 다시 설정
+    // }
   }, [getErrorStatus, TrashResultImg]);
 
   useEffect(() => {
