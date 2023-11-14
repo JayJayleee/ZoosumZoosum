@@ -4,8 +4,8 @@ import {View, ImageBackground, StyleSheet, Dimensions} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {TutorialImageCard} from './TutorialImageCard';
 import {ImageSourcePropType, BackHandler} from 'react-native';
-import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
-import RNExitApp from 'react-native-exit-app';
+import { SkipModal } from '@/components/ui/Modal/SkipModal';
+
 type TutorialData = {
   Title: string;
   Image: ImageSourcePropType;
@@ -45,8 +45,12 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef<Carousel<TutorialData>>(null);
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
+
   const exitFtn = () => {
-    RNExitApp.exitApp();
+    navigation.navigate({
+      name: 'FirstEgg',
+      params: {isFirstLogin: true},
+    })
   };
 
   // 뒤로 가기 클릭 시 종료 여부 묻도록 설정
@@ -77,7 +81,7 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
       resizeMode="cover"
       blurRadius={1}>
       {isCloseModalVisible && (
-        <AppCloseModal
+        <SkipModal
           isModalVisible={isCloseModalVisible}
           RequestClose={() => setCloseModalVisible(false)}
           exitFtn={exitFtn}
