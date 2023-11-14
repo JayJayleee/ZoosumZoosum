@@ -48,7 +48,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
     setImageModalOpen(true);
   };
 
-  // 활동 변수에 받아온 결과를 저장하는 코드
+  // // 활동 변수에 받아온 결과를 저장하는 코드
   // const { isLoading: activityLoading, isError: isActivityError, error: ActivityError} = useQuery<activityHistory>(
   //   ["activityList"],
   //   () => getActivityInfo(nickname, activityPageNumber, 10),
