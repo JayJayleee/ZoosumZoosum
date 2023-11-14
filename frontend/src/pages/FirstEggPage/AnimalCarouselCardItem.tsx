@@ -23,6 +23,7 @@ import {
   changeEggBorn,
   pause,
 } from '@/constants/sound';
+import { setStorage } from '@/apis';
 
 export function AnimalCarouselCardItem({
   item,
@@ -154,20 +155,25 @@ export function AnimalCarouselCardItem({
 
   // 9번째에서 1.5초 뒤에 10으로 넘어가는데 이때 정령이 태어남
   useEffect(() => {
-    if (index === activeIndex && touchCount === 9) {
+    const endFtn = async () => {
+      if (index === activeIndex && touchCount === 9) {
       const timer = setTimeout(() => {
         setTouchCount(10);
       }, 1500);
       return () => clearTimeout(timer);
+      }
+      if (index === activeIndex && touchCount === 10) {
+        changeEggBorn();
+        setShowEgg(false);
+        setHeaderText(`${item?.animalName}(이)가 태어났어요!`);
+        setImageSrc({uri: item?.fileUrl});
+        setAnimalId(item?.animalId);
+        setShowInput(true);
+        await setStorage("isHave", "Y")
+      }
     }
-    if (index === activeIndex && touchCount === 10) {
-      changeEggBorn();
-      setShowEgg(false);
-      setHeaderText(`${item?.animalName}(이)가 태어났어요!`);
-      setImageSrc({uri: item?.fileUrl});
-      setAnimalId(item?.animalId);
-      setShowInput(true);
-    }
+
+    endFtn();
   }, [activeIndex, item, touchCount]);
 
   useEffect(() => {
