@@ -46,6 +46,7 @@
       <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyA6PqaeNscW_7mm46Ot4WVUkLle5u7F1sU" />
+      <!-- <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key" /> -->
     </application>
     <!-- <meta-data
         android:name="com.kakao.vectormap.APP_KEY"
