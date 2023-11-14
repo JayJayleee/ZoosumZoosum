@@ -134,18 +134,20 @@ const styles = StyleSheet.create({
   },
   firstAnimal: {
     position: 'relative',
-    left: '45%',
+    left: '41%',
     bottom: '22%',
     width: '20%',
     height: '35%',
     zIndex: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    margin: 0,
+    padding: 0,
   },
   secondAnimal: {
     position: 'relative',
-    left: '28%',
-    bottom: '70%',
+    left: '20%',
+    bottom: '68%',
     width: '20%',
     height: '35%',
     zIndex: 8,
@@ -154,8 +156,8 @@ const styles = StyleSheet.create({
   },
   thirdAnimal: {
     position: 'relative',
-    left: '60%',
-    bottom: '102%',
+    left: '57%',
+    bottom: '100%',
     width: '20%',
     height: '35%',
     zIndex: 8,
@@ -164,8 +166,8 @@ const styles = StyleSheet.create({
   },
   fourthAnimal: {
     position: 'relative',
-    left: '10%',
-    bottom: '150%',
+    left: '5%',
+    bottom: '148%',
     width: '20%',
     height: '35%',
     zIndex: 6,
@@ -191,14 +193,18 @@ const styles = StyleSheet.create({
   },
   Animal: {
     position: 'relative',
-    width: '120%',
-    height: '120%',
+    width: '140%',
+    height: '100%',
   },
   ReverseAnimal: {
-    transform: 'scaleX(-1)',
-    width: '120%',
-    height: '120%',
+    transform: [{scaleX: -1}],
+    width: '140%',
+    height: '100%',
   },
+  full: {
+    width: '100%', 
+    height: '100%'
+  }
 })
 
 export default styles;
