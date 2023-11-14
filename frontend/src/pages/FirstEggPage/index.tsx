@@ -11,6 +11,7 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
     animalName: string;
     fileUrl: string;
   };
+  const [eggCount] = useState(route.params?.eggCount || 0);
   const [isFirstLogin] = useState(route.params?.isFirstLogin || false);
   const [firstEgg, setFirstEgg] = useState<Egg>();
 
@@ -57,6 +58,7 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
           onNamingComplete={handleNamingComplete}
           gotomain={gotomain}
           isFirstLogin={isFirstLogin}
+          eggCount={eggCount}
           item={{
             fileUrl: firstEgg?.fileUrl ?? '',
             animalName: firstEgg?.animalName ?? '',

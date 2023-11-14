@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingTop: 80,
     paddingBottom: 30,
+    textAlign: 'center',
   },
   header: {
     color: 'white',

@@ -13,7 +13,8 @@ export type RootStackParamList = {
     TrashData?: TrashDaTaList;
     selectedAnimalIMG?: string;
     selectedAnimalID?: number;
-    TrashImg: string;
+    TrashImg?: string;
+    errorStatus?: number;
   };
   Camera: {
     getAnimalIMG?: string;
@@ -40,6 +41,7 @@ export type RootStackParamList = {
   };
   FirstEgg: {
     isFirstLogin?: boolean;
+    eggCount?: number;
   };
 };
 

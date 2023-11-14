@@ -13,6 +13,7 @@ export interface AnimalCarouselCardItemProps {
   onNamingComplete?: (name: string) => void;
   isFirstLogin?: boolean;
   gotomain?: () => void;
+  eggCount?: number;
 }
 
 export interface CarouselCardItemProps {
