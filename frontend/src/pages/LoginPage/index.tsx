@@ -19,6 +19,7 @@ export default function LoginPage({navigation}: LoginScreenProps) {
   const [isClicked, setIsClicked] = useState(false);
   let token = null;
   let nickname = null;
+  let isHave = null;
 
   // 페이지에 들어오면 초기 상태로 돌려놓기
   useEffect(() => {
@@ -30,10 +31,15 @@ export default function LoginPage({navigation}: LoginScreenProps) {
   const isLoginState = async () => {
     token = await getStorage('AccessToken');
     nickname = await getStorage('Nickname');
+    isHave = await getStorage("isHave");
 
     if (token !== null) {
       if (nickname !== null) {
-        navigation.navigate('Main');
+        if (isHave !== null) {
+          navigation.navigate('Main');
+        } else {
+          navigation.navigate("Tutorial");
+        }
       } else {
         navigation.navigate("UserInfo");
       }
@@ -49,7 +55,7 @@ export default function LoginPage({navigation}: LoginScreenProps) {
 
   // 로그인 버튼 컴포넌트
   const LoginButton = <View style={isClicked? styles.showLoginButton: styles.hiddenLoginButton}>
-    <KakaoLoginButton moveUserInfoPage={MovePage} moveMainPage={() => navigation.navigate('Main')} checkState={isClicked} setState={setIsClicked} />
+    <KakaoLoginButton moveUserInfoPage={MovePage} moveMainPage={() => navigation.navigate('Main')} moveTutoPage={() => navigation.navigate('Tutorial')} checkState={isClicked} setState={setIsClicked} />
     {/* <NaverLoginButton /> */}
   </View>
 

@@ -11,12 +11,16 @@ import { windowHeight } from "@/constants/styles";
 interface PropsType {
   moveUserInfoPage: () => void;
   moveMainPage: () => void;
+  moveTutoPage: () => void;
   checkState: boolean;
   setState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
-export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkState, setState}: PropsType) {
+export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, moveTutoPage, checkState, setState}: PropsType) {
+
+  let token = null;
+  let haveAnimal = null;
 
   const showToast = () => {
     Toast.show({
@@ -29,9 +33,18 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, checkS
   }
   
   // 버튼이 보이지 않을 때, 해당 영역 클릭 시 실행하는 함수
-  const checkLoginState = () => {
-    if (getStorage("Accesstoken") !== null) {
-      moveMainPage();
+  const checkLoginState = async () => {
+    token = await getStorage("AccessToken");
+    haveAnimal = await getStorage("isHave");
+
+    console.log(haveAnimal)
+
+    if (token !== null) {
+      if(haveAnimal !== null) {
+        moveMainPage();
+      } else {
+        moveTutoPage();
+      }
     } else {
       setState(true);
     }
