@@ -36,17 +36,14 @@ export const stop = () => {
   whoosh.reset();
 };
 
-export const changeMotion = new Sound(
-  'change.mp3',
-  Sound.MAIN_BUNDLE,
-  error => {
+export const changeMotion = new Sound('change.mp3',Sound.MAIN_BUNDLE, error => {
     if (error) {
       console.log('failed to load the sound change', error);
       return;
     }
     // Reduce the volume by half
-    changeMotion.setVolume(1);
-    changeMotion.setNumberOfLoops(-1);
+    changeMotion.setVolume(0.5);
+    // changeMotion.setNumberOfLoops(-1);
   },
 );
 
@@ -55,9 +52,9 @@ changeMotion.setPan(1);
 
 export const changeMotionStop = () => {
   changeMotion.play();
-  setTimeout(() => {
-    changeMotion.pause();
-  }, 100);
+  // setTimeout(() => {
+  //   changeMotion.pause();
+  // }, 200);
 }
 
 const eggCrack = new Sound('egg.wav', Sound.MAIN_BUNDLE, error => {
@@ -111,3 +108,16 @@ export const changeEggBorn = () => {
     eggBorn.pause();
   }, 2000);
 };
+
+const buttonSound = new Sound('button.wav', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('failed to load the sound change', error);
+    return;
+  }
+
+  buttonSound.setVolume(20);
+})
+
+export const changeButtonSound = () => {
+  buttonSound.play();
+}
