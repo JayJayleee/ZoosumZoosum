@@ -141,6 +141,8 @@ const styles = StyleSheet.create({
     zIndex: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    margin: 0,
+    padding: 0,
   },
   secondAnimal: {
     position: 'relative',
@@ -191,13 +193,13 @@ const styles = StyleSheet.create({
   },
   Animal: {
     position: 'relative',
-    width: '120%',
-    height: '120%',
+    width: '140%',
+    height: '100%',
   },
   ReverseAnimal: {
     transform: 'scaleX(-1)',
-    width: '120%',
-    height: '120%',
+    width: '140%',
+    height: '100%',
   },
 })
 
