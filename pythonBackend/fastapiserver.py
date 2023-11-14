@@ -186,15 +186,11 @@ def getResultFromData(
     predict_result = {trash_name[i]: trash_count[i] for i in range(len(trash_name))}
 
     
-
+    status = 1
     predict_result["total"] = sum(trash_count)
     if sum(trash_count) == 0:
-        if smallFlag == True and bigFlag == True:
-            raise HTTPException(status_code=501, detail="exist only too large and too small object to detect..")
-        elif smallFlag == True:
-            raise HTTPException(status_code=502, detail="exist only too small object to detect..")
-        elif bigFlag == True:
-            raise HTTPException(status_code=503, detail="exist only too large object to detect..")
+        if smallFlag == True or bigFlag == True:
+            status = -1
     result = {
         "predict_result" : predict_result,
         "confidences" : confidences,
@@ -202,7 +198,8 @@ def getResultFromData(
         "class_ids" : class_ids,
         "img" : img,
         "nparr" : nparr,
-        "trash_count" : trash_count
+        "trash_count" : trash_count,
+        "status":status,
     }
     return result
 
@@ -246,6 +243,7 @@ def predict(
     class_ids = result["class_ids"]
     img = result["img"]
     nparr = result["nparr"]
+    status = result["status"]
 
     # cv2 가 제공하는 후처리 모델
     # result_boxes = cv2.dnn.NMSBoxes(bboxes, confidences, 0.25, 0.45, 0.5)
@@ -277,6 +275,7 @@ def predict(
     decoded = encoded.decode('ascii')
 
     result = {
+        "status" : status,
         "predictResult" : predict_result,
         "decodedImage" : decoded,
     }
