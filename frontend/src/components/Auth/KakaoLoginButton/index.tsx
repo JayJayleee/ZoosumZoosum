@@ -21,6 +21,7 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, moveTu
 
   let token = null;
   let haveAnimal = null;
+  let nickname = null;
 
   const showToast = () => {
     Toast.show({
@@ -36,14 +37,17 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, moveTu
   const checkLoginState = async () => {
     token = await getStorage("AccessToken");
     haveAnimal = await getStorage("isHave");
-
-    console.log(haveAnimal)
+    nickname = await getStorage("Nickname");
 
     if (token !== null) {
-      if(haveAnimal !== null) {
-        moveMainPage();
+      if (nickname !== null) {
+        if(haveAnimal !== null) {
+          moveMainPage();
+        } else {
+          moveTutoPage();
+        }
       } else {
-        moveTutoPage();
+        moveUserInfoPage();
       }
     } else {
       setState(true);
@@ -84,11 +88,6 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, moveTu
       getProfile();
     }).catch((error) => {
       showToast()
-      // if (error.code === 'E_CANCELLED_OPERATION') {
-      //   console.log("Login Cancelled", error.message);
-      // } else {
-      //   console.log(`Login Fail(code:${error.code})`, error.message);
-      // }
     })
   }
 
