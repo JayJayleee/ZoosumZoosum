@@ -60,4 +60,11 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
             .where(activityHistory.activityId.eq(activityId))
             .fetchOne());
     }
+
+    @Override
+    public List<ActivityHistory> findAllTree(ActivityType activityType) {
+        return queryFactory.selectFrom(activityHistory)
+            .where(activityHistory.activityType.eq(activityType))
+            .fetch();
+    }
 }

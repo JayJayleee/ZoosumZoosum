@@ -142,7 +142,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 
 		UserPlogInfo userPlogInfo = userPlogInfoRepository.findById(new UserPlogInfoId(userId)).get();
-		List<ActivityHistory> all = activityRepository.findAll();
+		List<ActivityHistory> all = activityRepository.findAllTree(ActivityType.TREE);
 		List<ActivityHistory> userActivities = activityRepository.findByUserIdAndActivityType(
 			userId, ActivityType.TREE);
 

@@ -2,6 +2,8 @@ package com.addShot.zoosum.domain.activity.repository;
 
 import com.addShot.zoosum.domain.activity.dto.request.ActivityRequestDto;
 import com.addShot.zoosum.entity.ActivityHistory;
+import com.addShot.zoosum.entity.enums.ActivityType;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +25,11 @@ public interface ActivityCustomRepository {
      * @return 활동내역 상세
      */
     Optional<ActivityHistory> findByActivityId(Long activityId);
+
+    /**
+     * 활동 내역 트리 조회
+     * @param activityType
+     * @return
+     */
+    List<ActivityHistory> findAllTree(ActivityType activityType);
 }

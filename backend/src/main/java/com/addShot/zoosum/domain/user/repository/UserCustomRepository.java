@@ -17,4 +17,19 @@ public interface UserCustomRepository {
      * @return User Entity
      */
     User findUserByNickname(String nickname);
+
+    /**
+     * 사용자 정보 삭제
+     * @param user
+     * @return
+     */
+    long deleteAllDataById(User user);
+
+    /**
+     * Id와 nickname으로 User Entity를 조회한다.
+     * @param userId
+     * @param nickname
+     * @return
+     */
+    User findUserByIdAndNickname(String userId, String nickname);
 }

@@ -22,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,13 +74,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 로그아웃되었습니다.");
     }
 
+    //닉네임 중복 검사 - 유저 6번
     @PostMapping("/duplicate")
     public ResponseEntity<NicknameDuplicatedResponseDto> checkDuplicateNickname(@RequestBody NicknameDuplicatedRequestDto request) {
         NicknameDuplicatedResponseDto nicknameDuplicatedResponseDto = userService.findDuplicateNickname(request.getNickname());
         return ResponseEntity.status(HttpStatus.OK).body(nicknameDuplicatedResponseDto);
     }
-    //닉네임 중복 검사 - 유저 6번
 
+    //유저 정보 수정 - 유저 5, 6번
     @PutMapping("/info")
     public ResponseEntity<UserInfoUpdateResponseDto> UserInfoUpdate(@RequestBody UserInfoUpdateRequestDto updateRequest, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
         String userId = headerUtils.getUserId(authorizationHeader);
@@ -89,7 +92,15 @@ public class UserController {
 
         return ResponseEntity.ok(new UserInfoUpdateResponseDto(token, message));
     }
-    //유저 정보 수정 - 유저 5, 6번
 
-
+    @DeleteMapping("/{nickname}")
+    public ResponseEntity<String> deleteUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+        @PathVariable String nickname) {
+        String userId = headerUtils.getUserId(authorizationHeader);
+        long result = userService.deleteUser(userId, nickname);
+        if (result == 0) {
+            return ResponseEntity.ok("삭제 실패");
+        }
+        return ResponseEntity.ok("삭제 성공");
+    }
 }
