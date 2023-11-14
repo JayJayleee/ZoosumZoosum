@@ -31,7 +31,7 @@ function AnimatedProgressCircle({
   return (
     <View style={{alignItems: 'center', justifyContent: 'center'}}>
       <Circle
-        size={140}
+        size={120}
         progress={displayedProgress}
         thickness={15}
         color="#2dcf8b"
@@ -41,8 +41,8 @@ function AnimatedProgressCircle({
         <Image
           source={children}
           style={{
-            width: 100,
-            height: 100,
+            width: 90,
+            height: 90,
             position: 'absolute',
             opacity: 0.5,
           }}

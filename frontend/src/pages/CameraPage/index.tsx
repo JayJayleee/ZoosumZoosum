@@ -140,26 +140,12 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
           shouldOpenModal: true,
           TrashData: responseData.predictResult,
           TrashImg: responseData.decodedImage,
+          TrashStatus: responseData.status,
         });
       },
       onError: (error: any) => {
         setIsLoading(false);
-
-        // error 객체를 any 타입으로 단언하고 status 속성에 접근
-        const status = error?.status;
-
-        if (status === 501 || status === 502 || status === 503) {
-          console.error(
-            `카메라 페이지 에러코드를 통해 전달됨 ${status}`,
-            error,
-          );
-          navigation.navigate('Plogging', {
-            shouldOpenModal: true,
-            errorStatus: status,
-          });
-        } else {
-          console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
-        }
+        console.error('쓰레기 이미지- onError 요청이 실패했습니다.', error);
       },
 
       onSettled: () => {

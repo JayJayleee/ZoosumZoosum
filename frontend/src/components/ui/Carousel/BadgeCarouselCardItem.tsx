@@ -9,6 +9,10 @@ import styles from './styles';
 // 뱃지, 아이템 등에 대한 캐롯셀 아이템
 
 export function BadgeCarouselCardItem({item, index}: CarouselCardItemProps) {
+  if (!item) {
+    return null;
+  }
+
   return (
     <View style={styles.container} key={index}>
       <AppText style={styles.header}>업적을 달성했어요!</AppText>

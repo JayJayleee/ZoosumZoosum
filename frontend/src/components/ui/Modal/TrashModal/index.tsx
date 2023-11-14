@@ -23,7 +23,7 @@ interface TrashModalProps {
   navigation: NativeStackNavigationProp<RootStackParamList>;
   animalImg: string;
   TrashResultImg: string;
-  errorStatus?: number;
+  trashStatus?: number;
 }
 
 type TrashType =
@@ -79,39 +79,38 @@ const TrashModal = ({
   navigation,
   animalImg,
   TrashResultImg,
-  errorStatus,
+  trashStatus,
 }: TrashModalProps) => {
   const [tip, setTip] = useState('');
   const [showFlatList, setShowFlatList] = useState(true);
   const [displayedImage, setDisplayedImage] = useState(TrashResultImg);
-  const [getErrorStatus, setgetErrorStatus] = useState<number | undefined>(
-    errorStatus,
+  const [getTrashStatus, setgetTrashStatus] = useState<number | undefined>(
+    trashStatus,
   );
 
   useEffect(() => {
-    setgetErrorStatus(errorStatus);
-    // console.log('현재 에러 상태', getErrorStatus);
-  }, [errorStatus]);
+    setgetTrashStatus(trashStatus);
+    console.log('현재 에러 상태', trashStatus);
+  }, [trashStatus]);
 
   useEffect(() => {
-    console.log('업데이트된 에러 상태:', getErrorStatus);
-  }, [getErrorStatus]);
+    console.log('업데이트된 에러 상태:', getTrashStatus);
+  }, [getTrashStatus]);
 
   useEffect(() => {
     if (!isVisible) {
-      setgetErrorStatus(undefined);
+      setgetTrashStatus(undefined);
       setShowFlatList(true); // 모달이 닫힐 때 showFlatList도 초기화
     }
   }, [isVisible]);
 
-  useEffect(() => {
-    if (getErrorStatus) {
-      setDisplayedImage(''); // 에러가 있을 경우 이미지를 비움
-    }
-    // else {
-    //   setDisplayedImage(TrashResultImg); // 에러가 없을 경우 원래 이미지를 다시 설정
-    // }
-  }, [getErrorStatus, TrashResultImg]);
+  // useEffect(() => {
+  //   if (getErrorStatus) {
+  //     setDisplayedImage(''); // 에러가 있을 경우 이미지를 비움
+  //   } else {
+  //     setDisplayedImage(TrashResultImg); // 에러가 없을 경우 원래 이미지를 다시 설정
+  //   }
+  // }, [getErrorStatus, TrashResultImg]);
 
   useEffect(() => {
     if (isVisible && data.length > 0) {
@@ -150,6 +149,12 @@ const TrashModal = ({
   const toggleFlatList = () => {
     setShowFlatList(!showFlatList);
   };
+
+  useEffect(() => {
+    if (!isVisible) {
+      setShowFlatList(true); // 모달이 닫힐 때 showFlatList를 true로 설정
+    }
+  }, [isVisible]);
 
   const getMostTrashType = (data: TrashDataReturnList[]): TrashType => {
     const trashCounts: Record<TrashType, number> = {
@@ -208,12 +213,6 @@ const TrashModal = ({
   //   return count > 0;
   // });
 
-  useEffect(() => {
-    if (!isVisible) {
-      setShowFlatList(true); // 모달이 닫힐 때 showFlatList를 true로 설정
-    }
-  }, [isVisible]);
-
   const onClose = () => {
     setShowFlatList(false); // 모달이 닫힐 때 showFlatList를 false로 설정
     onCloseProp(); // 부모 컴포넌트에서 전달받은 기존 onClose 함수 호출
@@ -244,7 +243,7 @@ const TrashModal = ({
           }}>
           방금 주운 쓰레기
         </AppText>
-        {!getErrorStatus && (
+        {getTrashStatus != -1 && (
           <TouchableOpacity
             onPress={toggleFlatList}
             style={{
@@ -273,7 +272,7 @@ const TrashModal = ({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {getErrorStatus && (
+        {getTrashStatus == -1 && (
           <View
             style={{
               width: '80%',
@@ -307,8 +306,8 @@ const TrashModal = ({
           </View>
         )}
 
-        {!getErrorStatus && showFlatList ? (
-          !getErrorStatus && !hasNonZeroItems ? (
+        {getTrashStatus != -1 && showFlatList ? (
+          getTrashStatus != -1 && !hasNonZeroItems ? (
             <View
               style={{
                 width: '80%',
@@ -363,14 +362,14 @@ const TrashModal = ({
               numColumns={3}
             />
           )
-        ) : !getErrorStatus ? (
+        ) : getTrashStatus != -1 ? (
           <Image
-            source={{uri: displayedImage}}
+            source={{uri: TrashResultImg}}
             style={{width: '100%', height: '63%', borderRadius: 20}}
           />
         ) : null}
 
-        {!getErrorStatus && hasNonZeroItems ? (
+        {getTrashStatus != -1 && hasNonZeroItems ? (
           <ImageBackground
             resizeMode="contain"
             style={{
@@ -437,33 +436,3 @@ const TrashModal = ({
 };
 
 export default TrashModal;
-
-// <View
-//   style={{
-//     width: '80%',
-//     height: '65%',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   }}>
-//   <Image
-//     source={require('@/assets/plogingpage_image/cannotfind.png')}
-//     style={{width: '100%', height: '80%', resizeMode: 'contain'}}
-//   />
-//   <AppText
-//     style={{
-//       color: 'black',
-//       fontSize: 20,
-//       marginTop: 5,
-//       fontFamily: 'NPSfont_bold',
-//     }}>
-//     사진이 너무 작거나, 크게 찍혔어요!
-//   </AppText>
-//   <AppText
-//     style={{
-//       color: 'black',
-//       fontSize: 12,
-//       marginTop: 10,
-//     }}>
-//     쓰레기를 다시 한 번 찍어주세요.
-//   </AppText>
-// </View>
