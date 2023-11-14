@@ -13,6 +13,7 @@ import {fetchFirstEgg} from '@/apis/tutorial';
 import AppButton from '@/components/ui/Button';
 import RNExitApp from 'react-native-exit-app';
 import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
+import { setStorage } from '@/apis';
 
 export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
   type Egg = {
@@ -68,7 +69,8 @@ export default function FirstEggPage({navigation, route}: FirstEggScreenProps) {
     setNamingComplete(true);
   }, []);
 
-  const gotomain = () => {
+  const gotomain = async () => {
+    await setStorage("isHave", "Y");
     navigation.navigate('Main');
   };
 
