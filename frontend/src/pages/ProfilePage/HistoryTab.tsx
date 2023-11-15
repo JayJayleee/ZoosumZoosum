@@ -212,7 +212,7 @@ export default function HistoryTab({nickname, isMyProfile}: HistoryProps) {
                               이동한 거리
                             </AppText>
                             <AppText style={styles.historyBoxContent}>
-                              {plogging?.ploggingLength && plogging.ploggingLength/1000}km
+                              {plogging?.ploggingLength && (plogging.ploggingLength/1000).toFixed(2)}km
                             </AppText>
                           </View>
                         </View>

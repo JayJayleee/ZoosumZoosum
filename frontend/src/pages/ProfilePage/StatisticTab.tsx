@@ -36,7 +36,7 @@ export default function StatisticTab({nickname, isMyProfile, statisticList}: sta
             이동한 거리
           </AppText>
           <AppText style={styles.staNoteContent}>
-            {statisticList.sumLength}km
+            {statisticList?.sumLength && (statisticList.sumLength).toFixed(2)}km
           </AppText>
         </View>
       </View>
