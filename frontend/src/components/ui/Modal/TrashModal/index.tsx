@@ -259,7 +259,12 @@ const TrashModal = ({
                   ? require('@/assets/img_icon/gallery_icon.png')
                   : require('@/assets/img_icon/xbox_icon.png')
               }
-              style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+              style={{
+                width: '110%',
+                height: '110%',
+                // paddingBottom: '15%',
+                resizeMode: 'contain',
+              }}
             />
           </TouchableOpacity>
         )}
@@ -268,7 +273,7 @@ const TrashModal = ({
       <View
         style={{
           width: '100%',
-          height: '89%',
+          height: '87%',
           justifyContent: 'center',
           alignItems: 'center',
         }}>

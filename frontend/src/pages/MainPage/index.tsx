@@ -32,7 +32,7 @@ import {
   changeMotionStop,
 } from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
-import { Brightness } from 'react-native-color-matrix-image-filters';
+import {Brightness} from 'react-native-color-matrix-image-filters';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -347,8 +347,8 @@ export default function MainPage({navigation}: MainScreenProps) {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() =>
-                  newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
-                }
+                newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
+              }
               style={styles.firstAnimal}>
               <FastImage
                 style={styles.Animal}
