@@ -4,7 +4,6 @@ import MapView, {Marker, PROVIDER_GOOGLE, Polyline} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import styles from './styles';
 import haversine from 'haversine';
-import AppText from '../../Text';
 import FastImage from 'react-native-fast-image';
 import Spinner from '../../Spinner';
 
@@ -16,10 +15,10 @@ type latLng = {
   longitude: number;
 };
 type GoogleMapProps = {
-  endPlog: boolean; // 플로깅 종료여부
   animalImg: string; // 동물 이미지
   trashCount: number; // 주운 쓰레기 개수 변화 감지
   setMapLoading: Function;
+  setWatchId: Function;
   setPloggingDistance: Function; // 거리 변동 감지
 };
 type marker = {
@@ -97,7 +96,7 @@ const GoogleMap = (props: GoogleMapProps) => {
     await calcDistance(newLatLng)
       .then(distance => {
         // console.log('7 add distance');
-        if (distance > 100) {
+        if (distance > 50) {
           posirouteCoordinates.current.pop();
           return;
         }
@@ -125,7 +124,7 @@ const GoogleMap = (props: GoogleMapProps) => {
     Geolocation.getCurrentPosition(
       // 성공
       pos => {
-        imReady.current = false;
+        imReady.current = true;
         // console.log('3 get current position');
         // console.log(pos);
         const {latitude, longitude} = pos.coords;
@@ -171,17 +170,12 @@ const GoogleMap = (props: GoogleMapProps) => {
         fastestInterval: 2000,
       },
     );
+    props.setWatchId(watchId);
   };
 
   // 최초 1회 현재위치 설정
   useEffect(() => {
     // console.log('1 init useEffect');
-    // console.log('endPlog', props.endPlog);
-    // 플로깅 끝나면 위치 이동 중지
-    Geolocation.clearWatch(watchId);
-
-    // console.log(watchId, 'watchId');
-
     // 권한 확인 후, 위치 설정
     requestPermission().then(result => {
       // console.log('2 permission');
