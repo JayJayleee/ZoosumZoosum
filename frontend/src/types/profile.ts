@@ -13,6 +13,7 @@ export type badgeInfo = {
   fileUrl: string;
   badgeCondition: string;
   have: boolean;
+  updateTime: string;
 }
 
 export type badgeList = {
