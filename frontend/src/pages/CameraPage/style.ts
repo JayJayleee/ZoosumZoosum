@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 40,
     backgroundColor: '#B2BEB5',
+    justifyContent: 'center',
+    alignItems: 'center',
     alignSelf: 'center',
     borderWidth: 4,
     borderColor: 'white',
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
   overlayText: {
     position: 'absolute',
     zIndex: 2,
-    fontSize: 14,
+    fontSize: 13,
     color: 'white',
     textAlign: 'center',
     width: '100%',
@@ -99,6 +101,10 @@ const styles = StyleSheet.create({
     width: '80%',
     zIndex: 1,
     transform: [{scaleY: -1}],
+  },
+  cameraIcon: {
+    width: '80%',
+    height: '80%',
   },
 });
 

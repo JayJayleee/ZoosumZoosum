@@ -17,6 +17,7 @@ import {TrashImgResultReturnFtn} from '@/apis/plogging';
 import {Wave} from '@/components/ui/animation/LottieEffect';
 import KeyEvent from 'react-native-keyevent';
 import {changeButtonSound} from '@/constants/sound';
+import FastImage from 'react-native-fast-image';
 
 interface Photo {
   path: string;
@@ -246,7 +247,7 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
                 style={styles.overlayRightImage}
               />
               <AppText style={styles.overlayText}>
-                박스에 쓰레기를 맞춰주세요!
+                박스에 맞춰 쓰레기를 찍어주세요!
               </AppText>
             </View>
           )}
@@ -276,7 +277,9 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
 
       {!isLoading && (
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.camButton} onPress={capturePhoto} />
+          <TouchableOpacity style={styles.camButton} onPress={capturePhoto}>
+            <FastImage source={require("@/assets/img_icon/camera_icon.png")} tintColor={"#FFFFFF"} style={styles.cameraIcon}/>
+          </TouchableOpacity>
         </View>
       )}
     </View>
