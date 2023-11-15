@@ -36,6 +36,7 @@ export default function PickAnimalCard({
 }
 
 import {windowHeight, windowWidth} from '@/constants/styles';
+import { ImageBackground } from 'react-native';
 
 const styles = StyleSheet.create({
   card: {
@@ -67,9 +68,10 @@ const styles = StyleSheet.create({
   },
   checkIcon: {
     position: 'absolute',
-    width: windowWidth * 0.35,
-    height: windowHeight * 0.35,
+    width: "100%",
+    height: "100%",
     resizeMode: 'contain',
+    // backgroundColor : 'red',
     zIndex: 99,
   },
 });
