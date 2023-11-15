@@ -24,6 +24,7 @@ import {storeImage} from '../CameraPage/savePhoto';
 import RNExitApp from 'react-native-exit-app';
 import TrashErrorModal from '@/components/ui/Modal/TrashErrorModal';
 import {changeButtonSound} from '@/constants/sound';
+import Geolocation from '@react-native-community/geolocation';
 
 interface ActivityDataType {
   activityImg: string; // 이미지에 대한 타입을 가정
@@ -46,9 +47,9 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [getAnimalIMG, setGetAnimalIMG] = useState<string>('');
   const [getAnimalID, setGetAnimalID] = useState<number>(0);
   const [getTrashStatus, setGetTrashStatus] = useState<number>(0);
+  // watchId
+  const [watchId, setWatchId] = useState<number>(0);
 
-  // 종료 여부
-  let endPlog: boolean = false;
   // 모달 여는 부분. params로 함수 받아와서 그 값에 따라 모달 연다.
 
   // 앱 종료 시, 실행하는 함수
@@ -225,8 +226,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const stopAndResetTimer = async () => {
     changeButtonSound();
     // 플로깅 종료 신호 넘겨주기
-    endPlog = false;
-
+    Geolocation.clearWatch(watchId);
     // 타이머 멈추기
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -440,10 +440,10 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
           ref={captureRef}
           options={{fileName: fileName, format: 'jpg', quality: 0.9}}>
           <GoogleMap
-            endPlog={endPlog}
             animalImg={getAnimalIMG}
             trashCount={trashCount}
             setMapLoading={setMapLoading}
+            setWatchId={setWatchId}
             setPloggingDistance={setPloggingDistance}></GoogleMap>
         </ViewShot>
       </View>
