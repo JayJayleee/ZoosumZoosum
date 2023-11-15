@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   header: {
+    includeFontPadding: false,
     color: '#222',
     fontSize: 18,
     paddingTop: 20,
