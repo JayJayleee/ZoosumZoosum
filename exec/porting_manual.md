@@ -1,31 +1,31 @@
 # ZOOSUM Porting Manual
 
 1. **Develop Environment**
-   1.1 Front-End
-   1.2 Back-End
-   1.3 Infra Structure
-   1.4 DataBase
+   - 1.1 Front-End
+   - 1.2 Back-End
+   - 1.3 Infra Structure
+   - 1.4 DataBase
 2. **Local Application Setting**
-   2.1 Front-End
-   2.2 Back-End
-   2.3 DataBase
+   - 2.1 Front-End
+   - 2.2 Back-End
+   - 2.3 DataBase
 3. **Server Setting**
-   3.1 EC2 준비
-   3.2 Domain Name Server Setting
-   3.3 기본 설정
-   3.4 Jenkins
-   3.5 Docker, Docker-Compose
-   3.6 S3 준비
+   - 3.1 EC2 준비
+   - 3.2 Domain Name Server Setting
+   - 3.3 기본 설정
+   - 3.4 Jenkins
+   - 3.5 Docker, Docker-Compose
+   - 3.6 S3 준비
 4. **Deployment Setting**
-   4.1 Jenkins-Credentials
-   4.2 Jenkins PipeLine
-   4.3 Dockerfile
-   4.4 docker-compose.yml
-   4.5 SSL 적용
-   4.6 Nginx Setting
+   - 4.1 Jenkins-Credentials
+   - 4.2 Jenkins PipeLine
+   - 4.3 Dockerfile
+   - 4.4 docker-compose.yml
+   - 4.5 SSL 적용
+   - 4.6 Nginx Setting
 5. **Files Ignored**
-   5.1 Front-End
-   5.2 Back-End
+   - 5.1 Front-End
+   - 5.2 Back-End
 
 ---
 
@@ -70,8 +70,6 @@
 - Tool: [VSCode](https://code.visualstudio.com/)
 
 > ### 1.2 Back-end
->
-> https://github.com/ramaking/yolov8-custom-train/assets/58355046/a44e6711-37d4-4f91-accb-19eb9493f3b9
 
 - [openjdk 17.0.3 msi](https://github.com/ojdkbuild/ojdkbuild) (latest)
 - [Spring](https://start.spring.io/)
@@ -121,8 +119,8 @@
 - Tool: [IntelliJ Ultimate (2023.1.3)](https://www.jetbrains.com/ko-kr/idea/download/?section=windows)
 
 > ### 1.3 Back-end(python fastapi)
->
-> ![RDS](https://github.com/ramaking/yolov8-custom-train/assets/58355046/a44e6711-37d4-4f91-accb-19eb9493f3b9)
+
+>> ![RDS](https://github.com/ramaking/yolov8-custom-train/assets/58355046/a44e6711-37d4-4f91-accb-19eb9493f3b9)
 
 - Python 3.10.13
 - pip 23.3.1
@@ -150,9 +148,19 @@
 - Nginx: 1.15.12
 - certbot: latest
 - Tool: Termius
-- AWS EC2 Instance (GPU server) - AMI : AWS Deep Learning Base AMI Ubuntu 18.04 32.0 with Support by Bansir - price : US$0.20/시간 - OS : Ubuntu Linux/Unix, 18.04 - 인스턴스 유형 : g4dn.xlarge - price : US$0.64799/시간 - RAM : 16 GiB - vCPU : 4 - SSD : 585 GiB - GPU : Tesla T4 - Graphic driver version : 470.223.02 - cuda : 11.4
+- AWS EC2 Instance (GPU server) 
+    - AMI : AWS Deep Learning Base AMI Ubuntu 18.04 32.0 with Support by Bansir 
+    - price : US$0.20/시간 
+    - OS : Ubuntu Linux/Unix, 18.04 
+    - 인스턴스 유형 : g4dn.xlarge 
+    - price : US$0.64799/시간 
+    - RAM : 16 GiB - vCPU : 4 
+    - SSD : 585 GiB 
+    - GPU : Tesla T4 
+    - Graphic driver version : 470.223.02 
+    - cuda : 11.4
 
-  > ### 1.5 DataBase
+> ### 1.5 DataBase
 
 - AWS RDS
   - Price: Free tier
@@ -317,43 +325,50 @@
 
 > ### 2.4 DataBase
 
-(reference: [Blog](https://velog.io/@nefertiri/AWS-RDS%EB%A1%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0))
+(reference: [Blog](https://velog.io/@nefertiri/AWS-RDS%EB%A1%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0))   
+
 [AWS RDS](https://aws.amazon.com/ko/rds/)에 DB를 만든다.
 
-1.  RDS 인스턴스 생성
-    ![RDS](https://i.imgur.com/mGw9Olc.png)
-    1.1 AWS 사이트 상단에 있는 검색창에서 RDS를 검색한다.
-    1.2 MariaDB를 선택한다.
-    1.3 프리 티어를 선택하고 DB 인스턴스 식별자와 마스터 사용자 정보를 등록한다. 마스터 사용자 정보로 데이터베이스에 접근한다.
-    1.4 스토리지 용량을 설정한다. 프리 티어에서는 20GiB까지 이용할 수 있다.
-    1.5 퍼블릭 액세스를 "예"로 선택한다. 추후 보안 그룹에서 지정된 IP만 접근하도록 설정한다.
-    1.6 보안 그룹을 새로 생성하고 이름을 입력해준다.
-    1.7 추가구성에서 초기 데이터베이스 이름을 설정하고, DB의 `username`, `password, port_number`를 정한다.
-    1.8 프리티어 조건을 확인하고 데이터베이스 생성을 선택한다.
+1.  RDS 인스턴스 생성   
 
-2.  RDS 설정
-    ![parameter](https://i.imgur.com/cTynsvZ.png)
-    2.1 왼쪽 메뉴에서 파라미터 그룹을 선택 후, 파라미터 그룹을 생성한다.
-    2.2 생성한 MariaDB와 같은 버전을 선택하고, 파라미터 그룹 이름을 입력하여 파라미터 그룹을 생성한다.
-    2.3 생성된 파라미터 그룹을 확인하고, 파라미터 편집을 선택한다.
-    2.4 파라미터 검색창에 `time_zone`을 검색한다. `time_zone` 파라미터의 값을 `Asia/Seoul`로 선택한다.
-    2.5 파라미터 검색창에 `char`을 검색한다. 아래 그림에 보이는 6개의 파라미터들의 값을 utf8mb4로 선택한다.
-    2.6 파라미터 검색창에 `collation`을 검색한다. `collation_connection`, `collation_server` 의 값을 `utf8mb4_general_ci`로 선택한다.
-    2.7 파라미터 검색창에 `lower_case_table_names`를 검색한다. 해당 파라미터의 값을 1로 설정한다. 해당 값이 1일 경우 테이블명의 대소문자를 구분하지 않는다.
-    2.8 파라미터 검색창에 `max_connection`을 검색한다. `max_connections`는 인스턴스 사양에 따라 자동으로 정해진다.
-    2.9 생성된 파라미터 그룹을 데이터베이스에 연결한다. 생성한 데이터베이스 인스턴스를 선택하고 수정을 선택한다.
-    2.10 추가 구성의 데이터베이스 옵션의 DB 파라미터 그룹을 방금 생성한 파라미터 그룹으로 변경한다.
-    2.11 수정 사항 적용 시간을 즉시 적용으로 선택하고, 데이터베이스 재부팅을 진행한다.
+    ![RDS](https://i.imgur.com/mGw9Olc.png)   
 
-3.  로컬 PC에서 RDS 접속
-    ![inbound](https://i.imgur.com/PDOGNh6.png)
-    3.1 데이터베이스 세부 정보에서 VPC 보안 그룹을 선택한다.
-    3.2 데이터베이스의 보안 그룹을 선택하고 인바운드 규칙 편집을 선택한다.
-    3.3 팀원 모두가 각각 DB에 접근해야 한다면 "모든 TCP", 0.0.0.0/0 으로 설정한다.
-    3.4 추후 개발이 완성된 이후, 특정 IP에서만 DB에 접근한다면, 해당 IP만 허용한다.
-    3.5 로컬 PC에서 데이터베이스에 접근하기 위한 클라이언트 프로그램으로 MySQL Workbench를 사용한다. 해당 프로그램을 설치한다. [(Download Link)](https://dev.mysql.com/downloads/workbench/)
-    3.6 상단 메뉴의 Database -> Manage Connections -> New 를 선택하여 데이터 베이스 연결 정보를 입력한다. Hostname에는 RDS의 엔드포인트를 입력한다. 엔드포인트는 RDS 상세 정보 페이지에 있다. Username, Password에는 RDS 생성시 설정한 마스터 사용자 이름과 암호를 입력한다.
-    3.7 데이터베이스가 선택된 상태에서 현재의 설정을 확인한다. 일부 항목이 제대로 설정되어 있지 않으므로 직접 변경한다.
+    - 1.1 AWS 사이트 상단에 있는 검색창에서 RDS를 검색한다.
+    - 1.2 MariaDB를 선택한다.
+    - 1.3 프리 티어를 선택하고 DB 인스턴스 식별자와 마스터 사용자 정보를 등록한다. 마스터 사용자 정보로 데이터베이스에 접근한다.
+    - 1.4 스토리지 용량을 설정한다. 프리 티어에서는 20GiB까지 이용할 수 있다.
+    - 1.5 퍼블릭 액세스를 "예"로 선택한다. 추후 보안 그룹에서 지정된 IP만 접근하도록 설정한다.
+    - 1.6 보안 그룹을 새로 생성하고 이름을 입력해준다.
+    - 1.7 추가구성에서 초기 데이터베이스 이름을 설정하고, DB의 `username`, `password, port_number`를 정한다.
+    - 1.8 프리티어 조건을 확인하고 데이터베이스 생성을 선택한다.
+
+2.  RDS 설정   
+
+    ![parameter](https://i.imgur.com/cTynsvZ.png)   
+
+    - 2.1 왼쪽 메뉴에서 파라미터 그룹을 선택 후, 파라미터 그룹을 생성한다.
+    - 2.2 생성한 MariaDB와 같은 버전을 선택하고, 파라미터 그룹 이름을 입력하여 파라미터 그룹을 생성한다.
+    - 2.3 생성된 파라미터 그룹을 확인하고, 파라미터 편집을 선택한다.
+    - 2.4 파라미터 검색창에 `time_zone`을 검색한다. `time_zone` 파라미터의 값을 `Asia/Seoul`로 선택한다.
+    - 2.5 파라미터 검색창에 `char`을 검색한다. 아래 그림에 보이는 6개의 파라미터들의 값을 utf8mb4로 선택한다.
+    - 2.6 파라미터 검색창에 `collation`을 검색한다. `collation_connection`, `collation_server` 의 값을 `utf8mb4_general_ci`로 선택한다.
+    - 2.7 파라미터 검색창에 `lower_case_table_names`를 검색한다. 해당 파라미터의 값을 1로 설정한다. 해당 값이 1일 경우 테이블명의 대소문자를 구분하지 않는다.
+    - 2.8 파라미터 검색창에 `max_connection`을 검색한다. `max_connections`는 인스턴스 사양에 따라 자동으로 정해진다.
+    - 2.9 생성된 파라미터 그룹을 데이터베이스에 연결한다. 생성한 데이터베이스 인스턴스를 선택하고 수정을 선택한다.
+    - 2.10 추가 구성의 데이터베이스 옵션의 DB 파라미터 그룹을 방금 생성한 파라미터 그룹으로 변경한다.
+    - 2.11 수정 사항 적용 시간을 즉시 적용으로 선택하고, 데이터베이스 재부팅을 진행한다.
+
+3.  로컬 PC에서 RDS 접속   
+
+    ![inbound](https://i.imgur.com/PDOGNh6.png)   
+
+    - 3.1 데이터베이스 세부 정보에서 VPC 보안 그룹을 선택한다.
+    - 3.2 데이터베이스의 보안 그룹을 선택하고 인바운드 규칙 편집을 선택한다.
+    - 3.3 팀원 모두가 각각 DB에 접근해야 한다면 "모든 TCP", 0.0.0.0/0 으로 설정한다.
+    - 3.4 추후 개발이 완성된 이후, 특정 IP에서만 DB에 접근한다면, 해당 IP만 허용한다.
+    - 3.5 로컬 PC에서 데이터베이스에 접근하기 위한 클라이언트 프로그램으로 MySQL Workbench를 사용한다. 해당 프로그램을 설치한다. [(Download Link)](https://dev.mysql.com/downloads/workbench/)
+    - 3.6 상단 메뉴의 Database -> Manage Connections -> New 를 선택하여 데이터 베이스 연결 정보를 입력한다. Hostname에는 RDS의 엔드포인트를 입력한다. 엔드포인트는 RDS 상세 정보 페이지에 있다. Username, Password에는 RDS 생성시 설정한 마스터 사용자 이름과 암호를 입력한다.
+    - 3.7 데이터베이스가 선택된 상태에서 현재의 설정을 확인한다. 일부 항목이 제대로 설정되어 있지 않으므로 직접 변경한다.
 
 ```sql
 # 문자 설정 확인
@@ -876,11 +891,6 @@ cloud:
 - 이 Credential의 이름이 되는 ID를 입력한다.
 - Token 고유번호 입력 외에 GitLab 관련 설정이 없는데도, 나중에 GitLab과 연결될 때 사용된다.
 
-2. Docker Credentials 설정
-   위와 동일하고, Password 부분만 다르다.
-   ![Imgur](https://i.imgur.com/1a4t390.png)
-   Docker Hub > Account Setting > Security > New Access Token > 토큰이름 / 허용범위를 지정하여 생성 > 토큰 고유번호를 복사하여 따로 저장해 둔다.
-
 > ### 4.2 Jenkins-Pipeline
 
 1. Jenkins에서 GitLab 설정
@@ -1320,6 +1330,9 @@ networks:
 
 > ### 4.5 SSL 적용
 
+- [참고 블로그](https://velog.io/@zero-black/Docker-compose-certbot-nginx-%EB%A1%9C-SSL-%EC%9D%B8%EC%A6%9D%EC%84%9C-%EB%B0%9C%EA%B8%89%ED%95%98%EA%B8%B0)
+- [참고 블로그(영어)](https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71)
+
 1. 준비사항
 
 - 본인의 서버를 띄우고 도메인을 발급받아서 DNS에 등록된 도메인이 있어야 SSL인증을 받을 수 있다.
@@ -1474,9 +1487,6 @@ networks:
       }
   }
   ```
-
-- [참고 블로그](https://velog.io/@zero-black/Docker-compose-certbot-nginx-%EB%A1%9C-SSL-%EC%9D%B8%EC%A6%9D%EC%84%9C-%EB%B0%9C%EA%B8%89%ED%95%98%EA%B8%B0)
-- [참고 블로그(영어)](https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71)
 
 > ### 4.6 Nginx Setting
 
