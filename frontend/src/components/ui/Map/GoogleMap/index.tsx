@@ -42,12 +42,6 @@ async function requestPermission() {
         },
       );
     }
-    // iOS
-    /* 
-    if (Platform.OS === 'ios') {
-        return await Geolocation.requestAuthorization('always');
-      }
-    */
   } catch (e) {
     console.log(e);
   }
@@ -113,7 +107,7 @@ const GoogleMap = (props: GoogleMapProps) => {
 
   const getPosition = async () => {
     // console.log('getPosition');
-    await myCurrnetPosition();
+    // await myCurrnetPosition();
     await myWatchPosition();
   };
 
@@ -128,8 +122,12 @@ const GoogleMap = (props: GoogleMapProps) => {
         // console.log('3 get current position');
         // console.log(pos);
         const {latitude, longitude} = pos.coords;
-        // 과거위치 변경
-        prevLatLng.current = {latitude: latitude, longitude: longitude};
+        setRegion({
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        });
       },
       // 실패
       error => {
@@ -151,11 +149,13 @@ const GoogleMap = (props: GoogleMapProps) => {
       pos => {
         // console.log('4 watch position');
         const {latitude, longitude} = pos.coords;
+        // 과거위치 변경
+        prevLatLng.current = {latitude: latitude, longitude: longitude};
         setRegion({
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.002,
-          longitudeDelta: 0.002,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
         });
       },
       // 실패
@@ -166,8 +166,6 @@ const GoogleMap = (props: GoogleMapProps) => {
       {
         enableHighAccuracy: true,
         distanceFilter: 1,
-        interval: 5000,
-        fastestInterval: 2000,
       },
     );
     props.setWatchId(watchId);
@@ -212,13 +210,12 @@ const GoogleMap = (props: GoogleMapProps) => {
     }
 
     // 거리 더하기
-    addDistance(newCoordinate);
-
-    // 과거위치 변경
-    setTimeout(() => {
-      // console.log('10 past position change');
-      prevLatLng.current = newCoordinate;
-    }, 1000);
+    addDistance(newCoordinate)
+      .then(() => {
+        // 과거위치 변경
+        prevLatLng.current = newCoordinate;
+      })
+      .catch(e => console.log(e));
   }, [region]);
 
   // 사진을 찍었을 때, 현재 위치에 쓰레기 이미지 마커를 찍는다.

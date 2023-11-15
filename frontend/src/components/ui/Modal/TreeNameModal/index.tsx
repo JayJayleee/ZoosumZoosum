@@ -228,6 +228,7 @@ export default function TreeNameModal({
             onSnapToItem={index => setIndex(index)}
             inactiveSlideShift={0}
             inactiveSlideOpacity={0}
+            scrollEnabled={false}
             style={{backgroundColor: 'red'}}
           />
 

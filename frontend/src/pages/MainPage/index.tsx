@@ -346,8 +346,8 @@ export default function MainPage({navigation}: MainScreenProps) {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() =>
-                  newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
-                }
+                newAnimalAct(0, animalUri[0].animalId, animalUri[0].fileUrl)
+              }
               style={styles.firstAnimal}>
               <FastImage
                 style={styles.Animal}
