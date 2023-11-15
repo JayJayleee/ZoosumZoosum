@@ -51,7 +51,7 @@ export const changeMotion = new Sound(
 );
 
 // Position the sound to the full right in a stereo field
-changeMotion.setPan(1);
+// changeMotion.setPan(1);
 
 export const changeMotionStop = () => {
   changeMotion.play();
