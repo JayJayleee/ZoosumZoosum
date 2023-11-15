@@ -14,9 +14,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button_container: {
+    width: windowWidth,
+    bottom: windowHeight * 0.05, 
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
   },
   list_container: {
     height: windowHeight * 0.67,
@@ -63,10 +65,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   button_container2: {
+    bottom: windowHeight * 0.02,
     flexDirection: 'row',
     justifyContent: 'center',
-    width: '75%',
-    marginLeft: '5%',
+    width: windowWidth,
+    height: '40%',
   },
   isLoading: {
     flex: 1,

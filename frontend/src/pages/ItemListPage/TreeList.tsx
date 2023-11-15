@@ -22,7 +22,6 @@ type Item = {
   selected: boolean;
 };
 
-
 const targetNumColumns = 3; // 원하는 열의 수
 
 export default function TreeList() {
@@ -68,7 +67,13 @@ export default function TreeList() {
     },
   });
 
-  useFocusEffect(useCallback(() => {refetch()}, []))
+  // useFocusEffect(useCallback(() => {
+  //   refetch
+  // }, []))
+
+  const treeRefetch = () => {
+    refetch();
+  }
 
   if (!ItemArray.length) return (
     <View style={styles.isLoading}>
@@ -96,6 +101,7 @@ export default function TreeList() {
                 fileUrl={item.fileUrl}
                 selected={item.selected}
                 itemType={item.itemType}
+                refetch={treeRefetch}
               />
             );
           }}

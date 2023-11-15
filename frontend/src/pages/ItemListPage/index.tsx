@@ -74,17 +74,6 @@ export default function ItemListPage({navigation}: ItemListscreenProps) {
         </View>
         <View style={styles.button_container2}>
           <AppButton
-            children={showComponent1 ? '섬 선택하기' : '나무 선택하기'}
-            variant="selectBtn"
-            onPress={() => {
-              if (showComponent1) {
-                navigation.navigate('PickIsland');
-              } else {
-                navigation.navigate('PickTree');
-              }
-            }}
-          />
-          <AppButton
             variant="selectIslandBtn"
             children="섬으로 돌아가기"
             onPress={() => navigation.navigate('Main')}
