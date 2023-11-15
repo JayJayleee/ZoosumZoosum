@@ -117,6 +117,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   const [trashImage, setTrashImage] = useState('');
   const [timer, setTimer] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityDataType>();
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   // --------------------------------------------  타이머 기능을 위한 변수  --------------------------------------------
 
@@ -224,6 +225,11 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
   };
 
   const stopAndResetTimer = async () => {
+    if (isButtonClicked) {
+      // 이미 클릭되었으면 아무 작업도 수행하지 않음
+      return;
+    }
+    setIsButtonClicked(true);
     changeButtonSound();
     // 플로깅 종료 신호 넘겨주기
     Geolocation.clearWatch(watchId);

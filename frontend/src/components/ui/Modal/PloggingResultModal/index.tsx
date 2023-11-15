@@ -11,6 +11,7 @@ import {ActivityDataType, NewData} from '@/types/plogging';
 import {AppCloseModal} from '../CloseModal';
 import {NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '@/types/path';
+import Spinner from '../../Spinner';
 
 interface PloggingResultModalProps {
   isVisible: boolean;
@@ -66,6 +67,7 @@ const PloggingResultModal = ({
   useEffect(() => {
     console.log(activityData, '1 애니멀 아이디 들어옴?');
   }, [data]);
+
   const mutation = useMutation(
     (activityData: ActivityDataType) => PloggingResultFtn(activityData),
     {
@@ -74,6 +76,7 @@ const PloggingResultModal = ({
         // const newData = JSON.parse(responseData.data);
         console.log('짜잔', responseData);
         navigation(responseData);
+        setIsMutationRunning(false);
       },
       onError: error => {
         // 요청 실패 시 처리할 작업
@@ -81,15 +84,22 @@ const PloggingResultModal = ({
           'PloggingResultModal- onError 요청이 실패했습니다.',
           error,
         );
+        setIsMutationRunning(false);
       },
     },
   );
 
   // 서버 요청을 실행하는 함수
   const [isCloseModalVisible, setCloseModalVisible] = useState<boolean>(false);
+  const [isMutationRunning, setIsMutationRunning] = useState(false);
+  const [showButton, setShowButton] = useState(true);
 
   const handlePloggingResult = () => {
-    // activityData 전체를 전송해야 합니다.
+    if (isMutationRunning) {
+      return;
+    }
+
+    setIsMutationRunning(true);
     if (activityData) {
       mutation.mutate(activityData);
     } else {
@@ -120,31 +130,37 @@ const PloggingResultModal = ({
 
   return (
     <>
-      <ModalComponent
-        isVisible={isVisible}
-        onClose={onClose}
-        onRequestClose={() => setCloseModalVisible(true)}
-        noButton={true}
-        buttonInnerText={'닫기'}
-        modalStyle="top"
-        TopChildren={topContent}>
-        {isCloseModalVisible && exitFtn && (
-          <AppCloseModal
-            isModalVisible={isCloseModalVisible}
-            RequestClose={() => setCloseModalVisible(false)}
-            exitFtn={exitFtn}
+      {isMutationRunning ? (
+        <Spinner /> // 로딩 중일 때 스피너 표시
+      ) : (
+        <ModalComponent
+          isVisible={isVisible}
+          onClose={onClose}
+          onRequestClose={() => setCloseModalVisible(true)}
+          noButton={true}
+          buttonInnerText={'닫기'}
+          modalStyle="top"
+          TopChildren={topContent}>
+          {isCloseModalVisible && exitFtn && (
+            <AppCloseModal
+              isModalVisible={isCloseModalVisible}
+              RequestClose={() => setCloseModalVisible(false)}
+              exitFtn={exitFtn}
+            />
+          )}
+          <AppText style={styles.Title}>오늘의 플로깅 결과</AppText>
+          <FlatList
+            data={data}
+            renderItem={({item}) => <Item title={item.title} img={item.img} />}
+            keyExtractor={(_, index) => index.toString()}
           />
-        )}
-        <AppText style={styles.Title}>오늘의 플로깅 결과</AppText>
-        <FlatList
-          data={data}
-          renderItem={({item}) => <Item title={item.title} img={item.img} />}
-          keyExtractor={(_, index) => index.toString()}
-        />
-        <AppButton variant={'ploggingRST'} onPress={handlePloggingResult}>
-          결과 보기
-        </AppButton>
-      </ModalComponent>
+          {showButton && (
+            <AppButton variant={'ploggingRST'} onPress={handlePloggingResult}>
+              결과 보기
+            </AppButton>
+          )}
+        </ModalComponent>
+      )}
     </>
   );
 };

@@ -157,8 +157,18 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
       },
     },
   );
+  // 볼륨 버튼으로 인한 촬영 상태 관리
+  const [isCapturing, setIsCapturing] = useState(false);
+  const lastKeyEventTime = useRef<Date | null>(null);
+  const debounceTime = 5000;
 
   const capturePhoto = async () => {
+    if (isCapturing) {
+      // 이미 촬영 중이면 더 이상의 촬영 명령을 무시함
+      return;
+    }
+
+    setIsCapturing(true);
     changeButtonSound();
     if (camera.current) {
       const photoOptions = {
@@ -177,22 +187,35 @@ export default function CameraPage({navigation, route}: CamerascreenProps) {
   useEffect(() => {
     if (imageSource) {
       mutation.mutate(imageSource);
+      setIsCapturing(false);
     } else {
       console.log('TrashImg 없음', imageSource);
+      setIsCapturing(false);
     }
   }, [imageSource]);
+
+  const handleVolumeButtonPress = () => {
+    const now = new Date();
+    if (lastKeyEventTime.current) {
+      const diff = now.getTime() - lastKeyEventTime.current.getTime();
+      if (diff < debounceTime) {
+        // 짧은 시간 내에 다시 눌린 경우 무시
+        return;
+      }
+    }
+    lastKeyEventTime.current = now; // 마지막 키 이벤트 시간 업데이트
+    capturePhoto();
+  };
 
   useEffect(() => {
     // 볼륨 버튼 이벤트 리스너 등록
     KeyEvent.onKeyDownListener((keyEvent: any) => {
       if (keyEvent.keyCode === 25 || keyEvent.keyCode === 24) {
-        // 안드로이드 볼륨 다운/업 키 코드
-        capturePhoto();
+        handleVolumeButtonPress();
       }
     });
 
     return () => {
-      // 컴포넌트 언마운트 시 모든 키 다운 리스너 해제
       KeyEvent.removeKeyDownListener();
     };
   }, []);
