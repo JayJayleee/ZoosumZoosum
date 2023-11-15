@@ -32,7 +32,6 @@ import {
   changeMotionStop,
 } from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
-import {Brightness} from 'react-native-color-matrix-image-filters';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -301,7 +300,7 @@ export default function MainPage({navigation}: MainScreenProps) {
             source={require('@/assets/img_icon/shoe_icon.png')}
             style={styles.statusImage}
           />
-          <AppText style={styles.statusText}>{getDistance}km</AppText>
+          <AppText style={styles.statusText}>{getDistance.toFixed(2)}km</AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage

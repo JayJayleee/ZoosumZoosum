@@ -32,7 +32,10 @@ type ButtonProps = {
     | 'notclose'
     | 'activity'
     | 'selectBtn'
-    | 'selectIslandBtn';
+    | 'selectIslandBtn'
+    | 'itemSelectBtn'
+    | 'itemselectIslandBtn'
+    | 'selectAnimalBtn';
 
   onPress: () => void;
 };
@@ -80,7 +83,7 @@ export default function AppButton({
 
     case 'selectIslandBtn':
       variantStyle = styles.selectIslandBtn;
-      textStyle = styles.defaultText;
+      textStyle = styles.selectIslandText;
       break;
 
     case 'gotoisland':
@@ -159,6 +162,20 @@ export default function AppButton({
       variantStyle = styles.activity;
       textStyle = styles.activityText;
       break;
+    case 'itemSelectBtn':
+      variantStyle = styles.itemSelectBtn;
+      textStyle = styles.defaultText;
+      break;
+
+    case 'itemselectIslandBtn':
+      variantStyle = styles.itemSelectIslandBtn;
+      textStyle = styles.defaultText;
+      break;
+    case 'selectAnimalBtn':
+      variantStyle = styles.selectAnimalBtn;
+      textStyle = styles.defaultText;
+      break;
+  
   }
 
   // 버튼 클릭 함수(소리 추가)

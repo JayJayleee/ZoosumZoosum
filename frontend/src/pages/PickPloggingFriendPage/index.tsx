@@ -120,8 +120,7 @@ export default function PickPloggingFriendPage({
                 <AppText style={styles.title}>함께 산책한 시간</AppText>
                 <View style={styles.Together}>
                   <AppText style={styles.title2}>
-                    {currentAnimal.hour}시 {currentAnimal.minute}분
-                    {currentAnimal.second}초
+                    {currentAnimal.hour}시 {currentAnimal.minute}분 {currentAnimal.second}초
                   </AppText>
                 </View>
               </View>

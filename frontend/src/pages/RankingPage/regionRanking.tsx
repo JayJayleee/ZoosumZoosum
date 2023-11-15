@@ -33,7 +33,10 @@ interface RankingProps {
 }
 
 export default function RegionRanking({goToprofile}: RankingProps) {
-  const [selectedRegion, setSelectedRegion] = useState<string>('서울'); // 기본으로 일단 한 곳을 정해야 하니까 서울로 해두겠음
+  const [selectedRegion, setSelectedRegion] = useState<string>(''); // 기본으로 일단 한 곳을 정해야 하니까 서울로 해두겠음
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [rankingData, setRankingData] = useState<Rank[]>([]);
 
   const regions = [
     {key: '1', value: '강원'},
@@ -52,36 +55,56 @@ export default function RegionRanking({goToprofile}: RankingProps) {
     {key: '14', value: '충청'},
   ]; // key-value 형식의 지역 배열
 
-  const {
-    data: apiResponse,
-    isLoading,
-    isError,
-    error,
-  } = useQuery(
-    ['TopRankingList', selectedRegion],
-    () => fetchMyRegionRankingListInfo(selectedRegion),
-    {
-      enabled: !!selectedRegion, // 지역이 선택될 때만 쿼리가 실행되어 기존 데이터 무효화 하는 것임
-    },
-  );
+  // const {
+  //   data: apiResponse,
+  //   isLoading,
+  //   isError,
+  //   error,
+  // } = useQuery(
+  //   ['TopRankingList', selectedRegion],
+  //   () => fetchMyRegionRankingListInfo(selectedRegion),
+  //   {
+  //     enabled: !!selectedRegion, // 지역이 선택될 때만 쿼리가 실행되어 기존 데이터 무효화 하는 것임
+  //   },
+  // );
 
-  const rankingData = apiResponse ? apiResponse.data : [];
-  // console.log('rankingData', rankingData);
-  if (isLoading) {
-    return (
-      <View style={styles.isLoading}>
-        <FastImage
-          source={require('@/assets/loginpage_image/zooisland_logo.png')}
-        />
-        <Wave />
-        <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
-      </View>
-    );
-  }
+  // const rankingData = apiResponse ? apiResponse.data : [];
+  // // console.log('rankingData', rankingData);
+  // if (isLoading) {
+  //   return (
+  //     <View style={styles.isLoading}>
+  //       <FastImage
+  //         source={require('@/assets/loginpage_image/zooisland_logo.png')}
+  //       />
+  //       <Wave />
+  //       <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+  //     </View>
+  //   );
+  // }
 
-  if (isError) {
-    console.log('지역 별 랭킹 호출 - 오류 발생', error);
-  }
+  // if (isError) {
+  //   console.log('지역 별 랭킹 호출 - 오류 발생', error);
+  // }
+
+  // const LoadingState = <View style={styles.isLoading}>
+  //   <FastImage
+  //     source={require('@/assets/loginpage_image/zooisland_logo.png')}
+  //   />
+  //   <Wave />
+  //   <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
+  // </View>
+
+  useEffect(() => {
+    const dataFtn = () => {
+      fetchMyRegionRankingListInfo(selectedRegion).then(data => {
+        setRankingData(data.data)
+      })
+    }
+
+    if (selectedRegion !== "") {
+      dataFtn();
+    }
+  }, [selectedRegion])
 
   return (
     <View style={styles.ranking_container}>
@@ -91,6 +114,7 @@ export default function RegionRanking({goToprofile}: RankingProps) {
           maxHeight={0}
           data={regions}
           search={false}
+          // defaultOption={{key: '8', value: '서울'}}
           boxStyles={{
             width: '80%',
             height: windowHeight * 0.06,
@@ -98,8 +122,9 @@ export default function RegionRanking({goToprofile}: RankingProps) {
             borderWidth: 2,
             justifyContent: 'center',
             alignItems: 'center',
+            
           }}
-          inputStyles={{width: '80%', fontSize: 10, alignItems: 'center'}}
+          inputStyles={{width: '80%', fontSize: 13, alignItems: 'center'}}
           dropdownStyles={{
             height: windowHeight * 0.3,
             borderColor: '#7ED3A1',
@@ -122,7 +147,11 @@ export default function RegionRanking({goToprofile}: RankingProps) {
       </View> */}
       <View style={styles.body_container}>
         {rankingData.length === 0 ? (
-          <AppText style={styles.error_text}>데이터가 없습니다</AppText>
+          <View style={styles.error_box}>
+            <AppText style={styles.error_text}>
+              {selectedRegion === ""? "지역을 선택해주세요" : "데이터가 없습니다"}
+              </AppText>
+          </View>
         ) : (
           <FlatList
             horizontal={false}
