@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   head : {
+    top: windowHeight * 0.02,
     marginTop : windowWidth*0.2,
     alignItems: 'center',
     paddingBottom : windowWidth*0.05,
@@ -33,14 +34,16 @@ const styles = StyleSheet.create({
     // marginBottom : windowHeight*0.02
   },
   FriendDetail_Image : {
-    width : '75%',
-    height : '75%',
+    width : '90%',
+    height : '80%',
+    top: windowHeight * 0.03
   },
   animalName : {
     color : 'white',
     fontSize : 40,
     fontFamily : 'NPSfont_extrabold',
     marginBottom : 20,
+    top: windowHeight * (-0.01)
   },
   viewAnimalDescription : {
     width : windowWidth,
@@ -63,9 +66,10 @@ const styles = StyleSheet.create({
   bodyContainer1 : {
     width : windowWidth*0.75,
     flexDirection : 'row',
-    justifyContent : 'space-around'
+    justifyContent : 'space-evenly'
   },
   active : {
+    width: windowWidth * 0.45,
     justifyContent : 'center',
     alignItems : 'center',
     marginBottom : 30,
@@ -99,8 +103,9 @@ const styles = StyleSheet.create({
     // backgroundColor : 'red'
   },
   arrow : {
-    width : 100,
-    height : 100,
+    top: windowHeight * 0.01,
+    width : windowHeight * 0.1,
+    height : windowHeight * 0.1,
     
   }
 });
