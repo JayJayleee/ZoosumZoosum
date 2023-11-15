@@ -111,6 +111,7 @@ export default function TutorialPage({navigation}: TutorialScreenProps) {
           itemWidth={ITEM_WIDTH}
           inactiveSlideShift={0}
           useScrollView={true}
+          scrollEnabled={false}
           contentContainerCustomStyle={{
             flexGrow: 1,
             justifyContent: 'center',
