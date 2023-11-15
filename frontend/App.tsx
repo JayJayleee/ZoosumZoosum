@@ -3,7 +3,8 @@ import * as React from 'react';
 import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {whoosh} from '@/constants/sound';
+import {replay, stop, whoosh} from '@/constants/sound';
+import {pause} from '@/constants/sound';
 
 // react-native-screens에 에러가 나서 아래 구문을 추가해줌
 import {enableScreens} from 'react-native-screens';
@@ -40,6 +41,7 @@ import {PermissionsAndroid, TextInput, Text} from 'react-native';
 import TutorialPage from '@/pages/TutorialPage';
 import FirstEggPage from '@/pages/FirstEggPage';
 
+import {AppState, AppStateStatus} from 'react-native';
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
 // QueryClient 선언
@@ -72,6 +74,25 @@ function App() {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       PermissionsAndroid.PERMISSIONS.CAMERA,
     ]);
+  }, []);
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        replay();
+      } else if (nextAppState === 'background') {
+        pause();
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   return (
