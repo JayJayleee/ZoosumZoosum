@@ -35,8 +35,8 @@ export type RootStackParamList = {
   };
   Ranking: undefined;
 
-  PickIsland: undefined;
-  PickTree: undefined;
+  // PickIsland: undefined;
+  // PickTree: undefined;
   FriendDetail: {
     animalId: number;
   };
@@ -105,15 +105,15 @@ export type RankingScreenProps = NativeStackScreenProps<
   'Ranking'
 >;
 
-export type PickIslandScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  'PickIsland'
->;
+// export type PickIslandScreenProps = NativeStackScreenProps<
+//   RootStackParamList,
+//   'PickIsland'
+// >;
 
-export type PickTreeScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  'PickTree'
->;
+// export type PickTreeScreenProps = NativeStackScreenProps<
+//   RootStackParamList,
+//   'PickTree'
+// >;
 
 export type FriendDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
