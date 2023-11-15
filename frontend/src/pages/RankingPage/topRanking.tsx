@@ -57,7 +57,7 @@ export default function TopRanking({goToprofile} : RankingProps) {
   return (
     <View style={styles.ranking_container}>
       <View style={styles.select_container2}>
-        <Text style={styles.title_head}>TOP RANK</Text>
+        <Text style={styles.title_head}>TOP 50 RANK</Text>
       </View>
       {/* <View style={styles.title_container}>
         <Text style={styles.title_grid1}>순위</Text>
@@ -68,6 +68,7 @@ export default function TopRanking({goToprofile} : RankingProps) {
       </View> */}
       <View style={styles.body_container}>
         <FlatList
+          style={{width: '105%', paddingRight: '5%'}}
           horizontal={false}
           data={RankingArray}
           keyExtractor={item => item.nickname}
