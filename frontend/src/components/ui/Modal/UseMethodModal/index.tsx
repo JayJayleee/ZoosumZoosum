@@ -93,7 +93,7 @@ export const UseMethodModal = ({closeFnt}: Props) => {
     버튼을 클릭해서 찍은 사진을 볼 수 있습니다.
   </AppText>
   <AppText style={styles.eightMiddleText}>
-    찍은 사진에 있는 쓰레기의 종류와 개수를 알려줍니다.
+    찍은 사진에 있는 쓰레기의 종류와 개수를 알려줍니다. 활성화된 이미지를 클릭해서 사진을 볼 수 있습니다.
   </AppText>
   <AppText style={styles.eightBottomText}>
     버튼을 클릭하여 다시 찍거나 지도 화면으로 갈 수 있습니다.

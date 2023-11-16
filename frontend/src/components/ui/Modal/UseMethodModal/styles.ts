@@ -25,8 +25,10 @@ export const styles = StyleSheet.create({
     opacity: 0.1
   },
   image: {
-    width: '96%',
-    height: '97%'
+    position: 'absolute',
+    top: windowHeight * 0.005,
+    width: windowWidth,
+    height: windowHeight * 0.94,
   },
   exit: {
     position: 'absolute',
@@ -38,34 +40,33 @@ export const styles = StyleSheet.create({
   },
   firstUpperText: {
     position: 'absolute',
-    top: windowHeight * 0.22,
+    top: windowHeight * 0.2,
     left: windowWidth * 0.03,
     fontSize: 14,
     color: 'white',
   },
   firstLowerText: {
     position: 'absolute',
-    bottom: windowHeight * 0.15,
+    bottom: windowHeight * 0.18,
     left: windowWidth * 0.09,
     fontSize: 14,
     color: 'white',
   },
   secondUpperText: {
     position: 'absolute',
-    top: windowHeight * 0.27,
+    top: windowHeight * 0.25,
     fontSize: 15,
     color: 'white',
   },
   secondLowerText: {
     position: 'absolute',
-    bottom: windowHeight * 0.25,
-    // left: windowWidth * 0.09,
+    bottom: windowHeight * 0.28,
     fontSize: 18,
     color: 'white',
   },
   thirdUpperText: {
     position: 'absolute',
-    bottom: windowHeight * 0.27,
+    bottom: windowHeight * 0.3,
     fontSize: 15,
     color: 'white',
   },
@@ -77,12 +78,13 @@ export const styles = StyleSheet.create({
   },
   fifthUpperText: {
     position: 'absolute',
-    bottom: windowHeight * 0.18,
-    left: windowWidth * 0.07,
+    bottom: windowHeight * 0.22,
+    left: windowWidth * 0.05,
     width: '90%',
     fontSize: 17,
     color: 'white',
-    lineHeight: 25
+    lineHeight: 25,
+    textAlign: 'center'
   },
   sixTopText: {
     position: 'absolute',
@@ -100,7 +102,7 @@ export const styles = StyleSheet.create({
   },
   sixBottomText: {
     position: 'absolute',
-    bottom: windowHeight * 0.19,
+    bottom: windowHeight * 0.2,
     right: windowWidth * 0.03,
     width: '50%',
     fontSize: 15,
@@ -110,7 +112,7 @@ export const styles = StyleSheet.create({
   },
   sixLowText: {
     position: 'absolute',
-    bottom: windowHeight * 0.1,
+    bottom: windowHeight * 0.12,
     left: windowWidth * 0.15,
     fontSize: 15,
     color: 'white',
@@ -124,7 +126,7 @@ export const styles = StyleSheet.create({
   },
   sevenLowerText: {
     position: 'absolute',
-    bottom: windowHeight * 0.17,
+    bottom: windowHeight * 0.195,
     fontSize: 16,
     color: 'white',
   },
@@ -140,9 +142,11 @@ export const styles = StyleSheet.create({
   },
   eightMiddleText: {
     position: 'absolute',
-    bottom: windowHeight * 0.33,
+    bottom: windowHeight * 0.31,
     fontSize: 14,
     color: 'white',
+    lineHeight: 23,
+    textAlign: 'center'
   },
   eightBottomText: {
     position: 'absolute',
