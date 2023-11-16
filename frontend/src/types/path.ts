@@ -27,7 +27,9 @@ export type RootStackParamList = {
   };
   FriendList: undefined;
   UserInfo: undefined;
-  PickFriend: undefined;
+  PickFriend: {
+    selectAnimalId: number[];
+  };
   PickPloggingFriend: undefined;
   ItemList: undefined;
   Profile: {
@@ -37,6 +39,7 @@ export type RootStackParamList = {
 
   // PickIsland: undefined;
   // PickTree: undefined;
+  
   FriendDetail: {
     animalId: number;
   };
