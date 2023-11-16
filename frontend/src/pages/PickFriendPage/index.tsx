@@ -13,7 +13,8 @@ import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
 import PickAnimalCardlist from './PickAnimalCardlist';
 
-export default function PickFriendPage({navigation}: PickFriendscreenProps) {
+export default function PickFriendPage({navigation, route}: PickFriendscreenProps) {
+
   const propsFtn = () => {
     navigation.navigate('FriendList')
   }
@@ -38,7 +39,7 @@ export default function PickFriendPage({navigation}: PickFriendscreenProps) {
         </View>
         <View style={styles.body1}>
           <View style={styles.having_cardlist}>
-            <PickAnimalCardlist navigation={propsFtn} />
+            <PickAnimalCardlist navigation={propsFtn} firstSelect={route.params.selectAnimalId} />
           </View>
         </View>
         

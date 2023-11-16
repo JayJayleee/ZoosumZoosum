@@ -50,12 +50,10 @@ export function AnimalCarouselCardItem({
   const tintColorAnim = useRef(new Animated.Value(0)).current;
   // 흔들리는 효과
   const shakingAnimation = useRef(new Animated.Value(0)).current;
-  // console.log(animalId);
   // const queryClient = useQueryClient();
   const createMutation = useMutation(EggName, {
     onSuccess: data => {
       // 이름 저장 성공 시 수행할 작업
-      console.log('이름 바꾸기 성공', data);
       const nameToSave =
         animalName?.trim() !== '' ? animalName : item?.animalName;
       setHeaderText(`${nameToSave}(이)가 태어났어요!`);
@@ -73,7 +71,6 @@ export function AnimalCarouselCardItem({
   const firstEggCreateMutation = useMutation(FirstEggName, {
     onSuccess: data => {
       // 이름 저장 성공 시 수행할 작업
-      console.log('최초 이름 바꾸기 성공', data);
 
       const nameToSave =
         animalName?.trim() !== '' ? animalName : item?.animalName;
@@ -94,13 +91,11 @@ export function AnimalCarouselCardItem({
       const nameToSave =
         animalName?.trim() !== '' ? animalName : item?.animalName;
       if (isFirstLogin == true) {
-        console.log('첫번째 egg');
         firstEggCreateMutation.mutate({
           animalId: animalId,
           userAnimalName: nameToSave,
         });
       } else {
-        console.log('두번째 egg');
         createMutation.mutate({
           animalId: animalId,
           userAnimalName: nameToSave,

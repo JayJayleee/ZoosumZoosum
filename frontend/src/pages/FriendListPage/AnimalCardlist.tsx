@@ -18,18 +18,28 @@ type Animal = {
 
 interface AnimalCardListProps {
   navigation: (data: number) => void;
+  setAnimalList: (data: number[]) => void;
 }
 
 type ApiResponse = {
   data: Animal[];
 };
 
-export default function AnimalCardlist({navigation}: AnimalCardListProps) {
+export default function AnimalCardlist({navigation, setAnimalList}: AnimalCardListProps) {
   const [animalsArray, setAnimalsArray] = useState<Animal[]>([]);
   
   const {refetch} = useQuery(['animalList'], fetchMyAnimalListInfo, {
     onSuccess: (response: ApiResponse) => {
       const data = response.data;
+
+      let selectAnimalList = []
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].selected === true) {
+          selectAnimalList.push(data[i].animalId)
+        }
+      }
+      setAnimalList(selectAnimalList)
 
       if (!Array.isArray(data)) {
         console.error('Data는 배열이 아닙니다:', data);

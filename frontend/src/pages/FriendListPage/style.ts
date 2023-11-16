@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     // fontSize : 35,
     fontFamily: 'NPSfont_extrabold',
     marginTop: windowHeight * 0.06,
+    color: 'white',
   },
 });
 

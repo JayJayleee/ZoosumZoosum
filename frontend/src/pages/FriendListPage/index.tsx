@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 import AppText from '@/components/ui/Text';
 import AppButton from '@/components/ui/Button';
@@ -13,12 +12,20 @@ import styles from './style';
 import AnimalCardlist from './AnimalCardlist';
 
 export default function FriendListPage({navigation}: FriendListscreenProps) {
+
+  const [selectAnimalList, setSelectAnimalList] = useState<number[]>([]);
+
+  const changeList = (list: number[]) => {
+    setSelectAnimalList(list)
+  }
+
   const propsFtn = (data: number) => {
     navigation.navigate({
       name: 'FriendDetail',
       params: {animalId: data},
     });
   };
+
 
   return (
     <ImageBackground
@@ -33,14 +40,17 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
         </View>
         <View style={styles.body2}>
           <View style={styles.having_cardlist}>
-            <AnimalCardlist navigation={propsFtn} />
+            <AnimalCardlist navigation={propsFtn} setAnimalList={changeList} />
           </View>
         </View>
         <View style={styles.button_container}>
           <AppButton
             children="동물 선택하기"
             variant="selectBtn"
-            onPress={() => navigation.navigate('PickFriend')}
+            onPress={() => navigation.navigate({
+              name: 'PickFriend',
+              params: {selectAnimalId: selectAnimalList, }
+            })}
           />
           <AppButton
             variant="selectAnimalBtn"

@@ -55,45 +55,6 @@ export default function RegionRanking({goToprofile}: RankingProps) {
     {key: '14', value: '충청'},
   ]; // key-value 형식의 지역 배열
 
-  // const {
-  //   data: apiResponse,
-  //   isLoading,
-  //   isError,
-  //   error,
-  // } = useQuery(
-  //   ['TopRankingList', selectedRegion],
-  //   () => fetchMyRegionRankingListInfo(selectedRegion),
-  //   {
-  //     enabled: !!selectedRegion, // 지역이 선택될 때만 쿼리가 실행되어 기존 데이터 무효화 하는 것임
-  //   },
-  // );
-
-  // const rankingData = apiResponse ? apiResponse.data : [];
-  // // console.log('rankingData', rankingData);
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.isLoading}>
-  //       <FastImage
-  //         source={require('@/assets/loginpage_image/zooisland_logo.png')}
-  //       />
-  //       <Wave />
-  //       <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
-  //     </View>
-  //   );
-  // }
-
-  // if (isError) {
-  //   console.log('지역 별 랭킹 호출 - 오류 발생', error);
-  // }
-
-  // const LoadingState = <View style={styles.isLoading}>
-  //   <FastImage
-  //     source={require('@/assets/loginpage_image/zooisland_logo.png')}
-  //   />
-  //   <Wave />
-  //   <AppText style={styles.isLoading}>잠시 기다려 주세요!</AppText>
-  // </View>
-
   useEffect(() => {
     const dataFtn = () => {
       fetchMyRegionRankingListInfo(selectedRegion).then(data => {
