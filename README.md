@@ -64,7 +64,7 @@
     <img src="https://i.imgur.com/Dxgk0u3.png" width="200" />
     <img src="https://i.imgur.com/f6P3r3V.png" width="200" />
     <img src="https://i.imgur.com/d1BwCvu.png" width="200" />
-    <img src="https://i.imgur.com/umrFyTU.png" width="200" />
+    <img src="https://i.imgur.com/XhIhlJA.png" width="200" />
 </div>
 
 - 최초 로그인 이후 또는 알 보상 획득 후 메인페이지에 접근했을 때 동물정령을 획득합니다.
