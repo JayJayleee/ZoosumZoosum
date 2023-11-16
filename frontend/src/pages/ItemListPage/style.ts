@@ -44,9 +44,8 @@ const styles = StyleSheet.create({
     // width : '100%',
   },
   body2Item: {
-    paddingTop: 20,
     width: '90%',
-    height: '100%',
+    height: '92%',
   },
   islandCard_image: {
     height: '100%',
@@ -78,6 +77,7 @@ const styles = StyleSheet.create({
     // fontSize : 35,
     fontFamily: 'NPSfont_extrabold',
     marginTop: windowHeight * 0.06,
+    color: 'white'
   },
 });
 

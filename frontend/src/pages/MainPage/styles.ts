@@ -83,6 +83,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'NPSfont_bold'
   },
+  questionBox: {
+    position: 'absolute',
+    width: windowWidth * 0.96,
+    height: windowHeight * 0.08,
+    top: windowHeight * 0.17,
+    alignItems: 'flex-end'
+  },
+  question: {
+    position: 'absolute',
+    right: windowWidth * 0.02,
+    top: windowHeight * 0.01,
+    width: windowWidth * 0.1,
+    height: windowWidth * 0.1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 70
+  },
   buttonToggle :{
     position: 'relative',
     top: windowHeight* 0.11,
