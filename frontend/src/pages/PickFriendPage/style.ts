@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
     justifyContent : 'flex-start',
     // fontSize : 35,
     fontFamily : 'NPSfont_extrabold',
-    marginTop : windowHeight * 0.06
+    marginTop : windowHeight * 0.06,
+    color: 'white'
   },
 });
 

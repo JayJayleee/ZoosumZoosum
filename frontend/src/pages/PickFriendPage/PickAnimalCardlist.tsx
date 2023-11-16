@@ -25,9 +25,10 @@ type Animal = {
 
 interface PickFriendPageProps {
   navigation: () => void;
+  firstSelect: number[];
 }
 
-export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
+export default function PickAnimalCardlist({navigation, firstSelect} : PickFriendPageProps) {
   const [animalArray, setAnimalArray] = useState<Animal[]>([]);
 
   useQuery(['FriendList'], fetchMyAnimalListInfo, {
@@ -40,6 +41,12 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
       }
 
       let processedData = [...data];
+
+      for (let i=0; i < processedData.length; i++) {
+        if (firstSelect.includes(processedData[i].animalId)) {
+          processedData[i].selected = true;
+        }
+      }
 
       const numColumns = 3;
 
@@ -64,7 +71,7 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
   });
 
   // 선택된 동물의 ID를 저장할 상태를 추가
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIds, setSelectedIds] = useState<number[]>(firstSelect);
 
   // 카드 선택/해제 핸들러
   const handleSelectCard = (animalId: number) => {
@@ -84,7 +91,6 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
     // PUT 요청이 성공한 경우의 로직
     onSuccess: () => {
       // 성공 시 할 작업을 여기에 추가합니다.
-      console.log('변경 성공');
       queryClient.invalidateQueries(["selectAnimal"])
       navigation();
     },
@@ -151,7 +157,6 @@ export default function PickAnimalCardlist({navigation} : PickFriendPageProps) {
             } else if (selectedIds.length === 0) {
               showToast('한 마리 이상 선택해주세요');
             } else {
-              console.log('선택된 아이디들:', selectedIds);
               handleCompleteSelection()
             }
           }}
