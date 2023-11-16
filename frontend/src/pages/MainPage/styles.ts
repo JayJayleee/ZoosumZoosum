@@ -11,6 +11,17 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
   },
+  allColor: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: windowWidth,
+    height: windowHeight,
+    zIndex: 99,
+    backgroundColor: 'rgba(0,0,0,0.85)'
+  },
   cloud: {
     position: 'absolute', 
     top: 0, 
