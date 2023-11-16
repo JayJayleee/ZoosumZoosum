@@ -21,7 +21,7 @@ import {statusInfo, islandInfo, timeObj, animalForm} from '@/types/island';
 import AppText from '@/components/ui/Text';
 import TreeNameModal from '@/components/ui/Modal/TreeNameModal';
 import {useQuery} from '@tanstack/react-query';
-import {getStorage} from '@/apis';
+import {getStorage, setStorage} from '@/apis';
 import Spinner from '@/components/ui/Spinner';
 import {AppCloseModal} from '@/components/ui/Modal/CloseModal';
 import {windowWidth} from '@/constants/styles';
@@ -96,26 +96,23 @@ export default function MainPage({navigation}: MainScreenProps) {
   useEffect(() => {
     navigation.addListener('focus', () => {
       setHaveEgg(false);
+      setIsTreeModalVisible(false);
       IslandRefetch();
       StatusRefetch();
     });
   }, []);
 
   // 부화하지 않은 알이 있다면 알 부화 페이지로 이동하도록 하는 코드
+  // 나무 씨앗이 100개가 넘어가면 나무 모달창을 띄우도록 하는 코드
   useEffect(() => {
     if (isHaveEgg) {
       navigation.navigate('FirstEgg', {
         isFirstLogin: false,
       });
-    }
-  }, [isHaveEgg]);
-
-  // 나무 씨앗이 100개가 넘어가면 나무 모달창을 띄우도록 하는 코드
-  useEffect(() => {
-    if (getSeed >= 100) {
+    } else if (getSeed >= 100) {
       setIsTreeModalVisible(true);
     }
-  }, [getSeed]);
+  }, [isHaveEgg, getSeed]);
 
   // 배경의 구름이 흘러가는 효과를 위한 애니메이션 함수
   useEffect(() => {
@@ -192,14 +189,18 @@ export default function MainPage({navigation}: MainScreenProps) {
   }
 
   // BGM on/off 함수
-  const changeSoundState = () => {
+  const changeSoundState = async () => {
     changeButtonSound();
     if (isSoundOn) {
       pause();
       setSound(false);
+      await setStorage("SoundState", "N");
+
     } else {
       replay();
       setSound(true);
+      await setStorage("SoundState", "Y");
+
     }
   };
 
@@ -431,18 +432,18 @@ export default function MainPage({navigation}: MainScreenProps) {
           {isSoundOn ? (
             <>
               <FastImage
-                source={require('@/assets/img_icon/sound_on_icon.png')}
-                style={styles.toggleBtnImage}
-              />
-              <AppText children="배경음 켜기" style={styles.toggleBtnText} />
-            </>
-          ) : (
-            <>
-              <FastImage
                 source={require('@/assets/img_icon/sound_off_icon.png')}
                 style={styles.toggleBtnImage}
               />
               <AppText children="배경음 끄기" style={styles.toggleBtnText} />
+            </>
+          ) : (
+            <>
+              <FastImage
+                source={require('@/assets/img_icon/sound_on_icon.png')}
+                style={styles.toggleBtnImage}
+              />
+              <AppText children="배경음 켜기" style={styles.toggleBtnText} />
             </>
           )}
         </TouchableOpacity>
