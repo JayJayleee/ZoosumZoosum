@@ -436,7 +436,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 source={require('@/assets/img_icon/sound_on_icon.png')}
                 style={styles.toggleBtnImage}
               />
-              <AppText children="BGM on" style={styles.toggleBtnText} />
+              <AppText children="배경음 켜기" style={styles.toggleBtnText} />
             </>
           ) : (
             <>
@@ -444,7 +444,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 source={require('@/assets/img_icon/sound_off_icon.png')}
                 style={styles.toggleBtnImage}
               />
-              <AppText children="BGM off" style={styles.toggleBtnText} />
+              <AppText children="배경음 끄기" style={styles.toggleBtnText} />
             </>
           )}
         </TouchableOpacity>
