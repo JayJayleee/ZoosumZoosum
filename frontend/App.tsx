@@ -3,7 +3,7 @@ import * as React from 'react';
 import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {replay, stop, whoosh} from '@/constants/sound';
+import {replay, whoosh} from '@/constants/sound';
 import {pause} from '@/constants/sound';
 
 // react-native-screens에 에러가 나서 아래 구문을 추가해줌
@@ -35,13 +35,14 @@ import ItemListPage from '@/pages/ItemListPage';
 import PickIslandPage from '@/pages/PickIslandPage';
 import PickTreePage from '@/pages/PickITreePage';
 import FriendDetailPage from '@/pages/FriendDetailPage';
-import {useEffect} from 'react';
+import { useEffect, useState } from 'react';
 import {PermissionsAndroid, TextInput, Text} from 'react-native';
 
 import TutorialPage from '@/pages/TutorialPage';
 import FirstEggPage from '@/pages/FirstEggPage';
 
 import {AppState, AppStateStatus} from 'react-native';
+import { getStorage, setStorage } from '@/apis';
 // 여기서는 RootStackParamList 안에 있는 타입 지정 안해주면 에러남~!꼭 넣을 것
 const Stack = createNativeStackNavigator<RootStackParamList>();
 // QueryClient 선언
@@ -67,7 +68,15 @@ interface TextInputWithDefaultProps extends TextInput {
 
 function App() {
   whoosh;
+  
+  useEffect(() => {
+    const save = async () => {
+      await setStorage("SoundState", "Y");
+    }
 
+    save();
+  },[])
+  
   useEffect(() => {
     PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
@@ -77,8 +86,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active') {
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active' && await getStorage("SoundState") === "Y") {
         replay();
       } else if (nextAppState === 'background') {
         pause();
