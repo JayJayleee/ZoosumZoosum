@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFE99C', 
     width: '25%', 
     height: '62%',
-    borderRadius: 50
+    borderRadius: 100
   },
   staNoteTitle: {
     fontFamily: 'NPSfont_bold',
@@ -56,6 +56,17 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 0.5, 
     borderBottomColor: 'black', 
     width: '70%', 
+  },
+  clickEmpty: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: windowWidth,
+    height: windowHeight,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 10,
   },
   badgeBox: {
     position: 'relative',

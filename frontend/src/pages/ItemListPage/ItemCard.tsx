@@ -10,26 +10,74 @@ interface ItemCardProps {
   fileUrl : string,
   selected : boolean,
   itemType : string,
+  refetch: () => void;
 }
 
-export default function ItemCard({itemName, fileUrl, selected, itemType}: ItemCardProps) {
+export default function ItemCard({itemId, itemName, fileUrl, selected, itemType, refetch}: ItemCardProps) {
   const [isImageModalOpen, setImageModalOpen] = useState<boolean>(false);
   const [imageURL, setImageURL] = useState<string>("");
   const [itemNames, setItemNames] = useState<string>("");
   const [itemTypes, setItemTypes] = useState<string>("");
 
+  const queryClient = useQueryClient();
+  const updateIslandMutation = useMutation(() => fetchSelectMyIsland(itemId), {
+    // PUT 요청이 성공한 경우의 로직
+    onSuccess: () => {
+      // 성공 시 할 작업을 여기에 추가합니다.
+      console.log('변경 성공');
+      queryClient.invalidateQueries(['ItemList', itemType]);
+      refetch();
+      setImageModalOpen(false);
+    },
+    // PUT 요청이 실패한 경우의 로직
+    onError: error => {
+      // 실패 시 할 작업을 여기에 추가합니다.
+      console.error('변경 실패 ㅠ', error);
+    },
+  });
+
+  const handleIslandCompleteSelection = () => {
+    // updateMutation 함수를 호출하여 PUT 요청 실행
+    updateIslandMutation.mutate();
+  };
+
+  const updateTreeMutation = useMutation(() => fetchSelectMyTree(itemId), {
+    // PUT 요청이 성공한 경우의 로직
+    onSuccess: () => {
+      // 성공 시 할 작업을 여기에 추가합니다.
+      console.log('변경 성공');
+      queryClient.invalidateQueries(['ItemList', itemType]);
+      refetch();
+      setImageModalOpen(false);
+    },
+    // PUT 요청이 실패한 경우의 로직
+    onError: error => {
+      // 실패 시 할 작업을 여기에 추가합니다.
+      console.error('변경 실패 ㅠ', error);
+    },
+  });
+
+  const handleTreeCompleteSelection = () => {
+    // updateMutation 함수를 호출하여 PUT 요청 실행
+    updateTreeMutation.mutate();
+  };
+
+
   const getImageStyle = () => {
     return itemType === 'TREE' ? styles.image : styles.image2;
   };
+
   const gotodetail = (fileUrl :string,itemType : string, ) => {
     setImageURL(fileUrl)
     setItemTypes(itemType)
     setImageModalOpen(true)
     setItemNames(itemName)
-  }
+  };
+
+
   return (
     <>
-    {isImageModalOpen && <ItemDetailModal isImageModalOpen={isImageModalOpen} closeFnt={() => setImageModalOpen(false)} imageURL={imageURL} itemType={itemTypes} itemName={itemNames} />}
+    {isImageModalOpen && <ItemDetailModal isImageModalOpen={isImageModalOpen} completeFtn={itemType === 'TREE'? handleTreeCompleteSelection : handleIslandCompleteSelection} closeFnt={() => setImageModalOpen(false)} imageURL={imageURL} itemType={itemTypes} itemName={itemNames} />}
     <View style={styles.card}>
       <TouchableOpacity style={styles.card2} onPress={() => gotodetail(fileUrl, itemType)}>
         {selected == true &&
@@ -43,8 +91,6 @@ export default function ItemCard({itemName, fileUrl, selected, itemType}: ItemCa
         </View>
         <Text style={styles.title} numberOfLines={1}>{itemName}</Text>
       </TouchableOpacity>
-      
-
     </View>
     </>
   );
@@ -52,6 +98,8 @@ export default function ItemCard({itemName, fileUrl, selected, itemType}: ItemCa
 
 
 import { windowHeight, windowWidth } from "@/constants/styles";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchSelectMyIsland, fetchSelectMyTree } from '@/apis/Item';
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
@@ -76,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems : 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily : 'NPSfont_bold'
   },
   image: {

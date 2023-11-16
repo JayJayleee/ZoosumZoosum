@@ -46,8 +46,10 @@ const styles = StyleSheet.create({
   },
   button_container: {
     flexDirection: 'row',
-    width: '78%',
-    marginRight: '5%',
+    width: windowWidth,
+    justifyContent: 'space-evenly',
+    bottom: windowHeight * 0.02,
+    height: '35%', 
   },
   isLoading: {
     flex: 1,

@@ -43,7 +43,7 @@ export default function FriendListPage({navigation}: FriendListscreenProps) {
             onPress={() => navigation.navigate('PickFriend')}
           />
           <AppButton
-            variant="selectIslandBtn"
+            variant="selectAnimalBtn"
             children="섬으로 돌아가기"
             onPress={() => navigation.navigate('Main')}
           />

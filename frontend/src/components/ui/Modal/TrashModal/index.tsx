@@ -104,14 +104,6 @@ const TrashModal = ({
     }
   }, [isVisible]);
 
-  // useEffect(() => {
-  //   if (getErrorStatus) {
-  //     setDisplayedImage(''); // 에러가 있을 경우 이미지를 비움
-  //   } else {
-  //     setDisplayedImage(TrashResultImg); // 에러가 없을 경우 원래 이미지를 다시 설정
-  //   }
-  // }, [getErrorStatus, TrashResultImg]);
-
   useEffect(() => {
     if (isVisible && data.length > 0) {
       const mostTrashType: TrashType = getMostTrashType(data);
@@ -119,15 +111,16 @@ const TrashModal = ({
       setTip(newTip);
     }
   }, [isVisible]);
-  // console.log(data);
-  // console.log(data);
+
   const Item = ({title, img, description}: TrashDataReturnList) => (
-    <View
+    <TouchableOpacity
+    activeOpacity={description != 0 ? 0.2 : 1}
       style={{
         width: '33%',
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
+      }}
+      onPress={description != 0 ? toggleFlatList : undefined}>
       <Image
         style={{
           height: 100,
@@ -144,7 +137,7 @@ const TrashModal = ({
       <AppText style={{color: 'black', fontSize: 14, marginTop: 5}}>
         {description}
       </AppText>
-    </View>
+    </TouchableOpacity>
   );
   const toggleFlatList = () => {
     setShowFlatList(!showFlatList);
@@ -194,8 +187,6 @@ const TrashModal = ({
     return tips[Math.floor(Math.random() * tips.length)];
   };
 
-  // const mostTrashType: TrashType = getMostTrashType(data);
-  // const mostTrashTypeTip = getRandomTip(mostTrashType);
 
   const hasNonZeroItems = data.some(item => {
     const count =
@@ -205,13 +196,6 @@ const TrashModal = ({
     return count > 0;
   });
 
-  // const filteredData = data.filter(item => {
-  //   const count =
-  //     typeof item.description === 'number'
-  //       ? item.description
-  //       : parseInt(item.description, 10);
-  //   return count > 0;
-  // });
 
   const onClose = () => {
     setShowFlatList(false); // 모달이 닫힐 때 showFlatList를 false로 설정
@@ -247,7 +231,6 @@ const TrashModal = ({
           <TouchableOpacity
             onPress={toggleFlatList}
             style={{
-              // backgroundColor: 'green',
               width: '10%',
               height: '50%',
               position: 'absolute',
@@ -262,7 +245,6 @@ const TrashModal = ({
               style={{
                 width: '110%',
                 height: '110%',
-                // paddingBottom: '15%',
                 resizeMode: 'contain',
               }}
             />
@@ -368,10 +350,12 @@ const TrashModal = ({
             />
           )
         ) : getTrashStatus != -1 ? (
-          <Image
-            source={{uri: TrashResultImg}}
-            style={{width: '100%', height: '63%', borderRadius: 20}}
-          />
+          <TouchableOpacity style={{width: '100%', height: '63%',}} onPress={toggleFlatList}>
+            <Image
+              source={{uri: TrashResultImg}}
+              style={{width: '100%', height: '100%', borderRadius: 20}}
+            />
+          </TouchableOpacity>
         ) : null}
 
         {getTrashStatus != -1 && hasNonZeroItems ? (
@@ -379,7 +363,6 @@ const TrashModal = ({
             resizeMode="contain"
             style={{
               aspectRatio: 4 / 1,
-              // backgroundColor: 'red',
               width: '100%',
               flexDirection: 'row',
               alignItems: 'center',
@@ -390,13 +373,10 @@ const TrashModal = ({
                 height: '130%',
                 aspectRatio: 1,
                 position: 'relative',
-                // paddingRight: '10%',
-                // backgroundColor: 'green',
               }}>
               <FastImage
                 style={{
                   width: '100%',
-                  // backgroundColor: 'green',
                   aspectRatio: 1,
                   transform: [{scaleX: -1}],
                 }}
@@ -411,6 +391,7 @@ const TrashModal = ({
                 textAlign: 'center',
                 paddingLeft: '1%',
                 fontSize: 12,
+                lineHeight: 16
               }}>
               Tip: {tip}
             </AppText>
@@ -423,8 +404,6 @@ const TrashModal = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             flexDirection: 'row',
-
-            // marginTop: '4%',
           }}>
           <AppButton
             children="다시 찍을래!"

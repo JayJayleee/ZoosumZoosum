@@ -14,9 +14,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button_container: {
+    width: windowWidth,
+    bottom: windowHeight * 0.05, 
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
   },
   list_container: {
     height: windowHeight * 0.67,
@@ -42,9 +44,8 @@ const styles = StyleSheet.create({
     // width : '100%',
   },
   body2Item: {
-    paddingTop: 20,
     width: '90%',
-    height: '100%',
+    height: '92%',
   },
   islandCard_image: {
     height: '100%',
@@ -63,10 +64,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   button_container2: {
+    bottom: windowHeight * 0.02,
     flexDirection: 'row',
     justifyContent: 'center',
-    width: '75%',
-    marginLeft: '5%',
+    width: windowWidth,
+    height: '40%',
   },
   isLoading: {
     flex: 1,
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
     // fontSize : 35,
     fontFamily: 'NPSfont_extrabold',
     marginTop: windowHeight * 0.06,
+    color: 'white'
   },
 });
 

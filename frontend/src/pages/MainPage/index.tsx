@@ -32,7 +32,6 @@ import {
   changeMotionStop,
 } from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
-import {Brightness} from 'react-native-color-matrix-image-filters';
 
 export default function MainPage({navigation}: MainScreenProps) {
   // 나무 심기 모달 창
@@ -93,6 +92,7 @@ export default function MainPage({navigation}: MainScreenProps) {
   // 메인 페이지에 다시 들어왔을 때 api를 다시 호출하도록 하는 코드
   useEffect(() => {
     navigation.addListener('focus', () => {
+      setHaveEgg(false);
       IslandRefetch();
       StatusRefetch();
     });
@@ -301,7 +301,7 @@ export default function MainPage({navigation}: MainScreenProps) {
             source={require('@/assets/img_icon/shoe_icon.png')}
             style={styles.statusImage}
           />
-          <AppText style={styles.statusText}>{getDistance}km</AppText>
+          <AppText style={styles.statusText}>{getDistance.toFixed(2)}km</AppText>
         </View>
         <View style={styles.statusBox}>
           <FastImage
@@ -332,6 +332,11 @@ export default function MainPage({navigation}: MainScreenProps) {
             <AppText style={styles.bannerBoldText}>{allTreeCount} 그루</AppText>
           </View>
         </View>
+      </View>
+      <View style={styles.questionBox}>
+        <TouchableOpacity onPress={() => console.log("물음표 클릭!")} style={styles.question}>
+          <FastImage source={require("@/assets/mainpage_image/question.png")} style={{width: '100%', height: '100%'}}/>
+        </TouchableOpacity>
       </View>
       <View style={styles.centerImage}>
         <FastImage

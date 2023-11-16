@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   FriendDetail_Image: {
     width: '90%',
     height: '90%',
+    top: windowHeight * 0.04
   },
   animalName: {
     color: 'white',
@@ -51,9 +52,10 @@ const styles = StyleSheet.create({
   bodyContainer1: {
     width: windowWidth * 0.75,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
   active: {
+    width: windowWidth * 0.45,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 30,

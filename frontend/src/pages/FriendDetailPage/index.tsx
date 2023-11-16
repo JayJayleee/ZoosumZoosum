@@ -93,7 +93,7 @@ export default function FriendDetailPage({navigation, route }: FriendDetailScree
             <View style={styles.active}>
               <AppText style={styles.title} >함께 산책한 시간</AppText>
               <View style={styles.Together}>
-                <AppText style={styles.title2} >{animal.hour}시 {animal.minute}분{animal.second}초</AppText>
+                <AppText style={styles.title2} >{animal.hour}시 {animal.minute}분 {animal.second}초</AppText>
               </View>
             </View>
             <View style={styles.active}>

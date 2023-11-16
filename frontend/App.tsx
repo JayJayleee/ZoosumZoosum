@@ -119,8 +119,8 @@ function App() {
           <Stack.Screen name="ItemList" component={ItemListPage} />
           <Stack.Screen name="Profile" component={ProfilePage} />
           <Stack.Screen name="Ranking" component={RankingPage} />
-          <Stack.Screen name="PickIsland" component={PickIslandPage} />
-          <Stack.Screen name="PickTree" component={PickTreePage} />
+          {/* <Stack.Screen name="PickIsland" component={PickIslandPage} />
+          <Stack.Screen name="PickTree" component={PickTreePage} /> */}
           <Stack.Screen name="FriendDetail" component={FriendDetailPage} />
           <Stack.Screen name="FirstEgg" component={FirstEggPage} />
         </Stack.Navigator>

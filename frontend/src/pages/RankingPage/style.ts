@@ -114,8 +114,16 @@ const styles = StyleSheet.create({
     fontSize : 15,
     fontFamily : 'NPSfont_extrabold',
   },
-  error_text : {
+  error_box: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     textAlign : 'center',
+  },
+  error_text : {
+    fontFamily : 'NPSfont_extrabold',
+    fontSize : 20,
   }
 })
 

@@ -6,7 +6,7 @@ import AppButton from '@/components/ui/Button';
 import ItemCard from './ItemCard';
 import {fetchMyItemListInfo} from '@/apis/Item';
 import {useQuery} from '@tanstack/react-query';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { Wave } from '@/components/ui/animation/LottieEffect';
 
@@ -22,11 +22,12 @@ type Item = {
   selected: boolean;
 };
 
+
 export default function IslandList() {
   
   const [ItemArray, setItemArray] = useState<Item[]>([]);
   const itemType = "ISLAND"
- 
+
 
   const {refetch} = useQuery(['ItemList'], 
   () => fetchMyItemListInfo(itemType), {
@@ -63,7 +64,9 @@ export default function IslandList() {
     },
   });
 
-  useFocusEffect(useCallback(() => {refetch()}, []))
+  const islandRefetch = () => {
+    refetch();
+  }
 
   if (!ItemArray.length) return (
     <View style={styles.isLoading}>
@@ -92,6 +95,7 @@ export default function IslandList() {
                 fileUrl={item.fileUrl}
                 selected={item.selected}
                 itemType={item.itemType}
+                refetch={islandRefetch}
               />
             );
           }}
