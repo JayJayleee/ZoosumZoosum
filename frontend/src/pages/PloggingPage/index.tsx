@@ -229,6 +229,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       // 이미 클릭되었으면 아무 작업도 수행하지 않음
       return;
     }
+    setIsEndModalVisible(true);
     setIsButtonClicked(true);
     changeButtonSound();
     // 플로깅 종료 신호 넘겨주기
@@ -286,7 +287,7 @@ export default function PloggingPage({navigation, route}: PloggingScreenProps) {
       setGetAnimalID(0);
       // setGetAnimalIMG('');
       setPloggingDistance(0);
-      setIsEndModalVisible(true);
+      // setIsEndModalVisible(true);
       setGetTrashStatus(0);
     }
   }, [trashImage]);
