@@ -64,7 +64,12 @@ export default function KakaoLoginButton({moveUserInfoPage, moveMainPage, moveTu
 
     if (result.isFirst === "N") {
       await setStorage("Nickname", result.nickname)
-      moveMainPage();
+      if (result.haveAnimal !== "N") {
+        await setStorage("isHave", "Y")
+        moveMainPage();
+      } else {
+        moveTutoPage();
+      }
     } else {
       moveUserInfoPage();
     }
