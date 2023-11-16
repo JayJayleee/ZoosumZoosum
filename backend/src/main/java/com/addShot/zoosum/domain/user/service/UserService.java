@@ -46,9 +46,8 @@ public interface UserService {
     /**
      * 회원 정보 삭제
      *
-     * @param userId
      * @param nickname
      * @return
      */
-    long deleteUser(String userId, String nickname);
+    long deleteUser(String nickname);
 }

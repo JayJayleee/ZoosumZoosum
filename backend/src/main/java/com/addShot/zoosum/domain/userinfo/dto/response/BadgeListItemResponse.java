@@ -1,5 +1,6 @@
 package com.addShot.zoosum.domain.userinfo.dto.response;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +17,6 @@ public class BadgeListItemResponse {
 	private String fileUrl;
 	private boolean isHave;
 	private String badgeCondition;
+	private LocalDateTime updateTime;
 
 }
