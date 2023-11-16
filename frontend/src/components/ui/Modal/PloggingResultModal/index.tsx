@@ -96,11 +96,13 @@ const PloggingResultModal = ({
 
   const handlePloggingResult = () => {
     if (isMutationRunning) {
+      onClose();
       return;
     }
 
     setIsMutationRunning(true);
     if (activityData) {
+      onClose();
       mutation.mutate(activityData);
     } else {
       console.log('activityData 없음', activityData);
