@@ -13,10 +13,7 @@ import com.addShot.zoosum.domain.user.dto.response.NicknameDuplicatedResponseDto
 import com.addShot.zoosum.domain.user.dto.response.UserInfoUpdateResponseDto;
 import com.addShot.zoosum.domain.user.dto.response.UserLoginResponseDto;
 import com.addShot.zoosum.domain.user.repository.UserRepository;
-import com.addShot.zoosum.entity.Animal;
-import com.addShot.zoosum.entity.Item;
-import com.addShot.zoosum.entity.JwtToken;
-import com.addShot.zoosum.entity.User;
+import com.addShot.zoosum.entity.*;
 import com.addShot.zoosum.entity.enums.CustomErrorType;
 import com.addShot.zoosum.entity.enums.ItemType;
 import com.addShot.zoosum.entity.enums.Social;
@@ -70,6 +67,7 @@ public class UserServiceImpl implements UserService {
             User user = userLoginRequestDto.toEntity();
             userRepository.save(user);
             userLoginResponseDto.setIsFirst("Y");
+            userLoginResponseDto.setHaveAnimal("N");
 
             //그냥나무
             Item tree = itemRepository.findItemByItemName(DEFAULT_TREE);
@@ -84,6 +82,19 @@ public class UserServiceImpl implements UserService {
             itemService.itemUpdate(user.getUserId(), ItemType.ISLAND, island.getItemId());
             // 기존 유저라면 기존에 보관 중인 jwtToken 제거해야 하는데 이걸 제거할 수가 없음
             // 근데 logout 과정에서 token을 삭제할 거기 때문에 여기서 삭제할 필요는 없음
+
+            //이벤트로 부여하는 분홍섬, 등대섬, 솜사탕나무, 아이나무
+            Item pinkIsland = itemRepository.findItemByItemName("분홍섬");
+            Item lightIsland = itemRepository.findItemByItemName("등대섬");
+
+            Item candyTree = itemRepository.findItemByItemName("솜사탕나무");
+            Item childTree = itemRepository.findItemByItemName("아이나무");
+
+            activityService.saveUserItem(user, pinkIsland);
+            activityService.saveUserItem(user, lightIsland);
+            activityService.saveUserItem(user, candyTree);
+            activityService.saveUserItem(user, childTree);
+
         } else {
             User user = findUser.get();
 
@@ -95,6 +106,14 @@ public class UserServiceImpl implements UserService {
 
             userLoginResponseDto.setIsFirst("N");
             userLoginResponseDto.setNickname(user.getNickname());
+
+            Optional<List<UserAnimal>> userAnimals = userAnimalRepository.findAllByUserId(userLoginRequestDto.getId());
+            if(userAnimals.isPresent() && !userAnimals.get().isEmpty()) {
+                userLoginResponseDto.setHaveAnimal("Y");
+            } else {
+                userLoginResponseDto.setHaveAnimal("N");
+            }
+
         }
 
         //access 토큰, jwt 토큰 발급 후 저장
@@ -168,8 +187,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long deleteUser(String userId, String nickname) {
-        User user = userRepository.findUserByIdAndNickname(userId, nickname);
+    public long deleteUser(String nickname) {
+        User user = userRepository.findUserByNickname(nickname);
         return userRepository.deleteAllDataById(user);
     }
 }

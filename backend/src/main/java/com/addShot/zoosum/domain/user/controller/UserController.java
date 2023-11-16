@@ -94,10 +94,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{nickname}")
-    public ResponseEntity<String> deleteUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-        @PathVariable String nickname) {
-        String userId = headerUtils.getUserId(authorizationHeader);
-        long result = userService.deleteUser(userId, nickname);
+    public ResponseEntity<String> deleteUser(@PathVariable String nickname) {
+        long result = userService.deleteUser(nickname);
         if (result == 0) {
             return ResponseEntity.ok("삭제 실패");
         }

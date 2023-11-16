@@ -24,6 +24,7 @@ import com.addShot.zoosum.entity.UserItem;
 import com.addShot.zoosum.entity.UserPlogInfo;
 import com.addShot.zoosum.entity.embedded.DivideTime;
 import com.addShot.zoosum.entity.embedded.Mission;
+import com.addShot.zoosum.entity.embedded.SumPlogging;
 import com.addShot.zoosum.entity.embedded.Time;
 import com.addShot.zoosum.entity.embedded.Tree;
 import com.addShot.zoosum.entity.embedded.UserBadgeId;
@@ -146,20 +147,20 @@ public class UserInfoServiceImpl implements UserInfoService {
 		List<ActivityHistory> userActivities = activityRepository.findByUserIdAndActivityType(
 			userId, ActivityType.TREE);
 
-		Mission mission = userPlogInfo.getMission();
-		double kilometer = DistanceUtil.getKilometer(mission.getMissionLength());
+		SumPlogging sumPloggingData = userPlogInfo.getSumPloggingData();
+		double kilometer = DistanceUtil.getKilometer(sumPloggingData.getSumLength());
 		System.out.println(kilometer);
 
 		MainInfoResponse response = MainInfoResponse.builder()
 			.missionLength(kilometer)
-			.missionTrash(mission.getMissionTrash())
+			.missionTrash(sumPloggingData.getSumTrash())
 			.seed(userPlogInfo.getSeed())
 			.treeAllCount(all.size())
 			.treeCount(userActivities.size())
 			.egg(userPlogInfo.getEgg())
 			.build();
 
-		int missionTime = mission.getMissionTime();
+		int missionTime = sumPloggingData.getSumTime();
 		DivideTime divideTime = TimeUtil.getTime(missionTime);
 		response.setHour(divideTime.getHour());
 		response.setMinute(divideTime.getMinute());
@@ -216,6 +217,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 				.fileUrl(ub.getBadge().getFileUrl())
 				.isHave(ub.getBadgeGet())
 				.badgeCondition(ub.getBadge().getBadgeCondition())
+				.updateTime(ub.getTime().getUpdateTime())
 				.build();
 
 			response.add(badgeListItemResponse);
@@ -283,7 +285,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			g2d.drawString(treeName, 650, 1045);
 			//3) 전화번호
 			String tmpPhone = "";
-			tmpPhone = userPhone.replace(userPhone.substring(9, userPhone.length()), "****");
+			tmpPhone = userPhone.replace(userPhone.substring(7, userPhone.length()), "****");
+
 			g2d.drawString(tmpPhone, 650, 1200);
 			//4) 생년월일
 			g2d.drawString(userBirth, 650, 1375);
