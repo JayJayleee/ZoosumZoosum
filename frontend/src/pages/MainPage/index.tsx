@@ -32,8 +32,11 @@ import {
   changeMotionStop,
 } from '@/constants/sound';
 import RNExitApp from 'react-native-exit-app';
+import { UseMethodModal } from '@/components/ui/Modal/UseMethodModal';
 
 export default function MainPage({navigation}: MainScreenProps) {
+  // 사용 튜토리얼 모달 창
+  const [isTutorialModalVisible, setIsTutorialModalVisible] = useState<boolean>(false);
   // 나무 심기 모달 창
   const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
   // 소리 on/off 상태를 나타내는 변수 생성
@@ -250,6 +253,7 @@ export default function MainPage({navigation}: MainScreenProps) {
     <ImageBackground
       source={require('@/assets/mainpage_image/Background.png')}
       style={styles.center}>
+      {isTutorialModalVisible && <View style={styles.allColor}><UseMethodModal closeFnt={() => setIsTutorialModalVisible(false)} /></View>}
       <TreeNameModal
         isTreeModalVisible={isTreeModalVisible}
         onTreeModalClose={() => setIsTreeModalVisible(false)}
@@ -263,7 +267,7 @@ export default function MainPage({navigation}: MainScreenProps) {
               {
                 translateX: moveValue.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [windowWidth * 0.55, -windowWidth * 0.6],
+                  outputRange: [windowWidth * 0.55, -windowWidth * 0.5],
                 }),
               },
             ],
@@ -334,8 +338,8 @@ export default function MainPage({navigation}: MainScreenProps) {
         </View>
       </View>
       <View style={styles.questionBox}>
-        <TouchableOpacity onPress={() => console.log("물음표 클릭!")} style={styles.question}>
-          <FastImage source={require("@/assets/mainpage_image/question.png")} style={{width: '100%', height: '100%'}}/>
+        <TouchableOpacity onPress={() => {setIsTutorialModalVisible(true)}} style={styles.question}>
+          <FastImage tintColor={"#448bc9"} source={require("@/assets/mainpage_image/question.png")} style={{width: '100%', height: '100%'}}/>
         </TouchableOpacity>
       </View>
       <View style={styles.centerImage}>
@@ -432,7 +436,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 source={require('@/assets/img_icon/sound_on_icon.png')}
                 style={styles.toggleBtnImage}
               />
-              <AppText children="소리 끄기" style={styles.toggleBtnText} />
+              <AppText children="BGM on" style={styles.toggleBtnText} />
             </>
           ) : (
             <>
@@ -440,7 +444,7 @@ export default function MainPage({navigation}: MainScreenProps) {
                 source={require('@/assets/img_icon/sound_off_icon.png')}
                 style={styles.toggleBtnImage}
               />
-              <AppText children="소리 켜기" style={styles.toggleBtnText} />
+              <AppText children="BGM off" style={styles.toggleBtnText} />
             </>
           )}
         </TouchableOpacity>
