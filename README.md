@@ -29,10 +29,13 @@
 
 ### 메인페이지, 소셜로그인
 
-<div style="overflow: auto">
+<div>
     <img src="https://i.imgur.com/TnSatDw.png" width="200" />
     <img src="https://i.imgur.com/qySdItH.png" width="200" />
     <img src="https://i.imgur.com/i3CORQf.png" width="200" />
+</div>
+
+<div>
     <img src="https://i.imgur.com/SEspUvA.png" width="200" />
     <img src="https://i.imgur.com/Rnfmz1E.png" width="200" />
     <img src="https://i.imgur.com/R7b9cXx.png" width="200" />
@@ -45,7 +48,7 @@
 
 ### 게임배경
 
-<div style="overflow: auto">
+<div>
     <img src="https://i.imgur.com/z9JvDs5.png" width="200" />
     <img src="https://i.imgur.com/tSaxUNX.png" width="200" />
     <img src="https://i.imgur.com/42aKAMg.png" width="200" />
@@ -68,11 +71,14 @@
 
 ### 튜토리얼
 
-<div style="overflow: auto">
+<div>
     <img src="https://i.imgur.com/lMsssW2.png" width="200" />
     <img src="https://i.imgur.com/Txwthjg.png" width="200" />
     <img src="https://i.imgur.com/5cDdvQ3.png" width="200" />
     <img src="https://i.imgur.com/9M2w7T6.png" width="200" />
+</div>
+
+<div>
     <img src="https://i.imgur.com/j4lPMcM.png" width="200" />
     <img src="https://i.imgur.com/iMVwUyX.png" width="200" />
     <img src="https://i.imgur.com/eInmBKI.png" width="200" />
@@ -84,9 +90,12 @@
 
 ### 전체/지역 랭킹 & 플로깅 활동 및 뱃지
 
-<div style="overflow: auto">
+<div>
     <img src="https://i.imgur.com/gaa2K2K.png" width="200" />
     <img src="https://i.imgur.com/aeKbaZ6.png" width="200" />
+</div>
+
+<div>
     <img src="https://i.imgur.com/6W8ivjc.png" width="200" />
     <img src="https://i.imgur.com/1vXyyOj.png" width="200" />
     <img src="https://i.imgur.com/rSpD1Uz.png" width="200" />
@@ -104,6 +113,9 @@
     <img src="https://i.imgur.com/TNRuaVV.png" width="200" />
     <img src="https://i.imgur.com/sMd9Qtf.png" width="200" />
     <img src="https://i.imgur.com/viXJOf4.png" width="200" />
+</div>
+
+<div>
     <img src="https://i.imgur.com/JZRTIoo.png" width="200" />
     <img src="https://i.imgur.com/Af51hGe.png" width="200" />
 </div>
