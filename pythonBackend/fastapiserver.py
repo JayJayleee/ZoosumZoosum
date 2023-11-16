@@ -100,53 +100,29 @@ def getResultFromData(
                 x1, y1, x2, y2 = bbox
 
                 if x1 < 0 or x2 > w or y1 < 0 or y2 > h :
-                    print("이미지 바운더리 체크 필요")
+                    # print("이미지 바운더리 체크 필요")
                     continue
 
                 # 바운더리 초과 시 결과에 포함하지 않음
                 if x1 <= x1Limit or y1 <= y1Limit or x2 >= x2Limit or y2 >= y2Limit:
-                    print("이미지 바운더리 초과")
+                    # print("이미지 바운더리 초과")
                     bigFlag = True
                     continue
                 
                 imageArea = (x2 - x1) * (y2 - y1)
                 if imageArea < minimumImageArea :
                     smallFlag = True
-                    print("it's too small object")
-                    print("minimumImageArea : ", minimumImageArea)
-                    print("imageArea : ", imageArea)
+                    # print("it's too small object")
+                    # print("minimumImageArea : ", minimumImageArea)
+                    # print("imageArea : ", imageArea)
                     continue
-
-                
-                
-
-                # # print(box.cls)
-
-                # if box.cls == 0.:
-                #     class_ids.append(0)
-                #     # trash_count[0] += 1
-                # elif box.cls == 1. or box.cls == 2.:
-                #     class_ids.append(1)
-                #     # trash_count[1] += 1
-                # elif box.cls == 3.:
-                #     class_ids.append(2)
-                #     # trash_count[2] += 1
-                # elif box.cls == 4.:
-                #     class_ids.append(3)
-                #     # trash_count[3] += 1
-                # elif box.cls == 5.:
-                #     class_ids.append(4)
-                #     # trash_count[4] += 1
-                # elif box.cls == 7.:
-                #     class_ids.append(5)
-                #     # trash_count[5] += 1
-                # else :
-                #     continue
 
                 bboxes.append(xyxy)
                 confidences.append(float(confidence))
     # cv2 가 제공하는 후처리 모델
-    result_boxes = cv2.dnn.NMSBoxes(bboxes, confidences, 0.25, 0.45, 0.5)
+    # result_boxes = cv2.dnn.NMSBoxes(bboxes, confidences, 0.25, 0.45, 0.5)
+
+    result_boxes = [i for i in range(len(bboxes))]
 
     newBoxes = []
 
