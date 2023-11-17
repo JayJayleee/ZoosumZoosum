@@ -101,6 +101,7 @@ const GoogleMap = (props: GoogleMapProps) => {
           Math.floor((Math.floor(distanceTravelled.current) / 1000) * 100) /
             100,
         );
+        // props.setPloggingDistance(distanceTravelled.current);
       })
       .catch(err => console.log(err));
   };
@@ -150,7 +151,7 @@ const GoogleMap = (props: GoogleMapProps) => {
         // console.log('4 watch position');
         const {latitude, longitude} = pos.coords;
         // 과거위치 변경
-        prevLatLng.current = {latitude: latitude, longitude: longitude};
+        // prevLatLng.current = {latitude: latitude, longitude: longitude};
         setRegion({
           latitude: latitude,
           longitude: longitude,
@@ -210,12 +211,10 @@ const GoogleMap = (props: GoogleMapProps) => {
     }
 
     // 거리 더하기
-    addDistance(newCoordinate)
-      .then(() => {
-        // 과거위치 변경
-        prevLatLng.current = newCoordinate;
-      })
-      .catch(e => console.log(e));
+    addDistance(newCoordinate);
+
+    // 과거위치 변경
+    prevLatLng.current = newCoordinate;
   }, [region]);
 
   // 사진을 찍었을 때, 현재 위치에 쓰레기 이미지 마커를 찍는다.
