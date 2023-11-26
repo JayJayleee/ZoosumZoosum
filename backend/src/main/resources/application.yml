@@ -7,14 +7,11 @@ spring:
   # MySQL setting
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://asrai-app-database.cwk2ukisdzzj.ap-northeast-2.rds.amazonaws.com:13386/zoosum?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
-    username: adminasrai
-    password: joinit!!asrai
+    url: [mariaDB_URL]
+    username: [username]
+    password: [password]
     hikari:
       maximum-pool-size: 20
-#      url: jdbc:mariadb://asrai-app-database.cwk2ukisdzzj.ap-northeast-2.rds.amazonaws.com:13386/zoosum?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
-#    username: adminasrai
-#    password: root
 
   jpa:
     show-sql: false
@@ -27,18 +24,15 @@ spring:
       open-in-view: true
   jwt:
     prefix: 'Bearer'
-    secret: E2940461030D23AD0D5B2B073EC996C2FF6DF9CE4F8598A12B936FE2B8237507
+    secret: [secret_code]
     token:
       access-expiration-time: 10800000
       refresh-expiration-time: 604800000
   data:
     redis:
-#      host: localhost
-#      port: 6379
-#      password: ssafyTest
-      host: 3.35.137.8
-      port: 6379
-      password: joinitasrai
+      host: [host]
+      port: [port]
+      password: [password]
 
 server:
   port: 5000
@@ -53,13 +47,13 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: zoosum-bucket
-      url: https://zoosum-bucket.s3.ap-northeast-2.amazonaws.com
+      bucket: [bucket]
+      url: [url]
     region:
       static: ap-northeast-2
       auto: false
     stack:
       auto: false
     credentials:
-      access-key: AKIAWBOZJZ3WHXQHTTQ2
-      secret-key: 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
+      access-key: [access-key]
+      secret-key: [secret-key]
