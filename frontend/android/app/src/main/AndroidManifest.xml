@@ -41,15 +41,11 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:host="oauth" android:scheme="kakao9e54e86af4797cbaf463262c41f86c19" />
+            <data android:host="oauth" android:scheme="" />
         </intent-filter>
       </activity>
       <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyA6PqaeNscW_7mm46Ot4WVUkLle5u7F1sU" />
-      <!-- <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key" /> -->
+        android:value="" />
     </application>
-    <!-- <meta-data
-        android:name="com.kakao.vectormap.APP_KEY"
-        android:value="${APP_KEY}"/> -->
 </manifest>
