@@ -204,7 +204,7 @@
 
 - 김영민: 팀장, FE리더, 동물/아이템 Asset 제작 및 Page
 - 노수혁: 사용자/사용자정보/활동 Page
-- 신지원: 앱 디자인, 플로깅/동물 Page
+- 신지원: 앱 디자인, 플로깅 Page, 플로깅 후 보상 Page, 정령 획득 Page, 메인 페이지 내 나무 심기 모달
 - 송병훈: BE리더, 아이템/플로깅/랭킹 API, Google Map API 적용, CI/CD 및 서버 세팅
 - 이은성: 동물/사용자정보 API, 쓰레기 인식 AI 학습
 - 정규성: 사용자 API, Spring Security, JWT, 쓰레기 인식 AI 학습 및 배포
