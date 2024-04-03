@@ -202,7 +202,7 @@
 | ![Imgur](https://i.imgur.com/QCIniI5.png) | ![Imgur](https://i.imgur.com/j4TTBz7.png) | ![Imgur](https://i.imgur.com/o38ciBD.png) | ![Imgur](https://i.imgur.com/ixdlIIc.png) | ![Imgur](https://i.imgur.com/edfmHsy.png) | ![Imgur](https://i.imgur.com/v3N8Oq3.png) |
 |               Leader, Front               |                   Front                   |               Design, Front               |                Full Stack                 |                   Back                    |                 AI, Back                  |
 
-- 김영민: 팀장, FE리더, 동물/아이템 Asset 제작 및 Page
+- 김영민: 팀장, 동물/아이템 Asset 제작 및 Page
 - 노수혁: 사용자/사용자정보/활동 Page
 - 신지원: 앱 디자인, 플로깅 Page, 플로깅 후 보상 Page, 정령 획득 Page, 메인 페이지 내 나무 심기 모달
 - 송병훈: BE리더, 아이템/플로깅/랭킹 API, Google Map API 적용, CI/CD 및 서버 세팅
